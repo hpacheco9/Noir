@@ -54,8 +54,6 @@ struct AddExpenseView: View {
             Section(String(localized: L10n.AddExpenseView.detailsSection)) {
                 DatePicker(String(localized: L10n.AddExpenseView.date), selection: $expenseViewModel.date, displayedComponents: .date)
 
-                Toggle("Recurring expense", isOn: $expenseViewModel.isRecurring)
-                
                 Picker(String(localized: L10n.AddExpenseView.category), selection: $expenseViewModel.category) {
                     ForEach(ExpenseCategory.allCases) { category in
                         Label {
@@ -83,13 +81,12 @@ struct AddExpenseView: View {
                         if let location = expenseViewModel.location {
                             LocationMapPreview(location: location)
                         } else {
-                            ContentUnavailableView {
-                                Label("Current location", systemImage: "location.fill")
-                            } description: {
-                                Text("Tap to add your current location")
-                            }
+                            UnavailableView(
+                                "Current location",
+                                systemImage: "location.fill",
+                                description: "Tap to add your current location"
+                            )
                             .frame(maxWidth: .infinity)
-                            .frame(height: 110)
                         }
 
                         HStack(spacing: 8) {

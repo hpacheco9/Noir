@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 
 enum MainRoutes {
@@ -61,7 +62,22 @@ enum MainRoutes {
             
             return addExpenseViewRoute()
     }
+    
+    static func editExpense(expense: ExpenseDTO?) -> any RouteRepresentable {
+            struct editExpenseViewRoute: RouteRepresentable {
+                let routeId: String = "add-expense"
+                let expense: ExpenseDTO?
+
+                @ViewBuilder
+                func routeView() -> any View {
+                    AddExpenseView(expense: expense)
+                }
+            }
+            
+            return editExpenseViewRoute(expense: expense)
+    }
 }
+
 
 
 enum SettingsRoutes {
@@ -76,5 +92,4 @@ enum SettingsRoutes {
         
         return ProfileViewRoute()
     }
-    
 }

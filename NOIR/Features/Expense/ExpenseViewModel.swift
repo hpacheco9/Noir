@@ -22,7 +22,6 @@ final class ExpenseViewModel {
     var date = Date.now
     var category: ExpenseCategory = .other
     var description = ""
-    var isRecurring = false
     var location: ExpenseLocation?
     
     var isEditing: Bool = false
@@ -51,8 +50,6 @@ final class ExpenseViewModel {
             date: date,
             category: category,
             description: description.trimmingCharacters(in: .whitespacesAndNewlines),
-            isRecurring: isRecurring,
-            recurrenceDay: Calendar.current.component(.day, from: date),
             latitude: location?.latitude,
             longitude: location?.longitude,
             locationName: location?.name
@@ -82,7 +79,6 @@ final class ExpenseViewModel {
         date = expense.date
         category = expense.category
         description = expense.description
-        isRecurring = expense.isRecurring
         if let latitude = expense.latitude, let longitude = expense.longitude {
             location = ExpenseLocation(latitude: latitude, longitude: longitude, name: expense.locationName ?? "")
         } else {
@@ -97,7 +93,6 @@ final class ExpenseViewModel {
         name = ""
         category = .other
         description = ""
-        isRecurring = false
         location = nil
         date = .now
         

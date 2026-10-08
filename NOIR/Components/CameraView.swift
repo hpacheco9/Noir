@@ -56,10 +56,10 @@ struct CameraView: View {
                     .padding(.bottom, 40)
                 }
             } else {
-                ContentUnavailableView(
+                UnavailableView(
                     "Camera Access Needed",
                     systemImage: "camera.fill",
-                    description: Text("Allow camera access in Settings to take a photo.")
+                    description: "Allow camera access in Settings to take a photo."
                 )
             }
         }

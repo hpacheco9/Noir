@@ -13,18 +13,15 @@ struct SearchView: View {
             if viewModel.isLoading && viewModel.sections.isEmpty {
                 ProgressView()
             } else if viewModel.sections.isEmpty {
-                ContentUnavailableView {
-                    Label(
-                        viewModel.query.isEmpty ? L10n.SearchView.emptyTitle : "No expenses found",
-                        systemImage: AssetName.System.search
-                    )
-                } description: {
-                    Text(
-                        viewModel.query.isEmpty
-                        ? L10n.SearchView.emptyDescription
+                UnavailableView(
+                    viewModel.query.isEmpty
+                        ? String(localized: L10n.SearchView.emptyTitle)
+                        : "No expenses found",
+                    systemImage: AssetName.System.search,
+                    description: viewModel.query.isEmpty
+                        ? String(localized: L10n.SearchView.emptyDescription)
                         : "Try a different expense name."
-                    )
-                }
+                )
             } else {
                 List {
                     ForEach(viewModel.sections) { section in

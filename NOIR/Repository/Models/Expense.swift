@@ -14,11 +14,6 @@ final class Expense {
     var date: Date
     var categoryRawValue: String
     var expenseDescription: String
-    var isRecurring: Bool = false
-    var recurrenceDay: Int = 1
-    var recurrenceSeriesID: UUID?
-    var isRecurrenceTemplate: Bool = false
-    var recurrenceOccurrenceKey: String?
     var latitude: Double?
     var longitude: Double?
     var locationName: String?
@@ -35,11 +30,6 @@ final class Expense {
         date: Date,
         category: ExpenseCategory,
         expenseDescription: String = "",
-        isRecurring: Bool = false,
-        recurrenceDay: Int? = nil,
-        recurrenceSeriesID: UUID? = nil,
-        isRecurrenceTemplate: Bool = false,
-        recurrenceOccurrenceKey: String? = nil,
         latitude: Double? = nil,
         longitude: Double? = nil,
         locationName: String? = nil
@@ -50,11 +40,6 @@ final class Expense {
         self.date = date
         self.categoryRawValue = category.rawValue
         self.expenseDescription = expenseDescription
-        self.isRecurring = isRecurring
-        self.recurrenceDay = recurrenceDay ?? Calendar.current.component(.day, from: date)
-        self.recurrenceSeriesID = recurrenceSeriesID
-        self.isRecurrenceTemplate = isRecurrenceTemplate
-        self.recurrenceOccurrenceKey = recurrenceOccurrenceKey
         self.latitude = latitude
         self.longitude = longitude
         self.locationName = locationName

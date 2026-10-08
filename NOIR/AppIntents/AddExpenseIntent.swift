@@ -61,9 +61,6 @@ struct AddExpenseIntent: AppIntent {
     @Parameter(title: "app_intent.note", default: "")
     var note: String
 
-    @Parameter(title: "app_intent.recurring", default: false)
-    var isRecurring: Bool
-
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         guard amount > 0 else {
@@ -83,11 +80,7 @@ struct AddExpenseIntent: AppIntent {
             name: trimmedName,
             date: date,
             category: category.expenseCategory,
-            expenseDescription: trimmedNote,
-            isRecurring: isRecurring,
-            recurrenceDay: Calendar.current.component(.day, from: date),
-            recurrenceSeriesID: isRecurring ? UUID() : nil,
-            isRecurrenceTemplate: isRecurring
+            expenseDescription: trimmedNote
         )
 
         modelContext.insert(expense)

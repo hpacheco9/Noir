@@ -129,7 +129,6 @@ enum L10n {
         static let namePrompt: LocalizedStringResource = "app_intent.name_prompt"
         static let date: LocalizedStringResource = "app_intent.date"
         static let note: LocalizedStringResource = "app_intent.note"
-        static let recurring: LocalizedStringResource = "app_intent.recurring"
         static let invalidAmount: LocalizedStringResource = "app_intent.invalid_amount"
         static let emptyName: LocalizedStringResource = "app_intent.empty_name"
         static let expenseSaved: LocalizedStringResource = "app_intent.expense_saved"

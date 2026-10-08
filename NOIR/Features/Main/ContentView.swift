@@ -5,6 +5,7 @@
 
 import SwiftData
 import SwiftUI
+import AVFoundation
 
 enum SearchTransitionID {
     static let button = "search-button"
@@ -52,6 +53,7 @@ struct ContentView: View {
         }
         .overlay(alignment: .bottomTrailing) {
             addExpenseButton
+                    .padding(.trailing, 5)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -67,7 +69,6 @@ struct ContentView: View {
     }
 
     // MARK: - List content
-
     @ViewBuilder
     private var expenseListContent: some View {
         switch viewModel.state {
@@ -82,15 +83,11 @@ struct ContentView: View {
 
     private var emptyStateSection: some View {
         Section {
-            ContentUnavailableView {
-                Label(String(localized: L10n.MainView.emptyTitle), systemImage: AssetName.System.transactions)
-                    .font(.title3.bold())
-            } description: {
-                Text(L10n.MainView.emptyDescription)
-                    .font(.headline)
-                    .fontWeight(.regular)
-                    .foregroundStyle(.secondary)
-            }
+            UnavailableView(
+                L10n.MainView.emptyTitle,
+                systemImage: AssetName.System.transactions,
+                description: L10n.MainView.emptyDescription
+            )
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
             .padding(.top, 50)
@@ -109,26 +106,32 @@ struct ContentView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
-        ForEach(viewModel.recentExpenseSections(from: expenses)) { day in
-            Section(viewModel.title(for: day.date)) {
-                ForEach(day.expenses) { expense in
-                    ExpenseRow(
-                        expense: expense,
-                        action: {
-                            let generator = UIImpactFeedbackGenerator(style: .light)
-                            generator.impactOccurred()
+        let periodSections = viewModel.expenseSections(from: expenses, period: selectedPeriod)
+        if periodSections.isEmpty {
+            emptyStateSection
+        } else {
+            ForEach(periodSections) { day in
+                Section(viewModel.title(for: day.date)) {
+                    ForEach(day.expenses) { expense in
+                        ExpenseRow(
+                            expense: expense,
+                            action: {
+                                router.present(MainRoutes.editExpense(expense: expense), mode: .large)
+                                let generator = UIImpactFeedbackGenerator(style: .light)
+                                generator.impactOccurred()
+                            }
+                        )
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button {
+                                expensePendingDeletion = expense
+                            } label: {
+                                Label(
+                                    String(localized: L10n.Shared.delete),
+                                    systemImage: AssetName.System.delete
+                                )
+                            }
+                            .tint(.red)
                         }
-                    )
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button {
-                            expensePendingDeletion = expense
-                        } label: {
-                            Label(
-                                String(localized: L10n.Shared.delete),
-                                systemImage: AssetName.System.delete
-                            )
-                        }
-                        .tint(.red)
                     }
                 }
             }
@@ -145,7 +148,6 @@ struct ContentView: View {
     }
 
     // MARK: - Toolbar
-
     private var accountButton: some View {
         Button {
             router.present(MainRoutes.settings(), mode: .large)
@@ -198,7 +200,7 @@ struct ContentView: View {
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundColor(Color(uiColor: .systemBackground))
-                .frame(width: 55, height: 55)
+                .frame(width: 50, height: 50)
         }
         .clipShape(.circle)
         .tint(.primary)
@@ -210,7 +212,7 @@ struct ContentView: View {
     private func presentSearch() {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
-        router.navigate(to: MainRoutes.search(nameSpace: searchTransition))
+       // router.navigate(to: MainRoutes.search(nameSpace: searchTransition))
     }
 }
 

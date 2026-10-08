@@ -23,4 +23,17 @@ enum SpendingPeriod: CaseIterable, Identifiable {
         case .allTime: String(localized: L10n.SpendingPeriod.allTime)
         }
     }
+
+    func contains(_ date: Date, calendar: Calendar = .current, now: Date = .now) -> Bool {
+        switch self {
+        case .day:
+            calendar.isDate(date, inSameDayAs: now)
+        case .week:
+            calendar.isDate(date, equalTo: now, toGranularity: .weekOfYear)
+        case .month:
+            calendar.isDate(date, equalTo: now, toGranularity: .month)
+        case .allTime:
+            true
+        }
+    }
 }

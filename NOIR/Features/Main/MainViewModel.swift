@@ -9,12 +9,12 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-
 @Observable
 final class MainViewModel {
     var state: State = .loading
     let repository: ExpenseRepository
     
+    var isCameraSelected: Bool = false
     enum State {
         case loading
         case loaded([ExpenseDTO])
@@ -29,12 +29,12 @@ final class MainViewModel {
         Locale.current.currency?.identifier ?? "USD"
     }
 
-    func recentExpenseSections(from expenses: [ExpenseDTO], limit: Int = 10) -> [ExpenseDaySection] {
-        let recentExpenses = expenses
+    func expenseSections(from expenses: [ExpenseDTO], period: SpendingPeriod) -> [ExpenseDaySection] {
+        let scopedExpenses = expenses
+            .filter { period.contains($0.date) }
             .sorted { $0.date > $1.date }
-            .prefix(limit)
 
-        let grouped = Dictionary(grouping: recentExpenses) { expense in
+        let grouped = Dictionary(grouping: scopedExpenses) { expense in
             Calendar.current.startOfDay(for: expense.date)
         }
 
@@ -64,10 +64,9 @@ extension MainViewModel{
     @MainActor
     func fetchData() async {
         do {
-            try await repository.synchronizeRecurringExpenses()
             let data = try await repository.fetch()
             withAnimation(.snappy) {
-                      state = data.isEmpty ? .empty : .loaded(data)
+                state = data.isEmpty ? .empty : .loaded(data)
             }
         } catch {
             print("Failed to fetch expenses: \(error)")
@@ -91,10 +90,6 @@ struct ExpenseDTO: Sendable, Identifiable {
     let amount: Double
     let date: Date
     let description: String
-    let isRecurring: Bool
-    let recurrenceDay: Int
-    let recurrenceSeriesID: UUID?
-    let isRecurrenceTemplate: Bool
     let latitude: Double?
     let longitude: Double?
     let locationName: String?
@@ -107,10 +102,6 @@ struct ExpenseDTO: Sendable, Identifiable {
         self.date = expense.date
         self.amount = expense.amount
         self.description = expense.expenseDescription
-        self.isRecurring = expense.isRecurring
-        self.recurrenceDay = expense.recurrenceDay
-        self.recurrenceSeriesID = expense.recurrenceSeriesID
-        self.isRecurrenceTemplate = expense.isRecurrenceTemplate
         self.latitude = expense.latitude
         self.longitude = expense.longitude
         self.locationName = expense.locationName

@@ -41,19 +41,7 @@ final class SpendingOverviewViewModel {
     ) -> (points: [SpendingDataPoint], total: Decimal) {
         let calendar = Calendar.current
         let now = Date()
-        let scoped: [ExpenseDTO]
-        switch period {
-        case .day:
-            scoped = expenses.filter { calendar.isDateInToday($0.date) }
-        case .week:
-            let weekAgo = calendar.date(byAdding: .day, value: -7, to: now)!
-            scoped = expenses.filter { $0.date >= weekAgo }
-        case .month:
-            let monthAgo = calendar.date(byAdding: .month, value: -1, to: now)!
-            scoped = expenses.filter { $0.date >= monthAgo }
-        case .allTime:
-            scoped = expenses
-        }
+        let scoped = expenses.filter { period.contains($0.date, calendar: calendar, now: now) }
 
         let points = group(scoped, by: period, calendar: calendar, now: now)
         let total = points.reduce(Decimal(0)) { $0 + $1.amount }
@@ -161,8 +149,7 @@ final class SpendingOverviewViewModel {
         }
     }
 
-    // MARK: - All Time: last 6 months
-
+    // MARK: - All Time:
     nonisolated private static func groupByMonth(_ expenses: [ExpenseDTO], calendar: Calendar, now: Date) -> [SpendingDataPoint] {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM"
