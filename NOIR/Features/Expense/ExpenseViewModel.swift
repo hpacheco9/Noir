@@ -7,12 +7,6 @@ import Foundation
 import Observation
 import SwiftData
 
-struct ExpenseLocation: Equatable, Sendable {
-    var latitude: Double
-    var longitude: Double
-    var name: String
-}
-
 @MainActor
 @Observable
 final class ExpenseViewModel {

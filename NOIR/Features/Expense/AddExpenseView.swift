@@ -15,7 +15,6 @@ struct AddExpenseView: View {
     @FocusState private var isAmountFocused: Bool
     @State private var saveError: String?
     @State private var isDeleteConfirmationPresented = false
-    @State private var isLocationPickerPresented = false
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
 
     private var currencyFormat: AmountInputFormatStyle {

@@ -10,7 +10,6 @@ import SwiftUI
 struct MainOnboarding: View {
     var onComplete: () -> Void
     @State private var viewModel = OnboardingViewModel()
-    @State private var saveError: String?
     @State private var isCompleting = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
@@ -94,14 +93,6 @@ struct MainOnboarding: View {
         .animation(.snappy, value: viewModel.step)
         .animation(.snappy, value: viewModel.notificationPermission)
         .animation(.snappy, value: isCompleting)
-        .alert("Unable to save your expense", isPresented: Binding(
-            get: { saveError != nil },
-            set: { if !$0 { saveError = nil } }
-        )) {
-            Button("OK", role: .cancel) { saveError = nil }
-        } message: {
-            Text(saveError ?? "Please try again.")
-        }
     }
 
     private func finish(requestingNotifications: Bool) {
@@ -109,13 +100,8 @@ struct MainOnboarding: View {
         isCompleting = true
 
         Task {
-            do {
-                try await viewModel.complete(requestingNotifications: requestingNotifications)
-                onComplete()
-            } catch {
-                saveError = error.localizedDescription
-                isCompleting = false
-            }
+            await viewModel.complete(requestingNotifications: requestingNotifications)
+            onComplete()
         }
     }
 }

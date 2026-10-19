@@ -128,12 +128,6 @@ struct NotificationPanelDemo: View {
    }
 }
 
-struct GlassNotificationAction: Identifiable {
-    let id = UUID()
-    let title: String
-    let systemImage: String
-}
-
 // MARK: - Glass background (Liquid Glass on iOS 26, material fallback before)
 
 private struct GlassBackground: ViewModifier {
@@ -152,7 +146,6 @@ struct GlassNotificationCard<Icon: View>: View {
     let timestamp: String
     let title: String
     let message: String
-    var actions: [GlassNotificationAction] = []
     @ViewBuilder var icon: () -> Icon
 
     private let cornerRadius: CGFloat = 22

@@ -15,7 +15,6 @@ final class MainViewModel {
     let repository: ExpenseRepositoryProvider
     let sideRepository: ExpenseRepositoryProvider
 
-    var isCameraSelected: Bool = false
     enum State {
         case loading
         case empty

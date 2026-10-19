@@ -61,13 +61,6 @@ nonisolated enum OverviewMemoStore {
         }
     }
 
-    static func remove(_ period: SpendingPeriod) {
-        state.withLock { state in
-            state.generation += 1
-            UserDefaults.standard.removeObject(forKey: key(period))
-        }
-    }
-
     // MARK: Two-phase writes
 
     static func beginWrite() {

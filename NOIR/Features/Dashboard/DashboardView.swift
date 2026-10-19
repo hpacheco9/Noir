@@ -23,7 +23,6 @@ struct DashboardView: View {
     var body: some View {
         List {
             periodSection
-
             switch viewModel.state {
             case .loading:
                 Section {

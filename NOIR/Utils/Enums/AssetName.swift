@@ -22,7 +22,6 @@ nonisolated enum AssetName {
         static let home = "text.rectangle.page"
         static let legal = "doc.text.fill"
         static let privacy = "hand.raised.fill"
-        static let pro = "sparkles"
         static let reset = "arrow.counterclockwise"
         static let rest = "ellipsis.circle"
         static let search = "magnifyingglass"

@@ -65,7 +65,6 @@ enum L10n {
     }
 
     enum MainView {
-        static let title: LocalizedStringResource = "main_view.title"
         static let emptyTitle: LocalizedStringResource = "main_view.empty_title"
         static let emptyDescription: LocalizedStringResource = "main_view.empty_description"
         static let latestTransactions: LocalizedStringResource = "main_view.latest_transactions"
@@ -185,6 +184,10 @@ enum L10n {
         static let `continue`: LocalizedStringResource = "onboarding.continue"
         static let setBudget: LocalizedStringResource = "onboarding.set_budget"
         static let finishing: LocalizedStringResource = "onboarding.finishing"
+        static let nameTitle: LocalizedStringResource = "onboarding.name.title"
+        static let nameSubtitle: LocalizedStringResource = "onboarding.name.subtitle"
+        static let nameGreeting: LocalizedStringResource = "onboarding.name.greeting"
+        static let namePlaceholder: LocalizedStringResource = "onboarding.name.placeholder"
         static let notificationsTitle: LocalizedStringResource = "onboarding.notifications.title"
         static let notificationsSubtitle: LocalizedStringResource = "onboarding.notifications.subtitle"
         static let enableNotifications: LocalizedStringResource = "onboarding.notifications.enable"
@@ -229,18 +232,10 @@ enum L10n {
     }
 
     enum AppIntent {
-        static let title: LocalizedStringResource = "app_intent.title"
-        static let description: LocalizedStringResource = "app_intent.description"
-        static let amount: LocalizedStringResource = "app_intent.amount"
-        static let amountPrompt: LocalizedStringResource = "app_intent.amount_prompt"
-        static let name: LocalizedStringResource = "app_intent.name"
-        static let namePrompt: LocalizedStringResource = "app_intent.name_prompt"
-        static let date: LocalizedStringResource = "app_intent.date"
-        static let note: LocalizedStringResource = "app_intent.note"
+        // Title, description and parameter names are literal keys in `AddExpenseIntent` (App Intents metadata must
+        // be literals), still translated in Localizable.xcstrings; only the runtime messages need constants.
         static let invalidAmount: LocalizedStringResource = "app_intent.invalid_amount"
         static let emptyName: LocalizedStringResource = "app_intent.empty_name"
         static let expenseSaved: LocalizedStringResource = "app_intent.expense_saved"
-        static let shortcutPhraseAdd: LocalizedStringResource = "app_intent.shortcut_phrase_add"
-        static let shortcutPhraseRecord: LocalizedStringResource = "app_intent.shortcut_phrase_record"
     }
 }
