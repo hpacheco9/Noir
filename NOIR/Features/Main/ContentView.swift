@@ -48,7 +48,7 @@ struct ContentView: View {
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                accountButton
+                ProfileAvatarButton()
             }
 
             ToolbarItemGroup(placement: .confirmationAction) {
@@ -132,23 +132,6 @@ struct ContentView: View {
     }
 
     // MARK: - Toolbar
-    private var accountButton: some View {
-        ZStack {
-            Circle()
-                .fill(Color.gray)
-                
-            Text("H")
-                .font(.title2)
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-                .foregroundColor(.white)
-        }
-        .onTapGesture {
-            router.present(MainRoutes.settings(), mode: .large)
-        }
-        .frame(width: 36, height: 36)
-    }
-
     private var periodFilterMenu: some View {
         Menu {
             ForEach(SpendingPeriod.allCases) { period in

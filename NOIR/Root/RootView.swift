@@ -10,10 +10,12 @@ import SwiftData
 
 struct RootView: View {
     @State private var expenseViewModel: ExpenseViewModel
+    @State private var dashboardViewModel: DashboardViewModel
     let mainViewModel: MainViewModel
 
     init(mainViewModel: MainViewModel) {
         self.mainViewModel = mainViewModel
+        _dashboardViewModel = State(initialValue: DashboardViewModel(model: NOIRApp.sharedModelContainer))
         _expenseViewModel = State(
             initialValue: ExpenseViewModel(
                 model: NOIRApp.sharedModelContainer
@@ -30,17 +32,25 @@ struct RootView: View {
             .environment(expenseViewModel)
             .environment(mainViewModel)
             .tabItem {
-                Label("Home", systemImage: "text.rectangle.page")
-                  .environment(\.symbolVariants, .none)
+                Label {
+                    Text(L10n.Tab.home)
+                } icon: {
+                    Image(systemName: AssetName.System.home)
+                }
+                .environment(\.symbolVariants, .none)
             }
 
             CoordinatorView {
-                Text("Calendar view")
+                DashboardView(viewModel: dashboardViewModel)
             }
             .environmentObject(Coordinator())
             .tabItem {
-                Label("Calendar", systemImage: "calendar")
-                  .environment(\.symbolVariants, .none)
+                Label {
+                    Text(L10n.Tab.dashboard)
+                } icon: {
+                    Image(systemName: AssetName.System.dashboard)
+                }
+                .environment(\.symbolVariants, .none)
             }
 
             CoordinatorView {
@@ -53,8 +63,12 @@ struct RootView: View {
             .environmentObject(Coordinator())
             .environment(expenseViewModel)
             .tabItem {
-                Label("Search", systemImage: "magnifyingglass")
-                 //   .environment(\.symbolVariants, .none)
+                Label {
+                    Text(L10n.Tab.search)
+                } icon: {
+                    Image(systemName: AssetName.System.search)
+                }
+                //   .environment(\.symbolVariants, .none)
             }
         }
         .tint(.primary)

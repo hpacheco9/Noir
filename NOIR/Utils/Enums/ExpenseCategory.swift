@@ -58,10 +58,3 @@ nonisolated enum ExpenseCategory: String, CaseIterable, Identifiable {
 
     var color: Color { colorKey.color }
 }
-
-struct CategorySpending: Identifiable {
-    let category: ExpenseCategory
-    let amount: Decimal
-
-    var id: ExpenseCategory { category.id }
-}

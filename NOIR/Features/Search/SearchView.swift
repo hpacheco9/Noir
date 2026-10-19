@@ -81,20 +81,7 @@ struct SearchView: View {
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction){
-                ZStack {
-                    Circle()
-                        .fill(Color.gray)
-                        
-                    Text("H")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .fontDesign(.rounded)
-                        .foregroundColor(.white)
-                }
-                .onTapGesture {
-                   coordinator.present(MainRoutes.settings(), mode: .large)
-                }
-                .frame(width: 36, height: 36)
+                ProfileAvatarButton()
             }
         }
         .toolbarTitleDisplayMode(.inlineLarge)
