@@ -78,3 +78,22 @@ nonisolated enum AppVersion {
         bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
 }
+
+#if DEBUG
+/// Developer tools (Settings › Developer) for checking the prompt without logging real expenses.
+extension ReviewPromptStore {
+    /// As if `threshold` expenses had been logged (e.g. through Shortcuts) and NOIR had never asked: the next natural
+    /// break (a sheet closing on Home, or the app opening or coming back to the front) asks.
+    func simulateEligible(policy: ReviewPromptPolicy = ReviewPromptPolicy()) {
+        reset()
+        defaults.set(policy.threshold, forKey: Self.createdCountKey)
+    }
+
+    /// Back to a fresh install: no expenses counted, never asked.
+    func reset() {
+        for key in [Self.createdCountKey, Self.lastPromptedVersionKey, Self.lastPromptDateKey] {
+            defaults.removeObject(forKey: key)
+        }
+    }
+}
+#endif

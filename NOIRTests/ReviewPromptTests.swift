@@ -106,4 +106,35 @@ final class ReviewPromptTests {
         store.markPrompted(version: "1.0", date: days(20))
         #expect(store.shouldRequestReview(currentVersion: "1.1", now: now) == true)
     }
+
+    // MARK: Developer tools (Debug builds, Settings › Developer)
+
+    #if DEBUG
+    @Test func simulateEligibleAsksEvenAfterAPreviousAsk() {
+        let store = ReviewPromptStore(defaults: defaults)
+        store.recordCreatedExpense()
+        store.markPrompted(version: "1.1", date: days(1))
+        #expect(store.shouldRequestReview(currentVersion: "1.1", now: now) == false)
+
+        store.simulateEligible(policy: policy)
+
+        #expect(store.createdCount == policy.threshold)
+        #expect(store.lastPromptedVersion == nil)
+        #expect(store.lastPromptDate == nil)
+        #expect(store.shouldRequestReview(currentVersion: "1.1", now: now) == true)
+    }
+
+    @Test func resetForgetsEverything() {
+        let store = ReviewPromptStore(defaults: defaults)
+        for _ in 0..<3 { store.recordCreatedExpense() }
+        store.markPrompted(version: "1.1", date: days(1))
+
+        store.reset()
+
+        #expect(store.createdCount == 0)
+        #expect(store.lastPromptedVersion == nil)
+        #expect(store.lastPromptDate == nil)
+        #expect(store.shouldRequestReview(currentVersion: "1.1", now: now) == false)
+    }
+    #endif
 }
