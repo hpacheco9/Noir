@@ -115,7 +115,7 @@ struct NotificationPanelDemo: View {
                    }
                }
            }
-           .sensoryFeedback(.impact(weight: .light), trigger: isVisible)
+           .hapticFeedback(.tap, trigger: isVisible)
            .task { await play() }
 
    }

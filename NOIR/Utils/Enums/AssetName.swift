@@ -17,6 +17,7 @@ nonisolated enum AssetName {
         static let delete = "trash"
         static let disclosure = "chevron.right"
         static let filter = "line.3.horizontal.decrease"
+        static let haptics = "iphone.radiowaves.left.and.right"
         static let legal = "doc.text.fill"
         static let privacy = "hand.raised.fill"
         static let pro = "sparkles"

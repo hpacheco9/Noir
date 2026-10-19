@@ -27,6 +27,8 @@ final class ExpenseViewModel {
     var description = ""
     
     var isEditing: Bool = false
+    /// A save is in flight; the Save button is disabled and a second `save()` is ignored.
+    private(set) var isSaving = false
     
     let repository: ExpenseRepositoryProvider
     
@@ -44,8 +46,12 @@ final class ExpenseViewModel {
         Task { await loadCategories() }
     }
 
-    func save() async throws {
-        guard canSave else { return }
+    /// Returns whether it actually saved (false when there was nothing to save or a save was already running).
+    @discardableResult
+    func save() async throws -> Bool {
+        guard canSave, !isSaving else { return false }
+        isSaving = true
+        defer { isSaving = false }
 
         let id = editingExpense?.id
         let amountValue = NSDecimalNumber(decimal: amount).doubleValue
@@ -66,7 +72,7 @@ final class ExpenseViewModel {
         }
         reset()
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
-   
+        return true
     }
 
     func delete() async throws {

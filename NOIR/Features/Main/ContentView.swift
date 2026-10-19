@@ -104,8 +104,7 @@ struct ContentView: View {
                         expense: expense,
                         action: {
                             router.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.90))
-                            let generator = UIImpactFeedbackGenerator(style: .light)
-                            generator.impactOccurred()
+                            Haptics.play(.tap)
                         }
                     )
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -174,8 +173,7 @@ struct ContentView: View {
     private var addExpenseButton: some View {
         Button {
             router.present(MainRoutes.addExpense(), mode: .percentage(0.75))
-            let generator = UIImpactFeedbackGenerator(style: .light)
-            generator.impactOccurred()
+            Haptics.play(.tap)
         } label: {
             Image(systemName: AssetName.System.add)
         }

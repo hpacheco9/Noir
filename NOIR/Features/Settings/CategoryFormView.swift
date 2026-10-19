@@ -4,7 +4,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct CategoryFormView: View {
     /// `nil` creates a category; a custom category edits it.
@@ -151,9 +150,16 @@ struct CategoryFormView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button(String(localized: L10n.Shared.save)) {
                     Task {
-                        if await viewModel.save() {
-                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                            if isOnScreen { coordinator.dismiss() }
+                        switch await viewModel.save() {
+                        case .saved:
+                            if isOnScreen {
+                                Haptics.play(.success)
+                                coordinator.dismiss()
+                            }
+                        case .failed:
+                            if isOnScreen { Haptics.play(.error) }
+                        case .skipped:
+                            break
                         }
                     }
                 }

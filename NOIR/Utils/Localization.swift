@@ -50,6 +50,7 @@ enum L10n {
     enum Preferences {
         static let title: LocalizedStringResource = "preferences.title"
         static let currency: LocalizedStringResource = "preferences.currency"
+        static let haptics: LocalizedStringResource = "preferences.haptics"
         static let shortcuts: LocalizedStringResource = "preferences.shortcuts"
     }
 
