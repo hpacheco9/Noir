@@ -6,22 +6,8 @@
 //
 
 import SwiftUI
-import AVFoundation
 
 enum MainRoutes {
-    static func search(viewModel: SearchViewModel) -> any RouteRepresentable {
-        struct SearchViewRoute: RouteRepresentable {
-            let routeId = "search"
-            let viewModel: SearchViewModel
-
-            func routeView() -> any View {
-                SearchView(viewModel: viewModel)
-            }
-        }
-
-        return SearchViewRoute(viewModel: viewModel)
-    }
-    
     static func settings() -> any RouteRepresentable {
         struct SettingsViewRoute: RouteRepresentable {
             let routeId: String = "settings"
@@ -32,20 +18,6 @@ enum MainRoutes {
         }
         
         return SettingsViewRoute()
-    }
-    
-    static func search(nameSpace: Namespace.ID) -> any RouteRepresentable {
-            struct SearchViewRoute: RouteRepresentable {
-                let routeId: String = "search"
-                let nameSpace: Namespace.ID
-
-                @ViewBuilder
-                func routeView() -> any View {
-                    SearchView(viewModel: SearchViewModel(model: NOIRApp.sharedModelContainer))
-                }
-            }
-            
-            return SearchViewRoute(nameSpace: nameSpace)
     }
     
     static func addExpense() -> any RouteRepresentable {
