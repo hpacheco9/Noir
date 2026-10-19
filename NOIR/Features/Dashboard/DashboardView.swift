@@ -167,10 +167,10 @@ struct DashboardView: View {
     /// Grey label in the style of Home's overview card; the period total itself sits in the donut's centre.
     private func cardHeader() -> some View {
         Text(L10n.Dashboard.chartLabel)
-            .font(.headline)
+            .font(.title3)
+            .fontWeight(.semibold)
             .foregroundStyle(.secondary)
             .frame(maxWidth: .infinity, alignment: .leading)
-            // The chart's accessibility label already says this.
             .accessibilityHidden(true)
     }
 
