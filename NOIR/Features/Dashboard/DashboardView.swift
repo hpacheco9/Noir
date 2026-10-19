@@ -130,7 +130,7 @@ struct DashboardView: View {
 
         Section {
             VStack(alignment: .leading, spacing: 16) {
-                cardHeader(total: breakdown.total)
+                cardHeader(period: shownPeriod, total: breakdown.total)
 
                 CategoryDonutChart(
                     slices: slices,
@@ -166,30 +166,22 @@ struct DashboardView: View {
 
     // MARK: - Card header
 
-    /// Card title with the period total on the same line (unlike Home's overview card, where the total is the
-    /// headline). Stacks the two when they don't fit side by side (large Dynamic Type, long translations).
-    private func cardHeader(total: Decimal) -> some View {
-        let title = Text(L10n.Dashboard.chartLabel)
+    /// Same header as Home's overview card (`SpendingOverviewView`): "Total Spent <period>", then the total.
+    private func cardHeader(period: SpendingPeriod, total: Decimal) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(String(
+                format: String(localized: L10n.SpendingOverview.totalSpent),
+                locale: .current,
+                period.title
+            ))
             .font(.headline)
-        let amount = Text(verbatim: CurrencyPreference.string(for: total, code: currencyCode))
-            .font(.title3.weight(.semibold))
-            .fontDesign(.rounded)
-            .monospacedDigit()
-            .contentTransition(.numericText(value: total.doubleValue))
+            .foregroundStyle(.secondary)
 
-        return ViewThatFits(in: .horizontal) {
-            HStack(alignment: .firstTextBaseline) {
-                title.lineLimit(1)
-                Spacer(minLength: 12)
-                amount.lineLimit(1)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                title
-                amount
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            Text(verbatim: CurrencyPreference.string(for: total, code: currencyCode))
+                .font(.system(size: 40, weight: .semibold, design: .rounded))
+                .contentTransition(.numericText(value: total.doubleValue))
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         // The chart's own accessibility value reads the period and total.
         .accessibilityHidden(true)
     }
