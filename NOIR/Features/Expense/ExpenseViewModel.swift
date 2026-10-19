@@ -25,6 +25,8 @@ final class ExpenseViewModel {
     private(set) var isSaving = false
     
     let repository: ExpenseRepositoryProvider
+    /// Counts created expenses toward the review prompt (injectable so a test can use an isolated suite).
+    private let reviewPrompt: ReviewPromptStore
     
     private var editingExpense: ExpenseDTO?
     
@@ -34,8 +36,9 @@ final class ExpenseViewModel {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && amount > 0
     }
     
-    init(model: ModelContainer) {
+    init(model: ModelContainer, reviewPrompt: ReviewPromptStore = ReviewPromptStore()) {
         self.repository = .init(container: model)
+        self.reviewPrompt = reviewPrompt
         // The shared instance keeps the last loaded list, so the picker already has overrides when a sheet opens.
         Task { await loadCategories() }
     }
@@ -48,6 +51,7 @@ final class ExpenseViewModel {
         defer { isSaving = false }
 
         let id = editingExpense?.id
+        let isCreate = editingExpense == nil
         let amountValue = NSDecimalNumber(decimal: amount).doubleValue
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         let date = date
@@ -64,6 +68,7 @@ final class ExpenseViewModel {
                 description: trimmedDescription
             )
         }
+        if isCreate { reviewPrompt.recordCreatedExpense() }
         reset()
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         return true

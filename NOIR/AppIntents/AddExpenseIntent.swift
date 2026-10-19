@@ -61,6 +61,9 @@ struct AddExpenseIntent: AppIntent {
         modelContext.insert(expense)
         try modelContext.save()
 
+        // Counts toward the review prompt, but never asks: an intent has no UI. Home asks at its next eligible moment.
+        ReviewPromptStore().recordCreatedExpense()
+
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         try? await NotificationService.shared.notifyExpenseAdded(name: trimmedName, amount: amount)
 

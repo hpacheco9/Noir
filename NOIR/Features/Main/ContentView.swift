@@ -3,6 +3,7 @@
 //  NOIR
 //
 
+import StoreKit
 import SwiftData
 import SwiftUI
 
@@ -14,6 +15,10 @@ struct ContentView: View {
 
     @State private var expensePendingDeletion: ExpenseDTO?
 
+    @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var reviewTask: Task<Void, Never>?
+
     var body: some View {
         List {
             expenseListContent
@@ -23,6 +28,16 @@ struct ContentView: View {
             await viewModel.fetchData()
         }
         .listStyle(.insetGrouped)
+        // Review prompt (see CLAUDE.md "Review prompt"). Onboarding can't trigger it: this view only exists once
+        // onboarding is complete.
+        .onChange(of: router.sheet == nil) { _, isClosed in
+            if isClosed {
+                scheduleReviewRequestIfEligible()
+            } else {
+                cancelReviewRequest()
+            }
+        }
+        .onDisappear { cancelReviewRequest() }
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
             Task { await viewModel.fetchData() }
         }
@@ -129,6 +144,32 @@ struct ContentView: View {
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
         }
+    }
+
+    // MARK: - Review prompt
+    /// Runs when a sheet on Home has fully closed: a natural break, never inside the Save action. Waits a moment, then
+    /// re-checks that nothing is presented and the app is still active before asking.
+    private func scheduleReviewRequestIfEligible() {
+        cancelReviewRequest()
+        let store = ReviewPromptStore()
+        let version = AppVersion.current()
+        guard store.shouldRequestReview(currentVersion: version) else { return }
+
+        reviewTask = Task {
+            try? await Task.sleep(for: .seconds(2))
+            guard !Task.isCancelled,
+                  router.sheet == nil, router.fullScreen == nil,
+                  scenePhase == .active,
+                  store.shouldRequestReview(currentVersion: version)
+            else { return }
+            store.markPrompted(version: version)
+            requestReview()
+        }
+    }
+
+    private func cancelReviewRequest() {
+        reviewTask?.cancel()
+        reviewTask = nil
     }
 
     // MARK: - Toolbar
