@@ -17,6 +17,58 @@ enum L10n {
         static let unexpectedError: LocalizedStringResource = "shared.unexpected_error"
     }
 
+    enum Tab {
+        static let home: LocalizedStringResource = "tab.home"
+        static let dashboard: LocalizedStringResource = "tab.dashboard"
+        static let search: LocalizedStringResource = "tab.search"
+    }
+
+    enum Dashboard {
+        static let title: LocalizedStringResource = "dashboard.title"
+        static let periodPicker: LocalizedStringResource = "dashboard.period_picker"
+        static let byCategory: LocalizedStringResource = "dashboard.by_category"
+        /// The slice that sums the smallest categories. Not "Other": that is a built-in category.
+        static let rest: LocalizedStringResource = "dashboard.rest"
+        static let emptyTitle: LocalizedStringResource = "dashboard.empty_title"
+        static let emptyDescription: LocalizedStringResource = "dashboard.empty_description"
+        static let chartLabel: LocalizedStringResource = "dashboard.chart_label"
+        /// The word under the category count in the donut's centre; the number is drawn separately, so these are
+        /// two plain strings (a plural variation must contain the number).
+        static func categoryWord(count: Int) -> LocalizedStringResource {
+            count == 1 ? "dashboard.category_singular" : "dashboard.categories_plural"
+        }
+        static let amount: LocalizedStringResource = "dashboard.amount"
+        static let category: LocalizedStringResource = "dashboard.category"
+        static let rowHint: LocalizedStringResource = "dashboard.row_hint"
+
+        static let errorTitle: LocalizedStringResource = "dashboard.error_title"
+        static let errorDescription: LocalizedStringResource = "dashboard.error_description"
+        static let retry: LocalizedStringResource = "dashboard.retry"
+
+        /// "in All others": the subtitle for a category that is collapsed into the rest slice.
+        static func inRest(_ restTitle: String) -> LocalizedStringResource {
+            "dashboard.in_rest \(restTitle)"
+        }
+
+        /// "€45,00, 23% of total".
+        static func value(amount: String, percent: String) -> LocalizedStringResource {
+            "dashboard.value \(amount) \(percent)"
+        }
+
+        /// The rest slice's value, naming the categories it sums.
+        static func valueWithMembers(amount: String, percent: String, members: String) -> LocalizedStringResource {
+            "dashboard.value_with_members \(amount) \(percent) \(members)"
+        }
+
+        static func announcement(period: String, total: String) -> LocalizedStringResource {
+            "dashboard.announcement \(period) \(total)"
+        }
+
+        static func expenseCount(_ count: Int) -> LocalizedStringResource {
+            "dashboard.expense_count \(count)"
+        }
+    }
+
     enum MainView {
         static let title: LocalizedStringResource = "main_view.title"
         static let emptyTitle: LocalizedStringResource = "main_view.empty_title"
@@ -169,6 +221,10 @@ enum L10n {
         static let week: LocalizedStringResource = "spending_period.week"
         static let month: LocalizedStringResource = "spending_period.month"
         static let allTime: LocalizedStringResource = "spending_period.all_time"
+        static let shortDay: LocalizedStringResource = "spending_period.short.day"
+        static let shortWeek: LocalizedStringResource = "spending_period.short.week"
+        static let shortMonth: LocalizedStringResource = "spending_period.short.month"
+        static let shortAllTime: LocalizedStringResource = "spending_period.short.all_time"
     }
 
     enum SpendingOverview {

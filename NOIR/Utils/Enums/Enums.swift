@@ -24,6 +24,17 @@ nonisolated enum SpendingPeriod: CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// Initial-style label for tight segmented controls ("D", "W", "M", "All"). Pair it with `title` as the
+    /// accessibility label.
+    @MainActor var shortTitle: String {
+        switch self {
+        case .day: String(localized: L10n.SpendingPeriod.shortDay)
+        case .week: String(localized: L10n.SpendingPeriod.shortWeek)
+        case .month: String(localized: L10n.SpendingPeriod.shortMonth)
+        case .allTime: String(localized: L10n.SpendingPeriod.shortAllTime)
+        }
+    }
+
     /// The half-open range `[start, end)` this period covers around `now`; `nil` for `.allTime` (unbounded).
     func dateInterval(calendar: Calendar = .current, now: Date = .now) -> DateInterval? {
         switch self {

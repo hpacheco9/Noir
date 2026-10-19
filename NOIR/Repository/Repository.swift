@@ -145,6 +145,20 @@ actor ExpenseRepository: ModelActor {
         return #Predicate<Expense> { $0.date >= start && $0.date < end }
     }
 
+    /// Spending per category for `period` (truly all time for `.allTime`, not the chart's six-month window).
+    /// Reads rows only; the overview memo is not involved.
+    func categoryBreakdown(period: SpendingPeriod, now: Date = .now, calendar: Calendar = .current) throws -> CategoryBreakdown {
+        let predicate = period.dateInterval(calendar: calendar, now: now).map(Self.datePredicate)
+        var descriptor = FetchDescriptor<Expense>(predicate: predicate)
+        descriptor.propertiesToFetch = [\.amount, \.categoryRawValue]
+        // Streams the rows in batches, so a large all-time read never holds them all at once.
+        var accumulator = CategoryBreakdown.Accumulator()
+        try modelContext.enumerate(descriptor, batchSize: 1000) { expense in
+            accumulator.add(key: expense.categoryRawValue, amount: expense.amount)
+        }
+        return accumulator.finish(categories: try categoryIndex())
+    }
+
     func fetchPage(query: String, offset: Int, limit: Int) throws -> [ExpenseDTO] {
         let normalizedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
         let predicate: Predicate<Expense>?
