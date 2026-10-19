@@ -1683,6 +1683,22 @@
         }
       }
     },
+    "preferences.haptics" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptic Feedback"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feedback háptico"
+          }
+        }
+      }
+    },
     "preferences.shortcuts" : {
       "localizations" : {
         "en" : {

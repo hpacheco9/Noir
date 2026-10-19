@@ -30,6 +30,7 @@ struct SearchView: View {
                             ForEach(section.expenses) { expense in
                                 ExpenseRow(expense: expense) {
                                     coordinator.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.75))
+                                    Haptics.play(.tap)
                                 }
                                 .transition(
                                     .asymmetric(

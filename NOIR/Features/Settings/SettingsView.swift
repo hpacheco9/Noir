@@ -9,9 +9,14 @@ import SwiftData
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+    @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
 #endif
+
+    /// Not `.primary`: in dark mode that is a white "on" track under the white thumb. Black in light mode, mid gray in
+    /// dark mode keeps it monochrome with the thumb visible in both.
+    private static let toggleTint = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? .systemGray : .label })
 
     var body: some View {
         Form {
@@ -85,6 +90,18 @@ struct SettingsView: View {
                         Image(systemName: AssetName.System.currency)
                             .foregroundStyle(.secondary)
                     }
+                }
+
+                if HapticsPreference.isSupportedByHardware {
+                    Toggle(isOn: $hapticsEnabled) {
+                        Label {
+                            Text(L10n.Preferences.haptics)
+                        } icon: {
+                            Image(systemName: AssetName.System.haptics)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .tint(Self.toggleTint)
                 }
 
                 SettingsRow(

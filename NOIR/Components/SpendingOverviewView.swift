@@ -72,12 +72,7 @@ struct SpendingOverviewView: View {
             .chartYScale(domain: 0...maxAmount)
             .animation(barsVisible ? .spring(duration: 0.6, bounce: 0.15) : nil, value: barsVisible)
             .chartXSelection(value: $selectedLabel)
-            .onChange(of: selectedLabel) { _, newValue in
-                guard newValue != nil else { return }
-
-                let generator = UIImpactFeedbackGenerator(style: .light)
-                generator.impactOccurred()
-            }
+            .hapticFeedback(.selection, trigger: selectedLabel) { _, new in new != nil }
             .frame(height: 230)
             .chartXAxis {
                 AxisMarks(preset: .aligned) { _ in

@@ -73,7 +73,7 @@ struct BudgetPickerView: View {
 
             if newValue != Self.nearestTick(to: budget) {
                 budget = Double(newValue)
-                UISelectionFeedbackGenerator().selectionChanged()
+                Haptics.play(.selection)
             }
         }
         .onChange(of: budget) { oldValue, newValue in

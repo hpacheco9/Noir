@@ -135,14 +135,17 @@ struct AddExpenseView: View {
                 Button(String(localized: L10n.Shared.save), systemImage: AssetName.System.checkmark) {
                     Task {
                         do {
-                            try await expenseViewModel.save()
-                            coordinator.dismiss()
+                            if try await expenseViewModel.save() {
+                                Haptics.play(.success)
+                                coordinator.dismiss()
+                            }
                         } catch {
+                            Haptics.play(.error)
                             saveError = error.localizedDescription
                         }
                     }
                 }
-                .disabled(!expenseViewModel.canSave)
+                .disabled(!expenseViewModel.canSave || expenseViewModel.isSaving)
                 .buttonStyle(.borderedProminent)
                 .tint(.primary)
                 .accessibilityLabel(Text(L10n.AddExpenseView.saveAccessibilityLabel))
