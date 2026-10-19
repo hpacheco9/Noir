@@ -61,7 +61,6 @@ struct DashboardView: View {
                 ProfileAvatarButton()
             }
         }
-        .toolbarTitleDisplayMode(.inlineLarge)
         .navigationTitle(Text(L10n.Dashboard.title))
     }
 
