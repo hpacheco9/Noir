@@ -18,16 +18,20 @@ struct DonutFocus: Equatable {
 struct CategoryDonutChart: View {
     /// Sectors at least this share of the total get their icon drawn on them (colour alone must not carry the meaning).
     static let iconThreshold = 0.08
+    /// Inner radius as a share of the outer one: a thin ring, so the hole has room for the period total.
+    static let innerRadiusRatio: CGFloat = 0.78
+    /// Rounded, separated segments: a corner radius about half the ring's thickness gives capsule ends, and the
+    /// angular inset leaves a clear gap between neighbours.
+    static let segmentCornerRadius: CGFloat = 12
+    static let segmentGap: CGFloat = 5
 
     let slices: [DonutSlice]
     let total: Decimal
-    /// Shown in the centre when nothing is highlighted (the total is in the card's header).
-    let categoryCount: Int
     let periodTitle: String
     let currencyCode: String
     /// The sector to emphasise; `nil` emphasises none.
     let selectedKey: String?
-    /// What the centre shows for the highlighted sector or row; `nil` shows the category count.
+    /// What the centre shows for the highlighted sector or row; `nil` shows the period total.
     let focus: DonutFocus?
     /// The raw angle from `chartAngleSelection`, on the 0...total scale.
     @Binding var angleSelection: Double?
@@ -38,11 +42,11 @@ struct CategoryDonutChart: View {
         Chart(slices) { slice in
             SectorMark(
                 angle: .value(L10n.Dashboard.amount, slice.amount.doubleValue),
-                innerRadius: .ratio(0.618),
-                outerRadius: .inset(selectedKey == slice.key ? 0 : 6),
-                angularInset: 1.5
+                innerRadius: .ratio(Self.innerRadiusRatio),
+                outerRadius: .inset(selectedKey == slice.key ? 0 : 4),
+                angularInset: Self.segmentGap
             )
-            .cornerRadius(4)
+            .cornerRadius(Self.segmentCornerRadius)
             .foregroundStyle(by: .value(L10n.Dashboard.category, slice.key))
             .opacity(selectedKey == nil || selectedKey == slice.key ? 1 : 0.35)
             .annotation(position: .overlay) {
@@ -64,7 +68,7 @@ struct CategoryDonutChart: View {
             GeometryReader { geometry in
                 if let plotFrame = proxy.plotFrame {
                     let frame = geometry[plotFrame]
-                    centerLabel(holeDiameter: min(frame.width, frame.height) * 0.618)
+                    centerLabel(holeDiameter: min(frame.width, frame.height) * Self.innerRadiusRatio)
                         .position(x: frame.midX, y: frame.midY)
                 }
             }
@@ -97,14 +101,11 @@ struct CategoryDonutChart: View {
                     labelStack(title: nil, amount: amountText, details: [])
                 }
             } else {
-                // The total is in the card's header; the centre says how many categories the ring splits it into.
+                let totalText = CurrencyPreference.string(for: total, code: currencyCode)
+
                 ViewThatFits(in: .vertical) {
-                    labelStack(
-                        title: nil,
-                        amount: categoryCount.formatted(),
-                        details: [String(localized: L10n.Dashboard.categoryWord(count: categoryCount))]
-                    )
-                    labelStack(title: nil, amount: categoryCount.formatted(), details: [])
+                    labelStack(title: periodTitle, amount: totalText, details: [])
+                    labelStack(title: nil, amount: totalText, details: [])
                 }
             }
         }
@@ -125,7 +126,7 @@ struct CategoryDonutChart: View {
             }
 
             Text(verbatim: amount)
-                .font(.title2.bold())
+                .font(.system(.title, design: .rounded, weight: .bold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.4)
                 .contentTransition(.numericText())
@@ -177,7 +178,7 @@ private func previewSlice(_ key: String, _ title: String, _ icon: String, _ colo
                    amount: 30, count: 2, memberKeys: ["leisure", "health"], memberTitles: ["Leisure", "Health"]),
     ]
     CategoryDonutChart(
-        slices: slices, total: 360, categoryCount: slices.count, periodTitle: "This month", currencyCode: "EUR",
+        slices: slices, total: 360, periodTitle: "This month", currencyCode: "EUR",
         selectedKey: nil, focus: nil, angleSelection: $angle
     )
     .frame(height: 260)

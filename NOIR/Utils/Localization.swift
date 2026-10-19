@@ -32,11 +32,6 @@ enum L10n {
         static let emptyTitle: LocalizedStringResource = "dashboard.empty_title"
         static let emptyDescription: LocalizedStringResource = "dashboard.empty_description"
         static let chartLabel: LocalizedStringResource = "dashboard.chart_label"
-        /// The word under the category count in the donut's centre; the number is drawn separately, so these are
-        /// two plain strings (a plural variation must contain the number).
-        static func categoryWord(count: Int) -> LocalizedStringResource {
-            count == 1 ? "dashboard.category_singular" : "dashboard.categories_plural"
-        }
         static let amount: LocalizedStringResource = "dashboard.amount"
         static let category: LocalizedStringResource = "dashboard.category"
         static let rowHint: LocalizedStringResource = "dashboard.row_hint"
