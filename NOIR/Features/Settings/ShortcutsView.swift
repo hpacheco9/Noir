@@ -6,8 +6,6 @@
 import SwiftUI
 
 struct ShortcutsView: View {
-    @EnvironmentObject private var coordinator: Coordinator
-
     var body: some View {
         Form {
             Section {
@@ -17,10 +15,5 @@ struct ShortcutsView: View {
         }
         .navigationTitle(Text(L10n.Preferences.shortcuts))
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                SettingsSheetDismissButton(action: coordinator.dismiss)
-            }
-        }
     }
 }

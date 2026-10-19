@@ -9,13 +9,22 @@ import SwiftUI
 import Charts
 
 struct SpendingOverviewView: View {
-    let expenses: [ExpenseDTO]
+    let snapshot: OverviewSnapshot
     let currencyCode: String
 
     @Binding var selectedPeriod: SpendingPeriod
 
     @State private var viewModel = SpendingOverviewViewModel()
     @State private var selectedLabel: String?
+    @State private var barsVisible = false
+    @State private var chartID = UUID()
+
+    private var maxAmount: Double {
+        let value = viewModel.dataPoints
+            .map { NSDecimalNumber(decimal: abs($0.amount)).doubleValue }
+            .max() ?? 0
+        return Swift.max(value, 1)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -28,33 +37,40 @@ struct SpendingOverviewView: View {
                 .font(.headline)
                 .foregroundStyle(.secondary)
 
-                Text(abs(viewModel.totalSpent), format: .currency(code: currencyCode))
+                Text(verbatim: CurrencyPreference.string(for: abs(viewModel.totalSpent), code: currencyCode))
                     .font(.system(size: 40, weight: .semibold, design: .rounded))
-                    .contentTransition(.numericText())
+                    .contentTransition(.numericText(value: NSDecimalNumber(decimal: abs(viewModel.totalSpent)).doubleValue))
                     .opacity(viewModel.isComputing ? 0.4 : 1)
                     .animation(.easeInOut(duration: 0.15), value: viewModel.isComputing)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Chart(viewModel.dataPoints) { point in
+                let amount = NSDecimalNumber(decimal: abs(point.amount)).doubleValue
+
                 BarMark(
                     x: .value(String(localized: L10n.SpendingOverview.chartPeriod), point.label),
-                    y: .value(String(localized: L10n.SpendingOverview.chartAmount), NSDecimalNumber(decimal: abs(point.amount)).doubleValue),
-                    width: .fixed(28)
+                    y: .value(String(localized: L10n.SpendingOverview.chartAmount), barsVisible ? amount : 0),
+                    width: .fixed(30)
                 )
                 .cornerRadius(6)
+                .opacity(barsVisible ? 1 : 0)
                 .annotation(position: .top) {
                     if selectedLabel == point.label {
-                        Text(point.amount, format: .currency(code: currencyCode))
-                            .font(.caption.bold())
+                        Text(verbatim: CurrencyPreference.string(for: point.amount, code: currencyCode))
+                            .font(.subheadline)
+                            .fontWeight(.bold)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
                             .background(.background)
-                            .clipShape(Capsule())
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                 }
             }
+            .id(chartID)
             .foregroundStyle(.primary)
+            .chartYScale(domain: 0...maxAmount)
+            .animation(barsVisible ? .spring(duration: 0.6, bounce: 0.15) : nil, value: barsVisible)
             .chartXSelection(value: $selectedLabel)
             .onChange(of: selectedLabel) { _, newValue in
                 guard newValue != nil else { return }
@@ -62,32 +78,61 @@ struct SpendingOverviewView: View {
                 let generator = UIImpactFeedbackGenerator(style: .light)
                 generator.impactOccurred()
             }
-            .frame(height: 240)
+            .frame(height: 230)
             .chartXAxis {
                 AxisMarks(preset: .aligned) { _ in
                     AxisValueLabel()
                 }
             }
             .chartYAxis {
-                AxisMarks(position: .trailing) { _ in
+                AxisMarks(position: .trailing) { value in
                     AxisGridLine()
-                    AxisValueLabel()
+                    AxisValueLabel {
+                        // Same separators as the amounts: the currency's locale, not the environment's.
+                        if let amount = value.as(Double.self) {
+                            Text(verbatim: amount.formatted(.number.locale(CurrencyPreference.locale(for: currencyCode))))
+                        }
+                    }
                 }
             }
         }
         .frame(maxWidth: .infinity)
         .padding()
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .animation(.snappy, value: selectedPeriod)
         .task(id: selectedPeriod) {
-            viewModel.update(expenses: expenses, period: selectedPeriod)
+            selectedLabel = nil
+
+            var instant = Transaction(animation: nil)
+            instant.disablesAnimations = true
+
+            withTransaction(instant) {
+                barsVisible = false
+            }
+
+            viewModel.markLoading(for: selectedPeriod)
+            
+            if snapshot.period == selectedPeriod { viewModel.apply(snapshot) }
+            await viewModel.waitUntilApplied(for: selectedPeriod)
+            
+            guard !Task.isCancelled else { return }
+
+            withTransaction(instant) {
+                chartID = UUID()
+            }
+
+            try? await Task.sleep(for: .milliseconds(100))
+            guard !Task.isCancelled else { return }
+
+            withAnimation(.spring(duration: 0.6, bounce: 0.15)) {
+                barsVisible = true
+            }
         }
-        .onChange(of: expenses) { _, newExpenses in
-            viewModel.update(expenses: newExpenses, period: selectedPeriod)
+        .onChange(of: snapshot.id) {
+            viewModel.apply(snapshot)
         }
     }
 }
 
 #Preview {
-    //SpendingOverviewView(totalSpent: 10, currencyCode: "", dataPoints: SpendingDataPoint.mockAllTime)
+    //SpendingOverviewView(snapshot: ..., currencyCode: "", selectedPeriod: .constant(.week))
 }

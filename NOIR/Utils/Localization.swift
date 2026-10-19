@@ -39,13 +39,7 @@ enum L10n {
         static let description: LocalizedStringResource = "shortcuts_view.description"
     }
 
-    enum PrivacyPolicyView {
-        static let description: LocalizedStringResource = "privacy_policy_view.description"
-    }
 
-    enum TermsOfServiceView {
-        static let description: LocalizedStringResource = "terms_of_service_view.description"
-    }
 
     enum NoirPro {
         static let title: LocalizedStringResource = "noir_pro.title"
@@ -63,6 +57,51 @@ enum L10n {
         static let title: LocalizedStringResource = "profile.title"
         static let name: LocalizedStringResource = "profile.name"
         static let description: LocalizedStringResource = "profile.description"
+        static let nameSection: LocalizedStringResource = "profile.name_section"
+        static let namePlaceholder: LocalizedStringResource = "profile.name_placeholder"
+    }
+
+    enum Categories {
+        static let title: LocalizedStringResource = "categories.title"
+        static let builtInSection: LocalizedStringResource = "categories.built_in_section"
+        static let customSection: LocalizedStringResource = "categories.custom_section"
+        static let customEmpty: LocalizedStringResource = "categories.custom_empty"
+        static let add: LocalizedStringResource = "categories.add"
+        static let deleteTitle: LocalizedStringResource = "categories.delete_title"
+        static let deleteMessage: LocalizedStringResource = "categories.delete_message"
+        static let loadError: LocalizedStringResource = "categories.load_error"
+        static let deleteError: LocalizedStringResource = "categories.delete_error"
+        static let errorTitle: LocalizedStringResource = "categories.error_title"
+    }
+
+    enum NewCategory {
+        static let title: LocalizedStringResource = "new_category.title"
+        static let editTitle: LocalizedStringResource = "new_category.edit_title"
+        static let restoreDefault: LocalizedStringResource = "new_category.restore_default"
+        static let restoreTitle: LocalizedStringResource = "new_category.restore_title"
+        static let restoreMessage: LocalizedStringResource = "new_category.restore_message"
+        static let restoreDuplicateError: LocalizedStringResource = "new_category.restore_duplicate_error"
+        static let namePlaceholder: LocalizedStringResource = "new_category.name_placeholder"
+        static let previewPlaceholder: LocalizedStringResource = "new_category.preview_placeholder"
+        static let nameSection: LocalizedStringResource = "new_category.name_section"
+        static let symbolSection: LocalizedStringResource = "new_category.symbol_section"
+        static let colorSection: LocalizedStringResource = "new_category.color_section"
+        static let duplicateError: LocalizedStringResource = "new_category.duplicate_error"
+        static let emptyError: LocalizedStringResource = "new_category.empty_error"
+        static let saveError: LocalizedStringResource = "new_category.save_error"
+    }
+
+    enum CategoryColor {
+        static let orange: LocalizedStringResource = "category_color.orange"
+        static let blue: LocalizedStringResource = "category_color.blue"
+        static let indigo: LocalizedStringResource = "category_color.indigo"
+        static let purple: LocalizedStringResource = "category_color.purple"
+        static let red: LocalizedStringResource = "category_color.red"
+        static let green: LocalizedStringResource = "category_color.green"
+        static let yellow: LocalizedStringResource = "category_color.yellow"
+        static let pink: LocalizedStringResource = "category_color.pink"
+        static let teal: LocalizedStringResource = "category_color.teal"
+        static let brown: LocalizedStringResource = "category_color.brown"
     }
 
     enum Legal {
@@ -93,6 +132,23 @@ enum L10n {
         static let message: LocalizedStringResource = "expense_deletion.message"
     }
 
+    enum Onboarding {
+        static let getStarted: LocalizedStringResource = "onboarding.get_started"
+        static let `continue`: LocalizedStringResource = "onboarding.continue"
+        static let setBudget: LocalizedStringResource = "onboarding.set_budget"
+        static let finishing: LocalizedStringResource = "onboarding.finishing"
+        static let notificationsTitle: LocalizedStringResource = "onboarding.notifications.title"
+        static let notificationsSubtitle: LocalizedStringResource = "onboarding.notifications.subtitle"
+        static let enableNotifications: LocalizedStringResource = "onboarding.notifications.enable"
+        static let notNow: LocalizedStringResource = "onboarding.notifications.not_now"
+        static let openSettings: LocalizedStringResource = "onboarding.notifications.open_settings"
+        static let demoTitle: LocalizedStringResource = "onboarding.notifications.demo_title"
+        static let demoTimestamp: LocalizedStringResource = "onboarding.notifications.demo_timestamp"
+        static func demoMessage(amount: String) -> LocalizedStringResource {
+            "onboarding.notifications.demo_message \(amount)"
+        }
+    }
+
     enum Notification {
         static let expenseAddedTitle: LocalizedStringResource = "notification.expense_added_title"
     }
@@ -103,7 +159,7 @@ enum L10n {
         static let home: LocalizedStringResource = "expense_category.home"
         static let leisure: LocalizedStringResource = "expense_category.leisure"
         static let health: LocalizedStringResource = "expense_category.health"
-        static let clothing: LocalizedStringResource = "expense_category.clothing"
+        static let shopping: LocalizedStringResource = "expense_category.shopping"
         static let other: LocalizedStringResource = "expense_category.other"
     }
 

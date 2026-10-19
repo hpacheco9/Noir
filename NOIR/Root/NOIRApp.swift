@@ -10,11 +10,13 @@ import SwiftData
 
 @main
 struct NOIRApp: App {
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
+    @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding: Bool = false
 
     static let sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Expense.self,
+            CustomCategory.self,
+            BuiltInCategoryOverride.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

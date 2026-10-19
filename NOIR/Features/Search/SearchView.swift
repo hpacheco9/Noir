@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct SearchView: View {
     @EnvironmentObject private var coordinator: Coordinator
@@ -28,8 +29,14 @@ struct SearchView: View {
                         Section(sectionTitle(for: section.date)) {
                             ForEach(section.expenses) { expense in
                                 ExpenseRow(expense: expense) {
-                                   //coordinator.present(AppRoute.addExpense(expense), mode: .large)
+                                    coordinator.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.75))
                                 }
+                                .transition(
+                                    .asymmetric(
+                                        insertion: .opacity.combined(with: .offset(y: 12)),
+                                        removal: .opacity.combined(with: .scale(scale: 0.96))
+                                    )
+                                )
                                 .onAppear {
                                     Task {
                                         await viewModel.loadMoreIfNeeded(after: expense)
@@ -39,19 +46,29 @@ struct SearchView: View {
                         }
                     }
                 }
+                .animation(
+                    .spring(response: 0.35, dampingFraction: 0.86),
+                    value: resultIDs
+                )
                 .listStyle(.insetGrouped)
             }
         }
         .searchable(
             text: $viewModel.query,
-            placement: .automatic,
+            placement: .navigationBarDrawer(displayMode: .always),
             prompt: Text(L10n.SearchView.prompt)
         )
         .task {
-            await viewModel.loadInitialPage()
+            await viewModel.search(viewModel.query)
         }
-        .onChange(of: viewModel.query) { _, newQuery in
-            viewModel.queryDidChange(newQuery)
+        .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
+            Task { await viewModel.search(viewModel.query) }
+        }
+        // Edits and category deletes happen in sheets over this list. Reload once more when the sheet is gone, so
+        // the result is applied while the list is on screen.
+        .onChange(of: coordinator.sheet == nil) { _, isSheetGone in
+            guard isSheetGone else { return }
+            Task { await viewModel.search(viewModel.query) }
         }
         .alert("Search error", isPresented: .init(
             get: { viewModel.errorMessage != nil },
@@ -61,18 +78,30 @@ struct SearchView: View {
         } message: {
             Text(viewModel.errorMessage ?? "")
         }
-        .toolbar{
+        .toolbar {
             ToolbarItem(placement: .confirmationAction){
-                Button {
-                    coordinator.pop()
-                } label: {
-                    Image(systemName: "xmark")
+                ZStack {
+                    Circle()
+                        .fill(Color.gray)
+                        
+                    Text("H")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .fontDesign(.rounded)
+                        .foregroundColor(.white)
                 }
+                .onTapGesture {
+                   coordinator.present(MainRoutes.settings(), mode: .large)
+                }
+                .frame(width: 36, height: 36)
             }
         }
-        .navigationBarBackButtonHidden()
+        .toolbarTitleDisplayMode(.inlineLarge)
         .navigationTitle(L10n.SearchView.title)
-        .navigationBarTitleDisplayMode(.large)
+    }
+
+    private var resultIDs: [PersistentIdentifier] {
+        viewModel.sections.flatMap { $0.expenses.map(\.id) }
     }
 
     private func sectionTitle(for date: Date) -> String {

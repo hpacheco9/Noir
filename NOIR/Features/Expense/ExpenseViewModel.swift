@@ -20,13 +20,15 @@ final class ExpenseViewModel {
     var amount = Decimal.zero
     var name = ""
     var date = Date.now
-    var category: ExpenseCategory = .other
+    /// `CategoryInfo.key` of the selected category (built-in raw value or `custom:<uuid>`).
+    var category: String = ExpenseCategory.other.rawValue
+    /// Choices for the picker. Starts with the plain built-ins until the first `loadCategories()` (kicked off in `init`).
+    private(set) var categories: [CategoryInfo] = CategoryInfo.builtIns
     var description = ""
-    var location: ExpenseLocation?
     
     var isEditing: Bool = false
     
-    let repository: ExpenseRepository
+    let repository: ExpenseRepositoryProvider
     
     private var editingExpense: ExpenseDTO?
     
@@ -37,23 +39,31 @@ final class ExpenseViewModel {
     }
     
     init(model: ModelContainer) {
-        self.repository = .init(modelContainer: model)
+        self.repository = .init(container: model)
+        // The shared instance keeps the last loaded list, so the picker already has overrides when a sheet opens.
+        Task { await loadCategories() }
     }
 
     func save() async throws {
         guard canSave else { return }
 
-        try await repository.save(
-            id: editingExpense?.id,
-            amount: NSDecimalNumber(decimal: amount).doubleValue,
-            name: name.trimmingCharacters(in: .whitespacesAndNewlines),
-            date: date,
-            category: category,
-            description: description.trimmingCharacters(in: .whitespacesAndNewlines),
-            latitude: location?.latitude,
-            longitude: location?.longitude,
-            locationName: location?.name
-        )
+        let id = editingExpense?.id
+        let amountValue = NSDecimalNumber(decimal: amount).doubleValue
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let date = date
+        let categoryKey = category
+        let trimmedDescription = description.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        try await repository.perform {
+            try await $0.save(
+                id: id,
+                amount: amountValue,
+                name: trimmedName,
+                date: date,
+                categoryKey: categoryKey,
+                description: trimmedDescription
+            )
+        }
         reset()
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
    
@@ -62,9 +72,24 @@ final class ExpenseViewModel {
     func delete() async throws {
         guard let id = editingExpense?.id else { return }
 
-        try await repository.delete(id: id)
+        try await repository.perform { try await $0.delete(id: id) }
         reset()
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
+    }
+
+    /// Refreshes the picker's choices. A selection whose category no longer exists falls back to Other.
+    func loadCategories() async {
+        let loaded: [CategoryInfo]
+        do {
+            loaded = try await repository.perform { try await $0.fetchCategories() }
+        } catch {
+            print("Failed to load categories: \(error)")
+            return
+        }
+        categories = loaded
+        if !loaded.contains(where: { $0.key == category }) {
+            category = ExpenseCategory.other.rawValue
+        }
     }
 
     func configure(with expense: ExpenseDTO?) {
@@ -77,23 +102,19 @@ final class ExpenseViewModel {
         amount = Decimal(expense.amount)
         name = expense.name
         date = expense.date
-        category = expense.category
-        description = expense.description
-        if let latitude = expense.latitude, let longitude = expense.longitude {
-            location = ExpenseLocation(latitude: latitude, longitude: longitude, name: expense.locationName ?? "")
-        } else {
-            location = nil
+        category = expense.categoryInfo.key
+        if !categories.contains(where: { $0.key == category }) {
+            categories.append(expense.categoryInfo)
         }
-        
+        description = expense.description
         isEditing = true
     }
     
     func reset() {
         amount = 0
         name = ""
-        category = .other
+        category = ExpenseCategory.other.rawValue
         description = ""
-        location = nil
         date = .now
         
         isEditing = false

@@ -1,0 +1,106 @@
+//
+//  ExpenseCategoryEntity.swift
+//  NOIR
+//
+
+import AppIntents
+import Foundation
+import SwiftData
+
+/// A category (built-in or custom) as a Shortcuts parameter value. `id` is the category key stored on expenses
+/// (`food`, `other`, `custom:<uuid>`...), which is also what the old `ShortcutExpenseCategory` enum used for built-ins.
+nonisolated struct ExpenseCategoryEntity: AppEntity, Identifiable {
+    static let typeDisplayRepresentation = TypeDisplayRepresentation(
+        name: LocalizedStringResource("app_intent.category", table: "AppIntents")
+    )
+    static let defaultQuery = ExpenseCategoryQuery()
+
+    let id: String
+    let name: String
+    let icon: String
+    /// `false` for a built-in that still has its default title, which is shown localized from AppIntents.xcstrings.
+    let showsName: Bool
+
+    var displayRepresentation: DisplayRepresentation {
+        let image = DisplayRepresentation.Image(systemName: icon)
+        if !showsName, let title = Self.builtInTitle(forKey: id) {
+            return DisplayRepresentation(title: title, image: image)
+        }
+        return DisplayRepresentation(title: "\(name)", image: image)
+    }
+
+    nonisolated init(id: String, name: String, icon: String) {
+        self.id = id
+        self.name = name
+        self.icon = icon
+        self.showsName = true
+    }
+
+    @MainActor
+    init(_ info: CategoryInfo) {
+        self.id = info.key
+        self.name = info.title
+        self.icon = info.icon
+        self.showsName = !info.isBuiltIn || info.customName != nil
+    }
+
+    /// Localized from `AppIntents.xcstrings`, so Shortcuts shows them in the app's language.
+    private static func builtInTitle(forKey key: String) -> LocalizedStringResource? {
+        switch ExpenseCategory(rawValue: key) {
+        case .food: LocalizedStringResource("app_intent.category.food", table: "AppIntents")
+        case .transport: LocalizedStringResource("app_intent.category.transport", table: "AppIntents")
+        case .home: LocalizedStringResource("app_intent.category.home", table: "AppIntents")
+        case .leisure: LocalizedStringResource("app_intent.category.leisure", table: "AppIntents")
+        case .health: LocalizedStringResource("app_intent.category.health", table: "AppIntents")
+        case .shopping: LocalizedStringResource("app_intent.category.shopping", table: "AppIntents")
+        case .other: LocalizedStringResource("app_intent.category.other", table: "AppIntents")
+        case nil: nil
+        }
+    }
+}
+
+nonisolated struct ExpenseCategoryQuery: EntityStringQuery {
+    func entities(for identifiers: [String]) async throws -> [ExpenseCategoryEntity] {
+        let all = try await CategoryCatalog.entities()
+        // An id that no longer exists (deleted custom category, stale Shortcut) is handed back as a stand-in that
+        // displays as Other but keeps the requested id, so `CategoryCatalog.resolvedKey` is what falls back.
+        let other = all.first { $0.id == ExpenseCategory.other.rawValue }
+        return identifiers.compactMap { id in
+            if let found = all.first(where: { $0.id == id }) { return found }
+            return other.map { ExpenseCategoryEntity(id: id, name: $0.name, icon: $0.icon) }
+        }
+    }
+
+    func suggestedEntities() async throws -> [ExpenseCategoryEntity] {
+        try await CategoryCatalog.entities()
+    }
+
+    func entities(matching string: String) async throws -> [ExpenseCategoryEntity] {
+        let needle = string.trimmingCharacters(in: .whitespacesAndNewlines)
+        let all = try await CategoryCatalog.entities()
+        guard !needle.isEmpty else { return all }
+        return all.filter { $0.name.localizedStandardContains(needle) }
+    }
+
+    func defaultResult() async -> ExpenseCategoryEntity? {
+        try? await CategoryCatalog.entities().first { $0.id == ExpenseCategory.other.rawValue }
+    }
+}
+
+/// Reads categories straight from the shared container (Shortcuts runs outside the repository).
+enum CategoryCatalog {
+    static func entities() throws -> [ExpenseCategoryEntity] {
+        let context = ModelContext(NOIRApp.sharedModelContainer)
+        return try CategoryInfo.all(in: context).map(ExpenseCategoryEntity.init)
+    }
+
+    /// `key` if it is a built-in or an existing custom category, otherwise `other` (a deleted category, a stale Shortcut).
+    static func resolvedKey(_ key: String?, in context: ModelContext) -> String {
+        let fallback = ExpenseCategory.other.rawValue
+        guard let key else { return fallback }
+        if ExpenseCategory(rawValue: key) != nil { return key }
+        guard let id = CategoryInfo.customID(fromKey: key) else { return fallback }
+        let count = (try? context.fetchCount(FetchDescriptor<CustomCategory>(predicate: #Predicate { $0.id == id }))) ?? 0
+        return count > 0 ? CategoryInfo.key(forCustomID: id) : fallback
+    }
+}

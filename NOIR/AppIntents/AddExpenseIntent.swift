@@ -7,34 +7,6 @@ import AppIntents
 import Foundation
 import SwiftData
 
-enum ShortcutExpenseCategory: String, AppEnum {
-    case food
-    case transport
-    case home
-    case leisure
-    case health
-    case clothing
-    case other
-
-    static var typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("app_intent.category", table: "AppIntents")
-    )
-
-    static var caseDisplayRepresentations: [ShortcutExpenseCategory: DisplayRepresentation] = [
-        .food: DisplayRepresentation(title: LocalizedStringResource("app_intent.category.food", table: "AppIntents")),
-        .transport: DisplayRepresentation(title: LocalizedStringResource("app_intent.category.transport", table: "AppIntents")),
-        .home: DisplayRepresentation(title: LocalizedStringResource("app_intent.category.home", table: "AppIntents")),
-        .leisure: DisplayRepresentation(title: LocalizedStringResource("app_intent.category.leisure", table: "AppIntents")),
-        .health: DisplayRepresentation(title: LocalizedStringResource("app_intent.category.health", table: "AppIntents")),
-        .clothing: DisplayRepresentation(title: LocalizedStringResource("app_intent.category.clothing", table: "AppIntents")),
-        .other: DisplayRepresentation(title: LocalizedStringResource("app_intent.category.other", table: "AppIntents"))
-    ]
-
-    var expenseCategory: ExpenseCategory {
-        ExpenseCategory(rawValue: rawValue) ?? .other
-    }
-}
-
 struct AddExpenseIntent: AppIntent {
     static var title: LocalizedStringResource = "app_intent.title"
     static var description = IntentDescription("app_intent.description")
@@ -46,14 +18,15 @@ struct AddExpenseIntent: AppIntent {
     @Parameter(title: "app_intent.name", requestValueDialog: "app_intent.name_prompt")
     var name: String
 
+    /// Optional: no category saves as Other. A deleted or unknown category is resolved by `entities(for:)` into a
+    /// stand-in that keeps its id, and `CategoryCatalog.resolvedKey` then falls back to Other.
     @Parameter(
         title: LocalizedStringResource("app_intent.category", table: "AppIntents"),
-        default: .other,
         requestValueDialog: IntentDialog(
             LocalizedStringResource("app_intent.category_prompt", table: "AppIntents")
         )
     )
-    var category: ShortcutExpenseCategory
+    var category: ExpenseCategoryEntity?
 
     @Parameter(title: "app_intent.date", default: .now)
     var date: Date
@@ -79,9 +52,11 @@ struct AddExpenseIntent: AppIntent {
             amount: amount,
             name: trimmedName,
             date: date,
-            category: category.expenseCategory,
-            expenseDescription: trimmedNote
+            category: .other,
+            expenseDescription: trimmedNote,
+            createdAt: .now
         )
+        expense.categoryRawValue = CategoryCatalog.resolvedKey(category?.id, in: modelContext)
 
         modelContext.insert(expense)
         try modelContext.save()

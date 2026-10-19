@@ -9,23 +9,33 @@ import SwiftUI
 
 struct BudgetView: View {
     @Binding var budget: Double
+    @State private var isAppeared = false
+
     var body: some View {
-        VStack(spacing: 120){
-            VStack(alignment: .leading, spacing: 12){
+        VStack(alignment: .leading, spacing: 80) {
+            VStack(alignment: .leading, spacing: 12) {
                 Text("Set your monthly budget.")
-                    .font(.system(size: 40))
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.leading)
-                
+                    .font(.system(size: 36, weight: .bold))
+
                 Text("We'll help you to stay on track and spend intentionally.")
                     .font(.title3)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.secondary)
             }
+            .padding(.horizontal)
             
+            Spacer()
+
             BudgetPickerView(budget: $budget)
+            
+            Spacer()
         }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .padding(.top)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .opacity(isAppeared ? 1 : 0)
+        .offset(y: isAppeared ? 0 : 15)
+        .animation(.easeOut(duration: 0.6), value: isAppeared)
+        .onAppear {
+            isAppeared = true
+        }
     }
 }
 

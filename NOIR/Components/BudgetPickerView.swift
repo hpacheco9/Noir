@@ -24,6 +24,8 @@ struct BudgetPickerView: View {
         Array(stride(from: Self.minValue, through: Self.maxValue, by: Self.step))
     }
 
+    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+
     init(budget: Binding<Double>) {
         _budget = budget
         _scrollID = State(initialValue: Self.nearestTick(to: budget.wrappedValue))
@@ -31,7 +33,7 @@ struct BudgetPickerView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            Text("$\(Int(budget))")
+            Text(verbatim: CurrencyPreference.wholeString(for: budget, code: currencyCode))
                 .font(.system(size: 48, weight: .bold))
                 .contentTransition(.numericText())
                 .animation(.snappy(duration: 0.15), value: budget)

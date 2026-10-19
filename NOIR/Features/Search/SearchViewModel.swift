@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import Observation
 import SwiftData
@@ -12,118 +13,86 @@ final class SearchViewModel {
         var id: Date { date }
     }
 
-    let repository: ExpenseRepository
+    let repository: ExpenseRepositoryProvider
     let pageSize = 50
 
-    var query = ""
+    var query = "" {
+        didSet { querySubject.send(query) }
+    }
+
     private(set) var sections: [DaySection] = []
     private(set) var isLoading = false
-    private(set) var isLoadingMore = false
     private(set) var hasMore = true
     var errorMessage: String?
 
     private var loadedExpenses: [ExpenseDTO] = []
-    private var debounceTask: Task<Void, Never>?
-    private var requestTask: Task<Void, Never>?
+    private var loadedQuery = ""
+    private var isLoadingMore = false
     private var requestID = UUID()
     private let calendar: Calendar
 
+    @ObservationIgnored private let querySubject = PassthroughSubject<String, Never>()
+    @ObservationIgnored private var subscriptions = Set<AnyCancellable>()
+
     init(model: ModelContainer, calendar: Calendar = .current) {
-        repository = ExpenseRepository(modelContainer: model)
+        repository = ExpenseRepositoryProvider(container: model)
         self.calendar = calendar
+        querySubject
+            .removeDuplicates()
+            .debounce(for: .milliseconds(150), scheduler: DispatchQueue.main)
+            .sink { [weak self] text in
+                Task { await self?.search(text) }
+            }
+            .store(in: &subscriptions)
     }
 
-    func loadInitialPage() async {
-        await reload(query: query)
-    }
-
-    func queryDidChange(_ newQuery: String) {
-        query = newQuery
-        debounceTask?.cancel()
-        requestTask?.cancel()
-
+    func search(_ text: String) async {
         let id = UUID()
         requestID = id
-        debounceTask = Task { [weak self] in
-            do {
-                try await Task.sleep(for: .milliseconds(400))
-                guard !Task.isCancelled else { return }
-                await self?.reload(query: newQuery, requestID: id)
-            } catch {
-            }
-        }
-    }
-
-    func loadMoreIfNeeded(after expense: ExpenseDTO) async {
-        guard let lastExpense = loadedExpenses.last,
-              lastExpense.id == expense.id,
-              hasMore,
-              !isLoading,
-              !isLoadingMore else { return }
-
-        await loadMore()
-    }
-
-    private func reload(query: String, requestID: UUID? = nil) async {
-        let currentRequestID = requestID ?? UUID()
-        self.requestID = currentRequestID
-        requestTask?.cancel()
-        loadedExpenses = []
-        sections = []
-        hasMore = true
         isLoading = true
         isLoadingMore = false
         errorMessage = nil
 
-        requestTask = Task { [weak self] in
-            guard let self else { return }
-            do {
-                let expenses = try await repository.fetchPage(query: query, offset: 0, limit: pageSize)
-                guard !Task.isCancelled, self.requestID == currentRequestID else { return }
-                loadedExpenses = expenses
-                hasMore = expenses.count == pageSize
-                rebuildSections()
-                isLoading = false
-            } catch is CancellationError {
-                return
-            } catch {
-                guard self.requestID == currentRequestID else { return }
-                errorMessage = error.localizedDescription
-                isLoading = false
+        do {
+            let expenses = try await repository.perform { [pageSize] in
+                try await $0.fetchPage(query: text, offset: 0, limit: pageSize)
             }
+            guard requestID == id else { return }
+            loadedQuery = text
+            loadedExpenses = expenses
+            hasMore = expenses.count == pageSize
+            rebuildSections()
+        } catch {
+            guard requestID == id else { return }
+            loadedExpenses = []
+            sections = []
+            errorMessage = error.localizedDescription
         }
-
-        await requestTask?.value
+        isLoading = false
     }
 
-    private func loadMore() async {
-        guard hasMore, !isLoading, !isLoadingMore else { return }
-        let currentRequestID = requestID
+    func loadMoreIfNeeded(after expense: ExpenseDTO) async {
+        guard loadedExpenses.last?.id == expense.id, hasMore, !isLoading, !isLoadingMore else { return }
+
+        let id = requestID
+        let query = loadedQuery
         let offset = loadedExpenses.count
         isLoadingMore = true
+        defer { if requestID == id { isLoadingMore = false } }
 
-        requestTask?.cancel()
-        requestTask = Task { [weak self] in
-            guard let self else { return }
-            do {
-                let expenses = try await repository.fetchPage(query: query, offset: offset, limit: pageSize)
-                guard !Task.isCancelled, self.requestID == currentRequestID else { return }
-
-                let existingIDs = Set(loadedExpenses.map(\.id))
-                loadedExpenses.append(contentsOf: expenses.filter { !existingIDs.contains($0.id) })
-                hasMore = expenses.count == pageSize
-                rebuildSections()
-                isLoadingMore = false
-            } catch is CancellationError {
-                return
-            } catch {
-                guard self.requestID == currentRequestID else { return }
-                errorMessage = error.localizedDescription
-                isLoadingMore = false
+        do {
+            let expenses = try await repository.perform { [pageSize] in
+                try await $0.fetchPage(query: query, offset: offset, limit: pageSize)
             }
+            guard requestID == id else { return }
+            let existingIDs = Set(loadedExpenses.map(\.id))
+            loadedExpenses.append(contentsOf: expenses.filter { !existingIDs.contains($0.id) })
+            hasMore = expenses.count == pageSize
+            rebuildSections()
+        } catch {
+            guard requestID == id else { return }
+            errorMessage = error.localizedDescription
         }
-
-        await requestTask?.value
     }
 
     private func rebuildSections() {
@@ -132,10 +101,8 @@ final class SearchViewModel {
         }
 
         sections = grouped.keys.sorted(by: >).map { date in
-            DaySection(
-                date: date,
-                expenses: (grouped[date] ?? []).sorted { $0.date > $1.date }
-            )
+            // Rows arrive newest first and grouping keeps that order.
+            DaySection(date: date, expenses: grouped[date] ?? [])
         }
     }
 }

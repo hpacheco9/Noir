@@ -18,8 +18,8 @@ struct AddExpenseView: View {
     @State private var isLocationPickerPresented = false
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
 
-    private var currencyFormat: Decimal.FormatStyle.Currency {
-        .init(code: currencyCode, locale: .current)
+    private var currencyFormat: AmountInputFormatStyle {
+        CurrencyPreference.amountInputStyle(for: currencyCode)
     }
 
     private var title: LocalizedStringResource {
@@ -55,14 +55,14 @@ struct AddExpenseView: View {
                 DatePicker(String(localized: L10n.AddExpenseView.date), selection: $expenseViewModel.date, displayedComponents: .date)
 
                 Picker(String(localized: L10n.AddExpenseView.category), selection: $expenseViewModel.category) {
-                    ForEach(ExpenseCategory.allCases) { category in
+                    ForEach(expenseViewModel.categories) { category in
                         Label {
                             Text(category.title)
                         } icon: {
                             Image(systemName: category.icon)
                                 .foregroundStyle(category.color)
                         }
-                        .tag(category)
+                        .tag(category.key)
                     }
                 }
                 .pickerStyle(.menu)
@@ -71,51 +71,6 @@ struct AddExpenseView: View {
             Section(String(localized: L10n.AddExpenseView.descriptionSection)) {
                 TextField(String(localized: L10n.AddExpenseView.notePlaceholder), text: $expenseViewModel.description, axis: .vertical)
                     .lineLimit(3...6)
-            }
-
-            Section("Location") {
-                Button {
-                    isLocationPickerPresented = true
-                } label: {
-                    VStack(alignment: .leading, spacing: 10) {
-                        if let location = expenseViewModel.location {
-                            LocationMapPreview(location: location)
-                        } else {
-                            UnavailableView(
-                                "Current location",
-                                systemImage: "location.fill",
-                                description: "Tap to add your current location"
-                            )
-                            .frame(maxWidth: .infinity)
-                        }
-
-                        HStack(spacing: 8) {
-                            Image(systemName: "location.fill")
-                                .foregroundStyle(.blue)
-                            Text(expenseViewModel.location?.name ?? "Use current location")
-                                .foregroundStyle(.primary)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.caption.weight(.semibold))
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
-                .buttonStyle(.plain)
-                .sheet(isPresented: $isLocationPickerPresented) {
-                    NavigationStack {
-                        LocationPickerView(location: $expenseViewModel.location)
-                            .padding()
-                            .navigationTitle("Location")
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbar {
-                                ToolbarItem(placement: .confirmationAction) {
-                                    Button("Done") { isLocationPickerPresented = false }
-                                }
-                            }
-                    }
-                    .presentationDetents([.medium, .large])
-                }
             }
             
             if expenseViewModel.isEditing {
@@ -133,6 +88,12 @@ struct AddExpenseView: View {
         }
         .task(id: expense?.id) {
             expenseViewModel.configure(with: expense)
+        }
+        .task {
+            await expenseViewModel.loadCategories()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
+            Task { await expenseViewModel.loadCategories() }
         }
         .onDisappear {
             expenseViewModel.reset()

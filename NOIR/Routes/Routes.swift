@@ -8,7 +8,6 @@
 import SwiftUI
 import AVFoundation
 
-
 enum MainRoutes {
     static func search(viewModel: SearchViewModel) -> any RouteRepresentable {
         struct SearchViewRoute: RouteRepresentable {
@@ -43,7 +42,6 @@ enum MainRoutes {
                 @ViewBuilder
                 func routeView() -> any View {
                     SearchView(viewModel: SearchViewModel(model: NOIRApp.sharedModelContainer))
-                        .navigationTransition(.zoom(sourceID: SearchTransitionID.button, in: nameSpace))
                 }
             }
             
@@ -91,5 +89,80 @@ enum SettingsRoutes {
         }
         
         return ProfileViewRoute()
+    }
+}
+
+extension SettingsRoutes {
+    static func categories() -> any RouteRepresentable {
+        struct CategoriesViewRoute: RouteRepresentable {
+            let routeId: String = "settings-categories"
+
+            func routeView() -> any View {
+                CategoriesView()
+            }
+        }
+
+        return CategoriesViewRoute()
+    }
+
+    static func newCategory() -> any RouteRepresentable {
+        struct NewCategoryViewRoute: RouteRepresentable {
+            let routeId: String = "settings-new-category"
+
+            func routeView() -> any View {
+                CategoryFormView(category: nil)
+            }
+        }
+
+        return NewCategoryViewRoute()
+    }
+
+    static func editCategory(_ category: CategoryInfo) -> any RouteRepresentable {
+        struct EditCategoryViewRoute: RouteRepresentable {
+            let routeId: String
+            let category: CategoryInfo
+
+            func routeView() -> any View {
+                CategoryFormView(category: category)
+            }
+        }
+
+        return EditCategoryViewRoute(routeId: "settings-edit-category-\(category.key)", category: category)
+    }
+
+    static func shortcuts() -> any RouteRepresentable {
+        struct ShortcutsViewRoute: RouteRepresentable {
+            let routeId: String = "settings-shortcuts"
+
+            func routeView() -> any View {
+                ShortcutsView()
+            }
+        }
+
+        return ShortcutsViewRoute()
+    }
+
+    static func safari(url: URL) -> any RouteRepresentable {
+        struct SafariViewRoute: RouteRepresentable {
+            let routeId: String
+            let url: URL
+
+            @MainActor
+            func routeView() -> any View {
+                SafariRouteContent(url: url)
+            }
+        }
+
+        return SafariViewRoute(routeId: "settings-safari-\(url.absoluteString)", url: url)
+    }
+}
+
+private struct SafariRouteContent: View {
+    let url: URL
+
+    var body: some View {
+        SafariBrowserView(url: url, onFinish: {})
+        .ignoresSafeArea()
+        .toolbar(.hidden, for: .navigationBar)
     }
 }

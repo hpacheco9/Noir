@@ -8,15 +8,19 @@ import SwiftData
 
 @Model
 final class Expense {
+    // `date`: Home reads are range scans on it. `createdAt`: every overview delta asks for
+    // `createdAt > watermark`, and a full recompute reads the newest `createdAt`; both would otherwise scan the table.
+    #Index<Expense>([\.date], [\.createdAt])
+
     @Attribute(.unique) var id: UUID
     var amount: Double
     var name: String
     var date: Date
     var categoryRawValue: String
     var expenseDescription: String
-    var latitude: Double?
-    var longitude: Double?
-    var locationName: String?
+    /// When the row was inserted (never edited). The default is what rows from before this property get on migration.
+    /// Overview memos use it, not `date`, to find "new since last time": the Shortcut can add past-dated expenses.
+    var createdAt: Date = Date.distantPast
 
     var category: ExpenseCategory {
         get { ExpenseCategory(rawValue: categoryRawValue) ?? .other }
@@ -30,6 +34,7 @@ final class Expense {
         date: Date,
         category: ExpenseCategory,
         expenseDescription: String = "",
+        createdAt: Date = .now,
         latitude: Double? = nil,
         longitude: Double? = nil,
         locationName: String? = nil
@@ -40,8 +45,6 @@ final class Expense {
         self.date = date
         self.categoryRawValue = category.rawValue
         self.expenseDescription = expenseDescription
-        self.latitude = latitude
-        self.longitude = longitude
-        self.locationName = locationName
+        self.createdAt = createdAt
     }
 }

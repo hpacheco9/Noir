@@ -12,70 +12,91 @@ import SwiftUI
 @Observable
 final class MainViewModel {
     var state: State = .loading
-    let repository: ExpenseRepository
-    
+    let repository: ExpenseRepositoryProvider
+    let sideRepository: ExpenseRepositoryProvider
+
     var isCameraSelected: Bool = false
     enum State {
         case loading
-        case loaded([ExpenseDTO])
         case empty
+        case loaded(OverviewSnapshot)
     }
-    
+
+    static let latestLimit = 5
+
+    private(set) var period: SpendingPeriod = .week
+    private var requestID = 0
+    private var loadTask: Task<Void, Never>?
+
     init(model: ModelContainer) {
-        self.repository = .init(modelContainer: model)
-    }
-    
-    var currencyCode: String {
-        Locale.current.currency?.identifier ?? "USD"
+        self.repository = .init(container: model)
+        self.sideRepository = .init(container: model)
     }
 
-    func expenseSections(from expenses: [ExpenseDTO], period: SpendingPeriod) -> [ExpenseDaySection] {
-        let scopedExpenses = expenses
-            .filter { period.contains($0.date) }
-            .sorted { $0.date > $1.date }
-
-        let grouped = Dictionary(grouping: scopedExpenses) { expense in
-            Calendar.current.startOfDay(for: expense.date)
-        }
-
-        return grouped.keys.sorted(by: >).map { date in
-            ExpenseDaySection(
-                date: date,
-                expenses: (grouped[date] ?? []).sorted { $0.date > $1.date }
-            )
-        }
+    /// Switches the period and reloads. Call from the same animation transaction that changes the selection.
+    /// Quick successive calls cancel the stale load; only the newest request is applied.
+    func selectPeriod(_ newPeriod: SpendingPeriod) {
+        guard newPeriod != period else { return }
+        period = newPeriod
+        loadTask?.cancel()
+        loadTask = Task { await load() }
     }
 
-    func title(for date: Date) -> String {
-        if Calendar.current.isDateInToday(date) { return "Today" }
-        if Calendar.current.isDateInYesterday(date) { return "Yesterday" }
-        return date.formatted(.dateTime.month(.wide).day())
+    /// Adopts the view's period without loading (used before `fetchData()` when a view is recreated).
+    func adoptPeriod(_ newPeriod: SpendingPeriod) {
+        period = newPeriod
     }
-}
 
-struct ExpenseDaySection: Identifiable {
-    let date: Date
-    let expenses: [ExpenseDTO]
-
-    var id: Date { date }
-}
-
-extension MainViewModel{
+    /// Reloads the overview for the current period (also triggered by `.expensesDidChange`).
     @MainActor
     func fetchData() async {
+        loadTask?.cancel()
+        let task = Task { await load() }
+        loadTask = task
+        await task.value
+    }
+
+    @MainActor
+    private func load() async {
+        requestID += 1
+        let id = requestID
+        let period = period
+
         do {
-            let data = try await repository.fetch()
+            let now = Date.now
+            let latestLimit = Self.latestLimit
+
+            async let chartLoad = repository.perform { try await $0.overviewChart(period: period, now: now) }
+            async let sideLoad = sideRepository.perform {
+                try await $0.overviewSide(now: now, latestLimit: latestLimit)
+            }
+            
+            let chart = try await chartLoad
+            let side = try await sideLoad
+            guard id == requestID, !Task.isCancelled else { return }
+
+            let snapshot = OverviewSnapshot(
+                period: period,
+                points: chart.points,
+                total: chart.total,
+                latest: side.latest,
+                hasAnyExpenses: side.hasAnyExpenses
+            )
+
             withAnimation(.snappy) {
-                state = data.isEmpty ? .empty : .loaded(data)
+                state = snapshot.hasAnyExpenses ? .loaded(snapshot) : .empty
             }
         } catch {
             print("Failed to fetch expenses: \(error)")
+            guard id == requestID, !Task.isCancelled, case .loaded(let last) = state, last.period != period else { return }
+            state = .loaded(last.retagged(for: period))
         }
     }
-    
+
+    @MainActor
     func delete(id: PersistentIdentifier) async {
         do {
-            try await repository.delete(id: id)
+            try await repository.perform { try await $0.delete(id: id) }
             await fetchData()
         } catch {
             print(error)
@@ -86,25 +107,18 @@ extension MainViewModel{
 struct ExpenseDTO: Sendable, Identifiable {
     let id: PersistentIdentifier
     let name: String
-    let category: ExpenseCategory
+    let categoryInfo: CategoryInfo
     let amount: Double
     let date: Date
     let description: String
-    let latitude: Double?
-    let longitude: Double?
-    let locationName: String?
 
-   
-    nonisolated init(_ expense: Expense) {
+    nonisolated init(_ expense: Expense, categories: [String: CategoryInfo]) {
         self.id = expense.persistentModelID
         self.name = expense.name
-        self.category = expense.category
+        self.categoryInfo = categories[expense.categoryRawValue] ?? categories[ExpenseCategory.other.rawValue] ?? CategoryInfo.other
         self.date = expense.date
         self.amount = expense.amount
         self.description = expense.expenseDescription
-        self.latitude = expense.latitude
-        self.longitude = expense.longitude
-        self.locationName = expense.locationName
     }
 }
 

@@ -11,32 +11,22 @@ struct GetStartedView: View {
     @State private var isAppeared: Bool = false
     
     var body: some View {
-        VStack {
-            NoirWatermark()
-                .frame(maxWidth: .infinity, alignment: .center)
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Welcome to Noir.")
+                .font(.system(size: 38, weight: .bold))
+
+            Text("Track your spending. Take control of your money.")
+                .font(.title3.weight(.medium))
+                .foregroundStyle(.secondary)
                 .opacity(isAppeared ? 1 : 0)
-                .offset(y: isAppeared ? 0 : -10)
-                .animation(.easeOut(duration: 0.8), value: isAppeared)
-            
-            VStack(alignment: .leading, spacing: 16){
-                Text("Welcome to Noir.")
-                    .font(.system(size: 44, weight: .bold))
-             
-             Text("Track your spending. Take control of your money.")
-                 .font(.system(size: 20, weight: .medium))
-                 .foregroundStyle(.gray)
-                 .opacity(isAppeared ? 1 : 0)
-                 .offset(y: isAppeared ? 0 : 15)
-                 .animation(.easeOut(duration: 0.6).delay(0.4), value: isAppeared)
-            }
-            .padding(.top, -70)
-            .opacity(isAppeared ? 1 : 0)
-            .offset(y: isAppeared ? 0 : 15)
-            .animation(.easeOut(duration: 0.6).delay(0.2), value: isAppeared)
-     
-        
-            Spacer()
+                .offset(y: isAppeared ? 0 : 15)
+                .animation(.easeOut(duration: 0.6).delay(0.15), value: isAppeared)
         }
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .opacity(isAppeared ? 1 : 0)
+        .offset(y: isAppeared ? 0 : 15)
+        .animation(.easeOut(duration: 0.6).delay(0.2), value: isAppeared)
         .onAppear {
             isAppeared = true
         }

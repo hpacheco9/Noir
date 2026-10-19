@@ -4,10 +4,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+#if DEBUG
+    @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
+#endif
 
     var body: some View {
         Form {
@@ -41,7 +45,7 @@ struct SettingsView: View {
 
             Section(String(localized: L10n.Profile.title)) {
                 Button {
-                    coordinator.present(SettingsRoutes.Profile(), mode: .medium)
+                    coordinator.navigate(to: SettingsRoutes.Profile())
                 } label: {
                 HStack(spacing: 12) {
                     ZStack {
@@ -87,7 +91,7 @@ struct SettingsView: View {
                     title: L10n.Preferences.shortcuts,
                     systemImage: AssetName.System.shortcuts
                 ) {
-                    //
+                    coordinator.navigate(to: SettingsRoutes.shortcuts())
                 }
             }
 
@@ -96,16 +100,33 @@ struct SettingsView: View {
                     title: L10n.Legal.privacyPolicy,
                     systemImage: AssetName.System.privacy
                 ) {
-                    //coordinator.push(.privacyPolicy)
+                    coordinator.present(SettingsRoutes.safari(url: AppLinks.privacyPolicy), mode: .large)
                 }
 
                 SettingsRow(
                     title: L10n.Legal.termsOfService,
                     systemImage: AssetName.System.legal
                 ) {
-                    //coordinator.push(.termsOfService)
+                    coordinator.present(SettingsRoutes.safari(url: AppLinks.termsOfService), mode: .large)
                 }
             }
+
+#if DEBUG
+            Section {
+                // NOIRApp swaps RootView (and this sheet with it) for MainOnboarding as soon as the flag flips.
+                Button(role: .destructive) {
+                    hasCompletedOnboarding = false
+                } label: {
+                    Label {
+                        Text(verbatim: "Reset onboarding")
+                    } icon: {
+                        Image(systemName: AssetName.System.reset)
+                    }
+                }
+            } header: {
+                Text(verbatim: "Developer")
+            }
+#endif
         }
         .navigationTitle(Text(L10n.SettingsView.title))
         .navigationBarTitleDisplayMode(.inline)
@@ -119,7 +140,7 @@ struct SettingsView: View {
     }
 }
 
-private struct SettingsRow: View {
+struct SettingsRow: View {
     let title: LocalizedStringResource
     let systemImage: String
     let action: () -> Void

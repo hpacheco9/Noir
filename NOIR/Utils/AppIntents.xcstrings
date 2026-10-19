@@ -17,6 +17,22 @@
         }
       }
     },
+    "app_intent.category.shopping" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopping"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compras"
+          }
+        }
+      }
+    },
     "app_intent.category_prompt" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -30,22 +46,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Qual a categoria?"
-          }
-        }
-      }
-    },
-    "app_intent.category.clothing" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clothing"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Roupa"
           }
         }
       }

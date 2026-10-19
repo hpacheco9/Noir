@@ -8,18 +8,19 @@
 import Foundation
 import SwiftUI
 
-enum ExpenseCategory: String, CaseIterable, Identifiable {
+nonisolated enum ExpenseCategory: String, CaseIterable, Identifiable {
     case food
     case transport
     case home
     case leisure
     case health
-    case clothing
+    /// Stored as "clothing" (its former name) so existing expenses and saved Shortcuts keep resolving.
+    case shopping = "clothing"
     case other
 
     var id: Self { self }
 
-    var title: String {
+    @MainActor var title: String {
         switch self {
         case .food: String(localized: L10n.ExpenseCategory.food)
         case .transport: String(localized: L10n.ExpenseCategory.transport)
@@ -27,7 +28,7 @@ enum ExpenseCategory: String, CaseIterable, Identifiable {
         case .leisure: String(localized: L10n.ExpenseCategory.leisure)
         case .health: String(localized: L10n.ExpenseCategory.health)
         case .other: String(localized: L10n.ExpenseCategory.other)
-        case .clothing: String(localized: L10n.ExpenseCategory.clothing)
+        case .shopping: String(localized: L10n.ExpenseCategory.shopping)
         }
     }
 
@@ -39,11 +40,11 @@ enum ExpenseCategory: String, CaseIterable, Identifiable {
         case .leisure: AssetName.ExpenseCategory.leisure
         case .health: AssetName.ExpenseCategory.health
         case .other: AssetName.ExpenseCategory.other
-        case .clothing: AssetName.ExpenseCategory.clothing
+        case .shopping: AssetName.ExpenseCategory.shopping
         }
     }
 
-    var color: Color {
+    var colorKey: CategoryColor {
         switch self {
         case .food: .orange
         case .transport: .blue
@@ -51,9 +52,11 @@ enum ExpenseCategory: String, CaseIterable, Identifiable {
         case .leisure: .purple
         case .health: .red
         case .other: .green
-        case .clothing: .yellow
+        case .shopping: .yellow
         }
     }
+
+    var color: Color { colorKey.color }
 }
 
 struct CategorySpending: Identifiable {

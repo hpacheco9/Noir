@@ -5,11 +5,6 @@
 
 import SwiftData
 import SwiftUI
-import AVFoundation
-
-enum SearchTransitionID {
-    static let button = "search-button"
-}
 
 struct ContentView: View {
     @EnvironmentObject private var router: Coordinator
@@ -17,16 +12,14 @@ struct ContentView: View {
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @Environment(MainViewModel.self) private var viewModel
 
-    @State private var isSearchPresented = false
-    @State private var searchViewModel = SearchViewModel(model: NOIRApp.sharedModelContainer)
     @State private var expensePendingDeletion: ExpenseDTO?
-    @Namespace private var searchTransition
 
     var body: some View {
         List {
             expenseListContent
         }
         .task {
+            viewModel.adoptPeriod(selectedPeriod)
             await viewModel.fetchData()
         }
         .listStyle(.insetGrouped)
@@ -45,24 +38,21 @@ struct ContentView: View {
                 expensePendingDeletion = nil
             }
             Button(String(localized: L10n.Shared.delete), role: .destructive) {
-                expensePendingDeletion = nil
-                Task { await viewModel.delete(id: expense.id) }
+                withAnimation {
+                    expensePendingDeletion = nil
+                    Task { await viewModel.delete(id: expense.id) }
+                }
             }
         } message: { _ in
             Text(L10n.ExpenseDeletion.message)
         }
-        .overlay(alignment: .bottomTrailing) {
-            addExpenseButton
-                    .padding(.trailing, 5)
-        }
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .cancellationAction) {
                 accountButton
             }
-            .sharedBackgroundVisibility(.hidden)
 
             ToolbarItemGroup(placement: .confirmationAction) {
-                searchButton
+                addExpenseButton
                 periodFilterMenu
             }
         }
@@ -74,8 +64,8 @@ struct ContentView: View {
         switch viewModel.state {
         case .empty:
             emptyStateSection
-        case .loaded(let expenses):
-            loadedSections(for: expenses)
+        case .loaded(let snapshot):
+            loadedSections(for: snapshot)
         case .loading:
             loadingSection
         }
@@ -95,10 +85,10 @@ struct ContentView: View {
     }
 
     @ViewBuilder
-    private func loadedSections(for expenses: [ExpenseDTO]) -> some View {
+    private func loadedSections(for snapshot: OverviewSnapshot) -> some View {
         Section {
             SpendingOverviewView(
-                expenses: expenses,
+                snapshot: snapshot,
                 currencyCode: currencyCode,
                 selectedPeriod: $selectedPeriod
             )
@@ -106,34 +96,29 @@ struct ContentView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
-        let periodSections = viewModel.expenseSections(from: expenses, period: selectedPeriod)
-        if periodSections.isEmpty {
-            emptyStateSection
-        } else {
-            ForEach(periodSections) { day in
-                Section(viewModel.title(for: day.date)) {
-                    ForEach(day.expenses) { expense in
-                        ExpenseRow(
-                            expense: expense,
-                            action: {
-                                router.present(MainRoutes.editExpense(expense: expense), mode: .large)
-                                let generator = UIImpactFeedbackGenerator(style: .light)
-                                generator.impactOccurred()
-                            }
-                        )
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button {
-                                expensePendingDeletion = expense
-                            } label: {
-                                Label(
-                                    String(localized: L10n.Shared.delete),
-                                    systemImage: AssetName.System.delete
-                                )
-                            }
-                            .tint(.red)
+        let latestExpenses = snapshot.latest
+        if !latestExpenses.isEmpty {
+            Section {
+                ForEach(latestExpenses) { expense in
+                    ExpenseRow(
+                        expense: expense,
+                        action: {
+                            router.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.90))
+                            let generator = UIImpactFeedbackGenerator(style: .light)
+                            generator.impactOccurred()
                         }
+                    )
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button {
+                            expensePendingDeletion = expense
+                        } label: {
+                            Image(systemName: AssetName.System.delete)
+                        }
+                        .tint(.red)
                     }
                 }
+            } header: {
+                Text(L10n.MainView.latestTransactions)
             }
         }
     }
@@ -149,34 +134,30 @@ struct ContentView: View {
 
     // MARK: - Toolbar
     private var accountButton: some View {
-        Button {
+        ZStack {
+            Circle()
+                .fill(Color.gray)
+                
+            Text("H")
+                .font(.title2)
+                .fontWeight(.bold)
+                .fontDesign(.rounded)
+                .foregroundColor(.white)
+        }
+        .onTapGesture {
             router.present(MainRoutes.settings(), mode: .large)
-        } label: {
-            ZStack {
-                Circle()
-                    .fill(Color.gray)
-                    .frame(width: 40, height: 40)
-                Text("H")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .fontDesign(.rounded)
-                    .foregroundColor(.white)
-            }
         }
-    }
-
-    private var searchButton: some View {
-        Button(action: presentSearch) {
-            Image(systemName: "magnifyingglass")
-        }
-        .matchedTransitionSource(id: SearchTransitionID.button, in: searchTransition)
+        .frame(width: 36, height: 36)
     }
 
     private var periodFilterMenu: some View {
         Menu {
             ForEach(SpendingPeriod.allCases) { period in
                 Button {
-                    selectedPeriod = period
+                    withAnimation {
+                        selectedPeriod = period
+                        viewModel.selectPeriod(period)
+                    }
                 } label: {
                     if period == selectedPeriod {
                         Label(period.title, systemImage: AssetName.System.checkmark)
@@ -192,36 +173,21 @@ struct ContentView: View {
 
     private var addExpenseButton: some View {
         Button {
-            router.present(MainRoutes.addExpense(), mode: .large)
+            router.present(MainRoutes.addExpense(), mode: .percentage(0.75))
             let generator = UIImpactFeedbackGenerator(style: .light)
             generator.impactOccurred()
         } label: {
             Image(systemName: AssetName.System.add)
-                .font(.title2)
-                .fontWeight(.semibold)
-                .foregroundColor(Color(uiColor: .systemBackground))
-                .frame(width: 50, height: 50)
         }
-        .clipShape(.circle)
-        .tint(.primary)
-        .buttonStyle(.borderedProminent)
     }
-
-    // MARK: - Actions
-
-    private func presentSearch() {
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
-       // router.navigate(to: MainRoutes.search(nameSpace: searchTransition))
-    }
+    
+    
 }
-
-
 
 #Preview {
     CoordinatorView {
         ContentView()
-            .modelContainer(for: Expense.self, inMemory: true)
+            .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self], inMemory: true)
     }
     .environmentObject(Coordinator())
     .environment(MainViewModel(model: NOIRApp.sharedModelContainer))
