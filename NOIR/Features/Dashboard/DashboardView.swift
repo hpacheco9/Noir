@@ -130,12 +130,11 @@ struct DashboardView: View {
 
         Section {
             VStack(alignment: .leading, spacing: 16) {
-                cardHeader(period: shownPeriod, total: breakdown.total)
+                cardHeader()
 
                 CategoryDonutChart(
                     slices: slices,
                     total: breakdown.total,
-                    categoryCount: breakdown.categories.count,
                     periodTitle: shownPeriod.title,
                     currencyCode: currencyCode,
                     selectedKey: selectedKey,
@@ -166,24 +165,14 @@ struct DashboardView: View {
 
     // MARK: - Card header
 
-    /// Same header as Home's overview card (`SpendingOverviewView`): "Total Spent <period>", then the total.
-    private func cardHeader(period: SpendingPeriod, total: Decimal) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(String(
-                format: String(localized: L10n.SpendingOverview.totalSpent),
-                locale: .current,
-                period.title
-            ))
+    /// Grey label in the style of Home's overview card; the period total itself sits in the donut's centre.
+    private func cardHeader() -> some View {
+        Text(L10n.Dashboard.chartLabel)
             .font(.headline)
             .foregroundStyle(.secondary)
-
-            Text(verbatim: CurrencyPreference.string(for: total, code: currencyCode))
-                .font(.system(size: 40, weight: .semibold, design: .rounded))
-                .contentTransition(.numericText(value: total.doubleValue))
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        // The chart's own accessibility value reads the period and total.
-        .accessibilityHidden(true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            // The chart's accessibility label already says this.
+            .accessibilityHidden(true)
     }
 
     // MARK: - Selection
