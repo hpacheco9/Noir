@@ -12,6 +12,8 @@ struct SettingsView: View {
     @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
+    /// The review store isn't observable, so its state is copied here on appear and after each developer action.
+    @State private var reviewStatusText = ""
 #endif
 
     /// Not `.primary`: in dark mode that is a white "on" track under the white thumb. Black in light mode, mid gray in
@@ -143,6 +145,8 @@ struct SettingsView: View {
             } header: {
                 Text(verbatim: "Developer")
             }
+
+            reviewPromptDeveloperSection
 #endif
         }
         .navigationTitle(Text(L10n.SettingsView.title))
@@ -156,6 +160,58 @@ struct SettingsView: View {
         }
     }
 }
+
+#if DEBUG
+// MARK: - Developer: review prompt
+
+private extension SettingsView {
+    /// Checks the App Store review prompt without logging real expenses. Debug builds always show the system prompt
+    /// when asked (TestFlight never does).
+    var reviewPromptDeveloperSection: some View {
+        let store = ReviewPromptStore()
+
+        return Section {
+            Text(verbatim: reviewStatusText)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .onAppear { reviewStatusText = reviewStatus(store) }
+
+            Button {
+                store.simulateEligible()
+                reviewStatusText = reviewStatus(store)
+            } label: {
+                Label {
+                    Text(verbatim: "Simulate 3 Shortcut expenses")
+                } icon: {
+                    Image(systemName: AssetName.System.review)
+                }
+            }
+
+            Button(role: .destructive) {
+                store.reset()
+                reviewStatusText = reviewStatus(store)
+            } label: {
+                Label {
+                    Text(verbatim: "Reset review prompt")
+                } icon: {
+                    Image(systemName: AssetName.System.reset)
+                }
+            }
+        } header: {
+            Text(verbatim: "Review prompt")
+        } footer: {
+            Text(verbatim: "After simulating, close Settings, or send the app to the background and open it again: the prompt appears after a few seconds. It asks once per version.")
+        }
+    }
+
+    func reviewStatus(_ store: ReviewPromptStore) -> String {
+        let asked = store.lastPromptDate.map {
+            "asked for \(store.lastPromptedVersion ?? "?") on \($0.formatted(date: .abbreviated, time: .shortened))"
+        } ?? "never asked"
+        return "\(store.createdCount) expenses counted · \(asked) · version \(AppVersion.current())"
+    }
+}
+#endif
 
 struct SettingsRow: View {
     let title: LocalizedStringResource

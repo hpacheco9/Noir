@@ -18,6 +18,8 @@ struct ContentView: View {
     @Environment(\.requestReview) private var requestReview
     @Environment(\.scenePhase) private var scenePhase
     @State private var reviewTask: Task<Void, Never>?
+    /// The launch check runs once per launch, not on every return to the Home tab.
+    @State private var hasCheckedReviewOnLaunch = false
 
     var body: some View {
         List {
@@ -32,7 +34,21 @@ struct ContentView: View {
         // onboarding is complete.
         .onChange(of: router.sheet == nil) { _, isClosed in
             if isClosed {
-                scheduleReviewRequestIfEligible()
+                scheduleReviewRequestIfEligible(after: .seconds(2))
+            } else {
+                cancelReviewRequest()
+            }
+        }
+        // Opening the app also counts as a break, so someone who logs only through Shortcuts (which can't ask, having
+        // no UI) is asked the next time they open NOIR: once on launch, then whenever the app comes back to the front.
+        .onAppear {
+            guard !hasCheckedReviewOnLaunch else { return }
+            hasCheckedReviewOnLaunch = true
+            scheduleReviewRequestIfEligible(after: .seconds(3))
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                scheduleReviewRequestIfEligible(after: .seconds(3))
             } else {
                 cancelReviewRequest()
             }
@@ -147,16 +163,17 @@ struct ContentView: View {
     }
 
     // MARK: - Review prompt
-    /// Runs when a sheet on Home has fully closed: a natural break, never inside the Save action. Waits a moment, then
-    /// re-checks that nothing is presented and the app is still active before asking.
-    private func scheduleReviewRequestIfEligible() {
+    /// Runs at a natural break, never inside the Save action: when a sheet on Home has fully closed, or when the app
+    /// opens or comes back to the front. Waits `delay`, then re-checks that nothing is presented and the app is still
+    /// active before asking.
+    private func scheduleReviewRequestIfEligible(after delay: Duration) {
         cancelReviewRequest()
         let store = ReviewPromptStore()
         let version = AppVersion.current()
         guard store.shouldRequestReview(currentVersion: version) else { return }
 
         reviewTask = Task {
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(for: delay)
             guard !Task.isCancelled,
                   router.sheet == nil, router.fullScreen == nil,
                   scenePhase == .active,
