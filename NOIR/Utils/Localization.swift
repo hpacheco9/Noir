@@ -10,7 +10,6 @@ import Foundation
 enum L10n {
     enum Shared {
         static let cancel: LocalizedStringResource = "shared.cancel"
-        static let save: LocalizedStringResource = "shared.save"
         static let delete: LocalizedStringResource = "shared.delete"
         static let ok: LocalizedStringResource = "shared.ok"
         static let unexpectedError: LocalizedStringResource = "shared.unexpected_error"
@@ -170,8 +169,6 @@ enum L10n {
         static let descriptionSection: LocalizedStringResource = "add_expense.description_section"
         static let notePlaceholder: LocalizedStringResource = "add_expense.note_placeholder"
         static let saveErrorTitle: LocalizedStringResource = "add_expense.save_error_title"
-        static let closeAccessibilityLabel: LocalizedStringResource = "add_expense.close_accessibility_label"
-        static let saveAccessibilityLabel: LocalizedStringResource = "add_expense.save_accessibility_label"
     }
 
     enum ExpenseDeletion {

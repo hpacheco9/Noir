@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct RootView: View {
-    @State private var expenseViewModel: ExpenseViewModel
     @State private var dashboardViewModel: DashboardViewModel
     @State private var searchViewModel: SearchViewModel
     @StateObject private var homeCoordinator = Coordinator()
@@ -21,11 +20,6 @@ struct RootView: View {
         self.mainViewModel = mainViewModel
         _dashboardViewModel = State(initialValue: DashboardViewModel(model: NOIRApp.sharedModelContainer))
         _searchViewModel = State(initialValue: SearchViewModel(model: NOIRApp.sharedModelContainer))
-        _expenseViewModel = State(
-            initialValue: ExpenseViewModel(
-                model: NOIRApp.sharedModelContainer
-            )
-        )
     }
 
     var body: some View {
@@ -34,7 +28,6 @@ struct RootView: View {
                 ContentView()
             }
             .environmentObject(homeCoordinator)
-            .environment(expenseViewModel)
             .environment(mainViewModel)
             .tabItem {
                 Label {
@@ -62,7 +55,6 @@ struct RootView: View {
                 SearchView(viewModel: searchViewModel)
             }
             .environmentObject(searchCoordinator)
-            .environment(expenseViewModel)
             .tabItem {
                 Label {
                     Text(L10n.Tab.search)

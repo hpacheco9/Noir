@@ -112,7 +112,7 @@ struct SearchView: View {
 
     private func row(for expense: ExpenseDTO) -> some View {
         ExpenseRow(expense: expense) {
-            coordinator.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.75))
+            coordinator.present(MainRoutes.editExpense(expense), mode: .percentage(0.90))
             Haptics.play(.tap)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {

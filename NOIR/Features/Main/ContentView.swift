@@ -134,7 +134,7 @@ struct ContentView: View {
                     ExpenseRow(
                         expense: expense,
                         action: {
-                            router.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.90))
+                            router.present(MainRoutes.editExpense(expense), mode: .percentage(0.90))
                             Haptics.play(.tap)
                         }
                     )

@@ -21,30 +21,28 @@ enum MainRoutes {
     }
     
     static func addExpense() -> any RouteRepresentable {
-            struct addExpenseViewRoute: RouteRepresentable {
-                let routeId: String = "add-expense"
+        struct AddExpenseViewRoute: RouteRepresentable {
+            let routeId: String = "add-expense"
 
-                @ViewBuilder
-                func routeView() -> any View {
-                    AddExpenseView(expense: nil)
-                }
+            func routeView() -> any View {
+                AddExpenseView()
             }
-            
-            return addExpenseViewRoute()
+        }
+
+        return AddExpenseViewRoute()
     }
-    
-    static func editExpense(expense: ExpenseDTO?) -> any RouteRepresentable {
-            struct editExpenseViewRoute: RouteRepresentable {
-                let routeId: String = "add-expense"
-                let expense: ExpenseDTO?
 
-                @ViewBuilder
-                func routeView() -> any View {
-                    AddExpenseView(expense: expense)
-                }
+    static func editExpense(_ expense: ExpenseDTO) -> any RouteRepresentable {
+        struct EditExpenseViewRoute: RouteRepresentable {
+            let routeId: String
+            let expense: ExpenseDTO
+
+            func routeView() -> any View {
+                EditExpenseView(expense: expense)
             }
-            
-            return editExpenseViewRoute(expense: expense)
+        }
+
+        return EditExpenseViewRoute(routeId: "edit-expense-\(expense.id)", expense: expense)
     }
 }
 
