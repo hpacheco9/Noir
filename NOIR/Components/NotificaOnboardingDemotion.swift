@@ -180,7 +180,7 @@ struct GlassNotificationCard<Icon: View>: View {
         .modifier(GlassBackground(cornerRadius: cornerRadius))
         .contentShape(.rect(cornerRadius: cornerRadius))
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(appName), \(title). \(message)")
+        .accessibilityLabel(Text(L10n.Onboarding.demoAccessibilityLabel(appName: appName, title: title, message: message)))
     }
 }
 

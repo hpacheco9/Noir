@@ -77,6 +77,7 @@ enum L10n {
         static let prompt: LocalizedStringResource = "search_view.prompt"
         static let emptyTitle: LocalizedStringResource = "search_view.empty_title"
         static let emptyDescription: LocalizedStringResource = "search_view.empty_description"
+        static let errorTitle: LocalizedStringResource = "search_view.error_title"
     }
 
     enum ShortcutsView {
@@ -198,6 +199,13 @@ enum L10n {
         static let openSettings: LocalizedStringResource = "onboarding.notifications.open_settings"
         static let demoTitle: LocalizedStringResource = "onboarding.notifications.demo_title"
         static let demoTimestamp: LocalizedStringResource = "onboarding.notifications.demo_timestamp"
+        static let welcomeTitle: LocalizedStringResource = "onboarding.welcome.title"
+        static let welcomeSubtitle: LocalizedStringResource = "onboarding.welcome.subtitle"
+        static let budgetTitle: LocalizedStringResource = "onboarding.budget.title"
+        static let budgetSubtitle: LocalizedStringResource = "onboarding.budget.subtitle"
+        static func demoAccessibilityLabel(appName: String, title: String, message: String) -> LocalizedStringResource {
+            "onboarding.notifications.demo_accessibility_label \(appName) \(title) \(message)"
+        }
         static func demoMessage(amount: String) -> LocalizedStringResource {
             "onboarding.notifications.demo_message \(amount)"
         }
