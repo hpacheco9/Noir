@@ -9,16 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct RootView: View {
-    @State private var expenseViewModel: ExpenseViewModel
+    @State private var dashboardViewModel: DashboardViewModel
+    @State private var searchViewModel: SearchViewModel
+    @StateObject private var homeCoordinator = Coordinator()
+    @StateObject private var dashboardCoordinator = Coordinator()
+    @StateObject private var searchCoordinator = Coordinator()
     let mainViewModel: MainViewModel
 
     init(mainViewModel: MainViewModel) {
         self.mainViewModel = mainViewModel
-        _expenseViewModel = State(
-            initialValue: ExpenseViewModel(
-                model: NOIRApp.sharedModelContainer
-            )
-        )
+        _dashboardViewModel = State(initialValue: DashboardViewModel(model: NOIRApp.sharedModelContainer))
+        _searchViewModel = State(initialValue: SearchViewModel(model: NOIRApp.sharedModelContainer))
     }
 
     var body: some View {
@@ -26,35 +27,41 @@ struct RootView: View {
             CoordinatorView {
                 ContentView()
             }
-            .environmentObject(Coordinator())
-            .environment(expenseViewModel)
+            .environmentObject(homeCoordinator)
             .environment(mainViewModel)
             .tabItem {
-                Label("Home", systemImage: "text.rectangle.page")
-                  .environment(\.symbolVariants, .none)
+                Label {
+                    Text(L10n.Tab.home)
+                } icon: {
+                    Image(systemName: AssetName.System.home)
+                }
+                .environment(\.symbolVariants, .none)
             }
 
             CoordinatorView {
-                Text("Calendar view")
+                DashboardView(viewModel: dashboardViewModel)
             }
-            .environmentObject(Coordinator())
+            .environmentObject(dashboardCoordinator)
             .tabItem {
-                Label("Calendar", systemImage: "calendar")
-                  .environment(\.symbolVariants, .none)
+                Label {
+                    Text(L10n.Tab.dashboard)
+                } icon: {
+                    Image(systemName: AssetName.System.dashboard)
+                }
+                .environment(\.symbolVariants, .none)
             }
 
             CoordinatorView {
-                SearchView(
-                    viewModel: SearchViewModel(
-                        model: NOIRApp.sharedModelContainer
-                    )
-                )
+                SearchView(viewModel: searchViewModel)
             }
-            .environmentObject(Coordinator())
-            .environment(expenseViewModel)
+            .environmentObject(searchCoordinator)
             .tabItem {
-                Label("Search", systemImage: "magnifyingglass")
-                 //   .environment(\.symbolVariants, .none)
+                Label {
+                    Text(L10n.Tab.search)
+                } icon: {
+                    Image(systemName: AssetName.System.search)
+                }
+                //   .environment(\.symbolVariants, .none)
             }
         }
         .tint(.primary)

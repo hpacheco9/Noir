@@ -3,102 +3,26 @@
 //  NOIR
 //
 
-import Foundation
 import SwiftUI
 
 struct AddExpenseView: View {
-    let expense: ExpenseDTO?
-
     @EnvironmentObject private var coordinator: Coordinator
-    @Environment(ExpenseViewModel.self) private var expenseViewModel
-
-    @FocusState private var isAmountFocused: Bool
+    @State private var viewModel = ExpenseViewModel()
     @State private var saveError: String?
-    @State private var isDeleteConfirmationPresented = false
-    @State private var isLocationPickerPresented = false
-    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
-
-    private var currencyFormat: AmountInputFormatStyle {
-        CurrencyPreference.amountInputStyle(for: currencyCode)
-    }
-
-    private var title: LocalizedStringResource {
-        expense == nil ? L10n.AddExpenseView.createTitle : L10n.AddExpenseView.editTitle
-    }
 
     var body: some View {
-        @Bindable var expenseViewModel = expenseViewModel
+        @Bindable var viewModel = viewModel
 
         List {
-            TextField(
-                String(localized: L10n.AddExpenseView.amountPlaceholder),
-                value: $expenseViewModel.amount,
-                format: currencyFormat
-            )
-            .focused($isAmountFocused)
-            .keyboardType(.decimalPad)
-            .multilineTextAlignment(.center)
-            .font(.system(size: 48, weight: .semibold, design: .rounded))
-            .foregroundStyle(.primary)
-            .frame(maxWidth: .infinity)
-            .accessibilityLabel(Text(L10n.AddExpenseView.amountAccessibilityLabel))
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets())
-            .listRowSeparator(.hidden)
-            
-            Section(String(localized: L10n.AddExpenseView.expenseSection)) {
-                TextField(String(localized: L10n.AddExpenseView.name), text: $expenseViewModel.name)
-                    .textInputAutocapitalization(.sentences)
-            }
-            
-            Section(String(localized: L10n.AddExpenseView.detailsSection)) {
-                DatePicker(String(localized: L10n.AddExpenseView.date), selection: $expenseViewModel.date, displayedComponents: .date)
-
-                Picker(String(localized: L10n.AddExpenseView.category), selection: $expenseViewModel.category) {
-                    ForEach(expenseViewModel.categories) { category in
-                        Label {
-                            Text(category.title)
-                        } icon: {
-                            Image(systemName: category.icon)
-                                .foregroundStyle(category.color)
-                        }
-                        .tag(category.key)
-                    }
-                }
-                .pickerStyle(.menu)
-            }
-            
-            Section(String(localized: L10n.AddExpenseView.descriptionSection)) {
-                TextField(String(localized: L10n.AddExpenseView.notePlaceholder), text: $expenseViewModel.description, axis: .vertical)
-                    .lineLimit(3...6)
-            }
-            
-            if expenseViewModel.isEditing {
-                Button(role: .destructive) {
-                    isDeleteConfirmationPresented = true
-                } label: {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "trash")
-                        Text("Delete")
-                        Spacer()
-                    }
-                }
-            }
-        }
-        .task(id: expense?.id) {
-            expenseViewModel.configure(with: expense)
+            ExpenseFormFields(form: $viewModel.form, categories: viewModel.categories)
         }
         .task {
-            await expenseViewModel.loadCategories()
+            await viewModel.loadCategories()
         }
         .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
-            Task { await expenseViewModel.loadCategories() }
+            Task { await viewModel.loadCategories() }
         }
-        .onDisappear {
-            expenseViewModel.reset()
-        }
-        .navigationTitle(expenseViewModel.title)
+        .navigationTitle(Text(L10n.AddExpenseView.createTitle))
         .navigationBarTitleDisplayMode(.inline)
         .alert(Text(L10n.AddExpenseView.saveErrorTitle), isPresented: .init(
             get: { saveError != nil },
@@ -108,44 +32,28 @@ struct AddExpenseView: View {
         } message: {
             Text(saveError ?? String(localized: L10n.Shared.unexpectedError))
         }
-        .alert(Text(L10n.ExpenseDeletion.title), isPresented: $isDeleteConfirmationPresented) {
-            Button(String(localized: L10n.Shared.cancel), role: .cancel) {}
-            Button(String(localized: L10n.Shared.delete), role: .destructive) {
-                Task {
-                    do {
-                        try await expenseViewModel.delete()
-                        coordinator.dismiss()
-                    } catch {
-                        saveError = error.localizedDescription
-                    }
-                }
-            }
-        } message: {
-            Text(L10n.ExpenseDeletion.message)
-        }
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(String(localized: L10n.Shared.cancel), systemImage: AssetName.System.close) {
+            ToolbarItem(placement: .cancellationAction) {
+                Button(role: .close) {
                     coordinator.dismiss()
                 }
-                .accessibilityLabel(Text(L10n.AddExpenseView.closeAccessibilityLabel))
             }
 
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(String(localized: L10n.Shared.save), systemImage: AssetName.System.checkmark) {
+            ToolbarItem(placement: .confirmationAction) {
+                Button(role: .confirm) {
                     Task {
                         do {
-                            try await expenseViewModel.save()
-                            coordinator.dismiss()
+                            if try await viewModel.save() {
+                                Haptics.play(.success)
+                                coordinator.dismiss()
+                            }
                         } catch {
+                            Haptics.play(.error)
                             saveError = error.localizedDescription
                         }
                     }
                 }
-                .disabled(!expenseViewModel.canSave)
-                .buttonStyle(.borderedProminent)
-                .tint(.primary)
-                .accessibilityLabel(Text(L10n.AddExpenseView.saveAccessibilityLabel))
+                .disabled(!viewModel.canSave || viewModel.isSaving)
             }
         }
     }
@@ -153,8 +61,7 @@ struct AddExpenseView: View {
 
 #Preview {
     CoordinatorView {
-        AddExpenseView(expense: nil)
-            .environment(ExpenseViewModel(model: NOIRApp.sharedModelContainer))
+        AddExpenseView()
     }
     .environmentObject(Coordinator())
 }

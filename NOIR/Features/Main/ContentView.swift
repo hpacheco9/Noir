@@ -3,6 +3,7 @@
 //  NOIR
 //
 
+import StoreKit
 import SwiftData
 import SwiftUI
 
@@ -14,6 +15,12 @@ struct ContentView: View {
 
     @State private var expensePendingDeletion: ExpenseDTO?
 
+    @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var reviewTask: Task<Void, Never>?
+    /// The launch check runs once per launch, not on every return to the Home tab.
+    @State private var hasCheckedReviewOnLaunch = false
+
     var body: some View {
         List {
             expenseListContent
@@ -23,6 +30,30 @@ struct ContentView: View {
             await viewModel.fetchData()
         }
         .listStyle(.insetGrouped)
+        // Review prompt (see CLAUDE.md "Review prompt"). Onboarding can't trigger it: this view only exists once
+        // onboarding is complete.
+        .onChange(of: router.sheet == nil) { _, isClosed in
+            if isClosed {
+                scheduleReviewRequestIfEligible(after: .seconds(2))
+            } else {
+                cancelReviewRequest()
+            }
+        }
+        // Opening the app also counts as a break, so someone who logs only through Shortcuts (which can't ask, having
+        // no UI) is asked the next time they open NOIR: once on launch, then whenever the app comes back to the front.
+        .onAppear {
+            guard !hasCheckedReviewOnLaunch else { return }
+            hasCheckedReviewOnLaunch = true
+            scheduleReviewRequestIfEligible(after: .seconds(3))
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                scheduleReviewRequestIfEligible(after: .seconds(3))
+            } else {
+                cancelReviewRequest()
+            }
+        }
+        .onDisappear { cancelReviewRequest() }
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
             Task { await viewModel.fetchData() }
         }
@@ -48,7 +79,7 @@ struct ContentView: View {
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                accountButton
+                ProfileAvatarButton()
             }
 
             ToolbarItemGroup(placement: .confirmationAction) {
@@ -103,9 +134,8 @@ struct ContentView: View {
                     ExpenseRow(
                         expense: expense,
                         action: {
-                            router.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.90))
-                            let generator = UIImpactFeedbackGenerator(style: .light)
-                            generator.impactOccurred()
+                            router.present(MainRoutes.editExpense(expense), mode: .percentage(0.90))
+                            Haptics.play(.tap)
                         }
                     )
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -132,24 +162,34 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Toolbar
-    private var accountButton: some View {
-        ZStack {
-            Circle()
-                .fill(Color.gray)
-                
-            Text("H")
-                .font(.title2)
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-                .foregroundColor(.white)
+    // MARK: - Review prompt
+    /// Runs at a natural break, never inside the Save action: when a sheet on Home has fully closed, or when the app
+    /// opens or comes back to the front. Waits `delay`, then re-checks that nothing is presented and the app is still
+    /// active before asking.
+    private func scheduleReviewRequestIfEligible(after delay: Duration) {
+        cancelReviewRequest()
+        let store = ReviewPromptStore()
+        let version = AppVersion.current()
+        guard store.shouldRequestReview(currentVersion: version) else { return }
+
+        reviewTask = Task {
+            try? await Task.sleep(for: delay)
+            guard !Task.isCancelled,
+                  router.sheet == nil, router.fullScreen == nil,
+                  scenePhase == .active,
+                  store.shouldRequestReview(currentVersion: version)
+            else { return }
+            store.markPrompted(version: version)
+            requestReview()
         }
-        .onTapGesture {
-            router.present(MainRoutes.settings(), mode: .large)
-        }
-        .frame(width: 36, height: 36)
     }
 
+    private func cancelReviewRequest() {
+        reviewTask?.cancel()
+        reviewTask = nil
+    }
+
+    // MARK: - Toolbar
     private var periodFilterMenu: some View {
         Menu {
             ForEach(SpendingPeriod.allCases) { period in
@@ -174,8 +214,7 @@ struct ContentView: View {
     private var addExpenseButton: some View {
         Button {
             router.present(MainRoutes.addExpense(), mode: .percentage(0.75))
-            let generator = UIImpactFeedbackGenerator(style: .light)
-            generator.impactOccurred()
+            Haptics.play(.tap)
         } label: {
             Image(systemName: AssetName.System.add)
         }

@@ -12,31 +12,29 @@ struct AddExpenseIntent: AppIntent {
     static var description = IntentDescription("app_intent.description")
     static var openAppWhenRun = false
 
-    @Parameter(title: "app_intent.amount", requestValueDialog: "app_intent.amount_prompt")
-    var amount: Double
-
     @Parameter(title: "app_intent.name", requestValueDialog: "app_intent.name_prompt")
     var name: String
 
-    /// Optional: no category saves as Other. A deleted or unknown category is resolved by `entities(for:)` into a
-    /// stand-in that keeps its id, and `CategoryCatalog.resolvedKey` then falls back to Other.
+    @Parameter(title: "app_intent.amount", requestValueDialog: "app_intent.amount_prompt")
+    var amount: Double
+    
+    @Parameter(title: "app_intent.date", requestValueDialog: "app_intent.date_prompt")
+    var date: Date
+
     @Parameter(
         title: LocalizedStringResource("app_intent.category", table: "AppIntents"),
         requestValueDialog: IntentDialog(
             LocalizedStringResource("app_intent.category_prompt", table: "AppIntents")
         )
     )
-    var category: ExpenseCategoryEntity?
-
-    @Parameter(title: "app_intent.date", default: .now)
-    var date: Date
+    var category: ExpenseCategoryEntity
 
     @Parameter(title: "app_intent.note", default: "")
     var note: String
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        guard amount > 0 else {
+        guard amount.isFinite, amount > 0 else {
             throw AddExpenseIntentError.invalidAmount
         }
 
@@ -47,6 +45,31 @@ struct AddExpenseIntent: AppIntent {
 
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
 
+        if IntentSummaryPreference.isEnabled() {
+            let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
+            try await requestConfirmation(
+                actionName: .custom(
+                    acceptLabel: L10n.AppIntent.save,
+                    acceptAlternatives: [],
+                    denyLabel: L10n.AppIntent.cancel,
+                    denyAlternatives: []
+                ),
+                dialog: IntentDialog(
+                    full: L10n.AppIntent.confirmSpoken(
+                        amount: CurrencyPreference.string(for: amount, code: code),
+                        name: trimmedName
+                    ),
+                    supporting: L10n.AppIntent.summaryHeader
+                ),
+                snippetIntent: ExpenseSummarySnippetIntent(
+                    name: trimmedName,
+                    amount: amount,
+                    categoryName: category.name,
+                    date: date
+                )
+            )
+        }
+
         let modelContext = ModelContext(NOIRApp.sharedModelContainer)
         let expense = Expense(
             amount: amount,
@@ -56,10 +79,13 @@ struct AddExpenseIntent: AppIntent {
             expenseDescription: trimmedNote,
             createdAt: .now
         )
-        expense.categoryRawValue = CategoryCatalog.resolvedKey(category?.id, in: modelContext)
+        expense.categoryRawValue = CategoryCatalog.resolvedKey(category.id, in: modelContext)
 
         modelContext.insert(expense)
         try modelContext.save()
+
+        // Counts toward the review prompt, but never asks: an intent has no UI. Home asks at its next eligible moment.
+        ReviewPromptStore().recordCreatedExpense()
 
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         try? await NotificationService.shared.notifyExpenseAdded(name: trimmedName, amount: amount)

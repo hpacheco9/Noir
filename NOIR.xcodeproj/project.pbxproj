@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		FD5A00082F00000100A7F416 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD3136003014122C00874944 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD3136073014122C00874944;
+			remoteInfo = NOIR;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		FD0CB2D7305EF7FF00A7F416 /* NOIR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NOIR.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD5A00012F00000100A7F416 /* NOIRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NOIRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = NOIR;
 			sourceTree = "<group>";
 		};
+		FD5A00022F00000100A7F416 /* NOIRTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NOIRTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		FD3136053014122C00874944 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD5A00052F00000100A7F416 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,7 +69,9 @@
 			isa = PBXGroup;
 			children = (
 				FD31360A3014122C00874944 /* NOIR */,
+				FD5A00022F00000100A7F416 /* NOIRTests */,
 				FD0CB2D7305EF7FF00A7F416 /* NOIR.app */,
+				FD5A00012F00000100A7F416 /* NOIRTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,6 +100,29 @@
 			productReference = FD0CB2D7305EF7FF00A7F416 /* NOIR.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FD5A00032F00000100A7F416 /* NOIRTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD5A00092F00000100A7F416 /* Build configuration list for PBXNativeTarget "NOIRTests" */;
+			buildPhases = (
+				FD5A00042F00000100A7F416 /* Sources */,
+				FD5A00052F00000100A7F416 /* Frameworks */,
+				FD5A00062F00000100A7F416 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD5A00072F00000100A7F416 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				FD5A00022F00000100A7F416 /* NOIRTests */,
+			);
+			name = NOIRTests;
+			packageProductDependencies = (
+			);
+			productName = NOIRTests;
+			productReference = FD5A00012F00000100A7F416 /* NOIRTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -87,6 +135,10 @@
 				TargetAttributes = {
 					FD3136073014122C00874944 = {
 						CreatedOnToolsVersion = 26.6;
+					};
+					FD5A00032F00000100A7F416 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = FD3136073014122C00874944;
 					};
 				};
 			};
@@ -106,12 +158,20 @@
 			projectRoot = "";
 			targets = (
 				FD3136073014122C00874944 /* NOIR */,
+				FD5A00032F00000100A7F416 /* NOIRTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FD3136063014122C00874944 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD5A00062F00000100A7F416 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -128,7 +188,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FD5A00042F00000100A7F416 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD5A00072F00000100A7F416 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD3136073014122C00874944 /* NOIR */;
+			targetProxy = FD5A00082F00000100A7F416 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FD3136133014122D00874944 /* Debug */ = {
@@ -268,8 +343,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NOIR/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is required to take photos of your expenses.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Noir uses your location to attach a place to an expense.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -303,8 +376,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NOIR/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is required to take photos of your expenses.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Noir uses your location to attach a place to an expense.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -328,6 +399,48 @@
 			};
 			name = Release;
 		};
+		FD5A000A2F00000100A7F416 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "henrique-dev.NOIRTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NOIR.app/NOIR";
+			};
+			name = Debug;
+		};
+		FD5A000B2F00000100A7F416 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "henrique-dev.NOIRTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NOIR.app/NOIR";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -345,6 +458,15 @@
 			buildConfigurations = (
 				FD3136163014122D00874944 /* Debug */,
 				FD3136173014122D00874944 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD5A00092F00000100A7F416 /* Build configuration list for PBXNativeTarget "NOIRTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD5A000A2F00000100A7F416 /* Debug */,
+				FD5A000B2F00000100A7F416 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -53,19 +53,18 @@ struct CategoriesView: View {
         .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
             Task { await viewModel.load() }
         }
-        .confirmationDialog(
+        .alert(
             Text(L10n.Categories.deleteTitle),
             isPresented: .init(
                 get: { pendingDeletion != nil },
                 set: { if !$0 { pendingDeletion = nil } }
             ),
-            titleVisibility: .visible,
             presenting: pendingDeletion
         ) { category in
+            Button(String(localized: L10n.Shared.cancel), role: .cancel) {}
             Button(String(localized: L10n.Shared.delete), role: .destructive) {
                 Task { await viewModel.delete(category) }
             }
-            Button(String(localized: L10n.Shared.cancel), role: .cancel) {}
         } message: { _ in
             Text(L10n.Categories.deleteMessage)
         }

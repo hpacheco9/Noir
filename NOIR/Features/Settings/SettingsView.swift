@@ -9,38 +9,49 @@ import SwiftData
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+    @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
+    /// The review store isn't observable, so its state is copied here on appear and after each developer action.
+    @State private var reviewStatusText = ""
 #endif
+
+    /// Not `.primary`: in dark mode that is a white "on" track under the white thumb. Black in light mode, mid gray in
+    /// dark mode keeps it monochrome with the thumb visible in both.
+    static let toggleTint = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? .systemGray : .label })
+
+    private static let showsProCard = false
 
     var body: some View {
         Form {
-            Section {
-                HStack(spacing: 12) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(L10n.NoirPro.title)
-                            .font(.title2)
-                            .fontWeight(.bold)
+            if Self.showsProCard {
+                Section {
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(L10n.NoirPro.title)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                            Text(L10n.NoirPro.description)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                         
-                        Text(L10n.NoirPro.description)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Spacer()
+                        Spacer()
 
-                    Button {
-                   
-                    } label: {
-                        Text(L10n.NoirPro.upgrade)
-                            .foregroundColor(Color(uiColor: .systemBackground))
-                            .fontWeight(.semibold)
-                            .fontDesign(.rounded)
+                        Button {
+                       
+                        } label: {
+                            Text(L10n.NoirPro.upgrade)
+                                .foregroundColor(Color(uiColor: .systemBackground))
+                                .fontWeight(.semibold)
+                                .fontDesign(.rounded)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.primary)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.primary)
+                    .padding(.vertical, 8)
                 }
-                .padding(.vertical, 8)
             }
 
             Section(String(localized: L10n.Profile.title)) {
@@ -87,6 +98,18 @@ struct SettingsView: View {
                     }
                 }
 
+                if HapticsPreference.isSupportedByHardware {
+                    Toggle(isOn: $hapticsEnabled) {
+                        Label {
+                            Text(L10n.Preferences.haptics)
+                        } icon: {
+                            Image(systemName: AssetName.System.haptics)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .tint(Self.toggleTint)
+                }
+
                 SettingsRow(
                     title: L10n.Preferences.shortcuts,
                     systemImage: AssetName.System.shortcuts
@@ -126,6 +149,8 @@ struct SettingsView: View {
             } header: {
                 Text(verbatim: "Developer")
             }
+
+            reviewPromptDeveloperSection
 #endif
         }
         .navigationTitle(Text(L10n.SettingsView.title))
@@ -139,6 +164,58 @@ struct SettingsView: View {
         }
     }
 }
+
+#if DEBUG
+// MARK: - Developer: review prompt
+
+private extension SettingsView {
+    /// Checks the App Store review prompt without logging real expenses. Debug builds always show the system prompt
+    /// when asked (TestFlight never does).
+    var reviewPromptDeveloperSection: some View {
+        let store = ReviewPromptStore()
+
+        return Section {
+            Text(verbatim: reviewStatusText)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .onAppear { reviewStatusText = reviewStatus(store) }
+
+            Button {
+                store.simulateEligible()
+                reviewStatusText = reviewStatus(store)
+            } label: {
+                Label {
+                    Text(verbatim: "Simulate 3 Shortcut expenses")
+                } icon: {
+                    Image(systemName: AssetName.System.review)
+                }
+            }
+
+            Button(role: .destructive) {
+                store.reset()
+                reviewStatusText = reviewStatus(store)
+            } label: {
+                Label {
+                    Text(verbatim: "Reset review prompt")
+                } icon: {
+                    Image(systemName: AssetName.System.reset)
+                }
+            }
+        } header: {
+            Text(verbatim: "Review prompt")
+        } footer: {
+            Text(verbatim: "After simulating, close Settings, or send the app to the background and open it again: the prompt appears after a few seconds. It asks once per version.")
+        }
+    }
+
+    func reviewStatus(_ store: ReviewPromptStore) -> String {
+        let asked = store.lastPromptDate.map {
+            "asked for \(store.lastPromptedVersion ?? "?") on \($0.formatted(date: .abbreviated, time: .shortened))"
+        } ?? "never asked"
+        return "\(store.createdCount) expenses counted · \(asked) · version \(AppVersion.current())"
+    }
+}
+#endif
 
 struct SettingsRow: View {
     let title: LocalizedStringResource

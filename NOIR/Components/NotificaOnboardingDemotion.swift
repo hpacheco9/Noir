@@ -115,7 +115,7 @@ struct NotificationPanelDemo: View {
                    }
                }
            }
-           .sensoryFeedback(.impact(weight: .light), trigger: isVisible)
+           .hapticFeedback(.tap, trigger: isVisible)
            .task { await play() }
 
    }
@@ -126,12 +126,6 @@ struct NotificationPanelDemo: View {
        try? await Task.sleep(for: .seconds(0.8))
        withAnimation(entrance) { isVisible = true }
    }
-}
-
-struct GlassNotificationAction: Identifiable {
-    let id = UUID()
-    let title: String
-    let systemImage: String
 }
 
 // MARK: - Glass background (Liquid Glass on iOS 26, material fallback before)
@@ -152,7 +146,6 @@ struct GlassNotificationCard<Icon: View>: View {
     let timestamp: String
     let title: String
     let message: String
-    var actions: [GlassNotificationAction] = []
     @ViewBuilder var icon: () -> Icon
 
     private let cornerRadius: CGFloat = 22

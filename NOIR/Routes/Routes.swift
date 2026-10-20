@@ -6,22 +6,8 @@
 //
 
 import SwiftUI
-import AVFoundation
 
 enum MainRoutes {
-    static func search(viewModel: SearchViewModel) -> any RouteRepresentable {
-        struct SearchViewRoute: RouteRepresentable {
-            let routeId = "search"
-            let viewModel: SearchViewModel
-
-            func routeView() -> any View {
-                SearchView(viewModel: viewModel)
-            }
-        }
-
-        return SearchViewRoute(viewModel: viewModel)
-    }
-    
     static func settings() -> any RouteRepresentable {
         struct SettingsViewRoute: RouteRepresentable {
             let routeId: String = "settings"
@@ -34,49 +20,31 @@ enum MainRoutes {
         return SettingsViewRoute()
     }
     
-    static func search(nameSpace: Namespace.ID) -> any RouteRepresentable {
-            struct SearchViewRoute: RouteRepresentable {
-                let routeId: String = "search"
-                let nameSpace: Namespace.ID
-
-                @ViewBuilder
-                func routeView() -> any View {
-                    SearchView(viewModel: SearchViewModel(model: NOIRApp.sharedModelContainer))
-                }
-            }
-            
-            return SearchViewRoute(nameSpace: nameSpace)
-    }
-    
     static func addExpense() -> any RouteRepresentable {
-            struct addExpenseViewRoute: RouteRepresentable {
-                let routeId: String = "add-expense"
+        struct AddExpenseViewRoute: RouteRepresentable {
+            let routeId: String = "add-expense"
 
-                @ViewBuilder
-                func routeView() -> any View {
-                    AddExpenseView(expense: nil)
-                }
+            func routeView() -> any View {
+                AddExpenseView()
             }
-            
-            return addExpenseViewRoute()
+        }
+
+        return AddExpenseViewRoute()
     }
-    
-    static func editExpense(expense: ExpenseDTO?) -> any RouteRepresentable {
-            struct editExpenseViewRoute: RouteRepresentable {
-                let routeId: String = "add-expense"
-                let expense: ExpenseDTO?
 
-                @ViewBuilder
-                func routeView() -> any View {
-                    AddExpenseView(expense: expense)
-                }
+    static func editExpense(_ expense: ExpenseDTO) -> any RouteRepresentable {
+        struct EditExpenseViewRoute: RouteRepresentable {
+            let routeId: String
+            let expense: ExpenseDTO
+
+            func routeView() -> any View {
+                EditExpenseView(expense: expense)
             }
-            
-            return editExpenseViewRoute(expense: expense)
+        }
+
+        return EditExpenseViewRoute(routeId: "edit-expense-\(expense.id)", expense: expense)
     }
 }
-
-
 
 enum SettingsRoutes {
     static func Profile() -> any RouteRepresentable {

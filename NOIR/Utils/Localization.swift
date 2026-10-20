@@ -10,15 +10,59 @@ import Foundation
 enum L10n {
     enum Shared {
         static let cancel: LocalizedStringResource = "shared.cancel"
-        static let save: LocalizedStringResource = "shared.save"
-        static let close: LocalizedStringResource = "shared.close"
         static let delete: LocalizedStringResource = "shared.delete"
         static let ok: LocalizedStringResource = "shared.ok"
         static let unexpectedError: LocalizedStringResource = "shared.unexpected_error"
     }
 
+    enum Tab {
+        static let home: LocalizedStringResource = "tab.home"
+        static let dashboard: LocalizedStringResource = "tab.dashboard"
+        static let search: LocalizedStringResource = "tab.search"
+    }
+
+    enum Dashboard {
+        static let title: LocalizedStringResource = "dashboard.title"
+        static let periodPicker: LocalizedStringResource = "dashboard.period_picker"
+        static let byCategory: LocalizedStringResource = "dashboard.by_category"
+        /// The slice that sums the smallest categories. Not "Other": that is a built-in category.
+        static let rest: LocalizedStringResource = "dashboard.rest"
+        static let emptyTitle: LocalizedStringResource = "dashboard.empty_title"
+        static let emptyDescription: LocalizedStringResource = "dashboard.empty_description"
+        static let chartLabel: LocalizedStringResource = "dashboard.chart_label"
+        static let amount: LocalizedStringResource = "dashboard.amount"
+        static let category: LocalizedStringResource = "dashboard.category"
+        static let rowHint: LocalizedStringResource = "dashboard.row_hint"
+
+        static let errorTitle: LocalizedStringResource = "dashboard.error_title"
+        static let errorDescription: LocalizedStringResource = "dashboard.error_description"
+        static let retry: LocalizedStringResource = "dashboard.retry"
+
+        /// "in All others": the subtitle for a category that is collapsed into the rest slice.
+        static func inRest(_ restTitle: String) -> LocalizedStringResource {
+            "dashboard.in_rest \(restTitle)"
+        }
+
+        /// "€45,00, 23% of total".
+        static func value(amount: String, percent: String) -> LocalizedStringResource {
+            "dashboard.value \(amount) \(percent)"
+        }
+
+        /// The rest slice's value, naming the categories it sums.
+        static func valueWithMembers(amount: String, percent: String, members: String) -> LocalizedStringResource {
+            "dashboard.value_with_members \(amount) \(percent) \(members)"
+        }
+
+        static func announcement(period: String, total: String) -> LocalizedStringResource {
+            "dashboard.announcement \(period) \(total)"
+        }
+
+        static func expenseCount(_ count: Int) -> LocalizedStringResource {
+            "dashboard.expense_count \(count)"
+        }
+    }
+
     enum MainView {
-        static let title: LocalizedStringResource = "main_view.title"
         static let emptyTitle: LocalizedStringResource = "main_view.empty_title"
         static let emptyDescription: LocalizedStringResource = "main_view.empty_description"
         static let latestTransactions: LocalizedStringResource = "main_view.latest_transactions"
@@ -50,6 +94,8 @@ enum L10n {
     enum Preferences {
         static let title: LocalizedStringResource = "preferences.title"
         static let currency: LocalizedStringResource = "preferences.currency"
+        static let haptics: LocalizedStringResource = "preferences.haptics"
+        static let intentSummary: LocalizedStringResource = "preferences.intent_summary"
         static let shortcuts: LocalizedStringResource = "preferences.shortcuts"
     }
 
@@ -123,8 +169,6 @@ enum L10n {
         static let descriptionSection: LocalizedStringResource = "add_expense.description_section"
         static let notePlaceholder: LocalizedStringResource = "add_expense.note_placeholder"
         static let saveErrorTitle: LocalizedStringResource = "add_expense.save_error_title"
-        static let closeAccessibilityLabel: LocalizedStringResource = "add_expense.close_accessibility_label"
-        static let saveAccessibilityLabel: LocalizedStringResource = "add_expense.save_accessibility_label"
     }
 
     enum ExpenseDeletion {
@@ -137,6 +181,10 @@ enum L10n {
         static let `continue`: LocalizedStringResource = "onboarding.continue"
         static let setBudget: LocalizedStringResource = "onboarding.set_budget"
         static let finishing: LocalizedStringResource = "onboarding.finishing"
+        static let nameTitle: LocalizedStringResource = "onboarding.name.title"
+        static let nameSubtitle: LocalizedStringResource = "onboarding.name.subtitle"
+        static let nameGreeting: LocalizedStringResource = "onboarding.name.greeting"
+        static let namePlaceholder: LocalizedStringResource = "onboarding.name.placeholder"
         static let notificationsTitle: LocalizedStringResource = "onboarding.notifications.title"
         static let notificationsSubtitle: LocalizedStringResource = "onboarding.notifications.subtitle"
         static let enableNotifications: LocalizedStringResource = "onboarding.notifications.enable"
@@ -167,7 +215,13 @@ enum L10n {
         static let today: LocalizedStringResource = "spending_period.today"
         static let week: LocalizedStringResource = "spending_period.week"
         static let month: LocalizedStringResource = "spending_period.month"
+        static let year: LocalizedStringResource = "spending_period.year"
         static let allTime: LocalizedStringResource = "spending_period.all_time"
+        static let shortDay: LocalizedStringResource = "spending_period.short.day"
+        static let shortWeek: LocalizedStringResource = "spending_period.short.week"
+        static let shortMonth: LocalizedStringResource = "spending_period.short.month"
+        static let shortYear: LocalizedStringResource = "spending_period.short.year"
+        static let shortAllTime: LocalizedStringResource = "spending_period.short.all_time"
     }
 
     enum SpendingOverview {
@@ -177,18 +231,20 @@ enum L10n {
     }
 
     enum AppIntent {
-        static let title: LocalizedStringResource = "app_intent.title"
-        static let description: LocalizedStringResource = "app_intent.description"
-        static let amount: LocalizedStringResource = "app_intent.amount"
-        static let amountPrompt: LocalizedStringResource = "app_intent.amount_prompt"
-        static let name: LocalizedStringResource = "app_intent.name"
-        static let namePrompt: LocalizedStringResource = "app_intent.name_prompt"
-        static let date: LocalizedStringResource = "app_intent.date"
-        static let note: LocalizedStringResource = "app_intent.note"
+        // Title, description and parameter names are literal keys in `AddExpenseIntent` (App Intents metadata must
+        // be literals), still translated in Localizable.xcstrings; only the runtime messages need constants.
         static let invalidAmount: LocalizedStringResource = "app_intent.invalid_amount"
         static let emptyName: LocalizedStringResource = "app_intent.empty_name"
         static let expenseSaved: LocalizedStringResource = "app_intent.expense_saved"
-        static let shortcutPhraseAdd: LocalizedStringResource = "app_intent.shortcut_phrase_add"
-        static let shortcutPhraseRecord: LocalizedStringResource = "app_intent.shortcut_phrase_record"
+        static let summaryHeader: LocalizedStringResource = "app_intent.summary.header"
+        /// "Save 12,50 € for Lunch?"
+        static func confirmSpoken(amount: String, name: String) -> LocalizedStringResource {
+            "app_intent.summary.spoken \(amount) \(name)"
+        }
+        static let summaryTitle: LocalizedStringResource = "app_intent.summary.title"
+        static let category = LocalizedStringResource("app_intent.category", table: "AppIntents")
+        static let date: LocalizedStringResource = "app_intent.date"
+        static let save: LocalizedStringResource = "app_intent.summary.save"
+        static let cancel: LocalizedStringResource = "app_intent.summary.cancel"
     }
 }

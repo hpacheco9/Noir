@@ -15,7 +15,6 @@ final class MainViewModel {
     let repository: ExpenseRepositoryProvider
     let sideRepository: ExpenseRepositoryProvider
 
-    var isCameraSelected: Bool = false
     enum State {
         case loading
         case empty
@@ -97,7 +96,8 @@ final class MainViewModel {
     func delete(id: PersistentIdentifier) async {
         do {
             try await repository.perform { try await $0.delete(id: id) }
-            await fetchData()
+            // Home reloads from its own listener; Search and Dashboard need the notification too.
+            NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         } catch {
             print(error)
         }

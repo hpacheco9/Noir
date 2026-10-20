@@ -35,11 +35,7 @@ final class OnboardingViewModel {
     var step: Step = .welcome
     private(set) var notificationPermission: NotificationPermission = .undetermined
     var name = ""
-    var motivation: String?
     var budget: Double = 1000
-    var firstExpenseName = ""
-    var firstExpenseAmount = Decimal.zero
-    var firstExpenseCategory: ExpenseCategory = .other
 
     private let notificationService: NotificationService
 
@@ -79,28 +75,16 @@ final class OnboardingViewModel {
         }
     }
 
-    var isFirstStep: Bool { step == .welcome }
     var isLastStep: Bool { step == .notifications }
-
-    /// The first-expense steps aren't wired into `Step` yet, so only save one the user actually filled in.
-    var hasFirstExpense: Bool {
-        !firstExpenseName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && firstExpenseAmount > 0
-    }
 
     func advance() {
         guard canAdvance, !isLastStep else { return }
         step = Step(rawValue: step.rawValue + 1) ?? step
     }
 
-    func goBack() {
-        guard !isFirstStep else { return }
-        step = Step(rawValue: step.rawValue - 1) ?? step
-    }
-
     func persist() {
         UserDefaults.standard.set(name.trimmingCharacters(in: .whitespacesAndNewlines), forKey: "profile.name")
         UserDefaults.standard.set(budget, forKey: "profile.monthlyBudget")
-        if let motivation { UserDefaults.standard.set(motivation, forKey: "profile.motivation") }
     }
 
     /// Asks for notification permission. Never throws: a denial or failure must not block onboarding.
@@ -113,34 +97,12 @@ final class OnboardingViewModel {
         }
     }
 
-    /// Finishes onboarding, optionally asking for notification permission first.
-    /// The permission outcome doesn't affect completion; only saving can throw.
-    func complete(requestingNotifications: Bool) async throws {
+    /// Finishes onboarding (saves the profile), optionally asking for notification permission first.
+    /// The permission outcome doesn't affect completion.
+    func complete(requestingNotifications: Bool) async {
         if requestingNotifications {
             await requestNotificationAuthorization()
         }
-        try await complete()
-    }
-
-    func complete() async throws {
         persist()
-
-        guard hasFirstExpense else { return }
-
-        let amount = NSDecimalNumber(decimal: firstExpenseAmount).doubleValue
-        let name = firstExpenseName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let categoryKey = firstExpenseCategory.rawValue
-        let provider = ExpenseRepositoryProvider(container: NOIRApp.sharedModelContainer)
-        try await provider.perform {
-            try await $0.save(
-                id: nil,
-                amount: amount,
-                name: name,
-                date: .now,
-                categoryKey: categoryKey,
-                description: ""
-            )
-        }
-        NotificationCenter.default.post(name: .expensesDidChange, object: nil)
     }
 }

@@ -51,7 +51,8 @@ struct SpendingOverviewView: View {
                 BarMark(
                     x: .value(String(localized: L10n.SpendingOverview.chartPeriod), point.label),
                     y: .value(String(localized: L10n.SpendingOverview.chartAmount), barsVisible ? amount : 0),
-                    width: .fixed(30)
+                    // 30pt bars overlap past ~7 (Year's 12 months, busy days, many years): share the width instead.
+                    width: viewModel.dataPoints.count > 7 ? .ratio(0.6) : .fixed(30)
                 )
                 .cornerRadius(6)
                 .opacity(barsVisible ? 1 : 0)
@@ -72,16 +73,16 @@ struct SpendingOverviewView: View {
             .chartYScale(domain: 0...maxAmount)
             .animation(barsVisible ? .spring(duration: 0.6, bounce: 0.15) : nil, value: barsVisible)
             .chartXSelection(value: $selectedLabel)
-            .onChange(of: selectedLabel) { _, newValue in
-                guard newValue != nil else { return }
-
-                let generator = UIImpactFeedbackGenerator(style: .light)
-                generator.impactOccurred()
-            }
+            .hapticFeedback(.selection, trigger: selectedLabel) { _, new in new != nil }
             .frame(height: 230)
             .chartXAxis {
-                AxisMarks(preset: .aligned) { _ in
-                    AxisValueLabel()
+                AxisMarks(preset: .aligned) { value in
+                    AxisValueLabel {
+                        // Initials only on the axis: as x values they repeat (J, J) and would merge bars.
+                        if let label = value.as(String.self) {
+                            Text(verbatim: viewModel.appliedPeriod == .year ? String(label.prefix(1)).uppercased() : label)
+                        }
+                    }
                 }
             }
             .chartYAxis {

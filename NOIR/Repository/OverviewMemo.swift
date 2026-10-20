@@ -23,7 +23,7 @@ nonisolated struct OverviewMemo: Codable, Sendable, Equatable {
     var computedAt: Date
 }
 
-/// UserDefaults-backed memo storage (`overview.memo.v1.<period>`), safe to use from several repository instances.
+/// UserDefaults-backed memo storage (`overview.memo.v2.<period>`), safe to use from several repository instances.
 ///
 /// Writes are two-phase so a load can never save a memo computed around a write it did not see:
 /// `beginWrite()` before the store is changed, then `finishWrite(...)` (or `cancelWrite()`) once it is known.
@@ -35,12 +35,17 @@ nonisolated enum OverviewMemoStore {
     }
     private static let state = OSAllocatedUnfairLock(initialState: State())
 
-    /// Versioned: the unversioned keys of earlier builds are ignored and deleted.
-    static func key(_ period: SpendingPeriod) -> String { "overview.memo.v1.\(period)" }
+    /// Where memos live: `.standard`, or the suite tests bind with `$suiteName.withValue`.
+    @TaskLocal static var suiteName: String?
+    private static var defaults: UserDefaults { suiteName.flatMap(UserDefaults.init(suiteName:)) ?? .standard }
+
+    /// Versioned: the keys of earlier builds (unversioned, v1) are ignored and deleted.
+    static func key(_ period: SpendingPeriod) -> String { "overview.memo.v2.\(period)" }
 
     private static let legacyCleanup: Void = {
         for period in SpendingPeriod.allCases {
             UserDefaults.standard.removeObject(forKey: "overview.memo.\(period)")
+            UserDefaults.standard.removeObject(forKey: "overview.memo.v1.\(period)")
         }
     }()
 
@@ -48,7 +53,7 @@ nonisolated enum OverviewMemoStore {
 
     static func load(_ period: SpendingPeriod) -> OverviewMemo? {
         _ = legacyCleanup
-        guard let data = UserDefaults.standard.data(forKey: key(period)) else { return nil }
+        guard let data = defaults.data(forKey: key(period)) else { return nil }
         return try? JSONDecoder().decode(OverviewMemo.self, from: data)
     }
 
@@ -57,14 +62,7 @@ nonisolated enum OverviewMemoStore {
         state.withLock { state in
             guard state.generation == generation, state.inFlight == 0,
                   let data = try? JSONEncoder().encode(memo) else { return }
-            UserDefaults.standard.set(data, forKey: key(period))
-        }
-    }
-
-    static func remove(_ period: SpendingPeriod) {
-        state.withLock { state in
-            state.generation += 1
-            UserDefaults.standard.removeObject(forKey: key(period))
+            defaults.set(data, forKey: key(period))
         }
     }
 
@@ -98,12 +96,15 @@ nonisolated enum OverviewMemoStore {
                 guard var memo = decodeStored(period) else { continue }
 
                 guard
-                    let layout = SpendingBuckets.layout(for: period, calendar: calendar, now: memo.computedAt),
+                    let layout = SpendingBuckets.layout(
+                        for: period, calendar: calendar, now: memo.computedAt,
+                        earliest: memo.windowStart, latest: memo.windowEnd.addingTimeInterval(-1)
+                    ),
                     layout.window.start == memo.windowStart,
                     layout.window.end == memo.windowEnd,
                     layout.starts.count == memo.buckets.count
                 else {
-                    UserDefaults.standard.removeObject(forKey: key(period))
+                    defaults.removeObject(forKey: key(period))
                     continue
                 }
 
@@ -119,9 +120,9 @@ nonisolated enum OverviewMemoStore {
                 }
 
                 if consistent, let data = try? JSONEncoder().encode(memo) {
-                    UserDefaults.standard.set(data, forKey: key(period))
+                    defaults.set(data, forKey: key(period))
                 } else {
-                    UserDefaults.standard.removeObject(forKey: key(period))
+                    defaults.removeObject(forKey: key(period))
                 }
             }
         }
@@ -130,7 +131,7 @@ nonisolated enum OverviewMemoStore {
     // MARK: Private (call with the lock held)
 
     private static func decodeStored(_ period: SpendingPeriod) -> OverviewMemo? {
-        guard let data = UserDefaults.standard.data(forKey: key(period)) else { return nil }
+        guard let data = defaults.data(forKey: key(period)) else { return nil }
         return try? JSONDecoder().decode(OverviewMemo.self, from: data)
     }
 }

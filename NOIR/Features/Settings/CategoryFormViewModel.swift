@@ -7,6 +7,14 @@ import Foundation
 import Observation
 import SwiftUI
 
+/// What `CategoryFormViewModel.save()` did, so the view reacts (haptic, dismiss) only to a real result.
+enum CategorySaveOutcome: Equatable {
+    case saved
+    /// Nothing was attempted (nothing to save, or a save is already in flight).
+    case skipped
+    case failed
+}
+
 @MainActor
 @Observable
 final class CategoryFormViewModel {
@@ -149,10 +157,11 @@ final class CategoryFormViewModel {
     }
 
     /// Creates or updates the category and posts the change notifications. Returns whether it was saved.
-    func save() async -> Bool {
-        guard canSave else { return false }
+    func save() async -> CategorySaveOutcome {
+        guard canSave else { return .skipped }
         isWorking = true
         defer { isWorking = false }
+        errorMessage = nil
 
         let name = trimmedName
         let symbol = symbol
@@ -169,7 +178,7 @@ final class CategoryFormViewModel {
                 }
                 NotificationCenter.default.post(name: .categoriesDidChange, object: nil)
                 NotificationCenter.default.post(name: .expensesDidChange, object: nil)
-                return true
+                return .saved
             }
             if let id = editingCategory?.customID {
                 _ = try await repository.perform {
@@ -178,13 +187,13 @@ final class CategoryFormViewModel {
                 // Home and Search rows show the category's name, icon and colour.
                 NotificationCenter.default.post(name: .categoriesDidChange, object: nil)
                 NotificationCenter.default.post(name: .expensesDidChange, object: nil)
-                return true
+                return .saved
             }
             _ = try await repository.perform {
                 try await $0.createCategory(name: name, symbol: symbol, color: color ?? CategoryColor.allCases[0], reservedNames: reserved)
             }
             NotificationCenter.default.post(name: .categoriesDidChange, object: nil)
-            return true
+            return .saved
         } catch CategoryError.duplicateName {
             errorMessage = String(localized: L10n.NewCategory.duplicateError)
         } catch CategoryError.emptyName {
@@ -192,6 +201,6 @@ final class CategoryFormViewModel {
         } catch {
             errorMessage = String(localized: L10n.NewCategory.saveError)
         }
-        return false
+        return .failed
     }
 }

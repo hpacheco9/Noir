@@ -34,8 +34,17 @@ final class SearchViewModel {
     @ObservationIgnored private let querySubject = PassthroughSubject<String, Never>()
     @ObservationIgnored private var subscriptions = Set<AnyCancellable>()
 
-    init(model: ModelContainer, calendar: Calendar = .current) {
-        repository = ExpenseRepositoryProvider(container: model)
+    /// Deletes one expense from the store. Injectable because the repository's delete also adjusts Home's overview
+    /// memos in `UserDefaults.standard`, which tests must not touch.
+    typealias Deleter = @Sendable (PersistentIdentifier) async throws -> Void
+    private let deleteExpense: Deleter
+
+    init(model: ModelContainer, calendar: Calendar = .current, deleter: Deleter? = nil) {
+        let repository = ExpenseRepositoryProvider(container: model)
+        self.repository = repository
+        self.deleteExpense = deleter ?? { id in
+            try await repository.perform { try await $0.delete(id: id) }
+        }
         self.calendar = calendar
         querySubject
             .removeDuplicates()
@@ -91,6 +100,22 @@ final class SearchViewModel {
             rebuildSections()
         } catch {
             guard requestID == id else { return }
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    /// Removes the row at once (so the swipe animates), deletes it, then tells every screen (Home, Dashboard, and
+    /// this search, which re-runs the query). On failure the query is re-run to bring the row back.
+    func delete(id: PersistentIdentifier) async {
+        loadedExpenses.removeAll { $0.id == id }
+        rebuildSections()
+
+        do {
+            try await deleteExpense(id)
+            // `object: self` still reaches every `object: nil` listener; it lets a test tell this post apart.
+            NotificationCenter.default.post(name: .expensesDidChange, object: self)
+        } catch {
+            await search(loadedQuery)
             errorMessage = error.localizedDescription
         }
     }

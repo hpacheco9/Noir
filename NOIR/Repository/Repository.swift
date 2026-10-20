@@ -40,7 +40,21 @@ actor ExpenseRepository: ModelActor {
         now: Date = .now,
         calendar: Calendar = .current
     ) throws -> ChartResult {
-        guard let layout = SpendingBuckets.layout(for: period, calendar: calendar, now: now) else {
+        // All Time spans the oldest to the newest expense's year: a row added or moved past either end changes the
+        // window, so FULL.
+        var earliest: Date?
+        var latest: Date?
+        if period == .allTime {
+            var oldestDescriptor = FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date)])
+            oldestDescriptor.fetchLimit = 1
+            earliest = try modelContext.fetch(oldestDescriptor).first?.date
+            var newestDescriptor = FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+            newestDescriptor.fetchLimit = 1
+            latest = try modelContext.fetch(newestDescriptor).first?.date
+        }
+        guard let layout = SpendingBuckets.layout(
+            for: period, calendar: calendar, now: now, earliest: earliest, latest: latest
+        ) else {
             return ChartResult(points: [], total: 0)
         }
 
@@ -143,6 +157,20 @@ actor ExpenseRepository: ModelActor {
         let start = interval.start
         let end = interval.end
         return #Predicate<Expense> { $0.date >= start && $0.date < end }
+    }
+
+    /// Spending per category for `period` (unbounded for `.allTime`).
+    /// Reads rows only; the overview memo is not involved.
+    func categoryBreakdown(period: SpendingPeriod, now: Date = .now, calendar: Calendar = .current) throws -> CategoryBreakdown {
+        let predicate = period.dateInterval(calendar: calendar, now: now).map(Self.datePredicate)
+        var descriptor = FetchDescriptor<Expense>(predicate: predicate)
+        descriptor.propertiesToFetch = [\.amount, \.categoryRawValue]
+        // Streams the rows in batches, so a large all-time read never holds them all at once.
+        var accumulator = CategoryBreakdown.Accumulator()
+        try modelContext.enumerate(descriptor, batchSize: 1000) { expense in
+            accumulator.add(key: expense.categoryRawValue, amount: expense.amount)
+        }
+        return accumulator.finish(categories: try categoryIndex())
     }
 
     func fetchPage(query: String, offset: Int, limit: Int) throws -> [ExpenseDTO] {

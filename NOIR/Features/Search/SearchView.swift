@@ -9,50 +9,19 @@ struct SearchView: View {
         self.viewModel = viewModel
     }
 
+    /// The row the user swiped to delete; drives the confirmation alert.
+    @State private var expensePendingDeletion: ExpenseDTO?
+
     var body: some View {
-        Group {
-            if viewModel.isLoading && viewModel.sections.isEmpty {
-                ProgressView()
-            } else if viewModel.sections.isEmpty {
-                UnavailableView(
-                    viewModel.query.isEmpty
-                        ? String(localized: L10n.SearchView.emptyTitle)
-                        : "No expenses found",
-                    systemImage: AssetName.System.search,
-                    description: viewModel.query.isEmpty
-                        ? String(localized: L10n.SearchView.emptyDescription)
-                        : "Try a different expense name."
-                )
-            } else {
-                List {
-                    ForEach(viewModel.sections) { section in
-                        Section(sectionTitle(for: section.date)) {
-                            ForEach(section.expenses) { expense in
-                                ExpenseRow(expense: expense) {
-                                    coordinator.present(MainRoutes.editExpense(expense: expense), mode: .percentage(0.75))
-                                }
-                                .transition(
-                                    .asymmetric(
-                                        insertion: .opacity.combined(with: .offset(y: 12)),
-                                        removal: .opacity.combined(with: .scale(scale: 0.96))
-                                    )
-                                )
-                                .onAppear {
-                                    Task {
-                                        await viewModel.loadMoreIfNeeded(after: expense)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                .animation(
-                    .spring(response: 0.35, dampingFraction: 0.86),
-                    value: resultIDs
-                )
-                .listStyle(.insetGrouped)
-            }
+        // Every state (loading, empty, results) lives inside the List, so the screen scrolls whatever it shows.
+        List {
+            content
         }
+        .listStyle(.insetGrouped)
+        .animation(
+            .spring(response: 0.35, dampingFraction: 0.86),
+            value: resultIDs
+        )
         .searchable(
             text: $viewModel.query,
             placement: .navigationBarDrawer(displayMode: .always),
@@ -78,26 +47,95 @@ struct SearchView: View {
         } message: {
             Text(viewModel.errorMessage ?? "")
         }
+        .alert(
+            Text(L10n.ExpenseDeletion.title),
+            isPresented: Binding(
+                get: { expensePendingDeletion != nil },
+                set: { if !$0 { expensePendingDeletion = nil } }
+            ),
+            presenting: expensePendingDeletion
+        ) { expense in
+            Button(String(localized: L10n.Shared.cancel), role: .cancel) {
+                expensePendingDeletion = nil
+            }
+            Button(String(localized: L10n.Shared.delete), role: .destructive) {
+                expensePendingDeletion = nil
+                Task { await viewModel.delete(id: expense.id) }
+            }
+        } message: { _ in
+            Text(L10n.ExpenseDeletion.message)
+        }
         .toolbar {
             ToolbarItem(placement: .confirmationAction){
-                ZStack {
-                    Circle()
-                        .fill(Color.gray)
-                        
-                    Text("H")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .fontDesign(.rounded)
-                        .foregroundColor(.white)
-                }
-                .onTapGesture {
-                   coordinator.present(MainRoutes.settings(), mode: .large)
-                }
-                .frame(width: 36, height: 36)
+                ProfileAvatarButton()
             }
         }
-        .toolbarTitleDisplayMode(.inlineLarge)
         .navigationTitle(L10n.SearchView.title)
+    }
+
+    // MARK: - Content
+
+    @ViewBuilder
+    private var content: some View {
+        if viewModel.isLoading && viewModel.sections.isEmpty {
+            Section {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+                    .listRowBackground(Color.clear)
+            }
+        } else if viewModel.sections.isEmpty {
+            Section {
+                UnavailableView(
+                    viewModel.query.isEmpty
+                        ? String(localized: L10n.SearchView.emptyTitle)
+                        : "No expenses found",
+                    systemImage: AssetName.System.search,
+                    description: viewModel.query.isEmpty
+                        ? String(localized: L10n.SearchView.emptyDescription)
+                        : "Try a different expense name."
+                )
+                .frame(maxWidth: .infinity)
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+                .padding(.top, 50)
+            }
+        } else {
+            ForEach(viewModel.sections) { section in
+                Section(sectionTitle(for: section.date)) {
+                    ForEach(section.expenses) { expense in
+                        row(for: expense)
+                    }
+                }
+            }
+        }
+    }
+
+    private func row(for expense: ExpenseDTO) -> some View {
+        ExpenseRow(expense: expense) {
+            coordinator.present(MainRoutes.editExpense(expense), mode: .percentage(0.90))
+            Haptics.play(.tap)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            // Not `role: .destructive`: that removes the row before the alert has been answered.
+            Button {
+                expensePendingDeletion = expense
+            } label: {
+                Image(systemName: AssetName.System.delete)
+            }
+            .accessibilityLabel(Text(L10n.Shared.delete))
+            .tint(.red)
+        }
+        .transition(
+            .asymmetric(
+                insertion: .opacity.combined(with: .offset(y: 12)),
+                removal: .opacity.combined(with: .scale(scale: 0.96))
+            )
+        )
+        .onAppear {
+            Task {
+                await viewModel.loadMoreIfNeeded(after: expense)
+            }
+        }
     }
 
     private var resultIDs: [PersistentIdentifier] {
