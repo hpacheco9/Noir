@@ -46,8 +46,6 @@ enum MainRoutes {
     }
 }
 
-
-
 enum SettingsRoutes {
     static func Profile() -> any RouteRepresentable {
         struct ProfileViewRoute: RouteRepresentable {
