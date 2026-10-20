@@ -142,13 +142,13 @@ struct CategoryFormView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(String(localized: L10n.Shared.cancel)) {
+                Button(role: .close) {
                     coordinator.dismiss()
                 }
             }
 
             ToolbarItem(placement: .confirmationAction) {
-                Button(String(localized: L10n.Shared.save)) {
+                Button(role: .confirm) {
                     Task {
                         switch await viewModel.save() {
                         case .saved:
