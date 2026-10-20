@@ -24,19 +24,13 @@ struct SearchView: View {
         )
         .searchable(
             text: $viewModel.query,
-            placement: .navigationBarDrawer(displayMode: .always),
+            placement: .automatic,
             prompt: Text(L10n.SearchView.prompt)
         )
         .task {
             await viewModel.search(viewModel.query)
         }
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
-            Task { await viewModel.search(viewModel.query) }
-        }
-        // Edits and category deletes happen in sheets over this list. Reload once more when the sheet is gone, so
-        // the result is applied while the list is on screen.
-        .onChange(of: coordinator.sheet == nil) { _, isSheetGone in
-            guard isSheetGone else { return }
             Task { await viewModel.search(viewModel.query) }
         }
         .alert("Search error", isPresented: .init(
