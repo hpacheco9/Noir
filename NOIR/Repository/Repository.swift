@@ -153,6 +153,13 @@ actor ExpenseRepository: ModelActor {
         return SideResult(latest: latest, hasAnyExpenses: hasAny)
     }
 
+    func cumulativeDays(in month: DateInterval, calendar: Calendar = .current) throws -> [Double] {
+        var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(month))
+        descriptor.propertiesToFetch = [\.date, \.amount]
+        let rows = try modelContext.fetch(descriptor).map { (date: $0.date, amount: $0.amount) }
+        return MonthTotalSnapshot.cumulativeDays(rows, in: month, calendar: calendar)
+    }
+
     nonisolated private static func datePredicate(_ interval: DateInterval) -> Predicate<Expense> {
         let start = interval.start
         let end = interval.end

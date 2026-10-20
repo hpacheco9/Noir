@@ -100,6 +100,7 @@ struct AddExpenseIntent: AppIntent {
         ReviewPromptStore().recordCreatedExpense()
 
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
+        await WidgetSnapshotPublisher.publish()
         try? await NotificationService.shared.notifyExpenseAdded(name: trimmedName, amount: amount)
 
         return .result(

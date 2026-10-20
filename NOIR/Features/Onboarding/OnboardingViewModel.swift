@@ -84,7 +84,7 @@ final class OnboardingViewModel {
 
     func persist() {
         UserDefaults.standard.set(name.trimmingCharacters(in: .whitespacesAndNewlines), forKey: "profile.name")
-        UserDefaults.standard.set(budget, forKey: "profile.monthlyBudget")
+        UserDefaults.standard.set(budget, forKey: OnboardingStorage.monthlyBudgetKey)
     }
 
     /// Asks for notification permission. Never throws: a denial or failure must not block onboarding.
