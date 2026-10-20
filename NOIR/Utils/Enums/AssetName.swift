@@ -24,6 +24,7 @@ nonisolated enum AssetName {
         static let intentSummary = "text.badge.checkmark"
         static let legal = "doc.text.fill"
         static let note = "text.alignleft"
+        static let picker = "chevron.up.chevron.down"
         static let privacy = "hand.raised.fill"
         static let reset = "arrow.counterclockwise"
         static let review = "star.bubble"
