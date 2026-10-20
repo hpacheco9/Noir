@@ -5,6 +5,13 @@
 
 import Foundation
 
+extension CurrencyPreference {
+    /// For amount TextFields: same output as `formatStyle(for:)`, but parsing accepts "." or "," as the decimal mark.
+    static func amountInputStyle(for code: String) -> AmountInputFormatStyle {
+        AmountInputFormatStyle(code: code, currencyLocale: locale(for: code))
+    }
+}
+
 /// Format style for amount TextFields. It formats exactly like `Decimal.FormatStyle.Currency` in the currency's own
 /// locale, but parses leniently: the decimal pad shows the DEVICE's decimal separator, which can differ from the
 /// currency locale's (EUR on an en_US device offers "."), so either mark is accepted.

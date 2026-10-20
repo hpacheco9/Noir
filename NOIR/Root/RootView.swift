@@ -14,6 +14,8 @@ struct RootView: View {
     @StateObject private var homeCoordinator = Coordinator()
     @StateObject private var dashboardCoordinator = Coordinator()
     @StateObject private var searchCoordinator = Coordinator()
+    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+    @Environment(\.scenePhase) private var scenePhase
     let mainViewModel: MainViewModel
 
     init(mainViewModel: MainViewModel) {
@@ -65,6 +67,15 @@ struct RootView: View {
             }
         }
         .tint(.primary)
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            if phase == .active { Task { await WidgetSnapshotPublisher.publish() } }
+        }
+        .onChange(of: currencyCode) {
+            Task { await WidgetSnapshotPublisher.publish() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
+            Task { await WidgetSnapshotPublisher.publish() }
+        }
     }
 }
 
