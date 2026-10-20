@@ -44,7 +44,7 @@ extension CategoryBreakdownRepositoryTests {
         private func add(_ amount: Double, on date: Date, named name: String = "e", to repository: ExpenseRepository) async throws {
             try await repository.save(
                 id: nil, amount: amount, name: name, date: date,
-                categoryKey: ExpenseCategory.food.rawValue, description: ""
+                categoryKey: ExpenseCategory.food.rawValue, description: "", card: ""
             )
         }
 
@@ -111,7 +111,7 @@ extension CategoryBreakdownRepositoryTests {
                 // An edit moving it even earlier, then an in-window edit (memo adjusted in place, kept).
                 try await repository.save(
                     id: try id(named: "old", in: container), amount: 100, name: "old", date: date(year - 5, 1, 1),
-                    categoryKey: ExpenseCategory.food.rawValue, description: ""
+                    categoryKey: ExpenseCategory.food.rawValue, description: "", card: ""
                 )
                 result = try await chart(.allTime, repository)
                 #expect(result.total == 1185)
@@ -119,7 +119,7 @@ extension CategoryBreakdownRepositoryTests {
 
                 try await repository.save(
                     id: try id(named: "march", in: container), amount: 5, name: "march", date: date(year - 4, 3, 1),
-                    categoryKey: ExpenseCategory.food.rawValue, description: ""
+                    categoryKey: ExpenseCategory.food.rawValue, description: "", card: ""
                 )
                 #expect(OverviewMemoStore.load(.allTime)?.total == 1185)
                 result = try await chart(.allTime, repository)

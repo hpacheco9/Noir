@@ -15,14 +15,15 @@ struct ExpenseSummarySnippetIntent: SnippetIntent {
     @Parameter var amount: Double
     @Parameter var date: Date
     @Parameter var categoryName: String
-
+    @Parameter var card: String
 
     init() {}
 
-    init(name: String, amount: Double, categoryName: String, date: Date) {
+    init(name: String, amount: Double, categoryName: String, card: String, date: Date) {
         self.name = name
         self.amount = amount
         self.categoryName = categoryName
+        self.card = card
         self.date = date
     }
 
@@ -34,6 +35,7 @@ struct ExpenseSummarySnippetIntent: SnippetIntent {
                 amount: CurrencyPreference.string(for: amount, code: code),
                 name: name,
                 categoryName: categoryName,
+                card: card,
                 date: date
             )
         )
@@ -44,6 +46,7 @@ struct ExpenseSummaryView: View {
     let amount: String
     let name: String
     let categoryName: String
+    let card: String
     let date: Date
 
     var body: some View {
@@ -56,6 +59,9 @@ struct ExpenseSummaryView: View {
             VStack(spacing: 18) {
                 row(L10n.AppIntent.summaryTitle, systemImage: AssetName.System.title, value: name)
                 row(L10n.AppIntent.category, systemImage: AssetName.System.categories, value: categoryName)
+                if !card.isEmpty {
+                    row(L10n.AppIntent.card, systemImage: AssetName.System.card, value: card)
+                }
                 row(
                     L10n.AppIntent.date,
                     systemImage: AssetName.System.calendar,
@@ -72,6 +78,7 @@ struct ExpenseSummaryView: View {
                     .foregroundStyle(.secondary)
             } icon: {
                 Image(systemName: systemImage)
+                    .symbolVariant(.fill)
                     .foregroundStyle(.secondary)
             }
             Spacer()
@@ -83,5 +90,5 @@ struct ExpenseSummaryView: View {
 }
 
 #Preview {
-    ExpenseSummaryView(amount: "12,50 €", name: "Lunch", categoryName: "Food", date: .now)
+    ExpenseSummaryView(amount: "12,50 €", name: "Lunch", categoryName: "Food", card: "Visa", date: .now)
 }

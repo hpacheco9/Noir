@@ -29,6 +29,14 @@ struct AddExpenseIntent: AppIntent {
     )
     var category: ExpenseCategoryEntity
 
+    @Parameter(
+        title: LocalizedStringResource("app_intent.card", table: "AppIntents"),
+        requestValueDialog: IntentDialog(
+            LocalizedStringResource("app_intent.card_prompt", table: "AppIntents")
+        )
+    )
+    var card: ExpenseCardEntity
+
     @Parameter(title: "app_intent.note", default: "")
     var note: String
 
@@ -44,6 +52,7 @@ struct AddExpenseIntent: AppIntent {
         }
 
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedCard = card.name.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if IntentSummaryPreference.isEnabled() {
             let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
@@ -65,6 +74,7 @@ struct AddExpenseIntent: AppIntent {
                     name: trimmedName,
                     amount: amount,
                     categoryName: category.name,
+                    card: trimmedCard,
                     date: date
                 )
             )
@@ -77,12 +87,14 @@ struct AddExpenseIntent: AppIntent {
             date: date,
             category: .other,
             expenseDescription: trimmedNote,
+            card: trimmedCard,
             createdAt: .now
         )
         expense.categoryRawValue = CategoryCatalog.resolvedKey(category.id, in: modelContext)
 
         modelContext.insert(expense)
         try modelContext.save()
+        SavedCards.remember(trimmedCard)
 
         // Counts toward the review prompt, but never asks: an intent has no UI. Home asks at its next eligible moment.
         ReviewPromptStore().recordCreatedExpense()

@@ -13,6 +13,7 @@ final class EditExpenseViewModel {
 
     var form: ExpenseForm
     private(set) var categories: [CategoryInfo] = CategoryInfo.builtIns
+    private(set) var cards: [String] = []
     private(set) var isSaving = false
 
     var canSave: Bool { form.canSave }
@@ -28,8 +29,10 @@ final class EditExpenseViewModel {
             name: expense.name,
             date: expense.date,
             category: expense.categoryInfo.key,
-            description: expense.description
+            description: expense.description,
+            card: expense.card
         )
+        if !expense.card.isEmpty { cards = [expense.card] }
         // The expense's own category as it is shown (custom, or a built-in with an override).
         if let index = categories.firstIndex(where: { $0.key == expense.categoryInfo.key }) {
             categories[index] = expense.categoryInfo
@@ -73,6 +76,14 @@ final class EditExpenseViewModel {
         categories = loaded
         if !loaded.contains(where: { $0.key == form.category }) {
             form.category = ExpenseCategory.other.rawValue
+        }
+    }
+
+    func loadCards() async {
+        do {
+            cards = try await repository.perform { try await $0.fetchCards() }
+        } catch {
+            print("Failed to load cards: \(error)")
         }
     }
 }

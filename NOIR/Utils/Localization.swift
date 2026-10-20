@@ -166,6 +166,10 @@ enum L10n {
         static let detailsSection: LocalizedStringResource = "add_expense.details_section"
         static let date: LocalizedStringResource = "add_expense.date"
         static let category: LocalizedStringResource = "add_expense.category"
+        static let card: LocalizedStringResource = "add_expense.card"
+        static let noCard: LocalizedStringResource = "add_expense.card.none"
+        static let newCard: LocalizedStringResource = "add_expense.card.new"
+        static let cardNamePlaceholder: LocalizedStringResource = "add_expense.card.name_placeholder"
         static let descriptionSection: LocalizedStringResource = "add_expense.description_section"
         static let notePlaceholder: LocalizedStringResource = "add_expense.note_placeholder"
         static let saveErrorTitle: LocalizedStringResource = "add_expense.save_error_title"
@@ -243,6 +247,7 @@ enum L10n {
         }
         static let summaryTitle: LocalizedStringResource = "app_intent.summary.title"
         static let category = LocalizedStringResource("app_intent.category", table: "AppIntents")
+        static let card = LocalizedStringResource("app_intent.card", table: "AppIntents")
         static let date: LocalizedStringResource = "app_intent.date"
         static let save: LocalizedStringResource = "app_intent.summary.save"
         static let cancel: LocalizedStringResource = "app_intent.summary.cancel"

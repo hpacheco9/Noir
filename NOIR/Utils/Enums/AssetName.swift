@@ -11,6 +11,7 @@ nonisolated enum AssetName {
     enum System {
         static let add = "plus"
         static let calendar = "calendar"
+        static let card = "creditcard"
         static let checkmark = "checkmark"
         static let categories = "tag.fill"
         static let currency = "dollarsign.circle.fill"
@@ -22,6 +23,7 @@ nonisolated enum AssetName {
         static let home = "text.rectangle.page"
         static let intentSummary = "text.badge.checkmark"
         static let legal = "doc.text.fill"
+        static let note = "text.alignleft"
         static let privacy = "hand.raised.fill"
         static let reset = "arrow.counterclockwise"
         static let review = "star.bubble"
