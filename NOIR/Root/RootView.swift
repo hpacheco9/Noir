@@ -11,11 +11,16 @@ import SwiftData
 struct RootView: View {
     @State private var expenseViewModel: ExpenseViewModel
     @State private var dashboardViewModel: DashboardViewModel
+    @State private var searchViewModel: SearchViewModel
+    @StateObject private var homeCoordinator = Coordinator()
+    @StateObject private var dashboardCoordinator = Coordinator()
+    @StateObject private var searchCoordinator = Coordinator()
     let mainViewModel: MainViewModel
 
     init(mainViewModel: MainViewModel) {
         self.mainViewModel = mainViewModel
         _dashboardViewModel = State(initialValue: DashboardViewModel(model: NOIRApp.sharedModelContainer))
+        _searchViewModel = State(initialValue: SearchViewModel(model: NOIRApp.sharedModelContainer))
         _expenseViewModel = State(
             initialValue: ExpenseViewModel(
                 model: NOIRApp.sharedModelContainer
@@ -28,7 +33,7 @@ struct RootView: View {
             CoordinatorView {
                 ContentView()
             }
-            .environmentObject(Coordinator())
+            .environmentObject(homeCoordinator)
             .environment(expenseViewModel)
             .environment(mainViewModel)
             .tabItem {
@@ -43,7 +48,7 @@ struct RootView: View {
             CoordinatorView {
                 DashboardView(viewModel: dashboardViewModel)
             }
-            .environmentObject(Coordinator())
+            .environmentObject(dashboardCoordinator)
             .tabItem {
                 Label {
                     Text(L10n.Tab.dashboard)
@@ -54,13 +59,9 @@ struct RootView: View {
             }
 
             CoordinatorView {
-                SearchView(
-                    viewModel: SearchViewModel(
-                        model: NOIRApp.sharedModelContainer
-                    )
-                )
+                SearchView(viewModel: searchViewModel)
             }
-            .environmentObject(Coordinator())
+            .environmentObject(searchCoordinator)
             .environment(expenseViewModel)
             .tabItem {
                 Label {

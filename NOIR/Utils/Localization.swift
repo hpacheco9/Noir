@@ -11,7 +11,6 @@ enum L10n {
     enum Shared {
         static let cancel: LocalizedStringResource = "shared.cancel"
         static let save: LocalizedStringResource = "shared.save"
-        static let close: LocalizedStringResource = "shared.close"
         static let delete: LocalizedStringResource = "shared.delete"
         static let ok: LocalizedStringResource = "shared.ok"
         static let unexpectedError: LocalizedStringResource = "shared.unexpected_error"

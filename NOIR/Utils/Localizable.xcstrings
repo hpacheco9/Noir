@@ -2356,22 +2356,6 @@
         }
       }
     },
-    "shared.close" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fechar"
-          }
-        }
-      }
-    },
     "shared.delete" : {
       "localizations" : {
         "en" : {
