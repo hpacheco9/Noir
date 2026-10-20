@@ -3,6 +3,19 @@
   "strings" : {
     "Add expense in ${applicationName}" : {
       "localizations" : {
+        "de" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Ausgabe in ${applicationName} hinzufügen",
+              "Füge eine Ausgabe in ${applicationName} hinzu",
+              "Ausgabe in ${applicationName} erfassen",
+              "Erfasse eine Ausgabe in ${applicationName}",
+              "Füge eine Ausgabe zu ${applicationName} hinzu",
+              "Ausgabe zu ${applicationName} hinzufügen"
+            ]
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30,6 +43,16 @@
     },
     "Record expense in ${applicationName}" : {
       "localizations" : {
+        "de" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Ausgabe in ${applicationName} eintragen",
+              "Trage eine Ausgabe in ${applicationName} ein",
+              "Neue Ausgabe in ${applicationName}"
+            ]
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

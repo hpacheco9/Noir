@@ -7,7 +7,7 @@ import Testing
 import Foundation
 
 struct StringCatalogCompletenessTests {
-    static let languages = ["es", "pt-PT"]
+    static let languages = ["de", "es", "pt-PT"]
     static let catalogs = [
         "NOIR/Utils/Localizable.xcstrings",
         "NOIR/Utils/AppIntents.xcstrings",
@@ -43,8 +43,8 @@ struct StringCatalogCompletenessTests {
         {
           "sourceLanguage" : "en",
           "strings" : {
-            "complete" : { "localizations" : { "en" : {}, "es" : {}, "pt-PT" : {} } },
-            "half" : { "localizations" : { "en" : {}, "pt-PT" : {} } },
+            "complete" : { "localizations" : { "de" : {}, "en" : {}, "es" : {}, "pt-PT" : {} } },
+            "half" : { "localizations" : { "de" : {}, "en" : {}, "pt-PT" : {} } },
             "untranslated" : { "localizations" : { "en" : {} } },
             "verbatim" : { "localizations" : { "en" : {} }, "shouldTranslate" : false },
             "extracted_only" : {}
@@ -52,6 +52,6 @@ struct StringCatalogCompletenessTests {
         }
         """
         let missing = try Self.missingTranslations(in: Data(sample.utf8), languages: Self.languages)
-        #expect(missing == ["half: es", "untranslated: es", "untranslated: pt-PT"])
+        #expect(missing == ["half: es", "untranslated: de", "untranslated: es", "untranslated: pt-PT"])
     }
 }

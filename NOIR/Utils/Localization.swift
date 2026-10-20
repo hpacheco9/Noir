@@ -117,7 +117,10 @@ enum L10n {
         static let customEmpty: LocalizedStringResource = "categories.custom_empty"
         static let add: LocalizedStringResource = "categories.add"
         static let deleteTitle: LocalizedStringResource = "categories.delete_title"
-        static let deleteMessage: LocalizedStringResource = "categories.delete_message"
+        /// "Its expenses will be moved to “Other”.", with Other's current (possibly renamed) title.
+        static func deleteMessage(otherTitle: String) -> LocalizedStringResource {
+            "categories.delete_message \(otherTitle)"
+        }
         static let loadError: LocalizedStringResource = "categories.load_error"
         static let deleteError: LocalizedStringResource = "categories.delete_error"
         static let errorTitle: LocalizedStringResource = "categories.error_title"

@@ -13,6 +13,12 @@
     },
     "add_expense.amount_accessibility_label" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betrag der Ausgabe"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35,6 +41,12 @@
     },
     "add_expense.card" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57,6 +69,12 @@
     },
     "add_expense.card.name_placeholder" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name der Karte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79,6 +97,12 @@
     },
     "add_expense.card.new" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Karte …"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101,6 +125,12 @@
     },
     "add_expense.card.none" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123,6 +153,12 @@
     },
     "add_expense.category" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -145,6 +181,12 @@
     },
     "add_expense.create_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Ausgabe"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167,6 +209,12 @@
     },
     "add_expense.date" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datum"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -189,6 +237,12 @@
     },
     "add_expense.description_section" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibung"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -211,6 +265,12 @@
     },
     "add_expense.details_section" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -233,6 +293,12 @@
     },
     "add_expense.edit_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgabe bearbeiten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -255,6 +321,12 @@
     },
     "add_expense.expense_section" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgabe"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -277,6 +349,12 @@
     },
     "add_expense.name" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -299,6 +377,12 @@
     },
     "add_expense.note_placeholder" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz hinzufügen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -321,6 +405,12 @@
     },
     "add_expense.save_error_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgabe konnte nicht gesichert werden"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -343,6 +433,12 @@
     },
     "app_intent.amount" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0,00 €"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -352,19 +448,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "$0.00"
+            "value" : "0,00 €"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "$0.00"
+            "value" : "0,00 €"
           }
         }
       }
     },
     "app_intent.amount_prompt" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie hoch ist der Betrag?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -387,6 +489,12 @@
     },
     "app_intent.date" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datum"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -409,6 +517,12 @@
     },
     "app_intent.date_prompt" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An welchem Tag war die Ausgabe?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -431,6 +545,12 @@
     },
     "app_intent.description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erfasst eine neue Ausgabe in NOIR."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -453,6 +573,12 @@
     },
     "app_intent.empty_name" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib einen Namen für die Ausgabe ein."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -475,6 +601,12 @@
     },
     "app_intent.expense_saved" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Ausgabe hinzugefügt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -497,6 +629,12 @@
     },
     "app_intent.invalid_amount" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib einen Betrag über null ein."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -519,6 +657,12 @@
     },
     "app_intent.name" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -541,6 +685,12 @@
     },
     "app_intent.name_prompt" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie heißt die Ausgabe?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -563,6 +713,12 @@
     },
     "app_intent.note" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -585,6 +741,12 @@
     },
     "app_intent.summary.cancel" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -607,6 +769,12 @@
     },
     "app_intent.summary.header" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfe die Angaben zur Ausgabe:"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -629,6 +797,12 @@
     },
     "app_intent.summary.save" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sichern"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -651,6 +825,12 @@
     },
     "app_intent.summary.snippet_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgabe prüfen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -674,6 +854,12 @@
     "app_intent.summary.spoken %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ für %1$@ sichern?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -696,6 +882,12 @@
     },
     "app_intent.summary.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -718,6 +910,12 @@
     },
     "app_intent.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgabe hinzufügen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -741,6 +939,12 @@
     "categories.add" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie hinzufügen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -764,6 +968,12 @@
     "categories.built_in_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -787,6 +997,12 @@
     "categories.custom_empty" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine eigenen Kategorien. Tippe auf +, um eine zu erstellen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -810,6 +1026,12 @@
     "categories.custom_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigene"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -833,6 +1055,12 @@
     "categories.delete_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kategorie konnte nicht gelöscht werden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -853,25 +1081,31 @@
         }
       }
     },
-    "categories.delete_message" : {
+    "categories.delete_message %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Ausgaben dieser Kategorie werden nach „%@“ verschoben."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Its expenses will be moved to Other."
+            "value" : "Its expenses will be moved to “%@”."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sus gastos pasarán a “Otros”."
+            "value" : "Sus gastos pasarán a “%@”."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As despesas desta categoria passam para Outros."
+            "value" : "As despesas desta categoria passam para “%@”."
           }
         }
       }
@@ -879,6 +1113,12 @@
     "categories.delete_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie löschen?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -902,6 +1142,12 @@
     "categories.error_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Fehler ist aufgetreten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -925,6 +1171,12 @@
     "categories.load_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kategorien konnten nicht geladen werden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -948,6 +1200,12 @@
     "categories.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorien"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -971,6 +1229,12 @@
     "category_color.blue" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blau"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -994,6 +1258,12 @@
     "category_color.brown" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Braun"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1017,6 +1287,12 @@
     "category_color.green" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grün"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1040,6 +1316,12 @@
     "category_color.indigo" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indigo"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1063,6 +1345,12 @@
     "category_color.orange" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orange"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1086,6 +1374,12 @@
     "category_color.pink" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosa"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1109,6 +1403,12 @@
     "category_color.purple" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lila"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1132,6 +1432,12 @@
     "category_color.red" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rot"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1155,6 +1461,12 @@
     "category_color.teal" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blaugrün"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1178,6 +1490,12 @@
     "category_color.yellow" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelb"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1200,6 +1518,12 @@
     },
     "dashboard.amount" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betrag"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1223,6 +1547,12 @@
     "dashboard.announcement %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: %2$@ ausgegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1245,6 +1575,12 @@
     },
     "dashboard.by_category" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach Kategorie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1267,6 +1603,12 @@
     },
     "dashboard.category" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1289,6 +1631,12 @@
     },
     "dashboard.chart_label" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgaben nach Kategorie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1311,6 +1659,12 @@
     },
     "dashboard.empty_description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgaben, die du in diesem Zeitraum hinzufügst, erscheinen hier nach Kategorie gruppiert."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1333,6 +1687,12 @@
     },
     "dashboard.empty_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Ausgaben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1355,6 +1715,12 @@
     },
     "dashboard.error_description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Laden deiner Ausgaben ist ein Fehler aufgetreten. Versuche es erneut."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1377,6 +1743,12 @@
     },
     "dashboard.error_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Ausgaben konnten nicht geladen werden"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1400,6 +1772,24 @@
     "dashboard.expense_count %lld" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Ausgabe"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Ausgaben"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -1459,6 +1849,12 @@
     "dashboard.in_rest %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in „%@“"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1481,6 +1877,12 @@
     },
     "dashboard.period_picker" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeitraum"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1503,6 +1905,12 @@
     },
     "dashboard.rest" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weitere"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1525,6 +1933,12 @@
     },
     "dashboard.retry" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut versuchen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1547,6 +1961,12 @@
     },
     "dashboard.row_hint" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hebt diese Kategorie im Diagramm hervor"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1569,6 +1989,12 @@
     },
     "dashboard.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übersicht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1592,6 +2018,12 @@
     "dashboard.value %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ der Gesamtsumme"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1615,6 +2047,12 @@
     "dashboard.value_with_members %@ %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ der Gesamtsumme. Enthält %3$@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1637,6 +2075,12 @@
     },
     "expense_category.food" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1659,6 +2103,12 @@
     },
     "expense_category.health" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesundheit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1681,6 +2131,12 @@
     },
     "expense_category.home" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wohnen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1703,6 +2159,12 @@
     },
     "expense_category.leisure" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freizeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1725,6 +2187,12 @@
     },
     "expense_category.other" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonstiges"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1747,6 +2215,12 @@
     },
     "expense_category.shopping" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einkaufen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1769,6 +2243,12 @@
     },
     "expense_category.transport" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilität"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1791,6 +2271,12 @@
     },
     "expense_deletion.message" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Ausgabe wird endgültig entfernt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1813,6 +2299,12 @@
     },
     "expense_deletion.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgabe löschen?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1835,6 +2327,12 @@
     },
     "legal.privacy_policy" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenschutzrichtlinie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1857,6 +2355,12 @@
     },
     "legal.terms_of_service" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzungsbedingungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1879,6 +2383,12 @@
     },
     "legal.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info & Rechtliches"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1901,6 +2411,12 @@
     },
     "main_view.empty_description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tippe oben auf +, um deine erste Ausgabe hinzuzufügen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1923,6 +2439,12 @@
     },
     "main_view.empty_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Ausgaben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1945,6 +2467,12 @@
     },
     "main_view.latest_transactions" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzte Ausgaben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1968,6 +2496,12 @@
     "new_category.color_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Farbe"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1991,6 +2525,12 @@
     "new_category.duplicate_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt bereits eine Kategorie mit diesem Namen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2014,6 +2554,12 @@
     "new_category.edit_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie bearbeiten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2037,6 +2583,12 @@
     "new_category.empty_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib einen Namen für die Kategorie ein."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2060,6 +2612,12 @@
     "new_category.name_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name der Kategorie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2083,6 +2641,12 @@
     "new_category.name_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2106,6 +2670,12 @@
     "new_category.preview_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2129,6 +2699,12 @@
     "new_category.restore_default" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard wiederherstellen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2152,6 +2728,12 @@
     "new_category.restore_duplicate_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine andere Kategorie verwendet bereits den Standardnamen. Benenne sie zuerst um."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2175,6 +2757,12 @@
     "new_category.restore_message" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Kategorie erhält wieder ihren ursprünglichen Namen, ihr Symbol und ihre Farbe."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2198,6 +2786,12 @@
     "new_category.restore_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard wiederherstellen?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2221,6 +2815,12 @@
     "new_category.save_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kategorie konnte nicht gesichert werden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2244,6 +2844,12 @@
     "new_category.symbol_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2267,6 +2873,12 @@
     "new_category.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Kategorie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2289,6 +2901,12 @@
     },
     "noir_pro.description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einmal zahlen. Für immer deins."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2311,6 +2929,12 @@
     },
     "noir_pro.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noir Pro"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2333,6 +2957,12 @@
     },
     "noir_pro.upgrade" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freischalten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2355,6 +2985,12 @@
     },
     "notification.expense_added_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Ausgabe hinzugefügt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2378,6 +3014,12 @@
     "onboarding.budget.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir helfen dir, auf Kurs zu bleiben und dein Geld bewusst auszugeben."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2401,6 +3043,12 @@
     "onboarding.budget.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lege dein Monatsbudget fest."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2423,6 +3071,12 @@
     },
     "onboarding.continue" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortfahren"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2445,6 +3099,12 @@
     },
     "onboarding.finishing" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einrichtung wird abgeschlossen …"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2467,6 +3127,12 @@
     },
     "onboarding.get_started" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los geht’s"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2489,6 +3155,12 @@
     },
     "onboarding.name.greeting" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hallo"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2511,6 +3183,12 @@
     },
     "onboarding.name.placeholder" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2533,6 +3211,12 @@
     },
     "onboarding.name.subtitle" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sag uns deinen Namen, damit wir Noir für dich personalisieren können."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2555,6 +3239,12 @@
     },
     "onboarding.name.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie sollen wir dich nennen?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2579,6 +3269,12 @@
       "comment" : "VoiceOver label of the demo notification: app name, title, message.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@. %3$@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2602,6 +3298,12 @@
     "onboarding.notifications.demo_message %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast diese Woche %@ ausgegeben."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2625,6 +3327,12 @@
     "onboarding.notifications.demo_timestamp" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jetzt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2648,6 +3356,12 @@
     "onboarding.notifications.demo_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wochenübersicht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2670,6 +3384,12 @@
     },
     "onboarding.notifications.enable" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mitteilungen aktivieren"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2692,6 +3412,12 @@
     },
     "onboarding.notifications.not_now" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Später"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2715,6 +3441,12 @@
     "onboarding.notifications.open_settings" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen öffnen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2737,6 +3469,12 @@
     },
     "onboarding.notifications.subtitle" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erhalte Wochenübersichten und einen Hinweis, bevor du dein Budget überschreitest."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2759,6 +3497,12 @@
     },
     "onboarding.notifications.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behalte deine Ausgaben im Blick."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2781,6 +3525,12 @@
     },
     "onboarding.set_budget" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Budget festlegen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2804,6 +3554,12 @@
     "onboarding.welcome.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erfasse deine Ausgaben. Übernimm die Kontrolle über dein Geld."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2827,6 +3583,12 @@
     "onboarding.welcome.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Willkommen bei Noir."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2849,6 +3611,12 @@
     },
     "preferences.currency" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Währung"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2871,6 +3639,12 @@
     },
     "preferences.haptics" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptisches Feedback"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2893,6 +3667,12 @@
     },
     "preferences.haptics_footer" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibriert beim Tippen, Sichern und Wischen über die Diagramme."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2915,6 +3695,12 @@
     },
     "preferences.intent_summary" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestätigung im Kurzbefehl"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2937,6 +3723,12 @@
     },
     "preferences.intent_summary_footer" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeigt die Ausgabe mit den Tasten „Sichern“ und „Abbrechen“ an, bevor der Kurzbefehl „Ausgabe hinzufügen“ sie sichert. Ist die Option deaktiviert, wird die Ausgabe direkt nach der Eingabe des Datums gesichert."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2959,6 +3751,12 @@
     },
     "preferences.shortcuts" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurzbefehle"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2981,6 +3779,12 @@
     },
     "preferences.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allgemein"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3003,6 +3807,12 @@
     },
     "profile.description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account, Kategorien und mehr"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3025,6 +3835,12 @@
     },
     "profile.name" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henrique"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3048,6 +3864,12 @@
     "profile.name_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3071,6 +3893,12 @@
     "profile.name_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3093,6 +3921,12 @@
     },
     "profile.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3115,6 +3949,12 @@
     },
     "search_view.empty_description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hier erscheinen die Ausgaben, die zu deiner Suche passen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3137,6 +3977,12 @@
     },
     "search_view.empty_title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durchsuche deine Ausgaben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3160,6 +4006,12 @@
     "search_view.error_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler bei der Suche"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3182,6 +4034,12 @@
     },
     "search_view.prompt" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name, Kategorie oder Karte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3204,6 +4062,12 @@
     },
     "search_view.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3226,6 +4090,12 @@
     },
     "settings_view.title" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3248,6 +4118,12 @@
     },
     "shared.cancel" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3270,6 +4146,12 @@
     },
     "shared.delete" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3292,6 +4174,12 @@
     },
     "shared.ok" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3314,6 +4202,12 @@
     },
     "shared.unexpected_error" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein unerwarteter Fehler ist aufgetreten."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3336,6 +4230,12 @@
     },
     "shortcuts_view.description" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Kurzbefehle erscheinen hier, sobald sie verfügbar sind."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3358,6 +4258,12 @@
     },
     "spending_overview.chart_amount" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betrag"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3380,6 +4286,12 @@
     },
     "spending_overview.chart_period" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeitraum"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3402,6 +4314,12 @@
     },
     "spending_overview.total_spent.all_time" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insgesamt ausgegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3424,6 +4342,12 @@
     },
     "spending_overview.total_spent.month" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diesen Monat ausgegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3446,6 +4370,12 @@
     },
     "spending_overview.total_spent.today" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute ausgegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3468,6 +4398,12 @@
     },
     "spending_overview.total_spent.week" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Woche ausgegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3490,6 +4426,12 @@
     },
     "spending_overview.total_spent.year" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Jahr ausgegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3512,6 +4454,12 @@
     },
     "spending_period.all_time" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insgesamt"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3534,6 +4482,12 @@
     },
     "spending_period.month" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monat"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3556,6 +4510,12 @@
     },
     "spending_period.short.all_time" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3578,6 +4538,12 @@
     },
     "spending_period.short.day" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "T"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3600,6 +4566,12 @@
     },
     "spending_period.short.month" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3622,6 +4594,12 @@
     },
     "spending_period.short.week" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "W"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3644,6 +4622,12 @@
     },
     "spending_period.short.year" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3666,6 +4650,12 @@
     },
     "spending_period.today" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3688,6 +4678,12 @@
     },
     "spending_period.week" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Woche"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3710,6 +4706,12 @@
     },
     "spending_period.year" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jahr"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3732,6 +4734,12 @@
     },
     "tab.dashboard" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übersicht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3754,6 +4762,12 @@
     },
     "tab.home" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3776,6 +4790,12 @@
     },
     "tab.search" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

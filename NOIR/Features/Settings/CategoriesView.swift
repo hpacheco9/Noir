@@ -66,7 +66,7 @@ struct CategoriesView: View {
                 Task { await viewModel.delete(category) }
             }
         } message: { _ in
-            Text(L10n.Categories.deleteMessage)
+            Text(L10n.Categories.deleteMessage(otherTitle: viewModel.otherTitle))
         }
         .alert(Text(L10n.Categories.errorTitle), isPresented: .init(
             get: { viewModel.errorMessage != nil },
