@@ -10,6 +10,7 @@ struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
+    @AppStorage(IntentSummaryPreference.storageKey) private var intentSummaryEnabled = IntentSummaryPreference.defaultValue
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
@@ -105,6 +106,16 @@ struct SettingsView: View {
                     }
                     .tint(Self.toggleTint)
                 }
+
+                Toggle(isOn: $intentSummaryEnabled) {
+                    Label {
+                        Text(L10n.Preferences.intentSummary)
+                    } icon: {
+                        Image(systemName: AssetName.System.intentSummary)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .tint(Self.toggleTint)
 
                 SettingsRow(
                     title: L10n.Preferences.shortcuts,

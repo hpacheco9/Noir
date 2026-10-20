@@ -17,22 +17,20 @@ nonisolated struct ExpenseCategoryEntity: AppEntity, Identifiable {
 
     let id: String
     let name: String
-    let icon: String
     /// `false` for a built-in that still has its default title, which is shown localized from AppIntents.xcstrings.
     let showsName: Bool
 
+    /// Names only: the category prompt lists plain names, no icons.
     var displayRepresentation: DisplayRepresentation {
-        let image = DisplayRepresentation.Image(systemName: icon)
         if !showsName, let title = Self.builtInTitle(forKey: id) {
-            return DisplayRepresentation(title: title, image: image)
+            return DisplayRepresentation(title: title)
         }
-        return DisplayRepresentation(title: "\(name)", image: image)
+        return DisplayRepresentation(title: "\(name)")
     }
 
-    nonisolated init(id: String, name: String, icon: String) {
+    nonisolated init(id: String, name: String) {
         self.id = id
         self.name = name
-        self.icon = icon
         self.showsName = true
     }
 
@@ -40,7 +38,6 @@ nonisolated struct ExpenseCategoryEntity: AppEntity, Identifiable {
     init(_ info: CategoryInfo) {
         self.id = info.key
         self.name = info.title
-        self.icon = info.icon
         self.showsName = !info.isBuiltIn || info.customName != nil
     }
 
@@ -67,7 +64,7 @@ nonisolated struct ExpenseCategoryQuery: EntityStringQuery {
         let other = all.first { $0.id == ExpenseCategory.other.rawValue }
         return identifiers.compactMap { id in
             if let found = all.first(where: { $0.id == id }) { return found }
-            return other.map { ExpenseCategoryEntity(id: id, name: $0.name, icon: $0.icon) }
+            return other.map { ExpenseCategoryEntity(id: id, name: $0.name) }
         }
     }
 
@@ -80,10 +77,6 @@ nonisolated struct ExpenseCategoryQuery: EntityStringQuery {
         let all = try await CategoryCatalog.entities()
         guard !needle.isEmpty else { return all }
         return all.filter { $0.name.localizedStandardContains(needle) }
-    }
-
-    func defaultResult() async -> ExpenseCategoryEntity? {
-        try? await CategoryCatalog.entities().first { $0.id == ExpenseCategory.other.rawValue }
     }
 }
 

@@ -97,6 +97,7 @@ enum L10n {
         static let title: LocalizedStringResource = "preferences.title"
         static let currency: LocalizedStringResource = "preferences.currency"
         static let haptics: LocalizedStringResource = "preferences.haptics"
+        static let intentSummary: LocalizedStringResource = "preferences.intent_summary"
         static let shortcuts: LocalizedStringResource = "preferences.shortcuts"
     }
 
@@ -237,5 +238,15 @@ enum L10n {
         static let invalidAmount: LocalizedStringResource = "app_intent.invalid_amount"
         static let emptyName: LocalizedStringResource = "app_intent.empty_name"
         static let expenseSaved: LocalizedStringResource = "app_intent.expense_saved"
+        static let summaryHeader: LocalizedStringResource = "app_intent.summary.header"
+        /// "Save 12,50 € for Lunch?"
+        static func confirmSpoken(amount: String, name: String) -> LocalizedStringResource {
+            "app_intent.summary.spoken \(amount) \(name)"
+        }
+        static let summaryTitle: LocalizedStringResource = "app_intent.summary.title"
+        static let category = LocalizedStringResource("app_intent.category", table: "AppIntents")
+        static let date: LocalizedStringResource = "app_intent.date"
+        static let save: LocalizedStringResource = "app_intent.summary.save"
+        static let cancel: LocalizedStringResource = "app_intent.summary.cancel"
     }
 }
