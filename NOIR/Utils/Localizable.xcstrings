@@ -2133,6 +2133,22 @@
         }
       }
     },
+    "preferences.haptics_footer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibrates when you tap, save or scrub through the charts."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibra ao tocar, guardar ou percorrer os gráficos."
+          }
+        }
+      }
+    },
     "preferences.intent_summary" : {
       "localizations" : {
         "en" : {
@@ -2145,6 +2161,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resumo nos atalhos"
+          }
+        }
+      }
+    },
+    "preferences.intent_summary_footer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shows the expense with Save and Cancel before the Add Expense shortcut saves it. When off, it saves right after the date."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra a despesa com Guardar e Cancelar antes de o atalho Adicionar despesa a guardar. Desligado, guarda logo após a data."
           }
         }
       }

@@ -17,14 +17,11 @@ struct ShortcutsView: View {
 
             Section {
                 Toggle(isOn: $intentSummaryEnabled) {
-                    Label {
-                        Text(L10n.Preferences.intentSummary)
-                    } icon: {
-                        Image(systemName: AssetName.System.intentSummary)
-                            .foregroundStyle(.secondary)
-                    }
+                    Text(L10n.Preferences.intentSummary)
                 }
-                .tint(SettingsView.toggleTint)
+                .tint(.green)
+            } footer: {
+                Text(L10n.Preferences.intentSummaryFooter)
             }
         }
         .navigationTitle(Text(L10n.Preferences.shortcuts))

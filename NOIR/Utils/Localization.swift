@@ -95,7 +95,9 @@ enum L10n {
         static let title: LocalizedStringResource = "preferences.title"
         static let currency: LocalizedStringResource = "preferences.currency"
         static let haptics: LocalizedStringResource = "preferences.haptics"
+        static let hapticsFooter: LocalizedStringResource = "preferences.haptics_footer"
         static let intentSummary: LocalizedStringResource = "preferences.intent_summary"
+        static let intentSummaryFooter: LocalizedStringResource = "preferences.intent_summary_footer"
         static let shortcuts: LocalizedStringResource = "preferences.shortcuts"
     }
 

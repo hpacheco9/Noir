@@ -9,16 +9,11 @@ import SwiftData
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
-    @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
     @State private var reviewStatusText = ""
 #endif
-
-    /// Not `.primary`: in dark mode that is a white "on" track under the white thumb. Black in light mode, mid gray in
-    /// dark mode keeps it monochrome with the thumb visible in both.
-    static let toggleTint = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? .systemGray : .label })
 
     private static let showsProCard = false
 
@@ -98,18 +93,6 @@ struct SettingsView: View {
                     }
                 }
 
-                if HapticsPreference.isSupportedByHardware {
-                    Toggle(isOn: $hapticsEnabled) {
-                        Label {
-                            Text(L10n.Preferences.haptics)
-                        } icon: {
-                            Image(systemName: AssetName.System.haptics)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    .tint(Self.toggleTint)
-                }
-
                 SettingsRow(
                     title: L10n.Preferences.shortcuts,
                     systemImage: AssetName.System.shortcuts
@@ -180,17 +163,6 @@ private extension SettingsView {
                 .foregroundStyle(.secondary)
                 .onAppear { reviewStatusText = reviewStatus(store) }
 
-            Button {
-                store.simulateEligible()
-                reviewStatusText = reviewStatus(store)
-            } label: {
-                Label {
-                    Text(verbatim: "Simulate 3 Shortcut expenses")
-                } icon: {
-                    Image(systemName: AssetName.System.review)
-                }
-            }
-
             Button(role: .destructive) {
                 store.reset()
                 reviewStatusText = reviewStatus(store)
@@ -203,8 +175,6 @@ private extension SettingsView {
             }
         } header: {
             Text(verbatim: "Review prompt")
-        } footer: {
-            Text(verbatim: "After simulating, close Settings, or send the app to the background and open it again: the prompt appears after a few seconds. It asks once per version.")
         }
     }
 
