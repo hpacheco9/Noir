@@ -50,14 +50,15 @@ nonisolated enum SpendingPeriod: CaseIterable, Identifiable, Sendable {
     }
 
     /// The range the overview chart covers: the period interval, or for `.allTime` the calendar years from the one
-    /// holding `earliest` (the oldest expense; `nil` when there is none) through the current one.
-    func chartWindow(calendar: Calendar = .current, now: Date = .now, earliest: Date? = nil) -> DateInterval? {
+    /// holding `earliest` through the one holding `latest` (the oldest and newest expense dates; `nil` when there is
+    /// none), always including the current year.
+    func chartWindow(calendar: Calendar = .current, now: Date = .now, earliest: Date? = nil, latest: Date? = nil) -> DateInterval? {
         if let interval = dateInterval(calendar: calendar, now: now) { return interval }
         guard
             let first = calendar.dateInterval(of: .year, for: min(earliest ?? now, now)),
-            let current = calendar.dateInterval(of: .year, for: now)
+            let last = calendar.dateInterval(of: .year, for: max(latest ?? now, now))
         else { return nil }
-        return DateInterval(start: first.start, end: current.end)
+        return DateInterval(start: first.start, end: last.end)
     }
 }
 

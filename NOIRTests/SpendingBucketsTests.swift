@@ -64,7 +64,7 @@ struct SpendingBucketsTests {
         #expect(layout.index(for: date(2027, 1, 1)) == nil)
     }
 
-    /// Earliest in the current year, no expenses at all, or only future ones: just the current year.
+    /// Earliest in the current year, none, or in the future (with no later `latest`): just the current year.
     /// 1_767_225_600 = 2026-01-01 00:00 UTC, 1_861_920_000 = 2029-01-01 00:00 UTC.
     @Test(arguments: [Date(timeIntervalSince1970: 1_767_225_600), nil, Date(timeIntervalSince1970: 1_861_920_000)] as [Date?])
     func allTimeIsTheCurrentYearWithoutOlderExpenses(earliest: Date?) throws {
@@ -74,6 +74,17 @@ struct SpendingBucketsTests {
         )
         #expect(layout.window == DateInterval(start: date(2026, 1, 1), end: date(2027, 1, 1)))
         #expect(layout.starts == [date(2026, 1, 1)])
+    }
+
+    @Test func allTimeRunsThroughTheYearOfTheLatestExpense() throws {
+        let now = date(2026, 10, 15, 12)
+        let layout = try #require(SpendingBuckets.layout(
+            for: .allTime, calendar: calendar, now: now, earliest: date(2025, 3, 1), latest: date(2028, 2, 1)
+        ))
+        #expect(layout.window == DateInterval(start: date(2025, 1, 1), end: date(2029, 1, 1)))
+        #expect(layout.starts == [date(2025, 1, 1), date(2026, 1, 1), date(2027, 1, 1), date(2028, 1, 1)])
+        #expect(layout.index(for: date(2029, 1, 1).addingTimeInterval(-1)) == 3)
+        #expect(layout.index(for: date(2029, 1, 1)) == nil)
     }
 
     @Test func allTimeLabelsAreTheYears() throws {

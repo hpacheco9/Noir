@@ -97,7 +97,8 @@ nonisolated enum OverviewMemoStore {
 
                 guard
                     let layout = SpendingBuckets.layout(
-                        for: period, calendar: calendar, now: memo.computedAt, earliest: memo.windowStart
+                        for: period, calendar: calendar, now: memo.computedAt,
+                        earliest: memo.windowStart, latest: memo.windowEnd.addingTimeInterval(-1)
                     ),
                     layout.window.start == memo.windowStart,
                     layout.window.end == memo.windowEnd,

@@ -59,36 +59,54 @@ extension CategoryBreakdownRepositoryTests {
 
         // MARK: All time
 
-        @Test func allTimeFollowsTheEarliestExpense() async throws {
+        @Test func allTimeFollowsTheEarliestAndLatestExpense() async throws {
             try await withIsolatedMemos {
                 let container = try makeContainer()
                 let repository = ExpenseRepository(modelContainer: container)
                 try await add(10, on: date(year - 1, 5, 1), to: repository)
                 try await add(20, on: date(year, 2, 1), to: repository)
-                // Positive control for the window's end: next year is not counted.
-                try await add(1000, on: date(year + 1, 1, 2), to: repository)
 
                 var result = try await chart(.allTime, repository)
                 #expect(result.total == 30)
                 #expect(result.points.map(\.amount) == [10, 20])
                 #expect(OverviewMemoStore.load(.allTime)?.windowStart == date(year - 1, 1, 1, 0))
+                #expect(OverviewMemoStore.load(.allTime)?.windowEnd == date(year + 1, 1, 1, 0))
 
-                // DELTA: same window, the new row arrives through the watermark.
-                let memoBefore = try #require(OverviewMemoStore.load(.allTime))
+                // A row dated next year widens the window's end.
+                try await add(1000, on: date(year + 1, 1, 2), to: repository)
+                result = try await chart(.allTime, repository)
+                #expect(result.total == 1030)
+                #expect(result.points.map(\.amount) == [10, 20, 1000])
+                #expect(OverviewMemoStore.load(.allTime)?.windowEnd == date(year + 2, 1, 1, 0))
+
+                // DELTA: same window, the new row arrives through the watermark. A sentinel planted in the first
+                // bucket survives it; a FULL recompute would replace it with 10.
+                var memoBefore = try #require(OverviewMemoStore.load(.allTime))
+                memoBefore.buckets[0] = 7
+                OverviewMemoStore.save(memoBefore, for: .allTime, ifGeneration: OverviewMemoStore.generation)
+                try #require(OverviewMemoStore.load(.allTime)?.buckets.first == 7)
                 try await add(5, on: date(year, 3, 1), named: "march", to: repository)
                 result = try await chart(.allTime, repository)
-                #expect(result.total == 35)
-                #expect(result.points.map(\.amount) == [10, 25])
+                #expect(result.total == 1035)
+                #expect(result.points.map(\.amount) == [7, 25, 1000])
                 let memoAfter = try #require(OverviewMemoStore.load(.allTime))
                 #expect(memoAfter.windowStart == memoBefore.windowStart)
+                #expect(memoAfter.windowEnd == memoBefore.windowEnd)
                 #expect(memoAfter.watermark > memoBefore.watermark)
 
-                // An insert older than the earliest expense widens the window.
+                // An insert older than the earliest expense widens the start (FULL: the sentinel is gone).
                 try await add(100, on: date(year - 3, 7, 1), named: "old", to: repository)
                 result = try await chart(.allTime, repository)
-                #expect(result.total == 135)
-                #expect(result.points.map(\.amount) == [100, 0, 10, 25])
+                #expect(result.total == 1135)
+                #expect(result.points.map(\.amount) == [100, 0, 10, 25, 1000])
                 #expect(OverviewMemoStore.load(.allTime)?.windowStart == date(year - 3, 1, 1, 0))
+
+                // A later year, with an empty year in between.
+                try await add(50, on: date(year + 3, 6, 1), to: repository)
+                result = try await chart(.allTime, repository)
+                #expect(result.total == 1185)
+                #expect(result.points.map(\.amount) == [100, 0, 10, 25, 1000, 0, 50])
+                #expect(OverviewMemoStore.load(.allTime)?.windowEnd == date(year + 4, 1, 1, 0))
 
                 // An edit moving it even earlier, then an in-window edit (memo adjusted in place, kept).
                 try await repository.save(
@@ -96,22 +114,22 @@ extension CategoryBreakdownRepositoryTests {
                     categoryKey: ExpenseCategory.food.rawValue, description: ""
                 )
                 result = try await chart(.allTime, repository)
-                #expect(result.total == 135)
-                #expect(result.points.map(\.amount) == [100, 0, 0, 0, 10, 25])
+                #expect(result.total == 1185)
+                #expect(result.points.map(\.amount) == [100, 0, 0, 0, 10, 25, 1000, 0, 50])
 
                 try await repository.save(
                     id: try id(named: "march", in: container), amount: 5, name: "march", date: date(year - 4, 3, 1),
                     categoryKey: ExpenseCategory.food.rawValue, description: ""
                 )
-                #expect(OverviewMemoStore.load(.allTime)?.total == 135)
+                #expect(OverviewMemoStore.load(.allTime)?.total == 1185)
                 result = try await chart(.allTime, repository)
-                #expect(result.points.map(\.amount) == [100, 5, 0, 0, 10, 20])
+                #expect(result.points.map(\.amount) == [100, 5, 0, 0, 10, 20, 1000, 0, 50])
 
                 // Deleting the oldest row shrinks the window again.
                 try await repository.delete(id: try id(named: "old", in: container))
                 result = try await chart(.allTime, repository)
-                #expect(result.total == 35)
-                #expect(result.points.map(\.amount) == [5, 0, 0, 10, 20])
+                #expect(result.total == 1085)
+                #expect(result.points.map(\.amount) == [5, 0, 0, 10, 20, 1000, 0, 50])
             }
         }
 
@@ -132,7 +150,7 @@ extension CategoryBreakdownRepositoryTests {
                 let repository = ExpenseRepository(modelContainer: container)
                 try await add(10, on: date(year, 1, 1, 0), to: repository)
                 try await add(20, on: date(year, 12, 31, 23), to: repository)
-                // Positive controls: both neighbouring years are left out.
+                // Positive controls: both neighbouring years are left out of Year.
                 try await add(1000, on: date(year - 1, 12, 31, 23), to: repository)
                 try await add(1000, on: date(year + 1, 1, 1, 0), to: repository)
 
@@ -142,14 +160,15 @@ extension CategoryBreakdownRepositoryTests {
                 #expect(result.points.first?.amount == 10)
                 #expect(result.points.last?.amount == 20)
 
-                // An insert in an earlier year than every other expense: All time shows it, Year does not.
+                // An insert in an earlier year than every other expense: All time shows it (and next year's), Year does not.
                 try await add(7, on: date(year - 6, 6, 1), to: repository)
                 result = try await chart(.year, repository)
                 #expect(result.total == 30)
                 let all = try await chart(.allTime, repository)
-                #expect(all.total == 1037)
+                #expect(all.total == 2037)
                 #expect(all.points.first?.amount == 7)
-                #expect(all.points.count == 7)
+                #expect(all.points.count == 8)
+                #expect(all.points.last?.amount == 1000)
             }
         }
     }

@@ -40,14 +40,21 @@ actor ExpenseRepository: ModelActor {
         now: Date = .now,
         calendar: Calendar = .current
     ) throws -> ChartResult {
-        // All Time starts at the oldest expense's year: a row added or moved before it changes the window, so FULL.
+        // All Time spans the oldest to the newest expense's year: a row added or moved past either end changes the
+        // window, so FULL.
         var earliest: Date?
+        var latest: Date?
         if period == .allTime {
             var oldestDescriptor = FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date)])
             oldestDescriptor.fetchLimit = 1
             earliest = try modelContext.fetch(oldestDescriptor).first?.date
+            var newestDescriptor = FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+            newestDescriptor.fetchLimit = 1
+            latest = try modelContext.fetch(newestDescriptor).first?.date
         }
-        guard let layout = SpendingBuckets.layout(for: period, calendar: calendar, now: now, earliest: earliest) else {
+        guard let layout = SpendingBuckets.layout(
+            for: period, calendar: calendar, now: now, earliest: earliest, latest: latest
+        ) else {
             return ChartResult(points: [], total: 0)
         }
 

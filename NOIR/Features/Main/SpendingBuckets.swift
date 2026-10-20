@@ -39,12 +39,15 @@ nonisolated struct BucketLayout: Sendable {
 }
 
 nonisolated enum SpendingBuckets {
-    /// Layout for `period` around `now`. Same `now` (and `earliest`, see `chartWindow`) => same layout, which is what
-    /// lets a memo rebuild it from `computedAt` and `windowStart`.
+    /// Layout for `period` around `now`. Same `now` (and `earliest`/`latest`, see `chartWindow`) => same layout, which
+    /// is what lets a memo rebuild it from `computedAt` and its window.
     static func layout(
-        for period: SpendingPeriod, calendar: Calendar = .current, now: Date = .now, earliest: Date? = nil
+        for period: SpendingPeriod, calendar: Calendar = .current, now: Date = .now,
+        earliest: Date? = nil, latest: Date? = nil
     ) -> BucketLayout? {
-        guard let window = period.chartWindow(calendar: calendar, now: now, earliest: earliest) else { return nil }
+        guard let window = period.chartWindow(calendar: calendar, now: now, earliest: earliest, latest: latest) else {
+            return nil
+        }
 
         switch period {
         case .day:

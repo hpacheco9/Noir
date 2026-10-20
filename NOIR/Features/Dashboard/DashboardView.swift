@@ -69,7 +69,7 @@ struct DashboardView: View {
         Section {
             Picker(selection: Binding(get: { viewModel.period }, set: { viewModel.selectPeriod($0) })) {
                 ForEach(SpendingPeriod.allCases) { period in
-                    // Initials keep four segments readable in every language; VoiceOver reads the full title.
+                    // Initials keep five segments readable in every language; VoiceOver reads the full title.
                     Text(period.shortTitle)
                         .accessibilityLabel(Text(period.title))
                         .tag(period)
