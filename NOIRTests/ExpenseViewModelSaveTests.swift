@@ -68,6 +68,7 @@ final class ExpenseViewModelSaveTests {
         viewModel.form.name = "  Lunch  "
         viewModel.form.category = ExpenseCategory.food.rawValue
         viewModel.form.description = " with Ana \n"
+        viewModel.form.card = "  Visa \n"
 
         var didSave = false
         try await countingNotifications(from: viewModel, into: recorder) {
@@ -81,6 +82,7 @@ final class ExpenseViewModelSaveTests {
         #expect(saved.name == "Lunch")
         #expect(saved.category == ExpenseCategory.food.rawValue)
         #expect(saved.description == "with Ana")
+        #expect(saved.card == "Visa")
         #expect(viewModel.isSaving == false)
         #expect(ReviewPromptStore(defaults: defaults).createdCount == 1)
         #expect(recorder.notifications == 1)

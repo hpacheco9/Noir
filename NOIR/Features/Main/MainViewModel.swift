@@ -111,6 +111,7 @@ struct ExpenseDTO: Sendable, Identifiable {
     let amount: Double
     let date: Date
     let description: String
+    let card: String
 
     nonisolated init(_ expense: Expense, categories: [String: CategoryInfo]) {
         self.id = expense.persistentModelID
@@ -119,6 +120,7 @@ struct ExpenseDTO: Sendable, Identifiable {
         self.date = expense.date
         self.amount = expense.amount
         self.description = expense.expenseDescription
+        self.card = expense.card
     }
 }
 

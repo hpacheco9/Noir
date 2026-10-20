@@ -18,7 +18,6 @@ struct ContentView: View {
     @Environment(\.requestReview) private var requestReview
     @Environment(\.scenePhase) private var scenePhase
     @State private var reviewTask: Task<Void, Never>?
-    /// The launch check runs once per launch, not on every return to the Home tab.
     @State private var hasCheckedReviewOnLaunch = false
 
     var body: some View {
@@ -30,8 +29,6 @@ struct ContentView: View {
             await viewModel.fetchData()
         }
         .listStyle(.insetGrouped)
-        // Review prompt (see CLAUDE.md "Review prompt"). Onboarding can't trigger it: this view only exists once
-        // onboarding is complete.
         .onChange(of: router.sheet == nil) { _, isClosed in
             if isClosed {
                 scheduleReviewRequestIfEligible(after: .seconds(2))
@@ -39,8 +36,6 @@ struct ContentView: View {
                 cancelReviewRequest()
             }
         }
-        // Opening the app also counts as a break, so someone who logs only through Shortcuts (which can't ask, having
-        // no UI) is asked the next time they open NOIR: once on launch, then whenever the app comes back to the front.
         .onAppear {
             guard !hasCheckedReviewOnLaunch else { return }
             hasCheckedReviewOnLaunch = true

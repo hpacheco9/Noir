@@ -87,6 +87,70 @@
         }
       }
     },
+    "add_expense.card" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Card"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cartão"
+          }
+        }
+      }
+    },
+    "add_expense.card.name_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Card name"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do cartão"
+          }
+        }
+      }
+    },
+    "add_expense.card.new" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New card…"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novo cartão…"
+          }
+        }
+      }
+    },
+    "add_expense.card.none" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum"
+          }
+        }
+      }
+    },
     "add_expense.category" : {
       "localizations" : {
         "en" : {
@@ -2257,13 +2321,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Expense name"
+            "value" : "Name, category or card"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nome da despesa"
+            "value" : "Nome, categoria ou cartão"
           }
         }
       }
