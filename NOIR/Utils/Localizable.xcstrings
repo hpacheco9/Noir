@@ -2596,6 +2596,22 @@
         }
       }
     },
+    "spending_period.short.year" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Y"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A"
+          }
+        }
+      }
+    },
     "spending_period.today" : {
       "localizations" : {
         "en" : {
@@ -2624,6 +2640,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Semana"
+          }
+        }
+      }
+    },
+    "spending_period.year" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ano"
           }
         }
       }

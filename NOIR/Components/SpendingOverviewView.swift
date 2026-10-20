@@ -51,7 +51,8 @@ struct SpendingOverviewView: View {
                 BarMark(
                     x: .value(String(localized: L10n.SpendingOverview.chartPeriod), point.label),
                     y: .value(String(localized: L10n.SpendingOverview.chartAmount), barsVisible ? amount : 0),
-                    width: .fixed(30)
+                    // 30pt bars overlap past ~7 (Year's 12 months, busy days, many years): share the width instead.
+                    width: viewModel.dataPoints.count > 7 ? .ratio(0.6) : .fixed(30)
                 )
                 .cornerRadius(6)
                 .opacity(barsVisible ? 1 : 0)
