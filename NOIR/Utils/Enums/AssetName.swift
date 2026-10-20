@@ -13,7 +13,6 @@ nonisolated enum AssetName {
         static let calendar = "calendar"
         static let checkmark = "checkmark"
         static let categories = "tag.fill"
-        static let close = "xmark"
         static let currency = "dollarsign.circle.fill"
         static let dashboard = "chart.pie"
         static let delete = "trash"
