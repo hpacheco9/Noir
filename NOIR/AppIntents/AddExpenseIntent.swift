@@ -52,9 +52,12 @@ struct AddExpenseIntent: AppIntent {
         }
 
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedCard = card.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        var categoryKey = category.id
+        var trimmedCard = card.name.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if IntentSummaryPreference.isEnabled() {
+            ExpenseSummaryDraft(categoryKey: categoryKey, categoryName: category.name, card: trimmedCard).save()
+            defer { ExpenseSummaryDraft.clear() }
             let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
             try await requestConfirmation(
                 actionName: .custom(
@@ -78,6 +81,10 @@ struct AddExpenseIntent: AppIntent {
                     date: date
                 )
             )
+            if let draft = ExpenseSummaryDraft.load() {
+                categoryKey = draft.categoryKey
+                trimmedCard = draft.card
+            }
         }
 
         let modelContext = ModelContext(NOIRApp.sharedModelContainer)
@@ -90,7 +97,7 @@ struct AddExpenseIntent: AppIntent {
             card: trimmedCard,
             createdAt: .now
         )
-        expense.categoryRawValue = CategoryCatalog.resolvedKey(category.id, in: modelContext)
+        expense.categoryRawValue = CategoryCatalog.resolvedKey(categoryKey, in: modelContext)
 
         modelContext.insert(expense)
         try modelContext.save()
