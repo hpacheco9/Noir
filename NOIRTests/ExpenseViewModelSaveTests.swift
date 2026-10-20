@@ -5,7 +5,6 @@
 
 import Testing
 import Foundation
-import SwiftData
 @testable import NOIR
 
 /// Add Expense. The insert is injected (the repository's save adjusts Home's overview memos in
@@ -14,6 +13,7 @@ import SwiftData
 final class ExpenseViewModelSaveTests {
     private final class Recorder {
         var saved: [ExpenseForm] = []
+        var notifications = 0
     }
 
     private struct SaveFailed: Error {}
@@ -29,17 +29,25 @@ final class ExpenseViewModelSaveTests {
         defaults.removePersistentDomain(forName: suiteName)
     }
 
-    private func makeViewModel(saver: @escaping ExpenseViewModel.Saver) throws -> ExpenseViewModel {
-        let container = try ModelContainer(
-            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
-        return ExpenseViewModel(model: container, reviewPrompt: ReviewPromptStore(defaults: defaults), saver: saver)
+    private func makeViewModel(saver: @escaping ExpenseViewModel.Saver) -> ExpenseViewModel {
+        ExpenseViewModel(reviewPrompt: ReviewPromptStore(defaults: defaults), saver: saver)
+    }
+
+    /// Counts the `.expensesDidChange` posts `viewModel` makes while `body` runs. Filtered by sender: other suites
+    /// run in parallel and post the same notification.
+    private func countingNotifications(
+        from viewModel: ExpenseViewModel, into recorder: Recorder, _ body: () async throws -> Void
+    ) async rethrows {
+        let token = NotificationCenter.default.addObserver(
+            forName: .expensesDidChange, object: viewModel, queue: nil
+        ) { _ in MainActor.assumeIsolated { recorder.notifications += 1 } }  // posted on the main actor
+        defer { NotificationCenter.default.removeObserver(token) }
+        try await body()
     }
 
     @Test func saveWithoutValidInputReportsNothingSaved() async throws {
         let recorder = Recorder()
-        let viewModel = try makeViewModel { form in await MainActor.run { recorder.saved.append(form) } }
+        let viewModel = makeViewModel { form in await MainActor.run { recorder.saved.append(form) } }
 
         #expect(viewModel.canSave == false)
         #expect(try await viewModel.save() == false)
@@ -53,16 +61,20 @@ final class ExpenseViewModelSaveTests {
         #expect(ReviewPromptStore(defaults: defaults).createdCount == 0)
     }
 
-    @Test func saveInsertsTrimmedValuesAndCountsTowardTheReviewPrompt() async throws {
+    @Test func saveInsertsTrimmedValuesCountsAndNotifies() async throws {
         let recorder = Recorder()
-        let viewModel = try makeViewModel { form in await MainActor.run { recorder.saved.append(form) } }
+        let viewModel = makeViewModel { form in await MainActor.run { recorder.saved.append(form) } }
         viewModel.form.amount = Decimal(string: "12.5")!
         viewModel.form.name = "  Lunch  "
         viewModel.form.category = ExpenseCategory.food.rawValue
         viewModel.form.description = " with Ana \n"
 
-        #expect(try await viewModel.save() == true)
+        var didSave = false
+        try await countingNotifications(from: viewModel, into: recorder) {
+            didSave = try await viewModel.save()
+        }
 
+        #expect(didSave)
         let saved = try #require(recorder.saved.first)
         #expect(recorder.saved.count == 1)
         #expect(saved.amount == Decimal(string: "12.5")!)
@@ -71,15 +83,20 @@ final class ExpenseViewModelSaveTests {
         #expect(saved.description == "with Ana")
         #expect(viewModel.isSaving == false)
         #expect(ReviewPromptStore(defaults: defaults).createdCount == 1)
+        #expect(recorder.notifications == 1)
     }
 
-    @Test func failedSaveThrowsAndDoesNotCount() async throws {
-        let viewModel = try makeViewModel { _ in throw SaveFailed() }
+    @Test func failedSaveThrowsDoesNotCountAndDoesNotNotify() async throws {
+        let recorder = Recorder()
+        let viewModel = makeViewModel { _ in throw SaveFailed() }
         viewModel.form.amount = 3
         viewModel.form.name = "Coffee"
 
-        await #expect(throws: SaveFailed.self) { try await viewModel.save() }
+        await countingNotifications(from: viewModel, into: recorder) {
+            await #expect(throws: SaveFailed.self) { try await viewModel.save() }
+        }
         #expect(viewModel.isSaving == false)
         #expect(ReviewPromptStore(defaults: defaults).createdCount == 0)
+        #expect(recorder.notifications == 0)
     }
 }

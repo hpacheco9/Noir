@@ -7,7 +7,7 @@ import Foundation
 import SwiftData
 
 /// The fields Add and Edit Expense both edit.
-nonisolated struct ExpenseForm: Sendable, Equatable {
+nonisolated struct ExpenseForm: Sendable {
     var amount = Decimal.zero
     var name = ""
     var date = Date.now
@@ -17,6 +17,12 @@ nonisolated struct ExpenseForm: Sendable, Equatable {
 
     var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && amount > 0
+    }
+
+    /// The amount as it is stored. Through the description: `NSDecimalNumber.doubleValue` turns 19.99 into
+    /// 19.990000000000002.
+    var amountValue: Double {
+        Double(amount.description) ?? NSDecimalNumber(decimal: amount).doubleValue
     }
 
     /// The values as they are stored: name and description trimmed.
@@ -34,7 +40,7 @@ extension ExpenseRepositoryProvider {
         try await perform {
             try await $0.save(
                 id: id,
-                amount: NSDecimalNumber(decimal: form.amount).doubleValue,
+                amount: form.amountValue,
                 name: form.name,
                 date: form.date,
                 categoryKey: form.category,

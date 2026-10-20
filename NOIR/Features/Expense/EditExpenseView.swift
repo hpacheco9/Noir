@@ -56,8 +56,9 @@ struct EditExpenseView: View {
             Button(String(localized: L10n.Shared.delete), role: .destructive) {
                 Task {
                     do {
-                        try await viewModel.delete()
-                        coordinator.dismiss()
+                        if try await viewModel.delete() {
+                            coordinator.dismiss()
+                        }
                     } catch {
                         saveError = error.localizedDescription
                     }

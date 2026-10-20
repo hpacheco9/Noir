@@ -23,32 +23,21 @@ final class EditExpenseViewModel {
     let repository: ExpenseRepositoryProvider
     private let expenseID: PersistentIdentifier
 
-    /// Writes to the store. Injectable because the repository's save and delete also adjust Home's overview memos
-    /// in `UserDefaults.standard`, which tests must not touch.
-    typealias Updater = @Sendable (PersistentIdentifier, ExpenseForm) async throws -> Void
-    typealias Deleter = @Sendable (PersistentIdentifier) async throws -> Void
-    private let updateExpense: Updater
-    private let deleteExpense: Deleter
-
-    init(
-        expense: ExpenseDTO,
-        model: ModelContainer = NOIRApp.sharedModelContainer,
-        updater: Updater? = nil,
-        deleter: Deleter? = nil
-    ) {
-        let repository = ExpenseRepositoryProvider(container: model)
-        self.repository = repository
+    init(expense: ExpenseDTO, model: ModelContainer = NOIRApp.sharedModelContainer) {
+        self.repository = ExpenseRepositoryProvider(container: model)
         self.expenseID = expense.id
-        self.updateExpense = updater ?? { try await repository.save($1, id: $0) }
-        self.deleteExpense = deleter ?? { id in try await repository.perform { try await $0.delete(id: id) } }
         form = ExpenseForm(
-            amount: Decimal(expense.amount),
+            // From the shortest description, so 19.99 stays 19.99 (`Decimal(Double)` gives 19.98999…).
+            amount: Decimal(string: String(expense.amount)) ?? Decimal(expense.amount),
             name: expense.name,
             date: expense.date,
             category: expense.categoryInfo.key,
             description: expense.description
         )
-        if !categories.contains(where: { $0.key == expense.categoryInfo.key }) {
+        // The expense's own category as it is shown (custom, or a built-in with an override).
+        if let index = categories.firstIndex(where: { $0.key == expense.categoryInfo.key }) {
+            categories[index] = expense.categoryInfo
+        } else {
             categories.append(expense.categoryInfo)
         }
     }
@@ -60,18 +49,22 @@ final class EditExpenseViewModel {
         isSaving = true
         defer { isSaving = false }
 
-        try await updateExpense(expenseID, form.trimmed)
+        try await repository.save(form.trimmed, id: expenseID)
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         return true
     }
 
-    func delete() async throws {
-        guard !isSaving else { return }
+    /// Returns whether it actually deleted (false when a write was already running).
+    @discardableResult
+    func delete() async throws -> Bool {
+        guard !isSaving else { return false }
         isSaving = true
         defer { isSaving = false }
 
-        try await deleteExpense(expenseID)
+        let id = expenseID
+        try await repository.perform { try await $0.delete(id: id) }
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
+        return true
     }
 
     /// Refreshes the picker's choices. A selection whose category no longer exists falls back to Other.

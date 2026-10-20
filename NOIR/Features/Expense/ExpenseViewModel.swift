@@ -49,7 +49,8 @@ final class ExpenseViewModel {
 
         try await saveExpense(form.trimmed)
         reviewPrompt.recordCreatedExpense()
-        NotificationCenter.default.post(name: .expensesDidChange, object: nil)
+        // `object: self` still reaches every `object: nil` listener; it lets a test tell this post apart.
+        NotificationCenter.default.post(name: .expensesDidChange, object: self)
         return true
     }
 
