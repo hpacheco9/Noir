@@ -144,6 +144,7 @@ struct MonthTotalWidgetView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.8)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -202,6 +203,7 @@ private struct MonthLineChart: View {
         .chartXAxis(.hidden)
         .chartYAxis(.hidden)
         .widgetAccentable()
+        .accessibilityHidden(true)
     }
 }
 

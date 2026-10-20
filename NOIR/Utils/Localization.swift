@@ -162,7 +162,6 @@ enum L10n {
     enum AddExpenseView {
         static let createTitle: LocalizedStringResource = "add_expense.create_title"
         static let editTitle: LocalizedStringResource = "add_expense.edit_title"
-        static let amountPlaceholder: LocalizedStringResource = "add_expense.amount_placeholder"
         static let amountAccessibilityLabel: LocalizedStringResource = "add_expense.amount_accessibility_label"
         static let expenseSection: LocalizedStringResource = "add_expense.expense_section"
         static let name: LocalizedStringResource = "add_expense.name"
@@ -239,7 +238,15 @@ enum L10n {
     }
 
     enum SpendingOverview {
-        static let totalSpent: LocalizedStringResource = "spending_overview.total_spent"
+        static func totalSpent(for period: NOIR.SpendingPeriod) -> LocalizedStringResource {
+            switch period {
+            case .day: "spending_overview.total_spent.today"
+            case .week: "spending_overview.total_spent.week"
+            case .month: "spending_overview.total_spent.month"
+            case .year: "spending_overview.total_spent.year"
+            case .allTime: "spending_overview.total_spent.all_time"
+            }
+        }
         static let chartPeriod: LocalizedStringResource = "spending_overview.chart_period"
         static let chartAmount: LocalizedStringResource = "spending_overview.chart_amount"
     }

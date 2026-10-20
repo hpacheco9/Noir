@@ -9,6 +9,17 @@
             "value" : "Add expense in ${applicationName}"
           }
         },
+        "es" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Registrar gasto en ${applicationName}",
+              "Añadir gasto en ${applicationName}",
+              "Agregar gasto en ${applicationName}",
+              "Anotar gasto en ${applicationName}"
+            ]
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23,6 +34,15 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Record expense in ${applicationName}"
+          }
+        },
+        "es" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Registrar un gasto en ${applicationName}",
+              "Nuevo gasto en ${applicationName}"
+            ]
           }
         },
         "pt-PT" : {
