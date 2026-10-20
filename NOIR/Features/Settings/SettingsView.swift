@@ -10,7 +10,6 @@ struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
-    @AppStorage(IntentSummaryPreference.storageKey) private var intentSummaryEnabled = IntentSummaryPreference.defaultValue
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
@@ -19,36 +18,40 @@ struct SettingsView: View {
 
     /// Not `.primary`: in dark mode that is a white "on" track under the white thumb. Black in light mode, mid gray in
     /// dark mode keeps it monochrome with the thumb visible in both.
-    private static let toggleTint = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? .systemGray : .label })
+    static let toggleTint = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? .systemGray : .label })
+
+    private static let showsProCard = false
 
     var body: some View {
         Form {
-            Section {
-                HStack(spacing: 12) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(L10n.NoirPro.title)
-                            .font(.title2)
-                            .fontWeight(.bold)
+            if Self.showsProCard {
+                Section {
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(L10n.NoirPro.title)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                            Text(L10n.NoirPro.description)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                         
-                        Text(L10n.NoirPro.description)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Spacer()
+                        Spacer()
 
-                    Button {
-                   
-                    } label: {
-                        Text(L10n.NoirPro.upgrade)
-                            .foregroundColor(Color(uiColor: .systemBackground))
-                            .fontWeight(.semibold)
-                            .fontDesign(.rounded)
+                        Button {
+                       
+                        } label: {
+                            Text(L10n.NoirPro.upgrade)
+                                .foregroundColor(Color(uiColor: .systemBackground))
+                                .fontWeight(.semibold)
+                                .fontDesign(.rounded)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.primary)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.primary)
+                    .padding(.vertical, 8)
                 }
-                .padding(.vertical, 8)
             }
 
             Section(String(localized: L10n.Profile.title)) {
@@ -106,16 +109,6 @@ struct SettingsView: View {
                     }
                     .tint(Self.toggleTint)
                 }
-
-                Toggle(isOn: $intentSummaryEnabled) {
-                    Label {
-                        Text(L10n.Preferences.intentSummary)
-                    } icon: {
-                        Image(systemName: AssetName.System.intentSummary)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .tint(Self.toggleTint)
 
                 SettingsRow(
                     title: L10n.Preferences.shortcuts,

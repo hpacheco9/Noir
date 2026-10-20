@@ -76,8 +76,13 @@ struct SpendingOverviewView: View {
             .hapticFeedback(.selection, trigger: selectedLabel) { _, new in new != nil }
             .frame(height: 230)
             .chartXAxis {
-                AxisMarks(preset: .aligned) { _ in
-                    AxisValueLabel()
+                AxisMarks(preset: .aligned) { value in
+                    AxisValueLabel {
+                        // Initials only on the axis: as x values they repeat (J, J) and would merge bars.
+                        if let label = value.as(String.self) {
+                            Text(verbatim: viewModel.appliedPeriod == .year ? String(label.prefix(1)).uppercased() : label)
+                        }
+                    }
                 }
             }
             .chartYAxis {

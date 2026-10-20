@@ -7,15 +7,12 @@ import Foundation
 import Observation
 import SwiftData
 
-/// Edit Expense: updates or deletes an existing expense.
 @MainActor
 @Observable
 final class EditExpenseViewModel {
 
     var form: ExpenseForm
-    /// Choices for the picker: the built-ins plus the expense's own category until the first `loadCategories()`.
     private(set) var categories: [CategoryInfo] = CategoryInfo.builtIns
-    /// A save or delete is in flight; Save is disabled and a second call is ignored.
     private(set) var isSaving = false
 
     var canSave: Bool { form.canSave }
@@ -27,7 +24,6 @@ final class EditExpenseViewModel {
         self.repository = ExpenseRepositoryProvider(container: model)
         self.expenseID = expense.id
         form = ExpenseForm(
-            // From the shortest description, so 19.99 stays 19.99 (`Decimal(Double)` gives 19.98999…).
             amount: Decimal(string: String(expense.amount)) ?? Decimal(expense.amount),
             name: expense.name,
             date: expense.date,
@@ -42,7 +38,6 @@ final class EditExpenseViewModel {
         }
     }
 
-    /// Returns whether it actually saved (false when there was nothing to save or a write was already running).
     @discardableResult
     func save() async throws -> Bool {
         guard canSave, !isSaving else { return false }
@@ -54,7 +49,6 @@ final class EditExpenseViewModel {
         return true
     }
 
-    /// Returns whether it actually deleted (false when a write was already running).
     @discardableResult
     func delete() async throws -> Bool {
         guard !isSaving else { return false }
