@@ -39,9 +39,15 @@ nonisolated struct BucketLayout: Sendable {
 }
 
 nonisolated enum SpendingBuckets {
-    /// Layout for `period` around `now`. Same `now` => same layout, which is what lets a memo rebuild it from `computedAt`.
-    static func layout(for period: SpendingPeriod, calendar: Calendar = .current, now: Date = .now) -> BucketLayout? {
-        guard let window = period.chartWindow(calendar: calendar, now: now) else { return nil }
+    /// Layout for `period` around `now`. Same `now` (and `earliest`/`latest`, see `chartWindow`) => same layout, which
+    /// is what lets a memo rebuild it from `computedAt` and its window.
+    static func layout(
+        for period: SpendingPeriod, calendar: Calendar = .current, now: Date = .now,
+        earliest: Date? = nil, latest: Date? = nil
+    ) -> BucketLayout? {
+        guard let window = period.chartWindow(calendar: calendar, now: now, earliest: earliest, latest: latest) else {
+            return nil
+        }
 
         switch period {
         case .day:
@@ -91,13 +97,24 @@ nonisolated enum SpendingBuckets {
             }
             return BucketLayout(period: period, window: window, starts: starts, pointDates: starts, labels: labels)
 
-        case .allTime:
-            let months = Array((0..<6).compactMap { calendar.date(byAdding: .month, value: -$0, to: now) }.reversed())
-            let intervals = months.compactMap { calendar.dateInterval(of: .month, for: $0) }
-            guard intervals.count == months.count else { return nil }
+        case .year:
+            let months = (0..<12).compactMap { calendar.date(byAdding: .month, value: $0, to: window.start) }
             return BucketLayout(
-                period: period, window: window, starts: intervals.map(\.start), pointDates: months,
-                labels: months.map { monthFormatter.string(from: $0) }
+                period: period, window: window, starts: months, pointDates: months,
+                labels: months.map { calendar.shortMonthSymbols[calendar.component(.month, from: $0) - 1] }
+            )
+
+        case .allTime:
+            var years: [Date] = []
+            var year = window.start
+            while year < window.end {
+                years.append(year)
+                guard let next = calendar.date(byAdding: .year, value: 1, to: year), next > year else { break }
+                year = next
+            }
+            return BucketLayout(
+                period: period, window: window, starts: years, pointDates: years,
+                labels: years.map { String(calendar.component(.year, from: $0)) }
             )
         }
     }
@@ -130,12 +147,6 @@ nonisolated enum SpendingBuckets {
         let formatter = DateFormatter()
         formatter.locale = .current
         formatter.setLocalizedDateFormatFromTemplate("EEE")
-        return formatter
-    }()
-
-    private static let monthFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM"
         return formatter
     }()
 

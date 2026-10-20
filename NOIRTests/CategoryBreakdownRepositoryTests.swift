@@ -10,6 +10,8 @@ import SwiftData
 
 /// In-memory store, rows inserted straight into a `ModelContext`: `repository.save` would write the overview memo
 /// to `UserDefaults.standard`.
+/// Serialized with the nested `OverviewYearAllTimeTests`: their writes move the global memo generation this suite checks.
+@Suite(.serialized)
 struct CategoryBreakdownRepositoryTests {
     private var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
@@ -53,7 +55,7 @@ struct CategoryBreakdownRepositoryTests {
         #expect(month.total == 15)
         #expect(month.categories.first?.count == 2)
 
-        // Truly all time: includes the 2019 row (the chart window would stop six months back).
+        // Truly all time: includes the 2019 row (not limited to any window).
         let all = try await breakdown(container, period: .allTime)
         #expect(all.total == 1315)
         #expect(all.categories.map(\.info.key) == ["health", "transport", "food"])
@@ -97,7 +99,7 @@ struct CategoryBreakdownRepositoryTests {
 
     // MARK: Window boundaries
 
-    @Test(arguments: [SpendingPeriod.day, .week, .month])
+    @Test(arguments: [SpendingPeriod.day, .week, .month, .year])
     func windowStartIsIncludedAndEndIsExcluded(period: SpendingPeriod) async throws {
         let interval = try #require(period.dateInterval(calendar: calendar, now: now))
         let container = try makeContainer()

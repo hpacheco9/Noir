@@ -215,10 +215,12 @@ enum L10n {
         static let today: LocalizedStringResource = "spending_period.today"
         static let week: LocalizedStringResource = "spending_period.week"
         static let month: LocalizedStringResource = "spending_period.month"
+        static let year: LocalizedStringResource = "spending_period.year"
         static let allTime: LocalizedStringResource = "spending_period.all_time"
         static let shortDay: LocalizedStringResource = "spending_period.short.day"
         static let shortWeek: LocalizedStringResource = "spending_period.short.week"
         static let shortMonth: LocalizedStringResource = "spending_period.short.month"
+        static let shortYear: LocalizedStringResource = "spending_period.short.year"
         static let shortAllTime: LocalizedStringResource = "spending_period.short.all_time"
     }
 

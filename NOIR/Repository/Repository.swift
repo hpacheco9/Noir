@@ -40,7 +40,21 @@ actor ExpenseRepository: ModelActor {
         now: Date = .now,
         calendar: Calendar = .current
     ) throws -> ChartResult {
-        guard let layout = SpendingBuckets.layout(for: period, calendar: calendar, now: now) else {
+        // All Time spans the oldest to the newest expense's year: a row added or moved past either end changes the
+        // window, so FULL.
+        var earliest: Date?
+        var latest: Date?
+        if period == .allTime {
+            var oldestDescriptor = FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date)])
+            oldestDescriptor.fetchLimit = 1
+            earliest = try modelContext.fetch(oldestDescriptor).first?.date
+            var newestDescriptor = FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+            newestDescriptor.fetchLimit = 1
+            latest = try modelContext.fetch(newestDescriptor).first?.date
+        }
+        guard let layout = SpendingBuckets.layout(
+            for: period, calendar: calendar, now: now, earliest: earliest, latest: latest
+        ) else {
             return ChartResult(points: [], total: 0)
         }
 
@@ -145,7 +159,7 @@ actor ExpenseRepository: ModelActor {
         return #Predicate<Expense> { $0.date >= start && $0.date < end }
     }
 
-    /// Spending per category for `period` (truly all time for `.allTime`, not the chart's six-month window).
+    /// Spending per category for `period` (unbounded for `.allTime`).
     /// Reads rows only; the overview memo is not involved.
     func categoryBreakdown(period: SpendingPeriod, now: Date = .now, calendar: Calendar = .current) throws -> CategoryBreakdown {
         let predicate = period.dateInterval(calendar: calendar, now: now).map(Self.datePredicate)
