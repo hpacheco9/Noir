@@ -371,15 +371,11 @@ actor ExpenseRepository: ModelActor {
     ) throws {
         guard Expense.isValidAmount(amount) else { throw RepositoryError.invalidAmount }
         let categoryKey = try resolvedCategoryKey(categoryKey)
+        let existing = try id.map(existingExpense)
         // Two-phase with the overview memos: nothing may save a memo while this write is in flight.
         OverviewMemoStore.beginWrite()
 
-        if let id {
-            guard let expense = modelContext.model(for: id) as? Expense else {
-                OverviewMemoStore.cancelWrite()
-                throw RepositoryError.notFound
-            }
-
+        if let expense = existing {
             // Edit: remember what the memos currently count for this row, then move it.
             let before = SpendingEntry(expense)
             expense.amount = amount
@@ -428,11 +424,8 @@ actor ExpenseRepository: ModelActor {
     }
 
     func delete(id: PersistentIdentifier) throws {
+        let expense = try existingExpense(id)
         OverviewMemoStore.beginWrite()
-        guard let expense = modelContext.model(for: id) as? Expense else {
-            OverviewMemoStore.cancelWrite()
-            throw RepositoryError.notFound
-        }
         let before = SpendingEntry(expense)
         modelContext.delete(expense)
         do {
@@ -442,6 +435,14 @@ actor ExpenseRepository: ModelActor {
             throw error
         }
         OverviewMemoStore.finishWrite(old: before)
+    }
+
+    // Not model(for:): for a row deleted elsewhere it returns a fault that traps when read.
+    private func existingExpense(_ id: PersistentIdentifier) throws -> Expense {
+        var descriptor = FetchDescriptor<Expense>(predicate: #Predicate { $0.persistentModelID == id })
+        descriptor.fetchLimit = 1
+        guard let expense = try modelContext.fetch(descriptor).first else { throw RepositoryError.notFound }
+        return expense
     }
 
     /// `save()` that leaves the context clean on failure, so a failed write can't leak into the next one.
