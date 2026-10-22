@@ -29,6 +29,12 @@
             "value" : "Tu gasto total de este mes."
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le total de tes dépenses ce mois-ci."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61,6 +67,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gasto del mes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dépenses du mois"
           }
         },
         "pt-BR" : {
@@ -97,6 +109,12 @@
             "value" : "Disponible: %@"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il reste %@"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -129,6 +147,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este mes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce mois-ci"
           }
         },
         "pt-BR" : {

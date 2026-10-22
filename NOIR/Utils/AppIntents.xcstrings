@@ -22,6 +22,12 @@
             "value" : "Tarjeta"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carte"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55,6 +61,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin tarjeta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune carte"
           }
         },
         "pt-BR" : {
@@ -92,6 +104,12 @@
             "value" : "¿Con qué tarjeta?"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quelle carte ?"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -126,6 +144,12 @@
             "value" : "Categoría"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Catégorie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -158,6 +182,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compras"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achats"
           }
         },
         "pt-BR" : {
@@ -195,6 +225,12 @@
             "value" : "¿Qué categoría?"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quelle catégorie ?"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -227,6 +263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alimentation"
           }
         },
         "pt-BR" : {
@@ -263,6 +305,12 @@
             "value" : "Salud"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Santé"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -295,6 +343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hogar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logement"
           }
         },
         "pt-BR" : {
@@ -331,6 +385,12 @@
             "value" : "Ocio"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loisirs"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -365,6 +425,12 @@
             "value" : "Otros"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autre"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -397,6 +463,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transporte"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transports"
           }
         },
         "pt-BR" : {
@@ -434,6 +506,12 @@
             "value" : "Cambiar tarjeta"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer de carte"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -469,6 +547,12 @@
             "value" : "Cambiar categoría"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer de catégorie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -502,6 +586,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostrar opciones"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les options"
           }
         },
         "pt-BR" : {
