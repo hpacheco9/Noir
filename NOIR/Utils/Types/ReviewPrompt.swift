@@ -72,13 +72,6 @@ nonisolated struct ReviewPromptStore {
     }
 }
 
-nonisolated enum AppVersion {
-    /// `CFBundleShortVersionString`, or an empty string when missing.
-    static func current(in bundle: Bundle = .main) -> String {
-        bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-    }
-}
-
 #if DEBUG
 /// Developer tools (Settings › Developer) for checking the prompt without logging real expenses.
 extension ReviewPromptStore {

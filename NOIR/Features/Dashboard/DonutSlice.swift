@@ -72,7 +72,3 @@ struct DonutSlice: Identifiable, Equatable {
         slices.first { $0.memberKeys.contains(categoryKey) }?.key
     }
 }
-
-extension Decimal {
-    var doubleValue: Double { NSDecimalNumber(decimal: self).doubleValue }
-}

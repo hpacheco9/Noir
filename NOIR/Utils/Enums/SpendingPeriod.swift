@@ -1,5 +1,5 @@
 //
-//  Enums.swift
+//  SpendingPeriod.swift
 //  NOIR
 //
 //  Created by Henrique Pacheco on 27/07/2026.
@@ -47,12 +47,5 @@ nonisolated enum SpendingPeriod: String, CaseIterable, Identifiable, Sendable {
             let last = calendar.dateInterval(of: .year, for: max(latest ?? now, now))
         else { return nil }
         return DateInterval(start: first.start, end: last.end)
-    }
-}
-
-extension DateInterval {
-    /// `start <= date < end`. (`DateInterval.contains` also accepts `end`, which belongs to the next period.)
-    nonisolated func containsHalfOpen(_ date: Date) -> Bool {
-        date >= start && date < end
     }
 }

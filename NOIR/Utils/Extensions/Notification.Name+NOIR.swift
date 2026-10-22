@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  Notification.Name+NOIR.swift
 //  NOIR
 //
 //  Created by Henrique Pacheco on 27/07/2026.
