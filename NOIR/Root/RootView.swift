@@ -24,14 +24,20 @@ struct RootView: View {
         _searchViewModel = State(initialValue: SearchViewModel(model: NOIRApp.sharedModelContainer))
     }
 
+    // .search draws inline in the tab bar on iOS 27 here; .prominent keeps it as the separate button.
+    private var searchRole: TabRole {
+        if #available(iOS 27, *) { .prominent } else { .search }
+    }
+
     var body: some View {
         TabView {
-            CoordinatorView {
-                ContentView()
-            }
-            .environmentObject(homeCoordinator)
-            .environment(mainViewModel)
-            .tabItem {
+            Tab {
+                CoordinatorView {
+                    ContentView()
+                }
+                .environmentObject(homeCoordinator)
+                .environment(mainViewModel)
+            } label: {
                 Label {
                     Text(L10n.Tab.home)
                 } icon: {
@@ -40,11 +46,12 @@ struct RootView: View {
                 .environment(\.symbolVariants, .none)
             }
 
-            CoordinatorView {
-                DashboardView(viewModel: dashboardViewModel)
-            }
-            .environmentObject(dashboardCoordinator)
-            .tabItem {
+            Tab {
+                CoordinatorView {
+                    DashboardView(viewModel: dashboardViewModel)
+                }
+                .environmentObject(dashboardCoordinator)
+            } label: {
                 Label {
                     Text(L10n.Tab.dashboard)
                 } icon: {
@@ -53,19 +60,21 @@ struct RootView: View {
                 .environment(\.symbolVariants, .none)
             }
 
-            CoordinatorView {
-                SearchView(viewModel: searchViewModel)
-            }
-            .environmentObject(searchCoordinator)
-            .tabItem {
+            Tab(role: searchRole) {
+                CoordinatorView {
+                    SearchView(viewModel: searchViewModel)
+                }
+                .environmentObject(searchCoordinator)
+            } label: {
                 Label {
                     Text(L10n.Tab.search)
                 } icon: {
                     Image(systemName: AssetName.System.search)
                 }
-                //   .environment(\.symbolVariants, .none)
             }
         }
+        .tabViewStyle(.sidebarAdaptable)
+        .tabBarMinimizeBehavior(.onScrollDown)
         .tint(.primary)
         .onChange(of: scenePhase, initial: true) { _, phase in
             if phase == .active { Task { await WidgetSnapshotPublisher.publish() } }
