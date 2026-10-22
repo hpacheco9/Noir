@@ -10,6 +10,7 @@ import SwiftData
 
 enum RepositoryError: Error {
        case notFound
+       case invalidAmount
 }
 
 /// Why `createCategory` or `updateCategory` refused a name.
@@ -368,6 +369,7 @@ actor ExpenseRepository: ModelActor {
         description: String,
         card: String,
     ) throws {
+        guard Expense.isValidAmount(amount) else { throw RepositoryError.invalidAmount }
         let categoryKey = try resolvedCategoryKey(categoryKey)
         // Two-phase with the overview memos: nothing may save a memo while this write is in flight.
         OverviewMemoStore.beginWrite()

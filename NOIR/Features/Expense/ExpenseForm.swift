@@ -17,7 +17,7 @@ nonisolated struct ExpenseForm: Sendable {
     var card = ""
 
     var canSave: Bool {
-        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && amount > 0
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && Expense.isValidAmount(amountValue)
     }
 
     /// The amount as it is stored. Through the description: `NSDecimalNumber.doubleValue` turns 19.99 into
