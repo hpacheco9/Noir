@@ -9,11 +9,9 @@ struct SearchView: View {
         self.viewModel = viewModel
     }
 
-    /// The row the user swiped to delete; drives the confirmation alert.
     @State private var expensePendingDeletion: ExpenseDTO?
-
+    
     var body: some View {
-        // Every state (loading, empty, results) lives inside the List, so the screen scrolls whatever it shows.
         List {
             content
         }
@@ -110,7 +108,6 @@ struct SearchView: View {
             Haptics.play(.tap)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            // Not `role: .destructive`: that removes the row before the alert has been answered.
             Button {
                 expensePendingDeletion = expense
             } label: {

@@ -22,7 +22,6 @@ struct DashboardView: View {
 
     var body: some View {
         List {
-            periodSection
             switch viewModel.state {
             case .loading:
                 Section {
@@ -57,6 +56,12 @@ struct DashboardView: View {
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
+                PeriodMenu(selection: Binding(get: { viewModel.period }, set: { viewModel.selectPeriod($0) }))
+            }
+
+            ToolbarSpacer(.fixed, placement: .confirmationAction)
+
+            ToolbarItem(placement: .confirmationAction) {
                 ProfileAvatarButton()
             }
         }
@@ -64,24 +69,6 @@ struct DashboardView: View {
     }
 
     // MARK: - Sections
-
-    private var periodSection: some View {
-        Section {
-            Picker(selection: Binding(get: { viewModel.period }, set: { viewModel.selectPeriod($0) })) {
-                ForEach(SpendingPeriod.allCases) { period in
-                    // Initials keep five segments readable in every language; VoiceOver reads the full title.
-                    Text(period.shortTitle)
-                        .accessibilityLabel(Text(period.title))
-                        .tag(period)
-                }
-            } label: {
-                Text(L10n.Dashboard.periodPicker)
-            }
-            .pickerStyle(.segmented)
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets())
-        }
-    }
 
     private var emptySection: some View {
         Section {
@@ -184,8 +171,6 @@ struct DashboardView: View {
         return pinnedCategoryKey == categoryKey
     }
 
-    /// The centre label: the scrubbed sector, else the pinned category (with its own numbers even when it sits
-    /// inside the rest slice), else `nil` for the period total.
     private func focus(
         scrubKey: String?, pinned: CategorySpending?, pinnedSliceKey: String?, slices: [DonutSlice]
     ) -> DonutFocus? {
@@ -212,7 +197,7 @@ struct DashboardView: View {
             period: period.title,
             total: CurrencyPreference.string(for: total, code: currencyCode)
         )))
-        // High priority, so the segmented control's own speech doesn't cut it off.
+        // High priority, so the menu's own speech doesn't cut it off.
         text.accessibilitySpeechAnnouncementPriority = .high
         AccessibilityNotification.Announcement(text).post()
     }

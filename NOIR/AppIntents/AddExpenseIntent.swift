@@ -103,7 +103,6 @@ struct AddExpenseIntent: AppIntent {
         try modelContext.save()
         SavedCards.remember(trimmedCard)
 
-        // Counts toward the review prompt, but never asks: an intent has no UI. Home asks at its next eligible moment.
         ReviewPromptStore().recordCreatedExpense()
 
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
