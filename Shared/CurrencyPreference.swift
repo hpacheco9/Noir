@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum CurrencyPreference {
+nonisolated enum CurrencyPreference {
     static let storageKey = "settings.currency_code"
 
     private static let baseCodes = ["EUR", "USD", "GBP", "BRL", "JPY", "CAD"]
@@ -37,11 +37,6 @@ enum CurrencyPreference {
     /// Format and parse style for amounts: the currency's own locale, narrow symbol ("$" for USD and CAD).
     static func formatStyle(for code: String) -> Decimal.FormatStyle.Currency {
         Decimal.FormatStyle.Currency(code: code, locale: locale(for: code)).presentation(.narrow)
-    }
-
-    /// For amount TextFields: same output as `formatStyle(for:)`, but parsing accepts "." or "," as the decimal mark.
-    static func amountInputStyle(for code: String) -> AmountInputFormatStyle {
-        AmountInputFormatStyle(code: code, currencyLocale: locale(for: code))
     }
 
     static func doubleFormatStyle(for code: String) -> FloatingPointFormatStyle<Double>.Currency {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var router: Coordinator
-    @State private var selectedPeriod: SpendingPeriod = .day
+    @AppStorage("home.period") private var selectedPeriod: SpendingPeriod = .day
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @Environment(MainViewModel.self) private var viewModel
 
@@ -18,7 +18,6 @@ struct ContentView: View {
     @Environment(\.requestReview) private var requestReview
     @Environment(\.scenePhase) private var scenePhase
     @State private var reviewTask: Task<Void, Never>?
-    /// The launch check runs once per launch, not on every return to the Home tab.
     @State private var hasCheckedReviewOnLaunch = false
 
     var body: some View {
@@ -30,8 +29,6 @@ struct ContentView: View {
             await viewModel.fetchData()
         }
         .listStyle(.insetGrouped)
-        // Review prompt (see CLAUDE.md "Review prompt"). Onboarding can't trigger it: this view only exists once
-        // onboarding is complete.
         .onChange(of: router.sheet == nil) { _, isClosed in
             if isClosed {
                 scheduleReviewRequestIfEligible(after: .seconds(2))
@@ -39,8 +36,6 @@ struct ContentView: View {
                 cancelReviewRequest()
             }
         }
-        // Opening the app also counts as a break, so someone who logs only through Shortcuts (which can't ask, having
-        // no UI) is asked the next time they open NOIR: once on launch, then whenever the app comes back to the front.
         .onAppear {
             guard !hasCheckedReviewOnLaunch else { return }
             hasCheckedReviewOnLaunch = true
@@ -99,6 +94,8 @@ struct ContentView: View {
             loadedSections(for: snapshot)
         case .loading:
             loadingSection
+        case .failed:
+            failedSection
         }
     }
 
@@ -162,6 +159,27 @@ struct ContentView: View {
         }
     }
 
+    private var failedSection: some View {
+        Section {
+            VStack(spacing: 12) {
+                UnavailableView(
+                    L10n.Dashboard.errorTitle,
+                    systemImage: AssetName.System.warning,
+                    description: L10n.Dashboard.errorDescription
+                )
+
+                Button(String(localized: L10n.Dashboard.retry)) {
+                    Task { await viewModel.fetchData() }
+                }
+                .buttonStyle(.bordered)
+            }
+            .frame(maxWidth: .infinity)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .padding(.top, 50)
+        }
+    }
+
     // MARK: - Review prompt
     /// Runs at a natural break, never inside the Save action: when a sheet on Home has fully closed, or when the app
     /// opens or comes back to the front. Waits `delay`, then re-checks that nothing is presented and the app is still
@@ -191,24 +209,15 @@ struct ContentView: View {
 
     // MARK: - Toolbar
     private var periodFilterMenu: some View {
-        Menu {
-            ForEach(SpendingPeriod.allCases) { period in
-                Button {
-                    withAnimation {
-                        selectedPeriod = period
-                        viewModel.selectPeriod(period)
-                    }
-                } label: {
-                    if period == selectedPeriod {
-                        Label(period.title, systemImage: AssetName.System.checkmark)
-                    } else {
-                        Text(period.title)
-                    }
+        PeriodMenu(selection: Binding(
+            get: { selectedPeriod },
+            set: { period in
+                withAnimation {
+                    selectedPeriod = period
+                    viewModel.selectPeriod(period)
                 }
             }
-        } label: {
-            Image(systemName: AssetName.System.filter)
-        }
+        ))
     }
 
     private var addExpenseButton: some View {

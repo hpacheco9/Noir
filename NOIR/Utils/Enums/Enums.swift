@@ -7,7 +7,7 @@
 
 import Foundation
 
-nonisolated enum SpendingPeriod: CaseIterable, Identifiable, Sendable {
+nonisolated enum SpendingPeriod: String, CaseIterable, Identifiable, Sendable {
     case day
     case week
     case month
@@ -23,18 +23,6 @@ nonisolated enum SpendingPeriod: CaseIterable, Identifiable, Sendable {
         case .month: String(localized: L10n.SpendingPeriod.month)
         case .year: String(localized: L10n.SpendingPeriod.year)
         case .allTime: String(localized: L10n.SpendingPeriod.allTime)
-        }
-    }
-
-    /// Initial-style label for tight segmented controls ("D", "W", "M", "Y", "All"). Pair it with `title` as the
-    /// accessibility label.
-    @MainActor var shortTitle: String {
-        switch self {
-        case .day: String(localized: L10n.SpendingPeriod.shortDay)
-        case .week: String(localized: L10n.SpendingPeriod.shortWeek)
-        case .month: String(localized: L10n.SpendingPeriod.shortMonth)
-        case .year: String(localized: L10n.SpendingPeriod.shortYear)
-        case .allTime: String(localized: L10n.SpendingPeriod.shortAllTime)
         }
     }
 

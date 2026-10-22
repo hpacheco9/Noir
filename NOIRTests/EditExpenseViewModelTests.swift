@@ -15,9 +15,12 @@ struct EditExpenseViewModelTests {
     private func makeExpense(
         amount: Double = 10,
         categoryKey: String = ExpenseCategory.food.rawValue,
+        card: String = "",
         categories: [CategoryInfo] = CategoryInfo.builtIns
     ) -> ExpenseDTO {
-        let row = Expense(amount: amount, name: "Coffee", date: .now, category: .other, expenseDescription: "Morning")
+        let row = Expense(
+            amount: amount, name: "Coffee", date: .now, category: .other, expenseDescription: "Morning", card: card
+        )
         row.categoryRawValue = categoryKey
         return ExpenseDTO(row, categories: Dictionary(uniqueKeysWithValues: categories.map { ($0.key, $0) }))
     }
@@ -28,7 +31,15 @@ struct EditExpenseViewModelTests {
         #expect(viewModel.form.name == "Coffee")
         #expect(viewModel.form.category == ExpenseCategory.food.rawValue)
         #expect(viewModel.form.description == "Morning")
+        #expect(viewModel.form.card == "")
+        #expect(viewModel.cards.isEmpty)
         #expect(viewModel.canSave)
+    }
+
+    @Test func cardIsPrefilledAndSelectable() {
+        let viewModel = EditExpenseViewModel(expense: makeExpense(card: "Visa"))
+        #expect(viewModel.form.card == "Visa")
+        #expect(viewModel.cards == ["Visa"])
     }
 
     @Test func amountRoundTripsExactly() {

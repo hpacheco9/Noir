@@ -29,12 +29,20 @@ struct AddExpenseIntent: AppIntent {
     )
     var category: ExpenseCategoryEntity
 
+    @Parameter(
+        title: LocalizedStringResource("app_intent.card", table: "AppIntents"),
+        requestValueDialog: IntentDialog(
+            LocalizedStringResource("app_intent.card_prompt", table: "AppIntents")
+        )
+    )
+    var card: ExpenseCardEntity
+
     @Parameter(title: "app_intent.note", default: "")
     var note: String
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        guard amount.isFinite, amount > 0 else {
+        guard Expense.isValidAmount(amount) else {
             throw AddExpenseIntentError.invalidAmount
         }
 
@@ -44,8 +52,12 @@ struct AddExpenseIntent: AppIntent {
         }
 
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        var categoryKey = category.id
+        var trimmedCard = card.name.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if IntentSummaryPreference.isEnabled() {
+            ExpenseSummaryDraft(categoryKey: categoryKey, categoryName: category.name, card: trimmedCard).save()
+            defer { ExpenseSummaryDraft.clear() }
             let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
             try await requestConfirmation(
                 actionName: .custom(
@@ -65,9 +77,14 @@ struct AddExpenseIntent: AppIntent {
                     name: trimmedName,
                     amount: amount,
                     categoryName: category.name,
+                    card: trimmedCard,
                     date: date
                 )
             )
+            if let draft = ExpenseSummaryDraft.load() {
+                categoryKey = draft.categoryKey
+                trimmedCard = draft.card
+            }
         }
 
         let modelContext = ModelContext(NOIRApp.sharedModelContainer)
@@ -77,17 +94,19 @@ struct AddExpenseIntent: AppIntent {
             date: date,
             category: .other,
             expenseDescription: trimmedNote,
+            card: trimmedCard,
             createdAt: .now
         )
-        expense.categoryRawValue = CategoryCatalog.resolvedKey(category.id, in: modelContext)
+        expense.categoryRawValue = CategoryCatalog.resolvedKey(categoryKey, in: modelContext)
 
         modelContext.insert(expense)
         try modelContext.save()
+        SavedCards.remember(trimmedCard)
 
-        // Counts toward the review prompt, but never asks: an intent has no UI. Home asks at its next eligible moment.
         ReviewPromptStore().recordCreatedExpense()
 
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
+        await WidgetSnapshotPublisher.publish()
         try? await NotificationService.shared.notifyExpenseAdded(name: trimmedName, amount: amount)
 
         return .result(

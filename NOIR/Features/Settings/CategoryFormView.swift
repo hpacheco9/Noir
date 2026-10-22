@@ -136,7 +136,7 @@ struct CategoryFormView: View {
                 }
             }
         } message: {
-            Text(L10n.Categories.deleteMessage)
+            Text(L10n.Categories.deleteMessage(otherTitle: viewModel.otherTitle))
         }
         .navigationTitle(Text(viewModel.title))
         .navigationBarTitleDisplayMode(.inline)

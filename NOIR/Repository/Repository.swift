@@ -10,6 +10,7 @@ import SwiftData
 
 enum RepositoryError: Error {
        case notFound
+       case invalidAmount
 }
 
 /// Why `createCategory` or `updateCategory` refused a name.
@@ -153,6 +154,13 @@ actor ExpenseRepository: ModelActor {
         return SideResult(latest: latest, hasAnyExpenses: hasAny)
     }
 
+    func cumulativeDays(in month: DateInterval, calendar: Calendar = .current) throws -> [Double] {
+        var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(month))
+        descriptor.propertiesToFetch = [\.date, \.amount]
+        let rows = try modelContext.fetch(descriptor).map { (date: $0.date, amount: $0.amount) }
+        return MonthTotalSnapshot.cumulativeDays(rows, in: month, calendar: calendar)
+    }
+
     nonisolated private static func datePredicate(_ interval: DateInterval) -> Predicate<Expense> {
         let start = interval.start
         let end = interval.end
@@ -173,15 +181,23 @@ actor ExpenseRepository: ModelActor {
         return accumulator.finish(categories: try categoryIndex())
     }
 
-    func fetchPage(query: String, offset: Int, limit: Int) throws -> [ExpenseDTO] {
+    func fetchPage(query: String, offset: Int, limit: Int) async throws -> [ExpenseDTO] {
         let normalizedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        let categories = try categoryIndex()
         let predicate: Predicate<Expense>?
 
         if normalizedQuery.isEmpty {
             predicate = nil
         } else {
+            // Categories are stored by key: match their shown titles (main actor, localized) and search by key.
+            let infos = Array(categories.values)
+            let categoryKeys = await MainActor.run {
+                infos.filter { $0.title.localizedStandardContains(normalizedQuery) }.map(\.key)
+            }
             predicate = #Predicate<Expense> { expense in
                 expense.name.localizedStandardContains(normalizedQuery)
+                    || expense.card.localizedStandardContains(normalizedQuery)
+                    || categoryKeys.contains(expense.categoryRawValue)
             }
         }
 
@@ -191,7 +207,6 @@ actor ExpenseRepository: ModelActor {
         )
         descriptor.fetchLimit = limit
         descriptor.fetchOffset = offset
-        let categories = try categoryIndex()
         return try modelContext.fetch(descriptor).map { ExpenseDTO($0, categories: categories) }
     }
 
@@ -352,7 +367,9 @@ actor ExpenseRepository: ModelActor {
         date: Date,
         categoryKey: String,
         description: String,
+        card: String,
     ) throws {
+        guard Expense.isValidAmount(amount) else { throw RepositoryError.invalidAmount }
         let categoryKey = try resolvedCategoryKey(categoryKey)
         // Two-phase with the overview memos: nothing may save a memo while this write is in flight.
         OverviewMemoStore.beginWrite()
@@ -370,6 +387,7 @@ actor ExpenseRepository: ModelActor {
             expense.date = date
             expense.categoryRawValue = categoryKey
             expense.expenseDescription = description
+            expense.card = card
             do {
                 try commit()
             } catch {
@@ -381,6 +399,7 @@ actor ExpenseRepository: ModelActor {
                 old: before,
                 new: SpendingEntry(date: date, amount: amount, createdAt: before.createdAt)
             )
+            SavedCards.remember(card)
         } else {
             let expense = Expense(
                 amount: amount,
@@ -388,6 +407,7 @@ actor ExpenseRepository: ModelActor {
                 date: date,
                 category: .other,
                 expenseDescription: description,
+                card: card,
             )
             expense.categoryRawValue = categoryKey
             expense.createdAt = .now
@@ -399,7 +419,12 @@ actor ExpenseRepository: ModelActor {
                 throw error
             }
             OverviewMemoStore.finishWrite()
+            SavedCards.remember(card)
         }
+    }
+
+    func fetchCards() throws -> [String] {
+        try SavedCards.fetch(in: modelContext)
     }
 
     func delete(id: PersistentIdentifier) throws {

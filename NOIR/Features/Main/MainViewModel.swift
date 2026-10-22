@@ -13,23 +13,44 @@ import SwiftUI
 final class MainViewModel {
     var state: State = .loading
     let repository: ExpenseRepositoryProvider
-    let sideRepository: ExpenseRepositoryProvider
 
     enum State {
         case loading
         case empty
         case loaded(OverviewSnapshot)
+        case failed
     }
+
+    typealias Loader = @Sendable (SpendingPeriod, Date) async throws -> OverviewSnapshot
 
     static let latestLimit = 5
 
     private(set) var period: SpendingPeriod = .week
     private var requestID = 0
     private var loadTask: Task<Void, Never>?
+    private let loader: Loader
 
-    init(model: ModelContainer) {
-        self.repository = .init(container: model)
-        self.sideRepository = .init(container: model)
+    init(model: ModelContainer, loader: Loader? = nil) {
+        let repository = ExpenseRepositoryProvider(container: model)
+        let sideRepository = ExpenseRepositoryProvider(container: model)
+        let latestLimit = Self.latestLimit
+        self.repository = repository
+        self.loader = loader ?? { period, now in
+            async let chartLoad = repository.perform { try await $0.overviewChart(period: period, now: now) }
+            async let sideLoad = sideRepository.perform {
+                try await $0.overviewSide(now: now, latestLimit: latestLimit)
+            }
+
+            let chart = try await chartLoad
+            let side = try await sideLoad
+            return OverviewSnapshot(
+                period: period,
+                points: chart.points,
+                total: chart.total,
+                latest: side.latest,
+                hasAnyExpenses: side.hasAnyExpenses
+            )
+        }
     }
 
     /// Switches the period and reloads. Call from the same animation transaction that changes the selection.
@@ -60,35 +81,26 @@ final class MainViewModel {
         requestID += 1
         let id = requestID
         let period = period
+        if case .failed = state { state = .loading }
 
         do {
-            let now = Date.now
-            let latestLimit = Self.latestLimit
-
-            async let chartLoad = repository.perform { try await $0.overviewChart(period: period, now: now) }
-            async let sideLoad = sideRepository.perform {
-                try await $0.overviewSide(now: now, latestLimit: latestLimit)
-            }
-            
-            let chart = try await chartLoad
-            let side = try await sideLoad
+            let snapshot = try await loader(period, .now)
             guard id == requestID, !Task.isCancelled else { return }
-
-            let snapshot = OverviewSnapshot(
-                period: period,
-                points: chart.points,
-                total: chart.total,
-                latest: side.latest,
-                hasAnyExpenses: side.hasAnyExpenses
-            )
 
             withAnimation(.snappy) {
                 state = snapshot.hasAnyExpenses ? .loaded(snapshot) : .empty
             }
         } catch {
             print("Failed to fetch expenses: \(error)")
-            guard id == requestID, !Task.isCancelled, case .loaded(let last) = state, last.period != period else { return }
-            state = .loaded(last.retagged(for: period))
+            guard id == requestID, !Task.isCancelled else { return }
+            switch state {
+            case .loading:
+                state = .failed
+            case .loaded(let last) where last.period != period:
+                state = .loaded(last.retagged(for: period))
+            default:
+                break
+            }
         }
     }
 
@@ -111,6 +123,7 @@ struct ExpenseDTO: Sendable, Identifiable {
     let amount: Double
     let date: Date
     let description: String
+    let card: String
 
     nonisolated init(_ expense: Expense, categories: [String: CategoryInfo]) {
         self.id = expense.persistentModelID
@@ -119,6 +132,7 @@ struct ExpenseDTO: Sendable, Identifiable {
         self.date = expense.date
         self.amount = expense.amount
         self.description = expense.expenseDescription
+        self.card = expense.card
     }
 }
 

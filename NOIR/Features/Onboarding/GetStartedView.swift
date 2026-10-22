@@ -12,10 +12,10 @@ struct GetStartedView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Welcome to Noir.")
+            Text(L10n.Onboarding.welcomeTitle)
                 .font(.system(size: 38, weight: .bold))
 
-            Text("Track your spending. Take control of your money.")
+            Text(L10n.Onboarding.welcomeSubtitle)
                 .font(.title3.weight(.medium))
                 .foregroundStyle(.secondary)
                 .opacity(isAppeared ? 1 : 0)

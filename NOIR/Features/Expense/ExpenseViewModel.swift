@@ -14,6 +14,7 @@ final class ExpenseViewModel {
 
     var form = ExpenseForm()
     private(set) var categories: [CategoryInfo] = CategoryInfo.builtIns
+    private(set) var cards: [String] = []
     private(set) var isSaving = false
 
     var canSave: Bool { form.canSave }
@@ -59,6 +60,15 @@ final class ExpenseViewModel {
         categories = loaded
         if !loaded.contains(where: { $0.key == form.category }) {
             form.category = ExpenseCategory.other.rawValue
+        }
+    }
+
+    func loadCards() async {
+        do {
+            cards = try await repository.perform { try await $0.fetchCards() }
+            if form.card.isEmpty, let mostUsed = cards.first { form.card = mostUsed }
+        } catch {
+            print("Failed to load cards: \(error)")
         }
     }
 }

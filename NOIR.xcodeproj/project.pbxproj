@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FD7B00082F00000100A7F416 /* NOIRWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FD7B00012F00000100A7F416 /* NOIRWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		FD5A00082F00000100A7F416 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -14,14 +18,43 @@
 			remoteGlobalIDString = FD3136073014122C00874944;
 			remoteInfo = NOIR;
 		};
+		FD7B000A2F00000100A7F416 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD3136003014122C00874944 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD7B00032F00000100A7F416;
+			remoteInfo = NOIRWidget;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FD7B00072F00000100A7F416 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FD7B00082F00000100A7F416 /* NOIRWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		FD0CB2D7305EF7FF00A7F416 /* NOIR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NOIR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD5A00012F00000100A7F416 /* NOIRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NOIRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD7B00012F00000100A7F416 /* NOIRWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NOIRWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FD7B000C2F00000100A7F416 /* Exceptions for "NOIRWidget" folder in "NOIRWidget" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FD7B00032F00000100A7F416 /* NOIRWidget */;
+		};
 		FDF666353035090800B255EC /* Exceptions for "NOIR" folder in "NOIR" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -45,6 +78,19 @@
 			path = NOIRTests;
 			sourceTree = "<group>";
 		};
+		FD7B00022F00000100A7F416 /* NOIRWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FD7B000C2F00000100A7F416 /* Exceptions for "NOIRWidget" folder in "NOIRWidget" target */,
+			);
+			path = NOIRWidget;
+			sourceTree = "<group>";
+		};
+		FD7B000D2F00000100A7F416 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +108,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FD7B00052F00000100A7F416 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -70,8 +123,11 @@
 			children = (
 				FD31360A3014122C00874944 /* NOIR */,
 				FD5A00022F00000100A7F416 /* NOIRTests */,
+				FD7B00022F00000100A7F416 /* NOIRWidget */,
+				FD7B000D2F00000100A7F416 /* Shared */,
 				FD0CB2D7305EF7FF00A7F416 /* NOIR.app */,
 				FD5A00012F00000100A7F416 /* NOIRTests.xctest */,
+				FD7B00012F00000100A7F416 /* NOIRWidget.appex */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,13 +141,16 @@
 				FD3136043014122C00874944 /* Sources */,
 				FD3136053014122C00874944 /* Frameworks */,
 				FD3136063014122C00874944 /* Resources */,
+				FD7B00072F00000100A7F416 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FD7B00092F00000100A7F416 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FD31360A3014122C00874944 /* NOIR */,
+				FD7B000D2F00000100A7F416 /* Shared */,
 			);
 			name = NOIR;
 			packageProductDependencies = (
@@ -123,6 +182,29 @@
 			productReference = FD5A00012F00000100A7F416 /* NOIRTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		FD7B00032F00000100A7F416 /* NOIRWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD7B00102F00000100A7F416 /* Build configuration list for PBXNativeTarget "NOIRWidget" */;
+			buildPhases = (
+				FD7B00042F00000100A7F416 /* Sources */,
+				FD7B00052F00000100A7F416 /* Frameworks */,
+				FD7B00062F00000100A7F416 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FD7B00022F00000100A7F416 /* NOIRWidget */,
+				FD7B000D2F00000100A7F416 /* Shared */,
+			);
+			name = NOIRWidget;
+			packageProductDependencies = (
+			);
+			productName = NOIRWidget;
+			productReference = FD7B00012F00000100A7F416 /* NOIRWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -140,13 +222,20 @@
 						CreatedOnToolsVersion = 26.6;
 						TestTargetID = FD3136073014122C00874944;
 					};
+					FD7B00032F00000100A7F416 = {
+						CreatedOnToolsVersion = 26.6;
+					};
 				};
 			};
 			buildConfigurationList = FD3136033014122C00874944 /* Build configuration list for PBXProject "NOIR" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				de,
 				en,
+				es,
+				fr,
+				"pt-BR",
 				"pt-PT",
 				Base,
 			);
@@ -159,6 +248,7 @@
 			targets = (
 				FD3136073014122C00874944 /* NOIR */,
 				FD5A00032F00000100A7F416 /* NOIRTests */,
+				FD7B00032F00000100A7F416 /* NOIRWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -172,6 +262,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FD5A00062F00000100A7F416 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD7B00062F00000100A7F416 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -195,6 +292,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FD7B00042F00000100A7F416 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -202,6 +306,11 @@
 			isa = PBXTargetDependency;
 			target = FD3136073014122C00874944 /* NOIR */;
 			targetProxy = FD5A00082F00000100A7F416 /* PBXContainerItemProxy */;
+		};
+		FD7B00092F00000100A7F416 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD7B00032F00000100A7F416 /* NOIRWidget */;
+			targetProxy = FD7B000A2F00000100A7F416 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -338,6 +447,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Noir;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NOIR/NOIR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -371,6 +481,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Noir;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NOIR/NOIR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -441,6 +552,64 @@
 			};
 			name = Release;
 		};
+		FD7B000E2F00000100A7F416 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NOIRWidget/NOIRWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NOIRWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NOIR;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "henrique-dev.NOIR.NOIRWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FD7B000F2F00000100A7F416 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NOIRWidget/NOIRWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NOIRWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NOIR;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "henrique-dev.NOIR.NOIRWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -467,6 +636,15 @@
 			buildConfigurations = (
 				FD5A000A2F00000100A7F416 /* Debug */,
 				FD5A000B2F00000100A7F416 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD7B00102F00000100A7F416 /* Build configuration list for PBXNativeTarget "NOIRWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD7B000E2F00000100A7F416 /* Debug */,
+				FD7B000F2F00000100A7F416 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

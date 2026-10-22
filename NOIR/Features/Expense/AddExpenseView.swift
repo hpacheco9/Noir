@@ -14,10 +14,11 @@ struct AddExpenseView: View {
         @Bindable var viewModel = viewModel
 
         List {
-            ExpenseFormFields(form: $viewModel.form, categories: viewModel.categories)
+            ExpenseFormFields(form: $viewModel.form, categories: viewModel.categories, cards: viewModel.cards)
         }
         .task {
             await viewModel.loadCategories()
+            await viewModel.loadCards()
         }
         .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
             Task { await viewModel.loadCategories() }

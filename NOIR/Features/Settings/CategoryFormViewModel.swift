@@ -76,6 +76,11 @@ final class CategoryFormViewModel {
         isDuplicate ? String(localized: L10n.NewCategory.duplicateError) : errorMessage
     }
 
+    /// Other's current title, where a deleted category's expenses go.
+    var otherTitle: String {
+        existing.first { $0.key == ExpenseCategory.other.rawValue }?.title ?? ExpenseCategory.other.title
+    }
+
     func loadExistingNames() async {
         guard let all = try? await repository.perform({ try await $0.fetchCategories() }) else { return }
         existing = all.map { ($0.key, $0.title) }

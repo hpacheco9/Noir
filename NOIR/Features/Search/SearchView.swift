@@ -9,11 +9,9 @@ struct SearchView: View {
         self.viewModel = viewModel
     }
 
-    /// The row the user swiped to delete; drives the confirmation alert.
     @State private var expensePendingDeletion: ExpenseDTO?
-
+    
     var body: some View {
-        // Every state (loading, empty, results) lives inside the List, so the screen scrolls whatever it shows.
         List {
             content
         }
@@ -24,7 +22,7 @@ struct SearchView: View {
         )
         .searchable(
             text: $viewModel.query,
-            placement: .navigationBarDrawer(displayMode: .always),
+            placement: .automatic,
             prompt: Text(L10n.SearchView.prompt)
         )
         .task {
@@ -33,17 +31,11 @@ struct SearchView: View {
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
             Task { await viewModel.search(viewModel.query) }
         }
-        // Edits and category deletes happen in sheets over this list. Reload once more when the sheet is gone, so
-        // the result is applied while the list is on screen.
-        .onChange(of: coordinator.sheet == nil) { _, isSheetGone in
-            guard isSheetGone else { return }
-            Task { await viewModel.search(viewModel.query) }
-        }
-        .alert("Search error", isPresented: .init(
+        .alert(Text(L10n.SearchView.errorTitle), isPresented: .init(
             get: { viewModel.errorMessage != nil },
             set: { if !$0 { viewModel.errorMessage = nil } }
         )) {
-            Button("OK", role: .cancel) { viewModel.errorMessage = nil }
+            Button(String(localized: L10n.Shared.ok), role: .cancel) { viewModel.errorMessage = nil }
         } message: {
             Text(viewModel.errorMessage ?? "")
         }
@@ -116,7 +108,6 @@ struct SearchView: View {
             Haptics.play(.tap)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            // Not `role: .destructive`: that removes the row before the alert has been answered.
             Button {
                 expensePendingDeletion = expense
             } label: {
