@@ -124,13 +124,3 @@ extension SettingsRoutes {
         return SafariViewRoute(routeId: "settings-safari-\(url.absoluteString)", url: url)
     }
 }
-
-private struct SafariRouteContent: View {
-    let url: URL
-
-    var body: some View {
-        SafariBrowserView(url: url, onFinish: {})
-        .ignoresSafeArea()
-        .toolbar(.hidden, for: .navigationBar)
-    }
-}
