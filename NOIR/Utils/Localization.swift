@@ -165,6 +165,7 @@ enum L10n {
     enum AddExpenseView {
         static let createTitle: LocalizedStringResource = "add_expense.create_title"
         static let editTitle: LocalizedStringResource = "add_expense.edit_title"
+        static let editHint: LocalizedStringResource = "add_expense.edit_hint"
         static let amountAccessibilityLabel: LocalizedStringResource = "add_expense.amount_accessibility_label"
         static let expenseSection: LocalizedStringResource = "add_expense.expense_section"
         static let name: LocalizedStringResource = "add_expense.name"
