@@ -2096,7 +2096,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algo deu errado ao ler suas despesas. Tente novamente."
+            "value" : "Algo deu errado ao carregar suas despesas. Tente novamente."
           }
         },
         "pt-PT" : {
@@ -3366,7 +3366,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta categoria volta ao nome, ícone e cor originais."
+            "value" : "Esta categoria voltará a ter o nome, o ícone e a cor originais."
           }
         },
         "pt-PT" : {
@@ -4536,7 +4536,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostra a despesa com Salvar e Cancelar antes que o atalho “Adicionar Despesa” a salve. Quando desativado, salva logo após a data."
+            "value" : "Mostra a despesa com Salvar e Cancelar antes que o atalho “Adicionar Despesa” a salve. Quando desativada, a despesa é salva assim que você informa a data."
           }
         },
         "pt-PT" : {
@@ -4810,7 +4810,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A busca mostrará aqui as despesas correspondentes."
+            "value" : "As despesas encontradas aparecerão aqui."
           }
         },
         "pt-PT" : {
