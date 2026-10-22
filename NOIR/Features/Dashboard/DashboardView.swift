@@ -48,7 +48,6 @@ struct DashboardView: View {
             viewModel.markDirty()
         }
         .onChange(of: viewModel.loadedPeriod) { old, new in
-            // The new period's data landed: drop the highlight and tell VoiceOver what is shown now.
             pinnedCategoryKey = nil
             angleSelection = nil
             guard old != nil, let new else { return }
@@ -63,7 +62,7 @@ struct DashboardView: View {
                 PeriodMenu(selection: Binding(get: { viewModel.period }, set: { viewModel.selectPeriod($0) }))
             }
         }
-        .navigationTitle(Text(L10n.Dashboard.title))
+        //.navigationTitle(Text(L10n.Dashboard.title))
     }
 
     // MARK: - Sections

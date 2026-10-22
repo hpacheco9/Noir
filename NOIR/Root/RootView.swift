@@ -24,7 +24,6 @@ struct RootView: View {
         _searchViewModel = State(initialValue: SearchViewModel(model: NOIRApp.sharedModelContainer))
     }
 
-    // .search draws inline in the tab bar on iOS 27 here; .prominent keeps it as the separate button.
     private var searchRole: TabRole {
         if #available(iOS 27, *) { .prominent } else { .search }
     }
@@ -60,7 +59,7 @@ struct RootView: View {
                 .environment(\.symbolVariants, .none)
             }
 
-            Tab(role: searchRole) {
+            Tab(role: .search) {
                 CoordinatorView {
                     SearchView(viewModel: searchViewModel)
                 }
@@ -75,6 +74,7 @@ struct RootView: View {
         }
         .tabViewStyle(.sidebarAdaptable)
         .tabBarMinimizeBehavior(.onScrollDown)
+        .tabViewSearchActivation(.searchTabSelection)
         .tint(.primary)
         .onChange(of: scenePhase, initial: true) { _, phase in
             if phase == .active { Task { await WidgetSnapshotPublisher.publish() } }

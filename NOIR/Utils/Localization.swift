@@ -77,6 +77,10 @@ enum L10n {
         static let prompt: LocalizedStringResource = "search_view.prompt"
         static let emptyTitle: LocalizedStringResource = "search_view.empty_title"
         static let emptyDescription: LocalizedStringResource = "search_view.empty_description"
+        static func noResultsTitle(_ query: String) -> LocalizedStringResource {
+            "search_view.no_results_title \(query)"
+        }
+        static let noResultsDescription: LocalizedStringResource = "search_view.no_results_description"
         static let errorTitle: LocalizedStringResource = "search_view.error_title"
     }
 

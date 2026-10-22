@@ -80,7 +80,6 @@ struct CategoriesView: View {
 }
 
 private extension CategoriesView {
-    /// A row that opens the edit sheet (built-ins and custom categories alike).
     func editableRow(_ category: CategoryInfo) -> some View {
         Button {
             coordinator.present(SettingsRoutes.editCategory(category), mode: .large)

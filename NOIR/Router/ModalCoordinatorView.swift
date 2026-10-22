@@ -15,7 +15,6 @@ struct ModalCoordinatorView: View {
     let initialRoute: Route
 
     // MARK: - Init
-
     init(initialRoute: Route) {
         self.initialRoute = initialRoute
         if let provided = initialRoute.coordinator {

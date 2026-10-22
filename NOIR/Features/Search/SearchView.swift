@@ -4,7 +4,7 @@ import SwiftData
 struct SearchView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @State private var viewModel: SearchViewModel
-    
+
     init(viewModel: SearchViewModel) {
         self.viewModel = viewModel
     }
@@ -22,7 +22,6 @@ struct SearchView: View {
         )
         .searchable(
             text: $viewModel.query,
-            placement: .automatic,
             prompt: Text(L10n.SearchView.prompt)
         )
         .task {
@@ -57,19 +56,12 @@ struct SearchView: View {
         } message: { _ in
             Text(L10n.ExpenseDeletion.message)
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                ProfileAvatarButton()
-            }
-        }
-        .navigationTitle(L10n.SearchView.title)
     }
 
     // MARK: - Content
-
     @ViewBuilder
     private var content: some View {
-        if viewModel.isLoading && viewModel.sections.isEmpty {
+        if viewModel.isLoading {
             Section {
                 ProgressView()
                     .frame(maxWidth: .infinity)
@@ -80,7 +72,7 @@ struct SearchView: View {
                 UnavailableView(
                     viewModel.query.isEmpty
                         ? String(localized: L10n.SearchView.emptyTitle)
-                        : "No expenses found",
+                    : "No expenses found: " + viewModel.query,
                     systemImage: AssetName.System.search,
                     description: viewModel.query.isEmpty
                         ? String(localized: L10n.SearchView.emptyDescription)

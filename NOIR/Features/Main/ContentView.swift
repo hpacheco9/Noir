@@ -181,9 +181,6 @@ struct ContentView: View {
     }
 
     // MARK: - Review prompt
-    /// Runs at a natural break, never inside the Save action: when a sheet on Home has fully closed, or when the app
-    /// opens or comes back to the front. Waits `delay`, then re-checks that nothing is presented and the app is still
-    /// active before asking.
     private func scheduleReviewRequestIfEligible(after delay: Duration) {
         cancelReviewRequest()
         let store = ReviewPromptStore()
@@ -222,7 +219,7 @@ struct ContentView: View {
 
     private var addExpenseButton: some View {
         Button {
-            router.present(MainRoutes.addExpense(), mode: .percentage(0.75))
+            router.present(MainRoutes.addExpense(), mode: .percentage(0.8))
             Haptics.play(.tap)
         } label: {
             Image(systemName: AssetName.System.add)

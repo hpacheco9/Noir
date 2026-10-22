@@ -63,6 +63,7 @@
       }
     },
     "Record expense in ${applicationName}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringSet" : {

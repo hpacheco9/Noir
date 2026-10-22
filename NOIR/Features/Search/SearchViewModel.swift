@@ -34,8 +34,6 @@ final class SearchViewModel {
     @ObservationIgnored private let querySubject = PassthroughSubject<String, Never>()
     @ObservationIgnored private var subscriptions = Set<AnyCancellable>()
 
-    /// Deletes one expense from the store. Injectable because the repository's delete also adjusts Home's overview
-    /// memos in `UserDefaults.standard`, which tests must not touch.
     typealias Deleter = @Sendable (PersistentIdentifier) async throws -> Void
     private let deleteExpense: Deleter
 
@@ -58,7 +56,6 @@ final class SearchViewModel {
     func search(_ text: String) async {
         let id = UUID()
         requestID = id
-        isLoading = true
         isLoadingMore = false
         errorMessage = nil
 
@@ -77,7 +74,6 @@ final class SearchViewModel {
             sections = []
             errorMessage = error.localizedDescription
         }
-        isLoading = false
     }
 
     func loadMoreIfNeeded(after expense: ExpenseDTO) async {

@@ -62,12 +62,10 @@ final class MainViewModel {
         loadTask = Task { await load() }
     }
 
-    /// Adopts the view's period without loading (used before `fetchData()` when a view is recreated).
     func adoptPeriod(_ newPeriod: SpendingPeriod) {
         period = newPeriod
     }
 
-    /// Reloads the overview for the current period (also triggered by `.expensesDidChange`).
     @MainActor
     func fetchData() async {
         loadTask?.cancel()
