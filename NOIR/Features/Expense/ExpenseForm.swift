@@ -4,7 +4,6 @@
 //
 
 import Foundation
-import SwiftData
 
 /// The fields Add and Edit Expense both edit.
 nonisolated struct ExpenseForm: Sendable {
@@ -33,22 +32,5 @@ nonisolated struct ExpenseForm: Sendable {
         form.description = description.trimmingCharacters(in: .whitespacesAndNewlines)
         form.card = card.trimmingCharacters(in: .whitespacesAndNewlines)
         return form
-    }
-}
-
-extension ExpenseRepositoryProvider {
-    /// Inserts (`id == nil`) or updates an expense with the form's values.
-    func save(_ form: ExpenseForm, id: PersistentIdentifier?) async throws {
-        try await perform {
-            try await $0.save(
-                id: id,
-                amount: form.amountValue,
-                name: form.name,
-                date: form.date,
-                categoryKey: form.category,
-                description: form.description,
-                card: form.card
-            )
-        }
     }
 }
