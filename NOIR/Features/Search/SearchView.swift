@@ -58,7 +58,7 @@ struct SearchView: View {
             Text(L10n.ExpenseDeletion.message)
         }
         .toolbar {
-            ToolbarItem(placement: .confirmationAction){
+            ToolbarItem(placement: .topBarLeading) {
                 ProfileAvatarButton()
             }
         }
