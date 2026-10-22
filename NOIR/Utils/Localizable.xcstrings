@@ -31,6 +31,12 @@
             "value" : "Importe del gasto"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valor da despesa"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57,6 +63,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tarjeta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cartão"
           }
         },
         "pt-PT" : {
@@ -87,6 +99,12 @@
             "value" : "Nombre de la tarjeta"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do cartão"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113,6 +131,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nueva tarjeta…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novo Cartão…"
           }
         },
         "pt-PT" : {
@@ -143,6 +167,12 @@
             "value" : "Ninguna"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -169,6 +199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Categoría"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoria"
           }
         },
         "pt-PT" : {
@@ -199,6 +235,12 @@
             "value" : "Nuevo gasto"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nova Despesa"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -225,6 +267,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fecha"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
           }
         },
         "pt-PT" : {
@@ -255,6 +303,12 @@
             "value" : "Descripción"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descrição"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -281,6 +335,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Detalles"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalhes"
           }
         },
         "pt-PT" : {
@@ -311,6 +371,12 @@
             "value" : "Editar gasto"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar Despesa"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -337,6 +403,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gasto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Despesa"
           }
         },
         "pt-PT" : {
@@ -367,6 +439,12 @@
             "value" : "Nombre"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -393,6 +471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escribe una nota"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar uma nota"
           }
         },
         "pt-PT" : {
@@ -423,6 +507,12 @@
             "value" : "No se pudo guardar el gasto"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível salvar a despesa"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -449,6 +539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "0,00 €"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "R$ 0,00"
           }
         },
         "pt-PT" : {
@@ -479,6 +575,12 @@
             "value" : "¿Cuál es el importe del gasto?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qual é o valor da despesa?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -505,6 +607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fecha"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
           }
         },
         "pt-PT" : {
@@ -535,6 +643,12 @@
             "value" : "¿Cuándo fue este gasto?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quando foi essa despesa?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -561,6 +675,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Guarda un nuevo gasto en NOIR."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salva uma nova despesa no NOIR."
           }
         },
         "pt-PT" : {
@@ -591,6 +711,12 @@
             "value" : "Escribe un nombre para el gasto."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Digite um nome para a despesa."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -617,6 +743,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gasto registrado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nova despesa adicionada"
           }
         },
         "pt-PT" : {
@@ -647,6 +779,12 @@
             "value" : "El importe debe ser mayor que cero."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Digite um valor maior que zero."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -673,6 +811,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome"
           }
         },
         "pt-PT" : {
@@ -703,6 +847,12 @@
             "value" : "¿Cómo se llama este gasto?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qual é o nome da despesa?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -726,6 +876,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nota"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nota"
@@ -759,6 +915,12 @@
             "value" : "Cancelar"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -785,6 +947,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirma los datos del gasto:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirme os detalhes da despesa:"
           }
         },
         "pt-PT" : {
@@ -815,6 +983,12 @@
             "value" : "Guardar"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvar"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -841,6 +1015,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resumen del gasto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo da Despesa"
           }
         },
         "pt-PT" : {
@@ -872,6 +1052,12 @@
             "value" : "¿Guardar %2$@ de %1$@?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvar %2$@ de %1$@?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -900,6 +1086,12 @@
             "value" : "Nombre"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -926,6 +1118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Registrar gasto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar Despesa"
           }
         },
         "pt-PT" : {
@@ -957,6 +1155,12 @@
             "value" : "Nueva categoría"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar Categoria"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -984,6 +1188,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Predeterminadas"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Padrão"
           }
         },
         "pt-PT" : {
@@ -1015,6 +1225,12 @@
             "value" : "Aún no hay categorías personalizadas. Toca + para crear una."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma categoria personalizada ainda. Toque em + para criar uma."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1039,6 +1255,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizadas"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personalizadas"
@@ -1073,6 +1295,12 @@
             "value" : "No se pudo eliminar la categoría."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível apagar a categoria."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1100,6 +1328,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sus gastos pasarán a “%@”."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As despesas desta categoria serão movidas para “%@”."
           }
         },
         "pt-PT" : {
@@ -1131,6 +1365,12 @@
             "value" : "¿Eliminar categoría?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar Categoria?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1158,6 +1398,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se produjo un error"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algo deu errado"
           }
         },
         "pt-PT" : {
@@ -1189,6 +1435,12 @@
             "value" : "No se pudieron cargar las categorías."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível carregar as categorias."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1218,6 +1470,12 @@
             "value" : "Categorías"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorias"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1242,6 +1500,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Azul"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Azul"
@@ -1276,6 +1540,12 @@
             "value" : "Marrón"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marrom"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1300,6 +1570,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verde"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verde"
@@ -1334,6 +1610,12 @@
             "value" : "Índigo"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Índigo"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1363,6 +1645,12 @@
             "value" : "Naranja"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laranja"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1387,6 +1675,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosa"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rosa"
@@ -1421,6 +1715,12 @@
             "value" : "Morado"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Roxo"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1448,6 +1748,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rojo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vermelho"
           }
         },
         "pt-PT" : {
@@ -1479,6 +1785,12 @@
             "value" : "Verde azulado"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verde-acinzentado"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1508,6 +1820,12 @@
             "value" : "Amarillo"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amarelo"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1534,6 +1852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importe"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valor"
           }
         },
         "pt-PT" : {
@@ -1565,6 +1889,12 @@
             "value" : "%1$@: %2$@ en gastos"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: %2$@ em despesas"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1591,6 +1921,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Por categoría"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por Categoria"
           }
         },
         "pt-PT" : {
@@ -1621,6 +1957,12 @@
             "value" : "Categoría"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoria"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1647,6 +1989,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gastos por categoría"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Despesas por categoria"
           }
         },
         "pt-PT" : {
@@ -1677,6 +2025,12 @@
             "value" : "Los gastos que registres en este periodo aparecerán aquí, agrupados por categoría."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As despesas que você adicionar neste período aparecerão aqui, agrupadas por categoria."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1703,6 +2057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aún no hay gastos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma Despesa Ainda"
           }
         },
         "pt-PT" : {
@@ -1733,6 +2093,12 @@
             "value" : "Se produjo un error al leer tus gastos. Prueba otra vez."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algo deu errado ao ler suas despesas. Tente novamente."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1759,6 +2125,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudieron cargar tus gastos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível carregar as despesas"
           }
         },
         "pt-PT" : {
@@ -1826,6 +2198,30 @@
             }
           }
         },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld despesa"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld despesas"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld despesas"
+                }
+              }
+            }
+          }
+        },
         "pt-PT" : {
           "variations" : {
             "plural" : {
@@ -1867,6 +2263,12 @@
             "value" : "en “%@”"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "em “%@”"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1893,6 +2295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Periodo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Período"
           }
         },
         "pt-PT" : {
@@ -1923,6 +2331,12 @@
             "value" : "Resto"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outras categorias"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1949,6 +2363,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reintentar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar Novamente"
           }
         },
         "pt-PT" : {
@@ -1979,6 +2399,12 @@
             "value" : "Resalta esta categoría en el gráfico"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destaca esta categoria no gráfico"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2005,6 +2431,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resumen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo"
           }
         },
         "pt-PT" : {
@@ -2036,6 +2468,12 @@
             "value" : "%1$@, %2$@ del total"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ do total"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2065,6 +2503,12 @@
             "value" : "%1$@, %2$@ del total. Incluye %3$@"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ do total. Inclui %3$@"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2088,6 +2532,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comida"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comida"
@@ -2121,6 +2571,12 @@
             "value" : "Salud"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saúde"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2147,6 +2603,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hogar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casa"
           }
         },
         "pt-PT" : {
@@ -2177,6 +2639,12 @@
             "value" : "Ocio"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lazer"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2205,6 +2673,12 @@
             "value" : "Otros"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outros"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2228,6 +2702,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compras"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compras"
@@ -2261,6 +2741,12 @@
             "value" : "Transporte"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transporte"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2287,6 +2773,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este gasto se eliminará de forma permanente."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta despesa será removida permanentemente."
           }
         },
         "pt-PT" : {
@@ -2317,6 +2809,12 @@
             "value" : "¿Eliminar gasto?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar Despesa?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2343,6 +2841,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Política de privacidad"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de Privacidade"
           }
         },
         "pt-PT" : {
@@ -2373,6 +2877,12 @@
             "value" : "Condiciones del servicio"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Termos de Serviço"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2399,6 +2909,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Información y aviso legal"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre e Informações Legais"
           }
         },
         "pt-PT" : {
@@ -2429,6 +2945,12 @@
             "value" : "Toca el botón + de arriba para registrar tu primer gasto"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque no botão + acima para adicionar sua primeira despesa"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2457,6 +2979,12 @@
             "value" : "Sin gastos"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma Despesa"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2483,6 +3011,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gastos recientes"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Despesas Recentes"
           }
         },
         "pt-PT" : {
@@ -2514,6 +3048,12 @@
             "value" : "Color"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cor"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2541,6 +3081,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ya existe una categoría con este nombre."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já existe uma categoria com este nome."
           }
         },
         "pt-PT" : {
@@ -2572,6 +3118,12 @@
             "value" : "Editar categoría"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar Categoria"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2599,6 +3151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escribe un nombre para la categoría."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Digite um nome para a categoria."
           }
         },
         "pt-PT" : {
@@ -2630,6 +3188,12 @@
             "value" : "Nombre de la categoría"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome da categoria"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2657,6 +3221,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome"
           }
         },
         "pt-PT" : {
@@ -2688,6 +3258,12 @@
             "value" : "Categoría"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoria"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2715,6 +3291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restablecer categoría"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar Padrão"
           }
         },
         "pt-PT" : {
@@ -2746,6 +3328,12 @@
             "value" : "Otra categoría ya usa el nombre predeterminado. Cámbiale el nombre primero."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outra categoria já usa o nome padrão. Renomeie-a primeiro."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2773,6 +3361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta categoría recupera su nombre, icono y color originales."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta categoria volta ao nome, ícone e cor originais."
           }
         },
         "pt-PT" : {
@@ -2804,6 +3398,12 @@
             "value" : "¿Restablecer la categoría?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar Padrão?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2833,6 +3433,12 @@
             "value" : "No se pudo guardar la categoría."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível salvar a categoria."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2857,6 +3463,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Símbolo"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Símbolo"
@@ -2891,6 +3503,12 @@
             "value" : "Nueva categoría"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nova Categoria"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2919,6 +3537,12 @@
             "value" : "Un solo pago. Para siempre."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pague uma vez. É seu para sempre."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2942,6 +3566,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noir Pro"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Noir Pro"
@@ -2975,6 +3605,12 @@
             "value" : "Mejorar a Pro"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obter o Pro"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3001,6 +3637,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gasto registrado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nova despesa adicionada"
           }
         },
         "pt-PT" : {
@@ -3032,6 +3674,12 @@
             "value" : "Te ayudamos a mantener el rumbo y a gastar de forma consciente."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vamos ajudar você a manter o foco e gastar com consciência."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3061,6 +3709,12 @@
             "value" : "Define tu presupuesto mensual."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Defina seu orçamento mensal."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3084,6 +3738,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continuar"
@@ -3117,6 +3777,12 @@
             "value" : "Finalizando la configuración…"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finalizando a configuração…"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3143,6 +3809,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Empezar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Começar"
           }
         },
         "pt-PT" : {
@@ -3173,6 +3845,12 @@
             "value" : "Hola,"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oi,"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3199,6 +3877,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome"
           }
         },
         "pt-PT" : {
@@ -3229,6 +3913,12 @@
             "value" : "Dinos tu nombre para que personalicemos tu experiencia en Noir."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diga seu nome para personalizarmos sua experiência no Noir."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3257,6 +3947,12 @@
             "value" : "¿Cómo quieres que te llamemos?"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como podemos chamar você?"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3282,6 +3978,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@. %3$@"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@. %3$@"
@@ -3316,6 +4018,12 @@
             "value" : "Esta semana llevas %@ en gastos."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você gastou %@ nesta semana."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3343,6 +4051,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ahora"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "agora"
           }
         },
         "pt-PT" : {
@@ -3374,6 +4088,12 @@
             "value" : "Resumen semanal"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo Semanal"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3402,6 +4122,12 @@
             "value" : "Activar notificaciones"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar Notificações"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3428,6 +4154,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ahora no"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora Não"
           }
         },
         "pt-PT" : {
@@ -3459,6 +4191,12 @@
             "value" : "Abrir ajustes"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ajustes"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3485,6 +4223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recibe resúmenes semanales y un aviso antes de superar tu presupuesto."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receba resumos semanais e um aviso antes de ultrapassar o orçamento."
           }
         },
         "pt-PT" : {
@@ -3515,6 +4259,12 @@
             "value" : "Mantén tus gastos bajo control."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fique de olho nas suas despesas."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3541,6 +4291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Definir presupuesto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definir Orçamento"
           }
         },
         "pt-PT" : {
@@ -3572,6 +4328,12 @@
             "value" : "Registra tus gastos. Toma el control de tu dinero."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acompanhe suas despesas. Assuma o controle do seu dinheiro."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3599,6 +4361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Te damos la bienvenida a Noir."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boas-vindas ao Noir."
           }
         },
         "pt-PT" : {
@@ -3629,6 +4397,12 @@
             "value" : "Moneda"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moeda"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3655,6 +4429,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vibración"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resposta Tátil"
           }
         },
         "pt-PT" : {
@@ -3685,6 +4465,12 @@
             "value" : "Vibra al tocar, guardar o recorrer los gráficos."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibra ao tocar, salvar ou deslizar pelos gráficos."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3711,6 +4497,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirmación en Atajos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmação no Atalho"
           }
         },
         "pt-PT" : {
@@ -3741,6 +4533,12 @@
             "value" : "Muestra el gasto con “Guardar” y “Cancelar” antes de que el atajo “Registrar gasto” lo guarde. Si lo desactivas, se guarda en cuanto indicas la fecha."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra a despesa com Salvar e Cancelar antes que o atalho “Adicionar Despesa” a salve. Quando desativado, salva logo após a data."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3767,6 +4565,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Atajos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalhos"
           }
         },
         "pt-PT" : {
@@ -3797,6 +4601,12 @@
             "value" : "Preferencias"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferências"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3825,6 +4635,12 @@
             "value" : "Información de la cuenta, categorías y más"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dados da conta, categorias e mais"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3848,6 +4664,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henrique"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Henrique"
@@ -3882,6 +4704,12 @@
             "value" : "Tu nombre"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seu nome"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3911,6 +4739,12 @@
             "value" : "Nombre"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3934,6 +4768,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfil"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Perfil"
@@ -3967,6 +4807,12 @@
             "value" : "Aquí verás los gastos que coincidan con tu búsqueda."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A busca mostrará aqui as despesas correspondentes."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3993,6 +4839,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Busca tus gastos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busque suas despesas"
           }
         },
         "pt-PT" : {
@@ -4024,6 +4876,12 @@
             "value" : "Error de búsqueda"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro na Busca"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4052,6 +4910,12 @@
             "value" : "Nombre, categoría o tarjeta"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome, categoria ou cartão"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4075,6 +4939,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buscar"
@@ -4108,6 +4978,12 @@
             "value" : "Ajustes"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4131,6 +5007,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
@@ -4164,6 +5046,12 @@
             "value" : "Eliminar"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4187,6 +5075,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -4220,6 +5114,12 @@
             "value" : "Se produjo un error inesperado."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocorreu um erro inesperado."
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4246,6 +5146,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tus atajos aparecerán aquí cuando estén disponibles."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seus atalhos aparecerão aqui quando estiverem disponíveis."
           }
         },
         "pt-PT" : {
@@ -4276,6 +5182,12 @@
             "value" : "Importe"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valor"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4302,6 +5214,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Periodo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Período"
           }
         },
         "pt-PT" : {
@@ -4332,6 +5250,12 @@
             "value" : "Gasto total"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total gasto desde o início"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4358,6 +5282,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gasto de este mes"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total gasto neste mês"
           }
         },
         "pt-PT" : {
@@ -4388,6 +5318,12 @@
             "value" : "Gasto de hoy"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total gasto hoje"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4414,6 +5350,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gasto de esta semana"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total gasto nesta semana"
           }
         },
         "pt-PT" : {
@@ -4444,6 +5386,12 @@
             "value" : "Gasto de este año"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total gasto neste ano"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4470,6 +5418,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo"
           }
         },
         "pt-PT" : {
@@ -4500,6 +5454,12 @@
             "value" : "Mes"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mês"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4528,6 +5488,12 @@
             "value" : "Todo"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4551,6 +5517,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "D"
@@ -4584,6 +5556,12 @@
             "value" : "M"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4607,6 +5585,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "S"
@@ -4640,6 +5624,12 @@
             "value" : "A"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4668,6 +5658,12 @@
             "value" : "Hoy"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4691,6 +5687,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Semana"
@@ -4724,6 +5726,12 @@
             "value" : "Año"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ano"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4750,6 +5758,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resumen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo"
           }
         },
         "pt-PT" : {
@@ -4780,6 +5794,12 @@
             "value" : "Inicio"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Início"
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4803,6 +5823,12 @@
           }
         },
         "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buscar"

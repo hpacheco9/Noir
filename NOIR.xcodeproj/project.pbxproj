@@ -234,6 +234,7 @@
 				de,
 				en,
 				es,
+				"pt-BR",
 				"pt-PT",
 				Base,
 			);

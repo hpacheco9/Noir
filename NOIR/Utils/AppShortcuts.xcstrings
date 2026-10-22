@@ -33,6 +33,16 @@
             ]
           }
         },
+        "pt-BR" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Adicionar despesa no ${applicationName}",
+              "Adicionar despesa no app ${applicationName}",
+              "Adicionar gasto no ${applicationName}"
+            ]
+          }
+        },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65,6 +75,16 @@
             "values" : [
               "Registrar un gasto en ${applicationName}",
               "Nuevo gasto en ${applicationName}"
+            ]
+          }
+        },
+        "pt-BR" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Registrar despesa no ${applicationName}",
+              "Registrar despesa no app ${applicationName}",
+              "Registrar gasto no ${applicationName}"
             ]
           }
         },
