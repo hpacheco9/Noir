@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var router: Coordinator
-    @State private var selectedPeriod: SpendingPeriod = .day
+    @AppStorage("home.period") private var selectedPeriod: SpendingPeriod = .day
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @Environment(MainViewModel.self) private var viewModel
 
@@ -186,24 +186,15 @@ struct ContentView: View {
 
     // MARK: - Toolbar
     private var periodFilterMenu: some View {
-        Menu {
-            ForEach(SpendingPeriod.allCases) { period in
-                Button {
-                    withAnimation {
-                        selectedPeriod = period
-                        viewModel.selectPeriod(period)
-                    }
-                } label: {
-                    if period == selectedPeriod {
-                        Label(period.title, systemImage: AssetName.System.checkmark)
-                    } else {
-                        Text(period.title)
-                    }
+        PeriodMenu(selection: Binding(
+            get: { selectedPeriod },
+            set: { period in
+                withAnimation {
+                    selectedPeriod = period
+                    viewModel.selectPeriod(period)
                 }
             }
-        } label: {
-            Image(systemName: AssetName.System.filter)
-        }
+        ))
     }
 
     private var addExpenseButton: some View {
