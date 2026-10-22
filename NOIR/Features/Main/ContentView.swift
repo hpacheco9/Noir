@@ -94,6 +94,8 @@ struct ContentView: View {
             loadedSections(for: snapshot)
         case .loading:
             loadingSection
+        case .failed:
+            failedSection
         }
     }
 
@@ -154,6 +156,27 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity)
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
+        }
+    }
+
+    private var failedSection: some View {
+        Section {
+            VStack(spacing: 12) {
+                UnavailableView(
+                    L10n.Dashboard.errorTitle,
+                    systemImage: AssetName.System.warning,
+                    description: L10n.Dashboard.errorDescription
+                )
+
+                Button(String(localized: L10n.Dashboard.retry)) {
+                    Task { await viewModel.fetchData() }
+                }
+                .buttonStyle(.bordered)
+            }
+            .frame(maxWidth: .infinity)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .padding(.top, 50)
         }
     }
 
