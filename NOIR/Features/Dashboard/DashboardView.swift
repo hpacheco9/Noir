@@ -55,14 +55,12 @@ struct DashboardView: View {
             announce(new)
         }
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                PeriodMenu(selection: Binding(get: { viewModel.period }, set: { viewModel.selectPeriod($0) }))
+            ToolbarItem(placement: .topBarLeading) {
+                ProfileAvatarButton()
             }
 
-            ToolbarSpacer(.fixed, placement: .confirmationAction)
-
             ToolbarItem(placement: .confirmationAction) {
-                ProfileAvatarButton()
+                PeriodMenu(selection: Binding(get: { viewModel.period }, set: { viewModel.selectPeriod($0) }))
             }
         }
         .navigationTitle(Text(L10n.Dashboard.title))

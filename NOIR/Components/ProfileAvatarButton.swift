@@ -34,7 +34,7 @@ struct ProfileAvatarButton: View {
 #Preview {
     CoordinatorView {
         Text(verbatim: "Avatar")
-            .toolbar { ToolbarItem(placement: .confirmationAction) { ProfileAvatarButton() } }
+            .toolbar { ToolbarItem(placement: .topBarLeading) { ProfileAvatarButton() } }
     }
     .environmentObject(Coordinator())
 }

@@ -73,7 +73,7 @@ struct ContentView: View {
             Text(L10n.ExpenseDeletion.message)
         }
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
+            ToolbarItem(placement: .topBarLeading) {
                 ProfileAvatarButton()
             }
 
