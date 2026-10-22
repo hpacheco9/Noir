@@ -14,10 +14,10 @@ struct BudgetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 80) {
             VStack(alignment: .leading, spacing: 12) {
-                Text("Set your monthly budget.")
+                Text(L10n.Onboarding.budgetTitle)
                     .font(.system(size: 36, weight: .bold))
 
-                Text("We'll help you to stay on track and spend intentionally.")
+                Text(L10n.Onboarding.budgetSubtitle)
                     .font(.title3)
                     .foregroundStyle(.secondary)
             }

@@ -33,11 +33,11 @@ struct SearchView: View {
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
             Task { await viewModel.search(viewModel.query) }
         }
-        .alert("Search error", isPresented: .init(
+        .alert(Text(L10n.SearchView.errorTitle), isPresented: .init(
             get: { viewModel.errorMessage != nil },
             set: { if !$0 { viewModel.errorMessage = nil } }
         )) {
-            Button("OK", role: .cancel) { viewModel.errorMessage = nil }
+            Button(String(localized: L10n.Shared.ok), role: .cancel) { viewModel.errorMessage = nil }
         } message: {
             Text(viewModel.errorMessage ?? "")
         }

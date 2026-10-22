@@ -21,6 +21,11 @@ final class CategoriesViewModel {
         self.repository = repository ?? .init(container: NOIRApp.sharedModelContainer)
     }
 
+    /// Other's current title, where deleted categories' expenses go.
+    var otherTitle: String {
+        builtIn.first { $0.key == ExpenseCategory.other.rawValue }?.title ?? ExpenseCategory.other.title
+    }
+
     func load() async {
         await load(reportingErrors: true)
     }

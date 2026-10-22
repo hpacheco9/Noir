@@ -59,7 +59,7 @@ struct SettingsView: View {
                             .fill(.secondary)
                             .frame(width: 48, height: 48)
 
-                        Text("H")
+                        Text(verbatim: "H")
                             .font(.title3)
                             .fontWeight(.semibold)
                             .fontDesign(.rounded)

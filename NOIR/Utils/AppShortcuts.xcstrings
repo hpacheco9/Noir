@@ -1,0 +1,123 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add expense in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Ausgabe in ${applicationName} hinzufügen",
+              "Füge eine Ausgabe in ${applicationName} hinzu",
+              "Ausgabe in ${applicationName} erfassen",
+              "Erfasse eine Ausgabe in ${applicationName}",
+              "Füge eine Ausgabe zu ${applicationName} hinzu",
+              "Ausgabe zu ${applicationName} hinzufügen"
+            ]
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add expense in ${applicationName}"
+          }
+        },
+        "es" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Registrar gasto en ${applicationName}",
+              "Añadir gasto en ${applicationName}",
+              "Agregar gasto en ${applicationName}",
+              "Anotar gasto en ${applicationName}"
+            ]
+          }
+        },
+        "fr" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Ajouter une dépense dans ${applicationName}",
+              "Ajouter une dépense avec ${applicationName}",
+              "Nouvelle dépense dans ${applicationName}",
+              "Noter une dépense dans ${applicationName}"
+            ]
+          }
+        },
+        "pt-BR" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Adicionar despesa no ${applicationName}",
+              "Adicionar despesa no app ${applicationName}",
+              "Adicionar gasto no ${applicationName}"
+            ]
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar despesa no ${applicationName}"
+          }
+        }
+      }
+    },
+    "Record expense in ${applicationName}" : {
+      "localizations" : {
+        "de" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Ausgabe in ${applicationName} eintragen",
+              "Trage eine Ausgabe in ${applicationName} ein",
+              "Neue Ausgabe in ${applicationName}"
+            ]
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Record expense in ${applicationName}"
+          }
+        },
+        "es" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Registrar un gasto en ${applicationName}",
+              "Nuevo gasto en ${applicationName}"
+            ]
+          }
+        },
+        "fr" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Enregistrer une dépense dans ${applicationName}",
+              "Enregistrer une dépense avec ${applicationName}",
+              "Saisir une dépense dans ${applicationName}",
+              "Entrer une dépense dans ${applicationName}"
+            ]
+          }
+        },
+        "pt-BR" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Registrar despesa no ${applicationName}",
+              "Registrar despesa no app ${applicationName}",
+              "Registrar gasto no ${applicationName}"
+            ]
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registar despesa no ${applicationName}"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}

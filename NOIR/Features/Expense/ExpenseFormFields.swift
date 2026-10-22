@@ -16,11 +16,8 @@ struct ExpenseFormFields: View {
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
 
     var body: some View {
-        TextField(
-            String(localized: L10n.AddExpenseView.amountPlaceholder),
-            value: $form.amount,
-            format: CurrencyPreference.amountInputStyle(for: currencyCode)
-        )
+        let amountStyle = CurrencyPreference.amountInputStyle(for: currencyCode)
+        TextField(amountStyle.format(0), value: $form.amount, format: amountStyle)
         .keyboardType(.decimalPad)
         .multilineTextAlignment(.center)
         .font(.system(size: 48, weight: .semibold, design: .rounded))

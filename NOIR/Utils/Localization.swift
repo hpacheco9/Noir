@@ -77,6 +77,7 @@ enum L10n {
         static let prompt: LocalizedStringResource = "search_view.prompt"
         static let emptyTitle: LocalizedStringResource = "search_view.empty_title"
         static let emptyDescription: LocalizedStringResource = "search_view.empty_description"
+        static let errorTitle: LocalizedStringResource = "search_view.error_title"
     }
 
     enum ShortcutsView {
@@ -116,7 +117,10 @@ enum L10n {
         static let customEmpty: LocalizedStringResource = "categories.custom_empty"
         static let add: LocalizedStringResource = "categories.add"
         static let deleteTitle: LocalizedStringResource = "categories.delete_title"
-        static let deleteMessage: LocalizedStringResource = "categories.delete_message"
+        /// "Its expenses will be moved to “Other”.", with Other's current (possibly renamed) title.
+        static func deleteMessage(otherTitle: String) -> LocalizedStringResource {
+            "categories.delete_message \(otherTitle)"
+        }
         static let loadError: LocalizedStringResource = "categories.load_error"
         static let deleteError: LocalizedStringResource = "categories.delete_error"
         static let errorTitle: LocalizedStringResource = "categories.error_title"
@@ -161,7 +165,6 @@ enum L10n {
     enum AddExpenseView {
         static let createTitle: LocalizedStringResource = "add_expense.create_title"
         static let editTitle: LocalizedStringResource = "add_expense.edit_title"
-        static let amountPlaceholder: LocalizedStringResource = "add_expense.amount_placeholder"
         static let amountAccessibilityLabel: LocalizedStringResource = "add_expense.amount_accessibility_label"
         static let expenseSection: LocalizedStringResource = "add_expense.expense_section"
         static let name: LocalizedStringResource = "add_expense.name"
@@ -198,6 +201,13 @@ enum L10n {
         static let openSettings: LocalizedStringResource = "onboarding.notifications.open_settings"
         static let demoTitle: LocalizedStringResource = "onboarding.notifications.demo_title"
         static let demoTimestamp: LocalizedStringResource = "onboarding.notifications.demo_timestamp"
+        static let welcomeTitle: LocalizedStringResource = "onboarding.welcome.title"
+        static let welcomeSubtitle: LocalizedStringResource = "onboarding.welcome.subtitle"
+        static let budgetTitle: LocalizedStringResource = "onboarding.budget.title"
+        static let budgetSubtitle: LocalizedStringResource = "onboarding.budget.subtitle"
+        static func demoAccessibilityLabel(appName: String, title: String, message: String) -> LocalizedStringResource {
+            "onboarding.notifications.demo_accessibility_label \(appName) \(title) \(message)"
+        }
         static func demoMessage(amount: String) -> LocalizedStringResource {
             "onboarding.notifications.demo_message \(amount)"
         }
@@ -231,7 +241,15 @@ enum L10n {
     }
 
     enum SpendingOverview {
-        static let totalSpent: LocalizedStringResource = "spending_overview.total_spent"
+        static func totalSpent(for period: NOIR.SpendingPeriod) -> LocalizedStringResource {
+            switch period {
+            case .day: "spending_overview.total_spent.today"
+            case .week: "spending_overview.total_spent.week"
+            case .month: "spending_overview.total_spent.month"
+            case .year: "spending_overview.total_spent.year"
+            case .allTime: "spending_overview.total_spent.all_time"
+            }
+        }
         static let chartPeriod: LocalizedStringResource = "spending_overview.chart_period"
         static let chartAmount: LocalizedStringResource = "spending_overview.chart_amount"
     }

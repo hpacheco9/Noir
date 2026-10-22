@@ -29,13 +29,9 @@ struct SpendingOverviewView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 8) {
-                Text(String(
-                    format: String(localized: L10n.SpendingOverview.totalSpent),
-                    locale: .current,
-                    selectedPeriod.title
-                ))
-                .font(.headline)
-                .foregroundStyle(.secondary)
+                Text(L10n.SpendingOverview.totalSpent(for: selectedPeriod))
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
 
                 Text(verbatim: CurrencyPreference.string(for: abs(viewModel.totalSpent), code: currencyCode))
                     .font(.system(size: 40, weight: .semibold, design: .rounded))
