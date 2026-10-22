@@ -24,6 +24,13 @@ final class Expense {
     /// Name of the card that paid; empty = no card.
     var card: String = ""
 
+    // Decimal(Double) traps on infinity; the cap is far above any real expense and keeps cents exact in a Double.
+    nonisolated static let maxAmount = 1_000_000_000_000.0
+
+    nonisolated static func isValidAmount(_ amount: Double) -> Bool {
+        amount.isFinite && amount > 0 && amount <= maxAmount
+    }
+
     var category: ExpenseCategory {
         get { ExpenseCategory(rawValue: categoryRawValue) ?? .other }
         set { categoryRawValue = newValue.rawValue }

@@ -42,7 +42,7 @@ struct AddExpenseIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        guard amount.isFinite, amount > 0 else {
+        guard Expense.isValidAmount(amount) else {
             throw AddExpenseIntentError.invalidAmount
         }
 
