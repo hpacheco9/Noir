@@ -49,11 +49,6 @@ nonisolated enum CurrencyPreference {
         amount.formatted(formatStyle(for: code))
     }
 
-    /// Whole units only (budget picker).
-    static func wholeString(for amount: Double, code: String) -> String {
-        amount.formatted(doubleFormatStyle(for: code).precision(.fractionLength(0)))
-    }
-
     static func string(for amount: Double, code: String) -> String {
         amount.formatted(doubleFormatStyle(for: code))
     }

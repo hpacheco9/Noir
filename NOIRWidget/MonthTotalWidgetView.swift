@@ -57,17 +57,6 @@ struct MonthTotalWidgetView: View {
                 .lineLimit(1)
             
             MonthLineChart(days: entry.days, dayCount: entry.dayCount)
-            
-            if let progress = entry.progress {
-                HStack {
-                    Text(L10n.left(CurrencyPreference.string(for: progress.left, code: entry.currencyCode)))
-                    Spacer()
-                    Text(progress.fraction, format: .percent.precision(.fractionLength(0)))
-                }
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
@@ -82,38 +71,20 @@ struct MonthTotalWidgetView: View {
                 .minimumScaleFactor(0.4)
                 .lineLimit(1)
             MonthLineChart(days: entry.days, dayCount: entry.dayCount)
-            if let progress = entry.progress {
-                Text(L10n.left(CurrencyPreference.string(for: progress.left, code: entry.currencyCode)))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 
-    @ViewBuilder
     private var circular: some View {
-        if let progress = entry.progress {
-            Gauge(value: progress.fraction) {
-                EmptyView()
-            } currentValueLabel: {
-                Text(progress.fraction, format: .percent.precision(.fractionLength(0)))
-                    .font(.system(.body, design: .rounded, weight: .bold))
-            }
-            .gaugeStyle(.accessoryCircularCapacity)
-        } else {
-            ZStack {
-                AccessoryWidgetBackground()
-                Text(verbatim: entry.total.formatted(
-                    CurrencyPreference.formatStyle(for: entry.currencyCode).precision(.fractionLength(0))
-                ))
-                .font(.system(.body, design: .rounded, weight: .bold))
-                .minimumScaleFactor(0.4)
-                .lineLimit(1)
-                .padding(4)
-            }
+        ZStack {
+            AccessoryWidgetBackground()
+            Text(verbatim: entry.total.formatted(
+                CurrencyPreference.formatStyle(for: entry.currencyCode).precision(.fractionLength(0))
+            ))
+            .font(.system(.body, design: .rounded, weight: .bold))
+            .minimumScaleFactor(0.4)
+            .lineLimit(1)
+            .padding(4)
         }
     }
 }

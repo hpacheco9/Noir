@@ -6,18 +6,18 @@ import UserNotifications
 @Observable
 final class OnboardingViewModel {
     enum Step: Int, CaseIterable {
-        case welcome, name, budget, notifications
+        case welcome, name, currency, notifications, paywall
 
         var primaryActionTitle: LocalizedStringResource {
             switch self {
             case .welcome:
                 L10n.Onboarding.getStarted
-            case .budget:
-                L10n.Onboarding.setBudget
-            case .name:
+            case .name, .currency:
                 L10n.Onboarding.continue
             case .notifications:
                 L10n.Onboarding.enableNotifications
+            case .paywall:
+                L10n.Paywall.continueFree
             }
         }
     }
@@ -35,20 +35,22 @@ final class OnboardingViewModel {
     var step: Step = .welcome
     private(set) var notificationPermission: NotificationPermission = .undetermined
     var name = ""
-    var budget: Double = 1000
+    var currencyCode = CurrencyPreference.defaultCode
 
     private let notificationService: NotificationService
+    private let defaults: UserDefaults
 
     /// Pass a `NotificationService(center:)` backed by a fake `NotificationCenterClient` in tests; `nil` uses `.shared`.
     /// (A `.shared` default argument would be evaluated off the main actor.)
-    init(notificationService: NotificationService? = nil) {
+    init(notificationService: NotificationService? = nil, defaults: UserDefaults = .standard) {
         self.notificationService = notificationService ?? .shared
+        self.defaults = defaults
     }
 
     var canAdvance: Bool {
         switch step {
         case .name:
-            !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            !ProfileStorage.trimmed(name).isEmpty
         default:
             true
         }
@@ -75,16 +77,19 @@ final class OnboardingViewModel {
         }
     }
 
-    var isLastStep: Bool { step == .notifications }
+    var isLastStep: Bool { step == .paywall }
 
     func advance() {
         guard canAdvance, !isLastStep else { return }
+        // Saved as soon as it's chosen: the notification demo and the paywall price read the stored currency.
+        if step == .currency {
+            defaults.set(currencyCode, forKey: CurrencyPreference.storageKey)
+        }
         step = Step(rawValue: step.rawValue + 1) ?? step
     }
 
     func persist() {
-        UserDefaults.standard.set(name.trimmingCharacters(in: .whitespacesAndNewlines), forKey: "profile.name")
-        UserDefaults.standard.set(budget, forKey: OnboardingStorage.monthlyBudgetKey)
+        defaults.set(ProfileStorage.trimmed(name), forKey: ProfileStorage.nameKey)
     }
 
     /// Asks for notification permission. Never throws: a denial or failure must not block onboarding.
@@ -97,12 +102,11 @@ final class OnboardingViewModel {
         }
     }
 
-    /// Finishes onboarding (saves the profile), optionally asking for notification permission first.
-    /// The permission outcome doesn't affect completion.
-    func complete(requestingNotifications: Bool) async {
-        if requestingNotifications {
+    func finishNotificationsStep(requesting: Bool) async {
+        guard step == .notifications else { return }
+        if requesting {
             await requestNotificationAuthorization()
         }
-        persist()
+        advance()
     }
 }

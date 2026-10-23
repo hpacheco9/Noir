@@ -43,6 +43,7 @@ struct ContentView: View {
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
+                Task { await viewModel.fetchData() }
                 scheduleReviewRequestIfEligible(after: .seconds(3))
             } else {
                 cancelReviewRequest()
@@ -50,6 +51,9 @@ struct ContentView: View {
         }
         .onDisappear { cancelReviewRequest() }
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
+            Task { await viewModel.fetchData() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
             Task { await viewModel.fetchData() }
         }
         .alert(
@@ -219,7 +223,7 @@ struct ContentView: View {
 
     private var addExpenseButton: some View {
         Button {
-            router.present(MainRoutes.addExpense(), mode: .percentage(0.8))
+            router.presentAddExpense()
             Haptics.play(.tap)
         } label: {
             Image(systemName: AssetName.System.add)

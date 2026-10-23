@@ -31,7 +31,7 @@ final class MonthTotalSnapshotTests {
     private var month: DateInterval { calendar.dateInterval(of: .month, for: calendar.date(from: DateComponents(year: 2026, month: 10, day: 15))!)! }
 
     private var snapshot: MonthTotalSnapshot {
-        MonthTotalSnapshot(month: month, total: total, budget: 500, currencyCode: "EUR")
+        MonthTotalSnapshot(month: month, total: total, currencyCode: "EUR")
     }
 
     @Test func roundTripsThroughDefaults() {
@@ -80,26 +80,11 @@ final class MonthTotalSnapshotTests {
         #expect(snapshot.visibleDays(asOf: month.end, calendar: calendar).isEmpty)
     }
 
-    @Test func budgetFractionAndLeft() throws {
-        let progress = try #require(BudgetProgress(total: 125, budget: 500))
-        #expect(progress.fraction == 0.25)
-        #expect(progress.left == 375)
-    }
+    @Test func aSnapshotPublishedWithABudgetStillLoads() throws {
+        let encoded = try JSONEncoder().encode(snapshot)
+        try #require(encoded.first == UInt8(ascii: "{"))
+        defaults.set(Data(#"{"budget":500,"#.utf8) + encoded.dropFirst(), forKey: MonthTotalSnapshot.storageKey)
 
-    @Test func overBudgetClampsAtFull() throws {
-        let progress = try #require(BudgetProgress(total: 650, budget: 500))
-        #expect(progress.fraction == 1)
-        #expect(progress.left == 0)
-    }
-
-    @Test func zeroSpentIsEmpty() throws {
-        let progress = try #require(BudgetProgress(total: 0, budget: 500))
-        #expect(progress.fraction == 0)
-        #expect(progress.left == 500)
-    }
-
-    @Test(arguments: [0.0, -10, .nan, .infinity])
-    func noBudgetMeansNoProgress(budget: Double) {
-        #expect(BudgetProgress(total: 100, budget: budget) == nil)
+        #expect(MonthTotalSnapshot.load(from: defaults) == snapshot)
     }
 }

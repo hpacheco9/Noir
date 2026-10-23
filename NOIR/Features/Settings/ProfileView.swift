@@ -7,15 +7,19 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject private var coordinator: Coordinator
-    @AppStorage("profile.name") private var name = ""
+    @AppStorage(ProfileStorage.nameKey) private var name = ""
     @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
+    @State private var draftName = ""
+    @State private var nameOnAppear = ""
 
     var body: some View {
         Form {
             Section(String(localized: L10n.Profile.nameSection)) {
-                TextField(String(localized: L10n.Profile.namePlaceholder), text: $name)
+                TextField(String(localized: L10n.Profile.namePlaceholder), text: $draftName)
                     .textContentType(.givenName)
                     .textInputAutocapitalization(.words)
+                    .submitLabel(.done)
+                    .onSubmit(finishEditing)
             }
 
             Section {
@@ -40,6 +44,19 @@ struct ProfileView: View {
         }
         .navigationTitle(Text(L10n.Profile.title))
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            nameOnAppear = name
+            draftName = name
+        }
+        .onChange(of: draftName) { _, draft in
+            name = ProfileStorage.nameToStore(draft: draft, current: name)
+        }
+        .onDisappear(perform: finishEditing)
+    }
+
+    private func finishEditing() {
+        name = ProfileStorage.nameOnLeaving(draft: draftName, entry: nameOnAppear)
+        draftName = name
     }
 }
 

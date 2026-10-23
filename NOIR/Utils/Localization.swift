@@ -96,6 +96,28 @@ enum L10n {
         static let upgrade: LocalizedStringResource = "noir_pro.upgrade"
     }
 
+    enum Paywall {
+        static let title: LocalizedStringResource = "paywall.title"
+        static func unlock(price: String) -> LocalizedStringResource {
+            "paywall.unlock \(price)"
+        }
+        static let restore: LocalizedStringResource = "paywall.restore"
+        static let continueFree: LocalizedStringResource = "paywall.continue_free"
+
+        enum Feature {
+            static let syncTitle: LocalizedStringResource = "paywall.feature.sync.title"
+            static let syncDescription: LocalizedStringResource = "paywall.feature.sync.description"
+            static let categoriesTitle: LocalizedStringResource = "paywall.feature.categories.title"
+            static let categoriesDescription: LocalizedStringResource = "paywall.feature.categories.description"
+            static let widgetsTitle: LocalizedStringResource = "paywall.feature.widgets.title"
+            static let widgetsDescription: LocalizedStringResource = "paywall.feature.widgets.description"
+            static let insightsTitle: LocalizedStringResource = "paywall.feature.insights.title"
+            static let insightsDescription: LocalizedStringResource = "paywall.feature.insights.description"
+            static let exportTitle: LocalizedStringResource = "paywall.feature.export.title"
+            static let exportDescription: LocalizedStringResource = "paywall.feature.export.description"
+        }
+    }
+
     enum Preferences {
         static let title: LocalizedStringResource = "preferences.title"
         static let currency: LocalizedStringResource = "preferences.currency"
@@ -108,7 +130,6 @@ enum L10n {
 
     enum Profile {
         static let title: LocalizedStringResource = "profile.title"
-        static let name: LocalizedStringResource = "profile.name"
         static let description: LocalizedStringResource = "profile.description"
         static let nameSection: LocalizedStringResource = "profile.name_section"
         static let namePlaceholder: LocalizedStringResource = "profile.name_placeholder"
@@ -193,12 +214,12 @@ enum L10n {
     enum Onboarding {
         static let getStarted: LocalizedStringResource = "onboarding.get_started"
         static let `continue`: LocalizedStringResource = "onboarding.continue"
-        static let setBudget: LocalizedStringResource = "onboarding.set_budget"
-        static let finishing: LocalizedStringResource = "onboarding.finishing"
         static let nameTitle: LocalizedStringResource = "onboarding.name.title"
         static let nameSubtitle: LocalizedStringResource = "onboarding.name.subtitle"
         static let nameGreeting: LocalizedStringResource = "onboarding.name.greeting"
         static let namePlaceholder: LocalizedStringResource = "onboarding.name.placeholder"
+        static let currencyTitle: LocalizedStringResource = "onboarding.currency.title"
+        static let currencySubtitle: LocalizedStringResource = "onboarding.currency.subtitle"
         static let notificationsTitle: LocalizedStringResource = "onboarding.notifications.title"
         static let notificationsSubtitle: LocalizedStringResource = "onboarding.notifications.subtitle"
         static let enableNotifications: LocalizedStringResource = "onboarding.notifications.enable"
@@ -208,8 +229,6 @@ enum L10n {
         static let demoTimestamp: LocalizedStringResource = "onboarding.notifications.demo_timestamp"
         static let welcomeTitle: LocalizedStringResource = "onboarding.welcome.title"
         static let welcomeSubtitle: LocalizedStringResource = "onboarding.welcome.subtitle"
-        static let budgetTitle: LocalizedStringResource = "onboarding.budget.title"
-        static let budgetSubtitle: LocalizedStringResource = "onboarding.budget.subtitle"
         static func demoAccessibilityLabel(appName: String, title: String, message: String) -> LocalizedStringResource {
             "onboarding.notifications.demo_accessibility_label \(appName) \(title) \(message)"
         }
@@ -252,6 +271,25 @@ enum L10n {
         }
         static let chartPeriod: LocalizedStringResource = "spending_overview.chart_period"
         static let chartAmount: LocalizedStringResource = "spending_overview.chart_amount"
+
+        static func comparison(_ comparison: PeriodComparison, for period: NOIR.SpendingPeriod, currencyCode: String) -> LocalizedStringResource? {
+            let percent = comparison.formatted(currencyCode: currencyCode)
+            switch (comparison.trend, period) {
+            case (.higher, .day): return "spending_overview.comparison.higher.day \(percent)"
+            case (.higher, .week): return "spending_overview.comparison.higher.week \(percent)"
+            case (.higher, .month): return "spending_overview.comparison.higher.month \(percent)"
+            case (.higher, .year): return "spending_overview.comparison.higher.year \(percent)"
+            case (.lower, .day): return "spending_overview.comparison.lower.day \(percent)"
+            case (.lower, .week): return "spending_overview.comparison.lower.week \(percent)"
+            case (.lower, .month): return "spending_overview.comparison.lower.month \(percent)"
+            case (.lower, .year): return "spending_overview.comparison.lower.year \(percent)"
+            case (.same, .day): return "spending_overview.comparison.same.day"
+            case (.same, .week): return "spending_overview.comparison.same.week"
+            case (.same, .month): return "spending_overview.comparison.same.month"
+            case (.same, .year): return "spending_overview.comparison.same.year"
+            case (_, .allTime): return nil
+            }
+        }
     }
 
     enum AppIntent {

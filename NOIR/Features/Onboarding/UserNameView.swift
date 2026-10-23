@@ -15,7 +15,7 @@ struct UserNameView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Same header as the budget and notifications steps.
+            // Same header as the other steps.
             VStack(alignment: .leading, spacing: 12) {
                 Text(L10n.Onboarding.nameTitle)
                     .font(.system(size: titleSize, weight: .bold))

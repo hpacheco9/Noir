@@ -12,7 +12,6 @@ nonisolated struct MonthTotalSnapshot: Codable, Equatable, Sendable {
 
     var month: DateInterval
     var total: Decimal
-    var budget: Double
     var currencyCode: String
     /// Running total at the end of each day of the month, for the line chart.
     var days: [Double] = []

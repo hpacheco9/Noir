@@ -38,7 +38,7 @@ final class MainViewModel {
         self.loader = loader ?? { period, now in
             async let chartLoad = repository.perform { try await $0.overviewChart(period: period, now: now) }
             async let sideLoad = sideRepository.perform {
-                try await $0.overviewSide(now: now, latestLimit: latestLimit)
+                try await $0.overviewSide(period: period, now: now, latestLimit: latestLimit)
             }
 
             let chart = try await chartLoad
@@ -48,7 +48,8 @@ final class MainViewModel {
                 points: chart.points,
                 total: chart.total,
                 latest: side.latest,
-                hasAnyExpenses: side.hasAnyExpenses
+                hasAnyExpenses: side.hasAnyExpenses,
+                previousTotal: side.previousTotal
             )
         }
     }
