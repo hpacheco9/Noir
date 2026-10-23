@@ -6,6 +6,7 @@
 import SwiftUI
 
 struct ShortcutsView: View {
+    @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(IntentSummaryPreference.storageKey) private var intentSummaryEnabled = IntentSummaryPreference.defaultValue
 
     var body: some View {
@@ -13,6 +14,31 @@ struct ShortcutsView: View {
             Section {
                 Text(L10n.ShortcutsView.description)
                     .foregroundStyle(.secondary)
+            }
+
+            Section {
+                SettingsRow(
+                    title: L10n.ShortcutsView.applePayTitle,
+                    systemImage: AssetName.System.applePay,
+                    accessory: AssetName.System.externalLink,
+                    largeIcon: true
+                ) {
+                    coordinator.present(SettingsRoutes.safari(url: AppLinks.walletAutomationGuide), mode: .large)
+                }
+            } footer: {
+                Text(L10n.ShortcutsView.applePayDescription)
+            }
+
+            Section {
+                SettingsRow(
+                    title: L10n.ShortcutsView.addExpenseTitle,
+                    systemImage: AssetName.System.shortcutGuide,
+                    accessory: AssetName.System.externalLink
+                ) {
+                    coordinator.present(SettingsRoutes.safari(url: AppLinks.shortcutsGuide), mode: .large)
+                }
+            } footer: {
+                Text(L10n.ShortcutsView.addExpenseDescription)
             }
 
             Section {

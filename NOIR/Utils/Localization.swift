@@ -86,6 +86,10 @@ enum L10n {
 
     enum ShortcutsView {
         static let description: LocalizedStringResource = "shortcuts_view.description"
+        static let applePayTitle: LocalizedStringResource = "shortcuts_view.apple_pay_title"
+        static let applePayDescription: LocalizedStringResource = "shortcuts_view.apple_pay_description"
+        static let addExpenseTitle: LocalizedStringResource = "shortcuts_view.add_expense_title"
+        static let addExpenseDescription: LocalizedStringResource = "shortcuts_view.add_expense_description"
     }
 
 

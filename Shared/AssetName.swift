@@ -10,6 +10,7 @@ import Foundation
 nonisolated enum AssetName {
     enum System {
         static let add = "plus"
+        static let applePay = "wave.3.forward.circle.fill"
         static let calendar = "calendar"
         static let card = "creditcard"
         static let checkmark = "checkmark"
@@ -19,6 +20,7 @@ nonisolated enum AssetName {
         static let delete = "trash"
         static let disclosure = "chevron.right"
         static let export = "square.and.arrow.up"
+        static let externalLink = "arrow.up.right"
         static let filter = "line.3.horizontal.decrease"
         static let home = "text.rectangle.page"
         static let iCloud = "icloud"
@@ -31,6 +33,7 @@ nonisolated enum AssetName {
         static let reset = "arrow.counterclockwise"
         static let rest = "ellipsis.circle"
         static let search = "magnifyingglass"
+        static let shortcutGuide = "square.2.layers.3d"
         static let shortcuts = "command"
         static let tag = "tag"
         static let title = "textformat"
