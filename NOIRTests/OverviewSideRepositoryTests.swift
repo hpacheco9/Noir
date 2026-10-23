@@ -78,7 +78,7 @@ extension CategoryBreakdownRepositoryTests {
             try insert([(10, date(2026, 10, 15))], into: container)
             let result = try await side(container, .day)
             #expect(result.previousTotal == 0)
-            #expect(PeriodComparison.make(current: 10, previous: result.previousTotal) == nil)
+            #expect(PeriodComparison.make(current: 10, previous: result.previousTotal) == PeriodComparison(amount: 10))
         }
 
         // MARK: This month

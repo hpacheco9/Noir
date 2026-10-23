@@ -39,8 +39,8 @@ struct SpendingOverviewView: View {
 
                     if let comparison = viewModel.comparison,
                        let period = viewModel.appliedPeriod,
-                       let label = L10n.SpendingOverview.comparison(comparison, for: period) {
-                        ComparisonBadge(comparison: comparison, label: label)
+                       let label = L10n.SpendingOverview.comparison(comparison, for: period, currencyCode: currencyCode) {
+                        ComparisonBadge(comparison: comparison, currencyCode: currencyCode, label: label)
                             .opacity(viewModel.isComputing ? 0.4 : 1)
                             .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
                     }
@@ -147,6 +147,7 @@ struct SpendingOverviewView: View {
 
 private struct ComparisonBadge: View {
     let comparison: PeriodComparison
+    let currencyCode: String
     let label: LocalizedStringResource
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -161,27 +162,23 @@ private struct ComparisonBadge: View {
 
     private var symbol: String {
         switch comparison.trend {
-        case .higher: AssetName.System.arrowUp
-        case .lower: AssetName.System.arrowDown
-        case .same: AssetName.System.minus
+        case .higher: AssetName.System.trendUp
+        case .lower: AssetName.System.trendDown
+        case .same: AssetName.System.trendFlat
         }
     }
 
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 3) {
             Image(systemName: symbol)
-                .font(.caption2.weight(.bold))
                 .contentTransition(reduceMotion ? .identity : .symbolEffect(.replace))
 
-            Text(verbatim: comparison.formattedPercent())
-                .font(.footnote.weight(.semibold))
+            Text(verbatim: comparison.formatted(currencyCode: currencyCode))
                 .monospacedDigit()
-                .contentTransition(reduceMotion ? .opacity : .numericText(value: Double(comparison.magnitude)))
+                .contentTransition(reduceMotion ? .opacity : .numericText(value: comparison.numericValue))
         }
+        .font(.system(.subheadline, design: .rounded, weight: .semibold))
         .foregroundStyle(color)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 2)
-        .background(color.opacity(0.15), in: Capsule())
         .fixedSize()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(label))

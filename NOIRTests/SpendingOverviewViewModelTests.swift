@@ -28,7 +28,7 @@ struct SpendingOverviewViewModelTests {
     @Test func aLowerTotalComparesNegative() {
         let viewModel = SpendingOverviewViewModel()
         viewModel.apply(snapshot(.month, total: 40, previous: 160))
-        #expect(viewModel.comparison?.percent == -75)
+        #expect(viewModel.comparison == PeriodComparison(percent: -75))
         #expect(viewModel.comparison?.trend == .lower)
     }
 
@@ -42,10 +42,16 @@ struct SpendingOverviewViewModelTests {
         #expect(viewModel.appliedPeriod == .allTime)
     }
 
-    @Test func aPreviousPeriodWithoutSpendingHidesTheComparison() {
+    @Test func aPreviousPeriodWithoutSpendingShowsTheNewSpending() {
         let viewModel = SpendingOverviewViewModel()
         viewModel.apply(snapshot(.day, total: 25, previous: 0))
-        #expect(viewModel.comparison == nil)
+        #expect(viewModel.comparison == PeriodComparison(amount: 25))
+    }
+
+    @Test func nothingSpentNowOrBeforeIsTheSame() {
+        let viewModel = SpendingOverviewViewModel()
+        viewModel.apply(snapshot(.month, total: 0, previous: 0))
+        #expect(viewModel.comparison == PeriodComparison(percent: 0))
     }
 
     @Test func freshDataForTheSamePeriodUpdatesTheComparison() {
