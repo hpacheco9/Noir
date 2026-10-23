@@ -121,10 +121,8 @@ actor ExpenseRepository: ModelActor {
         return ChartResult(points: layout.points(from: memo.buckets), total: memo.total)
     }
 
-    /// The rest of the Home screen: newest rows overall, the empty-state check, the total of the period before `period`
-    /// (`nil` for All Time) and this month's total (the budget is monthly, whatever the period).
-    /// Reads rows only, the overview memos are not involved. Meant for a second repository instance so it runs in
-    /// parallel with `overviewChart`.
+    /// The rest of the Home screen: newest rows of the period (no date filter for All Time) and the empty-state check.
+    /// Meant for a second repository instance so it runs in parallel with `overviewChart`.
     func overviewSide(
         period: SpendingPeriod,
         now: Date = .now,
@@ -149,7 +147,6 @@ actor ExpenseRepository: ModelActor {
         return SideResult(latest: latest, hasAnyExpenses: hasAny, previousTotal: previousTotal, monthTotal: monthTotal)
     }
 
-    /// Sum of the amounts dated inside `interval`.
     private func total(in interval: DateInterval) throws -> Decimal {
         var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(interval))
         descriptor.propertiesToFetch = [\.amount]

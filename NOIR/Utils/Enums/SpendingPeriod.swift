@@ -42,8 +42,6 @@ nonisolated enum SpendingPeriod: String, CaseIterable, Identifiable, Sendable {
         return calendar.dateInterval(of: component, for: now)
     }
 
-    /// The whole period right before `dateInterval` (yesterday, last week, last month, last year); `nil` for `.allTime`.
-    /// Found from the instant just before the current period starts, so DST and year boundaries need no arithmetic.
     func previousInterval(calendar: Calendar = .current, now: Date = .now) -> DateInterval? {
         guard let component, let current = calendar.dateInterval(of: component, for: now) else { return nil }
         return calendar.dateInterval(of: component, for: current.start.addingTimeInterval(-1))

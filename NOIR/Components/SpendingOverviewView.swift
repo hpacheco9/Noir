@@ -30,15 +30,17 @@ struct SpendingOverviewView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 8) {
-                HStack(alignment: .top, spacing: 8) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text(L10n.SpendingOverview.totalSpent(for: selectedPeriod))
                         .font(.headline)
                         .foregroundStyle(.secondary)
 
                     Spacer(minLength: 0)
 
-                    if let comparison = viewModel.comparison, let period = viewModel.appliedPeriod {
-                        ComparisonBadge(comparison: comparison, period: period)
+                    if let comparison = viewModel.comparison,
+                       let period = viewModel.appliedPeriod,
+                       let label = L10n.SpendingOverview.comparison(comparison, for: period) {
+                        ComparisonBadge(comparison: comparison, label: label)
                             .opacity(viewModel.isComputing ? 0.4 : 1)
                             .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
                     }
@@ -145,15 +147,15 @@ struct SpendingOverviewView: View {
 
 private struct ComparisonBadge: View {
     let comparison: PeriodComparison
-    let period: SpendingPeriod
+    let label: LocalizedStringResource
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var color: Color {
         switch comparison.trend {
-        case .higher: .red
-        case .lower: .green
-        case .same: .secondary
+        case .higher: .trendWorse
+        case .lower: .trendBetter
+        case .same: .trendSame
         }
     }
 
@@ -165,13 +167,6 @@ private struct ComparisonBadge: View {
         }
     }
 
-    private var accessibilityText: Text {
-        let resource = L10n.SpendingOverview.comparison(
-            comparison.trend, percent: comparison.formattedPercent(), for: period
-        )
-        return resource.map { Text($0) } ?? Text(verbatim: comparison.formattedPercent())
-    }
-
     var body: some View {
         HStack(spacing: 4) {
             Image(systemName: symbol)
@@ -181,7 +176,7 @@ private struct ComparisonBadge: View {
             Text(verbatim: comparison.formattedPercent())
                 .font(.footnote.weight(.semibold))
                 .monospacedDigit()
-                .contentTransition(reduceMotion ? .opacity : .numericText(value: Double(comparison.percent)))
+                .contentTransition(reduceMotion ? .opacity : .numericText(value: Double(comparison.magnitude)))
         }
         .foregroundStyle(color)
         .padding(.horizontal, 8)
@@ -189,7 +184,7 @@ private struct ComparisonBadge: View {
         .background(color.opacity(0.15), in: Capsule())
         .fixedSize()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityText)
+        .accessibilityLabel(Text(label))
     }
 }
 

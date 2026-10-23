@@ -1390,7 +1390,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quedan %1$@ de %2$@"
+            "value" : "Disponible: %1$@ de %2$@"
           }
         },
         "fr" : {
@@ -1402,13 +1402,13 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restam %1$@ de %2$@"
+            "value" : "Restante: %1$@ de %2$@"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restam %1$@ de %2$@"
+            "value" : "Restante: %1$@ de %2$@"
           }
         }
       }
@@ -6393,7 +6393,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ mehr als im letzten Monat"
+            "value" : "%@ mehr als letzten Monat"
           }
         },
         "en" : {
@@ -6434,7 +6434,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ mehr als in der letzten Woche"
+            "value" : "%@ mehr als letzte Woche"
           }
         },
         "en" : {
@@ -6475,7 +6475,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ mehr als im letzten Jahr"
+            "value" : "%@ mehr als letztes Jahr"
           }
         },
         "en" : {
@@ -6557,7 +6557,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ weniger als im letzten Monat"
+            "value" : "%@ weniger als letzten Monat"
           }
         },
         "en" : {
@@ -6598,7 +6598,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ weniger als in der letzten Woche"
+            "value" : "%@ weniger als letzte Woche"
           }
         },
         "en" : {
@@ -6639,7 +6639,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ weniger als im letzten Jahr"
+            "value" : "%@ weniger als letztes Jahr"
           }
         },
         "en" : {
@@ -6680,7 +6680,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie gestern"
+            "value" : "Genauso viel wie gestern"
           }
         },
         "en" : {
@@ -6721,7 +6721,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie im letzten Monat"
+            "value" : "Genauso viel wie letzten Monat"
           }
         },
         "en" : {
@@ -6762,7 +6762,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie in der letzten Woche"
+            "value" : "Genauso viel wie letzte Woche"
           }
         },
         "en" : {
@@ -6803,7 +6803,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie im letzten Jahr"
+            "value" : "Genauso viel wie letztes Jahr"
           }
         },
         "en" : {

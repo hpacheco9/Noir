@@ -5,7 +5,6 @@
 
 import SwiftUI
 
-/// "€320 left of €1,000" with a thin progress bar, always about this month's spending. Shows nothing without a budget.
 struct BudgetSummaryView: View {
     let monthTotal: Decimal
     let currencyCode: String
@@ -18,11 +17,12 @@ struct BudgetSummaryView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(message(for: progress))
                     .font(.subheadline.weight(.medium))
-                    .foregroundStyle(progress.isOver ? Color.red : Color.secondary)
+                    .foregroundStyle(progress.isOver ? Color.trendWorse : Color.secondary)
 
                 ProgressView(value: progress.fraction)
-                    .tint(progress.isOver ? Color.red : Color.primary)
+                    .tint(progress.isOver ? Color.trendWorse : Color.primary)
                     .animation(reduceMotion ? nil : .smooth, value: progress.fraction)
+                    .accessibilityHidden(true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)

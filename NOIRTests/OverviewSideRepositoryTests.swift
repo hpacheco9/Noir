@@ -9,9 +9,9 @@ import SwiftData
 @testable import NOIR
 
 extension CategoryBreakdownRepositoryTests {
-    /// `overviewSide`: the previous period's total (the Home comparison) and this month's total (the budget).
-    /// In-memory store, rows inserted straight into a `ModelContext`. Nested in the serialized
-    /// `CategoryBreakdownRepositoryTests` for the memo-generation check.
+    // `overviewSide`: the previous period's total (the Home comparison) and this month's total (the budget).
+    // In-memory store, rows inserted straight into a `ModelContext`. Nested in the serialized
+    // `CategoryBreakdownRepositoryTests` for the memo-generation check.
     @Suite
     struct OverviewSideRepositoryTests {
         private var calendar: Calendar {
@@ -25,7 +25,7 @@ extension CategoryBreakdownRepositoryTests {
             calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour))!
         }
 
-        /// A Thursday in mid-October 2026.
+        // A Thursday in mid-October 2026.
         private var now: Date { date(2026, 10, 15) }
 
         private func makeContainer() throws -> ModelContainer {
@@ -118,7 +118,7 @@ extension CategoryBreakdownRepositoryTests {
             #expect(result.monthTotal == 0)
         }
 
-        /// Home keeps one repository for its whole life, so a re-read must see edits made through another context.
+        // Home keeps one repository for its whole life, so a re-read must see edits made through another context.
         @Test func rereadSeesEditsMadeThroughAnotherContext() async throws {
             let container = try makeContainer()
             let writer = ModelContext(container)

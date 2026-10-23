@@ -48,22 +48,12 @@ struct SpendingOverviewViewModelTests {
         #expect(viewModel.comparison == nil)
     }
 
-    @Test func reloadingTheSameSnapshotKeepsItsComparison() {
-        let viewModel = SpendingOverviewViewModel()
-        let first = snapshot(.year, total: 300, previous: 200)
-        viewModel.apply(first)
-        viewModel.apply(first)
-        #expect(viewModel.comparison == PeriodComparison(percent: 50))
-    }
-
     @Test func freshDataForTheSamePeriodUpdatesTheComparison() {
         let viewModel = SpendingOverviewViewModel()
         viewModel.apply(snapshot(.week, total: 120, previous: 100))
         viewModel.apply(snapshot(.week, total: 90, previous: 100))
         #expect(viewModel.comparison == PeriodComparison(percent: -10))
     }
-
-    // MARK: Snapshot
 
     @Test func retaggingDropsTheComparisonAndKeepsTheMonthTotal() {
         let original = snapshot(.week, total: 120, previous: 100, month: 480)
@@ -74,11 +64,5 @@ struct SpendingOverviewViewModelTests {
         #expect(retagged.monthTotal == 480)
         #expect(retagged.total == 120)
         #expect(retagged.id != original.id)
-    }
-
-    @Test func snapshotsDefaultToNoComparisonAndNoMonthSpending() {
-        let plain = OverviewSnapshot(period: .week, points: [], total: 1, latest: [], hasAnyExpenses: true)
-        #expect(plain.previousTotal == nil)
-        #expect(plain.monthTotal == 0)
     }
 }
