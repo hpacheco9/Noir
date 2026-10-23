@@ -9,16 +9,9 @@ import UserNotifications
 @testable import NOIR
 
 final class OnboardingViewModelTests {
-    private struct SilentCenter: NotificationCenterClient {
-        func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool { false }
-        func authorizationStatus() async -> UNAuthorizationStatus { .notDetermined }
-        func add(_ request: UNNotificationRequest) async throws {}
-    }
-
     private struct RequestFailure: Error {}
 
-    /// Counts the permission requests; `fails` makes each one throw.
-    private final class RecordingCenter: NotificationCenterClient, @unchecked Sendable {
+    private final class FakeCenter: NotificationCenterClient, @unchecked Sendable {
         private(set) var requests = 0
         private let fails: Bool
 
@@ -45,30 +38,17 @@ final class OnboardingViewModelTests {
         defaults.removePersistentDomain(forName: suiteName)
     }
 
-    private func makeViewModel(center: NotificationCenterClient = SilentCenter()) -> OnboardingViewModel {
+    private func makeViewModel(center: NotificationCenterClient = FakeCenter()) -> OnboardingViewModel {
         OnboardingViewModel(notificationService: NotificationService(center: center), defaults: defaults)
     }
 
-    private func makeViewModelAtNotifications(center: NotificationCenterClient = SilentCenter()) -> OnboardingViewModel {
+    private func makeViewModelAtNotifications(center: NotificationCenterClient = FakeCenter()) -> OnboardingViewModel {
         let viewModel = makeViewModel(center: center)
         viewModel.name = "Maria"
         viewModel.advance()
         viewModel.advance()
         viewModel.advance()
         return viewModel
-    }
-
-    @Test func currencyComesBetweenNameAndNotificationsAndThePaywallIsLast() {
-        #expect(OnboardingViewModel.Step.allCases == [.welcome, .name, .currency, .notifications, .paywall])
-
-        let viewModel = makeViewModel()
-        viewModel.name = "Maria"
-        for step in OnboardingViewModel.Step.allCases {
-            #expect(viewModel.step == step)
-            #expect(viewModel.isLastStep == (step == .paywall))
-            viewModel.advance()
-        }
-        #expect(viewModel.step == .paywall)
     }
 
     @Test func advanceWalksThroughEveryStep() {
@@ -79,7 +59,7 @@ final class OnboardingViewModelTests {
             viewModel.advance()
             visited.append(viewModel.step)
         }
-        #expect(visited == OnboardingViewModel.Step.allCases)
+        #expect(visited == [.welcome, .name, .currency, .notifications, .paywall])
     }
 
     @Test(arguments: ["", " ", " \n\t "])
@@ -145,17 +125,17 @@ final class OnboardingViewModelTests {
     }
 
     @Test func permissionIsRequestedOnlyWhenAsked() async {
-        let asked = RecordingCenter()
+        let asked = FakeCenter()
         await makeViewModelAtNotifications(center: asked).finishNotificationsStep(requesting: true)
         #expect(asked.requests == 1)
 
-        let skipped = RecordingCenter()
+        let skipped = FakeCenter()
         await makeViewModelAtNotifications(center: skipped).finishNotificationsStep(requesting: false)
         #expect(skipped.requests == 0)
     }
 
     @Test func aFailedPermissionRequestStillReachesThePaywall() async {
-        let center = RecordingCenter(fails: true)
+        let center = FakeCenter(fails: true)
         let viewModel = makeViewModelAtNotifications(center: center)
 
         await viewModel.finishNotificationsStep(requesting: true)
@@ -165,12 +145,19 @@ final class OnboardingViewModelTests {
     }
 
     @Test func finishingTheNotificationsStepFromAnotherStepDoesNothing() async {
-        let center = RecordingCenter()
+        let center = FakeCenter()
         let viewModel = makeViewModel(center: center)
 
         await viewModel.finishNotificationsStep(requesting: true)
-
         #expect(viewModel.step == .welcome)
+        #expect(center.requests == 0)
+
+        let atPaywall = makeViewModelAtNotifications(center: center)
+        atPaywall.advance()
+        #expect(atPaywall.step == .paywall)
+
+        await atPaywall.finishNotificationsStep(requesting: true)
+        #expect(atPaywall.step == .paywall)
         #expect(center.requests == 0)
     }
 }

@@ -88,7 +88,6 @@ final class OnboardingViewModel {
         step = Step(rawValue: step.rawValue + 1) ?? step
     }
 
-    /// Saves the profile. Runs once, when the paywall closes.
     func persist() {
         defaults.set(ProfileStorage.trimmed(name), forKey: ProfileStorage.nameKey)
     }
@@ -103,8 +102,6 @@ final class OnboardingViewModel {
         }
     }
 
-    /// Leaves the notifications step for the paywall, asking for notification permission first when `requesting`.
-    /// The permission outcome doesn't change where onboarding goes next.
     func finishNotificationsStep(requesting: Bool) async {
         guard step == .notifications else { return }
         if requesting {

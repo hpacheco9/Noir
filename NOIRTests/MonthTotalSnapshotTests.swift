@@ -80,7 +80,6 @@ final class MonthTotalSnapshotTests {
         #expect(snapshot.visibleDays(asOf: month.end, calendar: calendar).isEmpty)
     }
 
-    /// Snapshots published before the budget was removed still carry a `budget` key.
     @Test func aSnapshotPublishedWithABudgetStillLoads() throws {
         let encoded = try JSONEncoder().encode(snapshot)
         try #require(encoded.first == UInt8(ascii: "{"))

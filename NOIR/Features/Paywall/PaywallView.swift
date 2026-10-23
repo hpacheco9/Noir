@@ -6,15 +6,12 @@
 import SwiftUI
 
 struct PaywallView: View {
-    /// Set when the paywall is a step of onboarding: the close button and "Continue for Free" call it to finish
-    /// onboarding. `nil` when it is a sheet, where closing dismisses it.
     var onClose: (() -> Void)?
 
     @Environment(\.dismiss) private var dismiss
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @State private var legalLink: LegalLink?
 
-    /// Placeholder until StoreKit supplies the real product price.
     private static let mockPrice = 9.99
 
     private var priceText: String {

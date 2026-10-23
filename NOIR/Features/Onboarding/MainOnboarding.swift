@@ -11,6 +11,7 @@ struct MainOnboarding: View {
     var onComplete: () -> Void
     @State private var viewModel = OnboardingViewModel()
     @State private var isRequesting = false
+    @State private var hasFinished = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
 
@@ -29,7 +30,6 @@ struct MainOnboarding: View {
                         NotificationsView()
                     case .paywall:
                         PaywallView(onClose: finish)
-                            .layoutPriority(1)
                 }
 
                 Spacer(minLength: 0)
@@ -37,8 +37,8 @@ struct MainOnboarding: View {
             .padding(.top, 16)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .navigationBarTitleDisplayMode(.inline)
         .safeAreaBar(edge: .bottom) {
-            // The paywall has its own buttons.
             if viewModel.step != .paywall {
                 controls
             }
@@ -105,7 +105,6 @@ struct MainOnboarding: View {
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
-    /// Moves on to the paywall, asking for notification permission first when `requesting`.
     private func leaveNotifications(requesting: Bool) {
         guard !isRequesting else { return }
         isRequesting = true
@@ -116,8 +115,9 @@ struct MainOnboarding: View {
         }
     }
 
-    /// Closing the paywall, however it happens, ends onboarding.
     private func finish() {
+        guard !hasFinished else { return }
+        hasFinished = true
         viewModel.persist()
         onComplete()
     }
