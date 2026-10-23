@@ -16,5 +16,12 @@ struct NOIRShortcuts: AppShortcutsProvider {
             shortTitle: "app_intent.title",
             systemImageName: "plus.circle.fill"
         )
+
+        AppShortcut(
+            intent: OpenAddExpenseIntent(),
+            phrases: ["Open add expense in \(.applicationName)"],
+            shortTitle: "app_intent.open_add_expense",
+            systemImageName: "plus.app.fill"
+        )
     }
 }

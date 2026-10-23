@@ -34,6 +34,7 @@ struct NOIRApp: App {
            } else {
                NavigationStack {
                    MainOnboarding(onComplete: {
+                       AddExpenseRequest.shared.cancel()
                        hasCompletedOnboarding = true
                    })
                }

@@ -14,9 +14,11 @@ struct RootView: View {
     @StateObject private var homeCoordinator = Coordinator()
     @StateObject private var dashboardCoordinator = Coordinator()
     @StateObject private var searchCoordinator = Coordinator()
+    @State private var selectedTab = RootTab.home
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @Environment(\.scenePhase) private var scenePhase
     let mainViewModel: MainViewModel
+    private let addExpenseRequest = AddExpenseRequest.shared
 
     init(mainViewModel: MainViewModel) {
         self.mainViewModel = mainViewModel
@@ -29,8 +31,8 @@ struct RootView: View {
     }
 
     var body: some View {
-        TabView {
-            Tab {
+        TabView(selection: $selectedTab) {
+            Tab(value: RootTab.home) {
                 CoordinatorView {
                     ContentView()
                 }
@@ -45,7 +47,7 @@ struct RootView: View {
                 .environment(\.symbolVariants, .none)
             }
 
-            Tab {
+            Tab(value: RootTab.dashboard) {
                 CoordinatorView {
                     DashboardView(viewModel: dashboardViewModel)
                 }
@@ -59,7 +61,7 @@ struct RootView: View {
                 .environment(\.symbolVariants, .none)
             }
 
-            Tab(role: .search) {
+            Tab(value: RootTab.search, role: .search) {
                 CoordinatorView {
                     SearchView(viewModel: searchViewModel)
                 }
@@ -76,6 +78,9 @@ struct RootView: View {
         .tabBarMinimizeBehavior(.onScrollDown)
         .tabViewSearchActivation(.searchTabSelection)
         .tint(.primary)
+        .onChange(of: addExpenseRequest.isPending, initial: true) { _, isPending in
+            if isPending { openAddExpense() }
+        }
         .onChange(of: scenePhase, initial: true) { _, phase in
             if phase == .active { Task { await WidgetSnapshotPublisher.publish() } }
         }
@@ -85,6 +90,14 @@ struct RootView: View {
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
             Task { await WidgetSnapshotPublisher.publish() }
         }
+    }
+}
+
+private extension RootView {
+    func openAddExpense() {
+        guard addExpenseRequest.consume() else { return }
+        selectedTab = .home
+        Coordinator.openAddExpense(home: homeCoordinator, otherTabs: [dashboardCoordinator, searchCoordinator])
     }
 }
 

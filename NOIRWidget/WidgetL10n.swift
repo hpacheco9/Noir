@@ -13,4 +13,9 @@ enum L10n {
     static func left(_ amount: String) -> LocalizedStringResource {
         "widget.month_total.left \(amount)"
     }
+
+    enum AddExpenseControl {
+        static let displayName: LocalizedStringResource = "widget.add_expense.display_name"
+        static let description: LocalizedStringResource = "widget.add_expense.description"
+    }
 }
