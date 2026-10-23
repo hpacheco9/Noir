@@ -6,7 +6,6 @@
 import SwiftUI
 import WidgetKit
 
-@main
 struct MonthTotalWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "MonthTotalWidget", provider: MonthTotalProvider()) { entry in

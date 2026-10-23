@@ -223,7 +223,7 @@ struct ContentView: View {
 
     private var addExpenseButton: some View {
         Button {
-            router.present(MainRoutes.addExpense(), mode: .percentage(0.8))
+            router.presentAddExpense()
             Haptics.play(.tap)
         } label: {
             Image(systemName: AssetName.System.add)

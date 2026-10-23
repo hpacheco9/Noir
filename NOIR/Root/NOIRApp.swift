@@ -34,6 +34,7 @@ struct NOIRApp: App {
            } else {
                NavigationStack {
                    MainOnboarding(onComplete: {
+                       AddExpenseRequest.shared.cancel() // a control tap during onboarding must not open a sheet later
                        hasCompletedOnboarding = true
                    })
                }
