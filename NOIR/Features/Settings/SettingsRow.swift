@@ -17,7 +17,7 @@ struct SettingsRow: View {
         Button(action: action) {
             HStack(spacing: 12) {
                 Image(systemName: systemImage)
-                    .font(largeIcon ? .title : nil)
+                    .font(largeIcon ? .title2 : nil)
                     .foregroundStyle(.secondary)
 
                 Text(title)
