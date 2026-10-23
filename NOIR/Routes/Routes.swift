@@ -98,6 +98,18 @@ extension SettingsRoutes {
         return EditCategoryViewRoute(routeId: "settings-edit-category-\(category.key)", category: category)
     }
 
+    static func budget() -> any RouteRepresentable {
+        struct BudgetEditorViewRoute: RouteRepresentable {
+            let routeId: String = "settings-budget"
+
+            func routeView() -> any View {
+                BudgetEditorView()
+            }
+        }
+
+        return BudgetEditorViewRoute()
+    }
+
     static func shortcuts() -> any RouteRepresentable {
         struct ShortcutsViewRoute: RouteRepresentable {
             let routeId: String = "settings-shortcuts"

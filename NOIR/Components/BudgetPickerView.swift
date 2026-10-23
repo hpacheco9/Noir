@@ -16,7 +16,7 @@ struct BudgetPickerView: View {
     private let tickSpacing: CGFloat = 12
     
     @State private var scrollID: Int?
-    @State private var isInitialScrollPositionReady = false
+    @State private var hasUserScrolled = false
     
     private let highlightColor = Color.blue
 
@@ -55,26 +55,23 @@ struct BudgetPickerView: View {
                 }
                 .scrollPosition(id: $scrollID)
                 .scrollTargetBehavior(.viewAligned)
+                .onScrollPhaseChange { _, phase in
+                    if phase == .interacting { hasUserScrolled = true }
+                }
                 .safeAreaPadding(.horizontal, (geo.size.width / 2) - (tickSpacing / 2))
             }
             .frame(height: 70)
         }
         .onAppear {
             scrollID = Self.nearestTick(to: budget)
-            Task { @MainActor in
-                await Task.yield()
-                isInitialScrollPositionReady = true
-            }
         }
         .onChange(of: scrollID) { oldValue, newValue in
-            guard isInitialScrollPositionReady,
+            guard hasUserScrolled,
                   let newValue,
                   newValue != Self.nearestTick(to: budget) else { return }
 
-            if newValue != Self.nearestTick(to: budget) {
-                budget = Double(newValue)
-                Haptics.play(.selection)
-            }
+            budget = Double(newValue)
+            Haptics.play(.selection)
         }
         .onChange(of: budget) { oldValue, newValue in
             let intValue = Self.nearestTick(to: newValue)

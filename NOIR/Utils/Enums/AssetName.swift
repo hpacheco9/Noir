@@ -10,6 +10,7 @@ import Foundation
 nonisolated enum AssetName {
     enum System {
         static let add = "plus"
+        static let budget = "wallet.bifold.fill"
         static let calendar = "calendar"
         static let card = "creditcard"
         static let checkmark = "checkmark"
@@ -22,6 +23,7 @@ nonisolated enum AssetName {
         static let home = "text.rectangle.page"
         static let legal = "doc.text.fill"
         static let note = "text.alignleft"
+        static let person = "person.fill"
         static let picker = "chevron.up.chevron.down"
         static let privacy = "hand.raised.fill"
         static let reset = "arrow.counterclockwise"
