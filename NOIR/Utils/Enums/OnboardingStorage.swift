@@ -11,4 +11,5 @@ enum OnboardingStorage {
     /// The raw value must stay `"hasCompletedOnboarding"` so existing installs keep their state.
     static let hasCompletedKey = "hasCompletedOnboarding"
     static let monthlyBudgetKey = "profile.monthlyBudget"
+    static let defaultMonthlyBudget: Double = 1000
 }

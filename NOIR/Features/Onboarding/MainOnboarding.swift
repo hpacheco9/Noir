@@ -23,6 +23,8 @@ struct MainOnboarding: View {
                         GetStartedView()
                     case .name:
                         UserNameView(name: $viewModel.name)
+                    case .currency:
+                        CurrencyView(currencyCode: $viewModel.currencyCode)
                     case .budget:
                         BudgetView(budget: $viewModel.budget)
                     case .notifications:

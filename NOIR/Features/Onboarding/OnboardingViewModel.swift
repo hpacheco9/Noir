@@ -6,7 +6,7 @@ import UserNotifications
 @Observable
 final class OnboardingViewModel {
     enum Step: Int, CaseIterable {
-        case welcome, name, budget, notifications
+        case welcome, name, currency, budget, notifications
 
         var primaryActionTitle: LocalizedStringResource {
             switch self {
@@ -14,7 +14,7 @@ final class OnboardingViewModel {
                 L10n.Onboarding.getStarted
             case .budget:
                 L10n.Onboarding.setBudget
-            case .name:
+            case .name, .currency:
                 L10n.Onboarding.continue
             case .notifications:
                 L10n.Onboarding.enableNotifications
@@ -35,20 +35,23 @@ final class OnboardingViewModel {
     var step: Step = .welcome
     private(set) var notificationPermission: NotificationPermission = .undetermined
     var name = ""
-    var budget: Double = 1000
+    var currencyCode = CurrencyPreference.defaultCode
+    var budget = OnboardingStorage.defaultMonthlyBudget
 
     private let notificationService: NotificationService
+    private let defaults: UserDefaults
 
     /// Pass a `NotificationService(center:)` backed by a fake `NotificationCenterClient` in tests; `nil` uses `.shared`.
     /// (A `.shared` default argument would be evaluated off the main actor.)
-    init(notificationService: NotificationService? = nil) {
+    init(notificationService: NotificationService? = nil, defaults: UserDefaults = .standard) {
         self.notificationService = notificationService ?? .shared
+        self.defaults = defaults
     }
 
     var canAdvance: Bool {
         switch step {
         case .name:
-            !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            !ProfileStorage.trimmed(name).isEmpty
         default:
             true
         }
@@ -79,12 +82,16 @@ final class OnboardingViewModel {
 
     func advance() {
         guard canAdvance, !isLastStep else { return }
+        // Saved as soon as it's chosen: the budget ruler and the notification demo read the stored currency.
+        if step == .currency {
+            defaults.set(currencyCode, forKey: CurrencyPreference.storageKey)
+        }
         step = Step(rawValue: step.rawValue + 1) ?? step
     }
 
     func persist() {
-        UserDefaults.standard.set(name.trimmingCharacters(in: .whitespacesAndNewlines), forKey: "profile.name")
-        UserDefaults.standard.set(budget, forKey: OnboardingStorage.monthlyBudgetKey)
+        defaults.set(ProfileStorage.trimmed(name), forKey: ProfileStorage.nameKey)
+        defaults.set(budget, forKey: OnboardingStorage.monthlyBudgetKey)
     }
 
     /// Asks for notification permission. Never throws: a denial or failure must not block onboarding.

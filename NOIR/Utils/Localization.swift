@@ -108,10 +108,11 @@ enum L10n {
 
     enum Profile {
         static let title: LocalizedStringResource = "profile.title"
-        static let name: LocalizedStringResource = "profile.name"
         static let description: LocalizedStringResource = "profile.description"
         static let nameSection: LocalizedStringResource = "profile.name_section"
         static let namePlaceholder: LocalizedStringResource = "profile.name_placeholder"
+        static let budget: LocalizedStringResource = "profile.budget"
+        static let budgetFooter: LocalizedStringResource = "profile.budget_footer"
     }
 
     enum Categories {
@@ -199,6 +200,8 @@ enum L10n {
         static let nameSubtitle: LocalizedStringResource = "onboarding.name.subtitle"
         static let nameGreeting: LocalizedStringResource = "onboarding.name.greeting"
         static let namePlaceholder: LocalizedStringResource = "onboarding.name.placeholder"
+        static let currencyTitle: LocalizedStringResource = "onboarding.currency.title"
+        static let currencySubtitle: LocalizedStringResource = "onboarding.currency.subtitle"
         static let notificationsTitle: LocalizedStringResource = "onboarding.notifications.title"
         static let notificationsSubtitle: LocalizedStringResource = "onboarding.notifications.subtitle"
         static let enableNotifications: LocalizedStringResource = "onboarding.notifications.enable"

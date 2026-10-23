@@ -9,6 +9,7 @@ import SwiftData
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+    @AppStorage(ProfileStorage.nameKey) private var name = ""
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
@@ -59,14 +60,19 @@ struct SettingsView: View {
                             .fill(.secondary)
                             .frame(width: 48, height: 48)
 
-                        Text(verbatim: "H")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .fontDesign(.rounded)
+                        let initial = ProfileStorage.initial(of: name)
+                        if initial.isEmpty {
+                            Image(systemName: AssetName.System.person)
+                        } else {
+                            Text(verbatim: initial)
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .fontDesign(.rounded)
+                        }
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(L10n.Profile.name)
+                        Text(verbatim: ProfileStorage.trimmed(name))
                             .font(.body.weight(.medium))
 
                         Text(L10n.Profile.description)
