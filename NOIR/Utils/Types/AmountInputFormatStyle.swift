@@ -7,7 +7,7 @@ import Foundation
 
 extension CurrencyPreference {
     /// For amount TextFields: same output as `formatStyle(for:)`, but parsing accepts "." or "," as the decimal mark.
-    static func amountInputStyle(for code: String) -> AmountInputFormatStyle {
+    nonisolated static func amountInputStyle(for code: String) -> AmountInputFormatStyle {
         AmountInputFormatStyle(code: code, currencyLocale: locale(for: code))
     }
 }

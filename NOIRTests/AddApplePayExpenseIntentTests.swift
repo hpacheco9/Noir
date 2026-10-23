@@ -25,6 +25,31 @@ struct AddApplePayExpenseIntentTests {
         #expect(text != "app_intent.untitled")
     }
 
+    @Test(arguments: ["EUR", "USD"])
+    func walletAmountTextBecomesAPositiveNumber(code: String) {
+        let cases: [(String, Double)] = [
+            ("-4,50 €", 4.5), ("€4.50", 4.5), ("4.50", 4.5), ("-$1,234.56", 1234.56),
+            ("1.234,56 €", 1234.56), ("12", 12), ("-19,99 €", 19.99), ("-€0.01", 0.01),
+        ]
+        for (text, expected) in cases {
+            #expect(AddApplePayExpenseIntent.parsedAmount(text, code: code) == expected, "\(text)")
+        }
+    }
+
+    @Test(arguments: ["EUR", "USD"])
+    func unusableWalletAmountTextIsRejected(code: String) {
+        for text in ["", "abc", "0", "-0,00 €", "-", ",", "€", "99999999999999"] {
+            #expect(AddApplePayExpenseIntent.parsedAmount(text, code: code) == nil, "\(text)")
+        }
+    }
+
+    @Test(arguments: ["abc", "0", "-0,00 €"])
+    @MainActor func unusableAmountStopsTheIntent(text: String) async {
+        let intent = AddApplePayExpenseIntent()
+        intent.amount = text
+        await #expect(throws: AddExpenseIntentError.invalidAmount) { _ = try await intent.perform() }
+    }
+
     @Test(arguments: [nil, "", "  \n"] as [String?])
     func blankCardMeansNoCard(card: String?) {
         #expect(AddApplePayExpenseIntent.resolvedCard(card) == "")
