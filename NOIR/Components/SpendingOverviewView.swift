@@ -18,6 +18,7 @@ struct SpendingOverviewView: View {
     @State private var selectedLabel: String?
     @State private var barsVisible = false
     @State private var chartID = UUID()
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var maxAmount: Double {
         let value = viewModel.dataPoints
@@ -29,9 +30,21 @@ struct SpendingOverviewView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 8) {
-                Text(L10n.SpendingOverview.totalSpent(for: selectedPeriod))
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(L10n.SpendingOverview.totalSpent(for: selectedPeriod))
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+
+                    Spacer(minLength: 0)
+
+                    if let comparison = viewModel.comparison,
+                       let period = viewModel.appliedPeriod,
+                       let label = L10n.SpendingOverview.comparison(comparison, for: period) {
+                        ComparisonBadge(comparison: comparison, label: label)
+                            .opacity(viewModel.isComputing ? 0.4 : 1)
+                            .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
+                    }
+                }
 
                 Text(verbatim: CurrencyPreference.string(for: abs(viewModel.totalSpent), code: currencyCode))
                     .font(.system(size: 40, weight: .semibold, design: .rounded))
@@ -92,6 +105,8 @@ struct SpendingOverviewView: View {
                     }
                 }
             }
+
+            BudgetSummaryView(monthTotal: snapshot.monthTotal, currencyCode: currencyCode)
         }
         .frame(maxWidth: .infinity)
         .padding()
@@ -127,6 +142,49 @@ struct SpendingOverviewView: View {
         .onChange(of: snapshot.id) {
             viewModel.apply(snapshot)
         }
+    }
+}
+
+private struct ComparisonBadge: View {
+    let comparison: PeriodComparison
+    let label: LocalizedStringResource
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var color: Color {
+        switch comparison.trend {
+        case .higher: .trendWorse
+        case .lower: .trendBetter
+        case .same: .trendSame
+        }
+    }
+
+    private var symbol: String {
+        switch comparison.trend {
+        case .higher: AssetName.System.arrowUp
+        case .lower: AssetName.System.arrowDown
+        case .same: AssetName.System.minus
+        }
+    }
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: symbol)
+                .font(.caption2.weight(.bold))
+                .contentTransition(reduceMotion ? .identity : .symbolEffect(.replace))
+
+            Text(verbatim: comparison.formattedPercent())
+                .font(.footnote.weight(.semibold))
+                .monospacedDigit()
+                .contentTransition(reduceMotion ? .opacity : .numericText(value: Double(comparison.magnitude)))
+        }
+        .foregroundStyle(color)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 2)
+        .background(color.opacity(0.15), in: Capsule())
+        .fixedSize()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(label))
     }
 }
 
