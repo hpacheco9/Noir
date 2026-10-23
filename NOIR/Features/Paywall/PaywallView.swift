@@ -6,8 +6,13 @@
 import SwiftUI
 
 struct PaywallView: View {
-    @EnvironmentObject private var coordinator: Coordinator
+    /// Set when the paywall is a step of onboarding: the close button and "Continue for Free" call it to finish
+    /// onboarding. `nil` when it is a sheet, where closing dismisses it.
+    var onClose: (() -> Void)?
+
+    @Environment(\.dismiss) private var dismiss
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+    @State private var legalLink: LegalLink?
 
     /// Placeholder until StoreKit supplies the real product price.
     private static let mockPrice = 9.99
@@ -36,11 +41,16 @@ struct PaywallView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(role: .close) {
-                    coordinator.dismiss()
-                }
+                Button(role: .close, action: close)
             }
         }
+        .sheet(item: $legalLink) { link in
+            SafariRouteContent(url: link.url)
+        }
+    }
+
+    private func close() {
+        if let onClose { onClose() } else { dismiss() }
     }
 
     private var header: some View {
@@ -81,6 +91,16 @@ struct PaywallView: View {
             .tint(.primary)
             .buttonStyle(.glassProminent)
 
+            if onClose != nil {
+                Button(action: close) {
+                    Text(L10n.Paywall.continueFree)
+                        .font(.callout.weight(.semibold))
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+            }
+
             Button {
                 // Mock: StoreKit isn't wired yet.
             } label: {
@@ -93,11 +113,11 @@ struct PaywallView: View {
             .buttonStyle(.plain)
 
             HStack(spacing: 6) {
-                legalLink(L10n.Legal.termsOfService, url: AppLinks.termsOfService)
+                legalButton(.termsOfService)
 
                 Text(verbatim: "·")
 
-                legalLink(L10n.Legal.privacyPolicy, url: AppLinks.privacyPolicy)
+                legalButton(.privacyPolicy)
             }
             .font(.caption)
             .foregroundStyle(.secondary)
@@ -108,15 +128,35 @@ struct PaywallView: View {
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
-    private func legalLink(_ title: LocalizedStringResource, url: URL) -> some View {
+    private func legalButton(_ link: LegalLink) -> some View {
         Button {
-            coordinator.present(SettingsRoutes.safari(url: url), mode: .large)
+            legalLink = link
         } label: {
-            Text(title)
+            Text(link.title)
                 .frame(minHeight: 32)
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)
+    }
+}
+
+private enum LegalLink: Identifiable {
+    case termsOfService, privacyPolicy
+
+    var id: Self { self }
+
+    var title: LocalizedStringResource {
+        switch self {
+        case .termsOfService: L10n.Legal.termsOfService
+        case .privacyPolicy: L10n.Legal.privacyPolicy
+        }
+    }
+
+    var url: URL {
+        switch self {
+        case .termsOfService: AppLinks.termsOfService
+        case .privacyPolicy: AppLinks.privacyPolicy
+        }
     }
 }
 
@@ -185,9 +225,15 @@ private struct PaywallFeatureRow: View {
     }
 }
 
-#Preview {
+#Preview("Sheet") {
     CoordinatorView {
         PaywallView()
     }
     .environmentObject(Coordinator())
+}
+
+#Preview("Onboarding") {
+    NavigationStack {
+        PaywallView(onClose: {})
+    }
 }

@@ -15,6 +15,7 @@ struct PaywallStringsTests {
         L10n.Paywall.title,
         L10n.Paywall.unlock(price: "9.99"),
         L10n.Paywall.restore,
+        L10n.Paywall.continueFree,
         L10n.Paywall.Feature.syncTitle, L10n.Paywall.Feature.syncDescription,
         L10n.Paywall.Feature.categoriesTitle, L10n.Paywall.Feature.categoriesDescription,
         L10n.Paywall.Feature.widgetsTitle, L10n.Paywall.Feature.widgetsDescription,

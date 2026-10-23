@@ -15,6 +15,24 @@ final class OnboardingViewModelTests {
         func add(_ request: UNNotificationRequest) async throws {}
     }
 
+    private struct RequestFailure: Error {}
+
+    /// Counts the permission requests; `fails` makes each one throw.
+    private final class RecordingCenter: NotificationCenterClient, @unchecked Sendable {
+        private(set) var requests = 0
+        private let fails: Bool
+
+        init(fails: Bool = false) { self.fails = fails }
+
+        func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
+            requests += 1
+            if fails { throw RequestFailure() }
+            return true
+        }
+        func authorizationStatus() async -> UNAuthorizationStatus { .notDetermined }
+        func add(_ request: UNNotificationRequest) async throws {}
+    }
+
     private let suiteName = "OnboardingViewModelTests.\(UUID().uuidString)"
     private let defaults: UserDefaults
 
@@ -27,12 +45,30 @@ final class OnboardingViewModelTests {
         defaults.removePersistentDomain(forName: suiteName)
     }
 
-    private func makeViewModel() -> OnboardingViewModel {
-        OnboardingViewModel(notificationService: NotificationService(center: SilentCenter()), defaults: defaults)
+    private func makeViewModel(center: NotificationCenterClient = SilentCenter()) -> OnboardingViewModel {
+        OnboardingViewModel(notificationService: NotificationService(center: center), defaults: defaults)
     }
 
-    @Test func currencyComesBetweenNameAndNotifications() {
-        #expect(OnboardingViewModel.Step.allCases == [.welcome, .name, .currency, .notifications])
+    private func makeViewModelAtNotifications(center: NotificationCenterClient = SilentCenter()) -> OnboardingViewModel {
+        let viewModel = makeViewModel(center: center)
+        viewModel.name = "Maria"
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.advance()
+        return viewModel
+    }
+
+    @Test func currencyComesBetweenNameAndNotificationsAndThePaywallIsLast() {
+        #expect(OnboardingViewModel.Step.allCases == [.welcome, .name, .currency, .notifications, .paywall])
+
+        let viewModel = makeViewModel()
+        viewModel.name = "Maria"
+        for step in OnboardingViewModel.Step.allCases {
+            #expect(viewModel.step == step)
+            #expect(viewModel.isLastStep == (step == .paywall))
+            viewModel.advance()
+        }
+        #expect(viewModel.step == .paywall)
     }
 
     @Test func advanceWalksThroughEveryStep() {
@@ -94,11 +130,47 @@ final class OnboardingViewModelTests {
         #expect(defaults.string(forKey: ProfileStorage.nameKey) == "Maria")
     }
 
-    @Test func completeStoresTheProfile() async {
-        let viewModel = makeViewModel()
-        viewModel.name = "Maria"
-        await viewModel.complete(requestingNotifications: false)
+    @Test(arguments: [true, false])
+    func theNotificationsStepLeadsToThePaywallWithoutFinishing(requesting: Bool) async {
+        let viewModel = makeViewModelAtNotifications()
+        #expect(viewModel.step == .notifications)
 
+        await viewModel.finishNotificationsStep(requesting: requesting)
+
+        #expect(viewModel.step == .paywall)
+        #expect(defaults.string(forKey: ProfileStorage.nameKey) == nil)
+
+        viewModel.persist()
         #expect(defaults.string(forKey: ProfileStorage.nameKey) == "Maria")
+    }
+
+    @Test func permissionIsRequestedOnlyWhenAsked() async {
+        let asked = RecordingCenter()
+        await makeViewModelAtNotifications(center: asked).finishNotificationsStep(requesting: true)
+        #expect(asked.requests == 1)
+
+        let skipped = RecordingCenter()
+        await makeViewModelAtNotifications(center: skipped).finishNotificationsStep(requesting: false)
+        #expect(skipped.requests == 0)
+    }
+
+    @Test func aFailedPermissionRequestStillReachesThePaywall() async {
+        let center = RecordingCenter(fails: true)
+        let viewModel = makeViewModelAtNotifications(center: center)
+
+        await viewModel.finishNotificationsStep(requesting: true)
+
+        #expect(center.requests == 1)
+        #expect(viewModel.step == .paywall)
+    }
+
+    @Test func finishingTheNotificationsStepFromAnotherStepDoesNothing() async {
+        let center = RecordingCenter()
+        let viewModel = makeViewModel(center: center)
+
+        await viewModel.finishNotificationsStep(requesting: true)
+
+        #expect(viewModel.step == .welcome)
+        #expect(center.requests == 0)
     }
 }

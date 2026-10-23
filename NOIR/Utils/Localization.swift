@@ -102,6 +102,7 @@ enum L10n {
             "paywall.unlock \(price)"
         }
         static let restore: LocalizedStringResource = "paywall.restore"
+        static let continueFree: LocalizedStringResource = "paywall.continue_free"
 
         enum Feature {
             static let syncTitle: LocalizedStringResource = "paywall.feature.sync.title"
@@ -213,7 +214,6 @@ enum L10n {
     enum Onboarding {
         static let getStarted: LocalizedStringResource = "onboarding.get_started"
         static let `continue`: LocalizedStringResource = "onboarding.continue"
-        static let finishing: LocalizedStringResource = "onboarding.finishing"
         static let nameTitle: LocalizedStringResource = "onboarding.name.title"
         static let nameSubtitle: LocalizedStringResource = "onboarding.name.subtitle"
         static let nameGreeting: LocalizedStringResource = "onboarding.name.greeting"

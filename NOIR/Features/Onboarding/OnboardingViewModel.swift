@@ -6,7 +6,7 @@ import UserNotifications
 @Observable
 final class OnboardingViewModel {
     enum Step: Int, CaseIterable {
-        case welcome, name, currency, notifications
+        case welcome, name, currency, notifications, paywall
 
         var primaryActionTitle: LocalizedStringResource {
             switch self {
@@ -16,6 +16,8 @@ final class OnboardingViewModel {
                 L10n.Onboarding.continue
             case .notifications:
                 L10n.Onboarding.enableNotifications
+            case .paywall:
+                L10n.Paywall.continueFree
             }
         }
     }
@@ -75,17 +77,18 @@ final class OnboardingViewModel {
         }
     }
 
-    var isLastStep: Bool { step == .notifications }
+    var isLastStep: Bool { step == .paywall }
 
     func advance() {
         guard canAdvance, !isLastStep else { return }
-        // Saved as soon as it's chosen: the notification demo reads the stored currency.
+        // Saved as soon as it's chosen: the notification demo and the paywall price read the stored currency.
         if step == .currency {
             defaults.set(currencyCode, forKey: CurrencyPreference.storageKey)
         }
         step = Step(rawValue: step.rawValue + 1) ?? step
     }
 
+    /// Saves the profile. Runs once, when the paywall closes.
     func persist() {
         defaults.set(ProfileStorage.trimmed(name), forKey: ProfileStorage.nameKey)
     }
@@ -100,12 +103,13 @@ final class OnboardingViewModel {
         }
     }
 
-    /// Finishes onboarding (saves the profile), optionally asking for notification permission first.
-    /// The permission outcome doesn't affect completion.
-    func complete(requestingNotifications: Bool) async {
-        if requestingNotifications {
+    /// Leaves the notifications step for the paywall, asking for notification permission first when `requesting`.
+    /// The permission outcome doesn't change where onboarding goes next.
+    func finishNotificationsStep(requesting: Bool) async {
+        guard step == .notifications else { return }
+        if requesting {
             await requestNotificationAuthorization()
         }
-        persist()
+        advance()
     }
 }
