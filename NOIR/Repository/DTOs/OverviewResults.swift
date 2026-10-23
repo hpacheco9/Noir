@@ -16,8 +16,10 @@ nonisolated struct ChartResult: Sendable {
     }
 }
 
-/// Latest-rows half of the Home overview.
+/// Everything else on Home: latest rows, the empty-state check and the totals the card compares against.
 nonisolated struct SideResult: Sendable {
     let latest: [ExpenseDTO]
     let hasAnyExpenses: Bool
+    let previousTotal: Decimal?
+    let monthTotal: Decimal
 }

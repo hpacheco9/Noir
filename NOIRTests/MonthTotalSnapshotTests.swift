@@ -84,18 +84,44 @@ final class MonthTotalSnapshotTests {
         let progress = try #require(BudgetProgress(total: 125, budget: 500))
         #expect(progress.fraction == 0.25)
         #expect(progress.left == 375)
+        #expect(progress.over == 0)
+        #expect(!progress.isOver)
     }
 
     @Test func overBudgetClampsAtFull() throws {
         let progress = try #require(BudgetProgress(total: 650, budget: 500))
         #expect(progress.fraction == 1)
         #expect(progress.left == 0)
+        #expect(progress.over == 150)
+        #expect(progress.isOver)
+    }
+
+    @Test func spendingExactlyTheBudgetIsNotOver() throws {
+        let progress = try #require(BudgetProgress(total: 500, budget: 500))
+        #expect(progress.fraction == 1)
+        #expect(progress.left == 0)
+        #expect(progress.over == 0)
+        #expect(!progress.isOver)
     }
 
     @Test func zeroSpentIsEmpty() throws {
         let progress = try #require(BudgetProgress(total: 0, budget: 500))
         #expect(progress.fraction == 0)
         #expect(progress.left == 500)
+        #expect(!progress.isOver)
+    }
+
+    @Test func wholeAmountsNeverFlatter() throws {
+        let under = try #require(BudgetProgress(total: Decimal(string: "320.4")!, budget: 1000))
+        #expect(under.wholeLeft == 679)    // 679.6 left rounds down
+
+        let over = try #require(BudgetProgress(total: Decimal(string: "1000.2")!, budget: 1000))
+        #expect(over.isOver)
+        #expect(over.wholeOver == 1)       // 0.2 over rounds up: never "0 over budget"
+
+        let exact = try #require(BudgetProgress(total: 400, budget: 1000))
+        #expect(exact.wholeLeft == 600)
+        #expect(exact.wholeOver == 0)
     }
 
     @Test(arguments: [0.0, -10, .nan, .infinity])

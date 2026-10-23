@@ -14,6 +14,7 @@ final class SpendingOverviewViewModel {
     
     private(set) var dataPoints: [SpendingDataPoint] = []
     private(set) var totalSpent: Decimal = 0
+    private(set) var comparison: PeriodComparison?
     private(set) var isComputing = false
 
     private(set) var appliedPeriod: SpendingPeriod?
@@ -33,6 +34,7 @@ final class SpendingOverviewViewModel {
 
         withAnimation(.easeInOut(duration: 0.15)) {
             totalSpent = snapshot.total
+            comparison = PeriodComparison.make(current: snapshot.total, previous: snapshot.previousTotal)
             isComputing = false
         }
 

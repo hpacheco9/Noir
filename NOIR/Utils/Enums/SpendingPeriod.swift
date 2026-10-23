@@ -26,15 +26,27 @@ nonisolated enum SpendingPeriod: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    /// The half-open range `[start, end)` this period covers around `now`; `nil` for `.allTime` (unbounded).
-    func dateInterval(calendar: Calendar = .current, now: Date = .now) -> DateInterval? {
+    private var component: Calendar.Component? {
         switch self {
-        case .day: calendar.dateInterval(of: .day, for: now)
-        case .week: calendar.dateInterval(of: .weekOfYear, for: now)
-        case .month: calendar.dateInterval(of: .month, for: now)
-        case .year: calendar.dateInterval(of: .year, for: now)
+        case .day: .day
+        case .week: .weekOfYear
+        case .month: .month
+        case .year: .year
         case .allTime: nil
         }
+    }
+
+    /// The half-open range `[start, end)` this period covers around `now`; `nil` for `.allTime` (unbounded).
+    func dateInterval(calendar: Calendar = .current, now: Date = .now) -> DateInterval? {
+        guard let component else { return nil }
+        return calendar.dateInterval(of: component, for: now)
+    }
+
+    /// The whole period right before `dateInterval` (yesterday, last week, last month, last year); `nil` for `.allTime`.
+    /// Found from the instant just before the current period starts, so DST and year boundaries need no arithmetic.
+    func previousInterval(calendar: Calendar = .current, now: Date = .now) -> DateInterval? {
+        guard let component, let current = calendar.dateInterval(of: component, for: now) else { return nil }
+        return calendar.dateInterval(of: component, for: current.start.addingTimeInterval(-1))
     }
 
     /// The range the overview chart covers: the period interval, or for `.allTime` the calendar years from the one

@@ -252,6 +252,37 @@ enum L10n {
         }
         static let chartPeriod: LocalizedStringResource = "spending_overview.chart_period"
         static let chartAmount: LocalizedStringResource = "spending_overview.chart_amount"
+
+        /// "12% more than last month". `nil` for All Time, which has no previous period.
+        static func comparison(_ trend: PeriodComparison.Trend, percent: String, for period: NOIR.SpendingPeriod) -> LocalizedStringResource? {
+            switch (trend, period) {
+            case (.higher, .day): "spending_overview.comparison.higher.day \(percent)"
+            case (.higher, .week): "spending_overview.comparison.higher.week \(percent)"
+            case (.higher, .month): "spending_overview.comparison.higher.month \(percent)"
+            case (.higher, .year): "spending_overview.comparison.higher.year \(percent)"
+            case (.lower, .day): "spending_overview.comparison.lower.day \(percent)"
+            case (.lower, .week): "spending_overview.comparison.lower.week \(percent)"
+            case (.lower, .month): "spending_overview.comparison.lower.month \(percent)"
+            case (.lower, .year): "spending_overview.comparison.lower.year \(percent)"
+            case (.same, .day): "spending_overview.comparison.same.day"
+            case (.same, .week): "spending_overview.comparison.same.week"
+            case (.same, .month): "spending_overview.comparison.same.month"
+            case (.same, .year): "spending_overview.comparison.same.year"
+            case (_, .allTime): nil
+            }
+        }
+    }
+
+    enum BudgetSummary {
+        /// "€320 left of €1,000".
+        static func left(_ left: String, of budget: String) -> LocalizedStringResource {
+            "budget_summary.left \(left) \(budget)"
+        }
+
+        /// "€42 over budget".
+        static func over(_ amount: String) -> LocalizedStringResource {
+            "budget_summary.over \(amount)"
+        }
     }
 
     enum AppIntent {
