@@ -253,8 +253,8 @@ enum L10n {
         static let chartPeriod: LocalizedStringResource = "spending_overview.chart_period"
         static let chartAmount: LocalizedStringResource = "spending_overview.chart_amount"
 
-        static func comparison(_ comparison: PeriodComparison, for period: NOIR.SpendingPeriod) -> LocalizedStringResource? {
-            let percent = comparison.formattedPercent()
+        static func comparison(_ comparison: PeriodComparison, for period: NOIR.SpendingPeriod, currencyCode: String) -> LocalizedStringResource? {
+            let percent = comparison.formatted(currencyCode: currencyCode)
             switch (comparison.trend, period) {
             case (.higher, .day): return "spending_overview.comparison.higher.day \(percent)"
             case (.higher, .week): return "spending_overview.comparison.higher.week \(percent)"

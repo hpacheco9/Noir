@@ -32,10 +32,34 @@ struct PeriodComparisonTests {
         #expect(PeriodComparison.make(current: 0, previous: 40) == PeriodComparison(percent: -100))
     }
 
-    @Test(arguments: [nil, 0, -5] as [Decimal?])
-    func withoutAPositivePreviousTotalThereIsNothingToCompare(previous: Decimal?) {
+    // MARK: Nothing before
+
+    @Test func spendingAfterANothingPeriodIsTheMoneyDifference() {
+        let comparison = PeriodComparison.make(current: 83, previous: 0)
+        #expect(comparison == PeriodComparison(amount: 83))
+        #expect(comparison?.trend == .higher)
+        #expect(comparison?.percent == nil)
+    }
+
+    @Test func nothingAgainstNothingIsTheSame() {
+        let comparison = PeriodComparison.make(current: 0, previous: 0)
+        #expect(comparison == PeriodComparison(percent: 0))
+        #expect(comparison?.trend == .same)
+    }
+
+    @Test(arguments: [nil, -5] as [Decimal?])
+    func withoutPreviousDataThereIsNothingToCompare(previous: Decimal?) {
         #expect(PeriodComparison.make(current: 100, previous: previous) == nil)
     }
+
+    @Test func theMoneyDifferenceUsesTheCurrencyFormatting() {
+        let comparison = PeriodComparison(amount: Decimal(string: "83.5")!)
+        #expect(comparison.formatted(currencyCode: "USD") == CurrencyPreference.string(for: Decimal(string: "83.5")!, code: "USD"))
+        #expect(comparison.formatted(currencyCode: "USD") != comparison.formatted(currencyCode: "EUR"))
+        #expect(comparison.numericValue == 83.5)
+    }
+
+    // MARK: Rounding
 
     @Test(arguments: [
         (current: "100.4", previous: "100", percent: 0),
@@ -50,7 +74,7 @@ struct PeriodComparisonTests {
     ])
     func roundsToWholePercent(current: String, previous: String, percent: Int) {
         let comparison = PeriodComparison.make(current: Decimal(string: current)!, previous: Decimal(string: previous)!)
-        #expect(comparison?.percent == percent)
+        #expect(comparison == PeriodComparison(percent: percent))
     }
 
     @Test func aChangeThatRoundsToZeroCountsAsTheSame() {
@@ -61,23 +85,23 @@ struct PeriodComparisonTests {
     // MARK: Display cap
 
     @Test func showsTheMagnitudeWithoutASign() {
-        #expect(PeriodComparison(percent: 12).formattedPercent(locale: english) == "12%")
-        #expect(PeriodComparison(percent: -12).formattedPercent(locale: english) == "12%")
-        #expect(PeriodComparison(percent: 12).magnitude == 12)
-        #expect(PeriodComparison(percent: -12).magnitude == 12)
+        #expect(PeriodComparison(percent: 12).formatted(currencyCode: "EUR", locale: english) == "12%")
+        #expect(PeriodComparison(percent: -12).formatted(currencyCode: "EUR", locale: english) == "12%")
+        #expect(PeriodComparison(percent: 12).numericValue == 12)
+        #expect(PeriodComparison(percent: -12).numericValue == 12)
     }
 
     @Test func theCapItselfIsShownAsIs() {
         let comparison = PeriodComparison(percent: 999)
         #expect(!comparison.exceedsCap)
-        #expect(comparison.formattedPercent(locale: english) == "999%")
+        #expect(comparison.formatted(currencyCode: "EUR", locale: english) == "999%")
     }
 
     @Test func aboveTheCapShowsGreaterThanTheCap() {
         let comparison = PeriodComparison(percent: 1000)
         #expect(comparison.exceedsCap)
-        #expect(comparison.magnitude == 999)
-        #expect(comparison.formattedPercent(locale: english) == ">999%")
+        #expect(comparison.numericValue == 999)
+        #expect(comparison.formatted(currencyCode: "EUR", locale: english) == ">999%")
         #expect(comparison.trend == .higher)
     }
 
@@ -86,14 +110,14 @@ struct PeriodComparisonTests {
         let comparison = PeriodComparison.make(current: 1_000_000_000_000, previous: Decimal(string: "0.01")!)
         #expect(comparison?.trend == .higher)
         #expect(comparison?.exceedsCap == true)
-        #expect(comparison?.formattedPercent(locale: english) == ">999%")
-        #expect(comparison.map { $0.percent <= 1_000_000 } == true)
+        #expect(comparison?.formatted(currencyCode: "EUR", locale: english) == ">999%")
+        #expect(comparison?.percent.map { $0 <= 1_000_000 } == true)
     }
 
     @Test func justPastTheCapThroughMake() {
         // 1000% more: current is 11 times previous.
         let comparison = PeriodComparison.make(current: 11, previous: 1)
         #expect(comparison == PeriodComparison(percent: 1000))
-        #expect(comparison?.formattedPercent(locale: english) == ">999%")
+        #expect(comparison?.formatted(currencyCode: "EUR", locale: english) == ">999%")
     }
 }
