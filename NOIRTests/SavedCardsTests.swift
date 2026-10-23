@@ -109,6 +109,20 @@ struct SavedCardsTests {
         }
     }
 
+    @Test func exactTypedCardIsTheOnlyMatch() {
+        let saved = ["Visa", "Visa Gold", "Amex"]
+        #expect(ExpenseCardQuery.matches("visa", in: saved) == ["Visa"])
+        #expect(ExpenseCardQuery.matches("VÍSA", in: saved) == ["Visa"])
+        #expect(ExpenseCardQuery.matches("Visa Gold", in: saved) == ["Visa Gold"])
+    }
+
+    // Positive control: text that is not a whole saved name still lists the partial matches and the typed name.
+    @Test func partialAndNewCardNamesKeepTheirChoices() {
+        let saved = ["Visa", "Visa Gold", "Amex"]
+        #expect(ExpenseCardQuery.matches("Vis", in: saved) == ["Visa", "Visa Gold", "Vis"])
+        #expect(ExpenseCardQuery.matches("Mastercard", in: saved) == ["Mastercard"])
+    }
+
     @Test func typedNoCardIsTheNoCardChoice() async throws {
         let title = String(localized: ExpenseCardEntity.noCardTitle)
         let found = try await ExpenseCardQuery().entities(matching: "  \(title.uppercased()) ")

@@ -22,11 +22,12 @@ struct AddExpenseIntent: AppIntent {
 
     @Parameter(
         title: LocalizedStringResource("app_intent.category", table: "AppIntents"),
+        default: ExpenseCategoryEntity.food,
         requestValueDialog: IntentDialog(
             LocalizedStringResource("app_intent.category_prompt", table: "AppIntents")
         )
     )
-    var category: ExpenseCategoryEntity
+    var category: ExpenseCategoryEntity?
 
     @Parameter(
         title: LocalizedStringResource("app_intent.card", table: "AppIntents"),
@@ -51,11 +52,14 @@ struct AddExpenseIntent: AppIntent {
         }
 
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-        var categoryKey = category.id
+        var categoryKey = category?.id ?? ExpenseCategory.food.rawValue
         var trimmedCard = card.name.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if IntentSummaryPreference.isEnabled() {
-            ExpenseSummaryDraft(categoryKey: categoryKey, categoryName: category.name, card: trimmedCard).save()
+            // The default entity has no localized name, so read the category's current title from the catalog.
+            let categoryName = try CategoryCatalog.entities().first { $0.id == categoryKey }?.name
+                ?? category?.name ?? ExpenseCategory.food.title
+            ExpenseSummaryDraft(categoryKey: categoryKey, categoryName: categoryName, card: trimmedCard).save()
             defer { ExpenseSummaryDraft.clear() }
             let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
             try await requestConfirmation(
@@ -75,7 +79,7 @@ struct AddExpenseIntent: AppIntent {
                 snippetIntent: ExpenseSummarySnippetIntent(
                     name: trimmedName,
                     amount: amount,
-                    categoryName: category.name,
+                    categoryName: categoryName,
                     card: trimmedCard,
                     date: date
                 )
