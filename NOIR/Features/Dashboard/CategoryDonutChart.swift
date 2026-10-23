@@ -12,10 +12,6 @@ struct CategoryDonutChart: View {
     static let iconThreshold = 0.08
     /// Inner radius as a share of the outer one: a thin ring, so the hole has room for the period total.
     static let innerRadiusRatio: CGFloat = 0.78
-    /// Rounded, separated segments: a corner radius about half the ring's thickness gives capsule ends, and the
-    /// angular inset leaves a clear gap between neighbours.
-    static let segmentCornerRadius: CGFloat = 12
-    static let segmentGap: CGFloat = 5
 
     let slices: [DonutSlice]
     let total: Decimal
@@ -36,9 +32,8 @@ struct CategoryDonutChart: View {
                 angle: .value(L10n.Dashboard.amount, slice.amount.doubleValue),
                 innerRadius: .ratio(Self.innerRadiusRatio),
                 outerRadius: .inset(selectedKey == slice.key ? 0 : 4),
-                angularInset: Self.segmentGap
+                angularInset: 1
             )
-            .cornerRadius(Self.segmentCornerRadius)
             .foregroundStyle(by: .value(L10n.Dashboard.category, slice.key))
             .opacity(selectedKey == nil || selectedKey == slice.key ? 1 : 0.35)
             .annotation(position: .overlay) {

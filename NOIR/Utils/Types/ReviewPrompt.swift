@@ -5,12 +5,8 @@
 
 import Foundation
 
-/// Pure rule for when NOIR may ask the system for an App Store review. The system still decides silently whether the
-/// prompt is actually shown (at most 3 times in 365 days), so this only keeps NOIR from asking too early or too often.
 nonisolated struct ReviewPromptPolicy: Equatable, Sendable {
-    /// Expenses created (not edited) before the first ask.
     var threshold = 3
-    /// Minimum time between two asks, whatever the version.
     var minimumInterval: TimeInterval = 14 * 24 * 60 * 60
 
     func shouldRequest(
@@ -29,8 +25,6 @@ nonisolated struct ReviewPromptPolicy: Equatable, Sendable {
     }
 }
 
-/// Persists the review-prompt state in `UserDefaults`. Reads are never cached: the Add Expense App Intent can run in
-/// another process and bump the count while the app is alive.
 nonisolated struct ReviewPromptStore {
     static let createdCountKey = "review.created_expense_count"
     static let lastPromptedVersionKey = "review.last_prompted_version"
@@ -73,9 +67,7 @@ nonisolated struct ReviewPromptStore {
 }
 
 #if DEBUG
-/// Developer tools (Settings › Developer) for checking the prompt without logging real expenses.
 extension ReviewPromptStore {
-    /// Back to a fresh install: no expenses counted, never asked.
     func reset() {
         for key in [Self.createdCountKey, Self.lastPromptedVersionKey, Self.lastPromptDateKey] {
             defaults.removeObject(forKey: key)

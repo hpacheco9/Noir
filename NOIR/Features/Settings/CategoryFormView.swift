@@ -6,12 +6,10 @@
 import SwiftUI
 
 struct CategoryFormView: View {
-    /// `nil` creates a category; a custom category edits it.
     let category: CategoryInfo?
 
     @EnvironmentObject private var coordinator: Coordinator
     @State private var viewModel: CategoryFormViewModel
-    /// Late results (save/delete) must not close some other sheet if this one is already gone.
     @State private var isOnScreen = false
     @FocusState private var isNameFocused: Bool
     @State private var isDeleteConfirmationPresented = false

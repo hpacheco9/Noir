@@ -15,14 +15,14 @@ struct OpenAddExpenseCoordinatorTests {
         let coordinator = Coordinator()
         coordinator.presentAddExpense()
         #expect(coordinator.sheet?.id == addExpenseID)
-        #expect(coordinator.presentationDetents == [.fraction(0.8)])
+        #expect(coordinator.presentationDetents == [.fraction(0.85)])
     }
 
     @Test func controlPresentsWhenNothingIsUp() {
         let coordinator = Coordinator()
         coordinator.presentAddExpenseIfNeeded()
         #expect(coordinator.sheet?.id == addExpenseID)
-        #expect(coordinator.presentationDetents == [.fraction(0.8)])
+        #expect(coordinator.presentationDetents == [.fraction(0.85)])
     }
 
     @Test func controlLeavesAnOpenAddExpenseAlone() throws {
@@ -45,7 +45,7 @@ struct OpenAddExpenseCoordinatorTests {
         coordinator.presentAddExpenseIfNeeded()
 
         #expect(coordinator.sheet?.id == addExpenseID)
-        #expect(coordinator.presentationDetents == [.fraction(0.8)])
+        #expect(coordinator.presentationDetents == [.fraction(0.85)])
     }
 
     @Test func plusAndControlStillWorkAfterTheSheetIsDismissed() throws {
