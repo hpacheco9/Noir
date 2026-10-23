@@ -24,6 +24,7 @@ struct CategoriesView: View {
                         Text(L10n.Categories.customEmpty)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                            .listRowBackground(Color.clear)
                     } else {
                         ForEach(viewModel.custom) { category in
                             editableRow(category)

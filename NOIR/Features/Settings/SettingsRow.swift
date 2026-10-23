@@ -18,6 +18,7 @@ struct SettingsRow: View {
             HStack(spacing: 12) {
                 Image(systemName: systemImage)
                     .font(largeIcon ? .title2 : nil)
+                  
                     .foregroundStyle(.secondary)
 
                 Text(title)
@@ -30,7 +31,7 @@ struct SettingsRow: View {
                 }
 
                 Image(systemName: accessory)
-                    .font(.caption.weight(.semibold))
+                    .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.tertiary)
             }
         }
