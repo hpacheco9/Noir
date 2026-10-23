@@ -5,7 +5,6 @@
 
 import AppIntents
 import Foundation
-import SwiftData
 
 struct AddExpenseIntent: AppIntent {
     static var title: LocalizedStringResource = "app_intent.title"
@@ -87,27 +86,14 @@ struct AddExpenseIntent: AppIntent {
             }
         }
 
-        let modelContext = ModelContext(NOIRApp.sharedModelContainer)
-        let expense = Expense(
-            amount: amount,
+        try await ExpenseIntentSaver.save(
             name: trimmedName,
+            amount: amount,
             date: date,
-            category: .other,
-            expenseDescription: trimmedNote,
-            card: trimmedCard,
-            createdAt: .now
+            categoryKey: categoryKey,
+            note: trimmedNote,
+            card: trimmedCard
         )
-        expense.categoryRawValue = CategoryCatalog.resolvedKey(categoryKey, in: modelContext)
-
-        modelContext.insert(expense)
-        try modelContext.save()
-        SavedCards.remember(trimmedCard)
-
-        ReviewPromptStore().recordCreatedExpense()
-
-        NotificationCenter.default.post(name: .expensesDidChange, object: nil)
-        await WidgetSnapshotPublisher.publish()
-        try? await NotificationService.shared.notifyExpenseAdded(name: trimmedName, amount: amount)
 
         return .result(
             dialog: IntentDialog(L10n.AppIntent.expenseSaved)

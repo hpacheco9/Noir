@@ -16,5 +16,14 @@ struct NOIRShortcuts: AppShortcutsProvider {
             shortTitle: "app_intent.title",
             systemImageName: "plus.circle.fill"
         )
+        AppShortcut(
+            intent: AddApplePayExpenseIntent(),
+            phrases: [
+                "Add Apple Pay expense in \(.applicationName)",
+                "Record Apple Pay expense in \(.applicationName)"
+            ],
+            shortTitle: LocalizedStringResource("apple_pay_intent.title", table: "AppIntents"),
+            systemImageName: "creditcard.fill"
+        )
     }
 }

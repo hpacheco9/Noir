@@ -279,6 +279,7 @@ enum L10n {
         static let invalidAmount: LocalizedStringResource = "app_intent.invalid_amount"
         static let emptyName: LocalizedStringResource = "app_intent.empty_name"
         static let expenseSaved: LocalizedStringResource = "app_intent.expense_saved"
+        static let untitled: LocalizedStringResource = "app_intent.untitled"
         static let summaryHeader: LocalizedStringResource = "app_intent.summary.header"
         /// "Save 12,50 € for Lunch?"
         static func confirmSpoken(amount: String, name: String) -> LocalizedStringResource {

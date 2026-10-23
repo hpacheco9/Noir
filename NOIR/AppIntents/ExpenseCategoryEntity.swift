@@ -13,6 +13,7 @@ nonisolated struct ExpenseCategoryEntity: AppEntity, Identifiable {
         name: LocalizedStringResource("app_intent.category", table: "AppIntents")
     )
     static let defaultQuery = ExpenseCategoryQuery()
+    static let food = ExpenseCategoryEntity(id: ExpenseCategory.food.rawValue, name: "Food", showsName: false)
 
     let id: String
     let name: String
@@ -27,10 +28,10 @@ nonisolated struct ExpenseCategoryEntity: AppEntity, Identifiable {
         return DisplayRepresentation(title: "\(name)")
     }
 
-    nonisolated init(id: String, name: String) {
+    nonisolated init(id: String, name: String, showsName: Bool = true) {
         self.id = id
         self.name = name
-        self.showsName = true
+        self.showsName = showsName
     }
 
     @MainActor
