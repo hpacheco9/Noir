@@ -22,6 +22,15 @@ final class ExpenseRepositoryProvider: Sendable {
 }
 
 extension ExpenseRepositoryProvider {
+    static let otherRetiredKey = "migration.other_category_retired"
+
+    // The flag is set only after success, so a failure retries next launch.
+    func retireOtherCategoryOnce(defaults: UserDefaults = .standard) async {
+        guard !defaults.bool(forKey: Self.otherRetiredKey) else { return }
+        guard (try? await perform { try await $0.retireOtherCategory() }) != nil else { return }
+        defaults.set(true, forKey: Self.otherRetiredKey)
+    }
+
     /// Inserts (`id == nil`) or updates an expense with the form's values.
     func save(_ form: ExpenseForm, id: PersistentIdentifier?) async throws {
         try await perform {

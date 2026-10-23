@@ -27,6 +27,10 @@ struct NOIRApp: App {
         }
     }()
 
+    init() {
+        Task { await ExpenseRepositoryProvider(container: Self.sharedModelContainer).retireOtherCategoryOnce() }
+    }
+
     var body: some Scene {
         WindowGroup {
             if hasCompletedOnboarding {

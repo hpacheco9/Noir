@@ -23,11 +23,12 @@ struct AddExpenseIntent: AppIntent {
 
     @Parameter(
         title: LocalizedStringResource("app_intent.category", table: "AppIntents"),
+        default: ExpenseCategoryEntity.food,
         requestValueDialog: IntentDialog(
             LocalizedStringResource("app_intent.category_prompt", table: "AppIntents")
         )
     )
-    var category: ExpenseCategoryEntity
+    var category: ExpenseCategoryEntity?
 
     @Parameter(
         title: LocalizedStringResource("app_intent.card", table: "AppIntents"),
@@ -52,11 +53,15 @@ struct AddExpenseIntent: AppIntent {
         }
 
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-        var categoryKey = category.id
+        // Resolved here so a stale id (old "other", deleted custom category) still preselects a summary row.
+        var categoryKey = CategoryCatalog.resolvedKey(category?.id, in: ModelContext(NOIRApp.sharedModelContainer))
         var trimmedCard = card.name.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if IntentSummaryPreference.isEnabled() {
-            ExpenseSummaryDraft(categoryKey: categoryKey, categoryName: category.name, card: trimmedCard).save()
+            // The default entity has no localized name, so read the category's current title from the catalog.
+            let categoryName = (try? CategoryCatalog.entities())?.first { $0.id == categoryKey }?.name
+                ?? ExpenseCategory(rawValue: categoryKey)?.title ?? category?.name ?? ""
+            ExpenseSummaryDraft(categoryKey: categoryKey, categoryName: categoryName, card: trimmedCard).save()
             defer { ExpenseSummaryDraft.clear() }
             let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
             try await requestConfirmation(
@@ -76,7 +81,7 @@ struct AddExpenseIntent: AppIntent {
                 snippetIntent: ExpenseSummarySnippetIntent(
                     name: trimmedName,
                     amount: amount,
-                    categoryName: category.name,
+                    categoryName: categoryName,
                     card: trimmedCard,
                     date: date
                 )
@@ -87,27 +92,14 @@ struct AddExpenseIntent: AppIntent {
             }
         }
 
-        let modelContext = ModelContext(NOIRApp.sharedModelContainer)
-        let expense = Expense(
-            amount: amount,
+        try await ExpenseIntentSaver.save(
             name: trimmedName,
+            amount: amount,
             date: date,
-            category: .other,
-            expenseDescription: trimmedNote,
-            card: trimmedCard,
-            createdAt: .now
+            categoryKey: categoryKey,
+            note: trimmedNote,
+            card: trimmedCard
         )
-        expense.categoryRawValue = CategoryCatalog.resolvedKey(categoryKey, in: modelContext)
-
-        modelContext.insert(expense)
-        try modelContext.save()
-        SavedCards.remember(trimmedCard)
-
-        ReviewPromptStore().recordCreatedExpense()
-
-        NotificationCenter.default.post(name: .expensesDidChange, object: nil)
-        await WidgetSnapshotPublisher.publish()
-        try? await NotificationService.shared.notifyExpenseAdded(name: trimmedName, amount: amount)
 
         return .result(
             dialog: IntentDialog(L10n.AppIntent.expenseSaved)

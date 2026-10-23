@@ -24,7 +24,7 @@ struct SavedCardsTests {
         let start = Date(timeIntervalSince1970: 1_000_000)
         for (offset, card) in cards.enumerated() {
             context.insert(Expense(
-                amount: 1, name: "row \(offset)", date: start, category: .other, card: card,
+                amount: 1, name: "row \(offset)", date: start, category: .food, card: card,
                 createdAt: start.addingTimeInterval(TimeInterval(offset))
             ))
         }
@@ -107,6 +107,20 @@ struct SavedCardsTests {
             await viewModel.loadCards()
             #expect(viewModel.form.card.isEmpty)
         }
+    }
+
+    @Test func exactTypedCardIsTheOnlyMatch() {
+        let saved = ["Visa", "Visa Gold", "Amex"]
+        #expect(ExpenseCardQuery.matches("visa", in: saved) == ["Visa"])
+        #expect(ExpenseCardQuery.matches("VÍSA", in: saved) == ["Visa"])
+        #expect(ExpenseCardQuery.matches("Visa Gold", in: saved) == ["Visa Gold"])
+    }
+
+    // Positive control: text that is not a whole saved name still lists the partial matches and the typed name.
+    @Test func partialAndNewCardNamesKeepTheirChoices() {
+        let saved = ["Visa", "Visa Gold", "Amex"]
+        #expect(ExpenseCardQuery.matches("Vis", in: saved) == ["Visa", "Visa Gold", "Vis"])
+        #expect(ExpenseCardQuery.matches("Mastercard", in: saved) == ["Mastercard"])
     }
 
     @Test func typedNoCardIsTheNoCardChoice() async throws {

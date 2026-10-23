@@ -265,7 +265,7 @@ private struct CategoryRow: View {
     let context = ModelContext(container)
     let samples: [(Double, ExpenseCategory)] = [
         (42.5, .food), (18, .food), (60, .transport), (120, .home), (35, .leisure),
-        (22, .health), (80, .shopping), (9.9, .other),
+        (22, .health), (80, .shopping), (9.9, .leisure),
     ]
     for (index, sample) in samples.enumerated() {
         context.insert(Expense(amount: sample.0, name: "Sample \(index)", date: .now, category: sample.1))

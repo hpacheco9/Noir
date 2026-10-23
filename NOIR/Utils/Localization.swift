@@ -25,7 +25,7 @@ enum L10n {
         static let title: LocalizedStringResource = "dashboard.title"
         static let periodPicker: LocalizedStringResource = "dashboard.period_picker"
         static let byCategory: LocalizedStringResource = "dashboard.by_category"
-        /// The slice that sums the smallest categories. Not "Other": that is a built-in category.
+        /// The slice that sums the smallest categories.
         static let rest: LocalizedStringResource = "dashboard.rest"
         static let emptyTitle: LocalizedStringResource = "dashboard.empty_title"
         static let emptyDescription: LocalizedStringResource = "dashboard.empty_description"
@@ -142,9 +142,9 @@ enum L10n {
         static let customEmpty: LocalizedStringResource = "categories.custom_empty"
         static let add: LocalizedStringResource = "categories.add"
         static let deleteTitle: LocalizedStringResource = "categories.delete_title"
-        /// "Its expenses will be moved to “Other”.", with Other's current (possibly renamed) title.
-        static func deleteMessage(otherTitle: String) -> LocalizedStringResource {
-            "categories.delete_message \(otherTitle)"
+        /// "Its expenses will be moved to “Food”.", with Food's current (possibly renamed) title.
+        static func deleteMessage(foodTitle: String) -> LocalizedStringResource {
+            "categories.delete_message \(foodTitle)"
         }
         static let loadError: LocalizedStringResource = "categories.load_error"
         static let deleteError: LocalizedStringResource = "categories.delete_error"
@@ -248,7 +248,6 @@ enum L10n {
         static let leisure: LocalizedStringResource = "expense_category.leisure"
         static let health: LocalizedStringResource = "expense_category.health"
         static let shopping: LocalizedStringResource = "expense_category.shopping"
-        static let other: LocalizedStringResource = "expense_category.other"
     }
 
     enum SpendingPeriod {
@@ -279,6 +278,7 @@ enum L10n {
         static let invalidAmount: LocalizedStringResource = "app_intent.invalid_amount"
         static let emptyName: LocalizedStringResource = "app_intent.empty_name"
         static let expenseSaved: LocalizedStringResource = "app_intent.expense_saved"
+        static let untitled: LocalizedStringResource = "app_intent.untitled"
         static let summaryHeader: LocalizedStringResource = "app_intent.summary.header"
         /// "Save 12,50 € for Lunch?"
         static func confirmSpoken(amount: String, name: String) -> LocalizedStringResource {

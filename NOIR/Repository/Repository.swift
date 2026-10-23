@@ -324,7 +324,7 @@ actor ExpenseRepository: ModelActor {
         return CategoryInfo(builtIn: builtIn)
     }
 
-    /// Deletes a custom category and moves its expenses to `other` in the same save.
+    /// Deletes a custom category and moves its expenses to `food` in the same save.
     /// Returns how many expenses were reassigned.
     @discardableResult
     func deleteCategory(id: UUID) throws -> Int {
@@ -334,19 +334,34 @@ actor ExpenseRepository: ModelActor {
         let key = CategoryInfo.key(forCustomID: id)
         let affected = try modelContext.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.categoryRawValue == key }))
         for expense in affected {
-            expense.category = .other
+            expense.category = .food
         }
         modelContext.delete(category)
         try commit()
         return affected.count
     }
 
-    /// The key to store: the given one if it is a built-in or an existing custom category, otherwise `other`.
+    // "Other" was removed: its rows become Food and its override goes. Overview memos hold totals only, so they stay valid.
+    @discardableResult
+    func retireOtherCategory() throws -> Int {
+        let key = "other"
+        let rows = try modelContext.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.categoryRawValue == key }))
+        for row in rows {
+            row.categoryRawValue = ExpenseCategory.food.rawValue
+        }
+        for override in try modelContext.fetch(FetchDescriptor<BuiltInCategoryOverride>(predicate: #Predicate { $0.key == key })) {
+            modelContext.delete(override)
+        }
+        try commit()
+        return rows.count
+    }
+
+    /// The key to store: the given one if it is a built-in or an existing custom category, otherwise `food`.
     private func resolvedCategoryKey(_ key: String) throws -> String {
         if ExpenseCategory(rawValue: key) != nil { return key }
-        guard let id = CategoryInfo.customID(fromKey: key) else { return ExpenseCategory.other.rawValue }
+        guard let id = CategoryInfo.customID(fromKey: key) else { return ExpenseCategory.food.rawValue }
         let count = try modelContext.fetchCount(FetchDescriptor<CustomCategory>(predicate: #Predicate { $0.id == id }))
-        return count > 0 ? CategoryInfo.key(forCustomID: id) : ExpenseCategory.other.rawValue
+        return count > 0 ? CategoryInfo.key(forCustomID: id) : ExpenseCategory.food.rawValue
     }
 
     func save(
@@ -390,7 +405,7 @@ actor ExpenseRepository: ModelActor {
                 amount: amount,
                 name: name,
                 date: date,
-                category: .other,
+                category: .food,
                 expenseDescription: description,
                 card: card,
             )

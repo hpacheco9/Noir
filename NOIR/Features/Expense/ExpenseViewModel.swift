@@ -59,7 +59,7 @@ final class ExpenseViewModel {
         }
         categories = loaded
         if !loaded.contains(where: { $0.key == form.category }) {
-            form.category = ExpenseCategory.other.rawValue
+            form.category = ExpenseCategory.food.rawValue
         }
     }
 

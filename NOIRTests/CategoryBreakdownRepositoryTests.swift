@@ -73,21 +73,21 @@ struct CategoryBreakdownRepositoryTests {
         #expect(try await breakdown(container, period: .month).total == 7)
     }
 
-    @Test func resolvesCustomCategoriesAndFallsBackToOther() async throws {
+    @Test func resolvesCustomCategoriesAndFallsBackToFood() async throws {
         let container = try makeContainer()
         let context = ModelContext(container)
         let custom = CustomCategory(name: "Pets", symbol: AssetName.CategorySymbols.all[0], colorRawValue: "teal")
         context.insert(custom)
-        let petRow = Expense(amount: 30, name: "pet", date: date(2026, 10, 2), category: .other)
+        let petRow = Expense(amount: 30, name: "pet", date: date(2026, 10, 2), category: .food)
         petRow.categoryRawValue = CategoryInfo.key(forCustomID: custom.id)
-        let orphan = Expense(amount: 8, name: "orphan", date: date(2026, 10, 2), category: .other)
+        let orphan = Expense(amount: 8, name: "orphan", date: date(2026, 10, 2), category: .food)
         orphan.categoryRawValue = CategoryInfo.key(forCustomID: UUID())
         context.insert(petRow)
         context.insert(orphan)
         try context.save()
 
         let result = try await breakdown(container, period: .month)
-        #expect(result.categories.map(\.info.key) == [CategoryInfo.key(forCustomID: custom.id), ExpenseCategory.other.rawValue])
+        #expect(result.categories.map(\.info.key) == [CategoryInfo.key(forCustomID: custom.id), ExpenseCategory.food.rawValue])
         #expect(result.categories[0].info.customName == "Pets")
         #expect(result.categories[1].amount == 8)
     }

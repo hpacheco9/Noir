@@ -116,11 +116,18 @@ final class ExpenseSummaryDraftTests {
         #expect(ExpenseCardEntity(id: SelectSummaryCardIntent(card: "Visa").card).name == "Visa")
     }
 
-    @Test func draftKeyOfDeletedCustomCategoryResolvesToOther() throws {
+    @Test func draftKeyOfDeletedCustomCategoryResolvesToFood() throws {
         let container = try makeContainer()
         let context = ModelContext(container)
         let draft = ExpenseSummaryDraft(categoryKey: CategoryInfo.key(forCustomID: UUID()), categoryName: "Gone", card: "")
-        #expect(CategoryCatalog.resolvedKey(draft.categoryKey, in: context) == ExpenseCategory.other.rawValue)
+        #expect(CategoryCatalog.resolvedKey(draft.categoryKey, in: context) == ExpenseCategory.food.rawValue)
+    }
+
+    @Test func removedOtherKeyAndMissingKeyResolveToFood() throws {
+        let context = ModelContext(try makeContainer())
+        #expect(CategoryCatalog.resolvedKey("other", in: context) == ExpenseCategory.food.rawValue)
+        #expect(CategoryCatalog.resolvedKey(nil, in: context) == ExpenseCategory.food.rawValue)
+        #expect(CategoryCatalog.resolvedKey(ExpenseCategory.transport.rawValue, in: context) == ExpenseCategory.transport.rawValue)
     }
 
     /// Positive control: an existing custom category keeps its key, so the fallback above is not the only outcome.

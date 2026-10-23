@@ -44,9 +44,13 @@ nonisolated struct ExpenseCardQuery: EntityStringQuery {
         let needle = string.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !needle.isEmpty else { return try await suggestedEntities() }
         if Self.isNoCard(needle) { return [.noCard] }
-        let matches = try await savedCards().filter { $0.localizedStandardContains(needle) }
-        let exact = matches.contains { Self.same($0, needle) }
-        return (exact ? matches : matches + [needle]).map(ExpenseCardEntity.init)
+        return Self.matches(needle, in: try await savedCards()).map(ExpenseCardEntity.init)
+    }
+
+    // An exact name is the only match, so an unattended run never has to disambiguate.
+    static func matches(_ needle: String, in saved: [String]) -> [String] {
+        if let exact = saved.first(where: { same($0, needle) }) { return [exact] }
+        return saved.filter { $0.localizedStandardContains(needle) } + [needle]
     }
 
     static func isNoCard(_ text: String) -> Bool {

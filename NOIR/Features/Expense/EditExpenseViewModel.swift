@@ -64,7 +64,7 @@ final class EditExpenseViewModel {
         return true
     }
 
-    /// Refreshes the picker's choices. A selection whose category no longer exists falls back to Other.
+    /// Refreshes the picker's choices. A selection whose category no longer exists falls back to Food.
     func loadCategories() async {
         let loaded: [CategoryInfo]
         do {
@@ -75,7 +75,7 @@ final class EditExpenseViewModel {
         }
         categories = loaded
         if !loaded.contains(where: { $0.key == form.category }) {
-            form.category = ExpenseCategory.other.rawValue
+            form.category = ExpenseCategory.food.rawValue
         }
     }
 

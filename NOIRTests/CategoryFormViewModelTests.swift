@@ -78,26 +78,26 @@ struct CategoryFormViewModelTests {
         #expect(viewModel.errorMessage == nil)
     }
 
-    @Test func deleteMessageNamesRenamedOther() async throws {
+    @Test func deleteMessageNamesRenamedFood() async throws {
         let container = try makeContainer()
         let repository = ExpenseRepositoryProvider(container: container)
         let reserved = Dictionary(uniqueKeysWithValues: ExpenseCategory.allCases.map { ($0.rawValue, $0.title) })
         let form = CategoryFormViewModel(editing: nil, repository: repository)
         let list = CategoriesViewModel(repository: repository)
-        #expect(form.otherTitle == ExpenseCategory.other.title)
+        #expect(form.foodTitle == ExpenseCategory.food.title)
 
         _ = try await repository.perform {
             try await $0.updateBuiltInCategory(
-                key: ExpenseCategory.other.rawValue, name: "Misc", symbol: ExpenseCategory.other.icon,
-                color: ExpenseCategory.other.colorKey, reservedNames: reserved
+                key: ExpenseCategory.food.rawValue, name: "Misc", symbol: ExpenseCategory.food.icon,
+                color: ExpenseCategory.food.colorKey, reservedNames: reserved
             )
         }
         await form.loadExistingNames()
         await list.load()
-        #expect(form.otherTitle == "Misc")
-        #expect(list.otherTitle == "Misc")
+        #expect(form.foodTitle == "Misc")
+        #expect(list.foodTitle == "Misc")
 
-        let message = String(localized: L10n.Categories.deleteMessage(otherTitle: form.otherTitle))
+        let message = String(localized: L10n.Categories.deleteMessage(foodTitle: form.foodTitle))
         #expect(message.contains("Misc"))
         #expect(!message.contains("%@") && !message.contains("categories."))
     }

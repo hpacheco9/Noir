@@ -31,12 +31,14 @@ struct CategoryBreakdownTests {
         #expect(result.total == Decimal(string: "17.5"))
     }
 
-    @Test func unknownKeysCountAsOther() {
-        let result = make([("custom:\(UUID().uuidString)", 7), ("nonsense", 3), ("other", 1)])
-        #expect(result.categories.count == 1)
-        #expect(result.categories[0].info.key == ExpenseCategory.other.rawValue)
-        #expect(result.categories[0].amount == 11)
-        #expect(result.categories[0].count == 3)
+    @Test func unknownKeysCountAsFood() {
+        // "other" is the removed built-in: rows still stored under it land in Food, next to real Food rows.
+        let result = make([("custom:\(UUID().uuidString)", 7), ("nonsense", 3), ("other", 1), ("food", 2), ("transport", 5)])
+        #expect(result.categories.map(\.info.key) == [ExpenseCategory.food.rawValue, ExpenseCategory.transport.rawValue])
+        #expect(result.categories[0].amount == 13)
+        #expect(result.categories[0].count == 4)
+        #expect(result.categories[1].amount == 5)
+        #expect(result.categories[1].count == 1)
     }
 
     @Test func nonPositiveTotalsAreDropped() {

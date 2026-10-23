@@ -16,7 +16,6 @@ nonisolated enum ExpenseCategory: String, CaseIterable, Identifiable {
     case health
     /// Stored as "clothing" (its former name) so existing expenses and saved Shortcuts keep resolving.
     case shopping = "clothing"
-    case other
 
     var id: Self { self }
 
@@ -27,7 +26,6 @@ nonisolated enum ExpenseCategory: String, CaseIterable, Identifiable {
         case .home: String(localized: L10n.ExpenseCategory.home)
         case .leisure: String(localized: L10n.ExpenseCategory.leisure)
         case .health: String(localized: L10n.ExpenseCategory.health)
-        case .other: String(localized: L10n.ExpenseCategory.other)
         case .shopping: String(localized: L10n.ExpenseCategory.shopping)
         }
     }
@@ -39,7 +37,6 @@ nonisolated enum ExpenseCategory: String, CaseIterable, Identifiable {
         case .home: AssetName.ExpenseCategory.home
         case .leisure: AssetName.ExpenseCategory.leisure
         case .health: AssetName.ExpenseCategory.health
-        case .other: AssetName.ExpenseCategory.other
         case .shopping: AssetName.ExpenseCategory.shopping
         }
     }
@@ -51,7 +48,6 @@ nonisolated enum ExpenseCategory: String, CaseIterable, Identifiable {
         case .home: .indigo
         case .leisure: .purple
         case .health: .red
-        case .other: .green
         case .shopping: .yellow
         }
     }
