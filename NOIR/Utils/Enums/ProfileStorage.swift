@@ -20,4 +20,9 @@ nonisolated enum ProfileStorage {
         let name = trimmed(draft)
         return name.isEmpty ? current : name
     }
+
+    static func nameOnLeaving(draft: String, entry: String) -> String {
+        let name = trimmed(draft)
+        return name.isEmpty ? entry : name
+    }
 }

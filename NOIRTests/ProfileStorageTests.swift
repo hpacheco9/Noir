@@ -41,4 +41,23 @@ struct ProfileStorageTests {
     func blankDraftRestoresTheStoredName(draft: String) {
         #expect(ProfileStorage.nameToStore(draft: draft, current: "Henrique") == "Henrique")
     }
+
+    @Test(arguments: ["", " ", "   \n\t "])
+    func leavingWithABlankDraftRestoresTheNameFromEntry(draft: String) {
+        #expect(ProfileStorage.nameOnLeaving(draft: draft, entry: "Maria") == "Maria")
+    }
+
+    @Test func leavingWithANameKeepsItTrimmed() {
+        #expect(ProfileStorage.nameOnLeaving(draft: " Marta ", entry: "Maria") == "Marta")
+    }
+
+    @Test func backspacingTheWholeNameRestoresTheOriginal() {
+        let entry = "Maria"
+        var stored = entry
+        for draft in ["Mari", "Mar", "Ma", "M", ""] {
+            stored = ProfileStorage.nameToStore(draft: draft, current: stored)
+        }
+        #expect(stored == "M")
+        #expect(ProfileStorage.nameOnLeaving(draft: "", entry: entry) == "Maria")
+    }
 }

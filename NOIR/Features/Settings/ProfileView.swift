@@ -12,6 +12,7 @@ struct ProfileView: View {
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
     @State private var draftName = ""
+    @State private var nameOnAppear = ""
 
     var body: some View {
         Form {
@@ -20,7 +21,7 @@ struct ProfileView: View {
                     .textContentType(.givenName)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.done)
-                    .onSubmit(restoreDraft)
+                    .onSubmit(finishEditing)
             }
 
             Section {
@@ -53,14 +54,18 @@ struct ProfileView: View {
         }
         .navigationTitle(Text(L10n.Profile.title))
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear(perform: restoreDraft)
+        .onAppear {
+            nameOnAppear = name
+            draftName = name
+        }
         .onChange(of: draftName) { _, draft in
             name = ProfileStorage.nameToStore(draft: draft, current: name)
         }
-        .onDisappear(perform: restoreDraft)
+        .onDisappear(perform: finishEditing)
     }
 
-    private func restoreDraft() {
+    private func finishEditing() {
+        name = ProfileStorage.nameOnLeaving(draft: draftName, entry: nameOnAppear)
         draftName = name
     }
 }
