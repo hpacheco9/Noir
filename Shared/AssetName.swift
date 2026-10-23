@@ -35,9 +35,6 @@ nonisolated enum AssetName {
         static let tag = "tag"
         static let title = "textformat"
         static let transactions = "creditcard.fill"
-        static let trendDown = "arrow.down.right"
-        static let trendFlat = "arrow.right"
-        static let trendUp = "arrow.up.right"
         static let warning = "exclamationmark.triangle"
         static let widgets = "widget.small"
     }

@@ -42,11 +42,6 @@ nonisolated enum SpendingPeriod: String, CaseIterable, Identifiable, Sendable {
         return calendar.dateInterval(of: component, for: now)
     }
 
-    func previousInterval(calendar: Calendar = .current, now: Date = .now) -> DateInterval? {
-        guard let component, let current = calendar.dateInterval(of: component, for: now) else { return nil }
-        return calendar.dateInterval(of: component, for: current.start.addingTimeInterval(-1))
-    }
-
     /// The range the overview chart covers: the period interval, or for `.allTime` the calendar years from the one
     /// holding `earliest` through the one holding `latest` (the oldest and newest expense dates; `nil` when there is
     /// none), always including the current year.

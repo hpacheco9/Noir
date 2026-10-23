@@ -18,7 +18,6 @@ struct SpendingOverviewView: View {
     @State private var selectedLabel: String?
     @State private var barsVisible = false
     @State private var chartID = UUID()
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var maxAmount: Double {
         let value = viewModel.dataPoints
@@ -30,21 +29,9 @@ struct SpendingOverviewView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 8) {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text(L10n.SpendingOverview.totalSpent(for: selectedPeriod))
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-
-                    Spacer(minLength: 0)
-
-                    if let comparison = viewModel.comparison,
-                       let period = viewModel.appliedPeriod,
-                       let label = L10n.SpendingOverview.comparison(comparison, for: period, currencyCode: currencyCode) {
-                        ComparisonBadge(comparison: comparison, currencyCode: currencyCode, label: label)
-                            .opacity(viewModel.isComputing ? 0.4 : 1)
-                            .transition(reduceMotion ? .opacity : .scale(scale: 0.8).combined(with: .opacity))
-                    }
-                }
+                Text(L10n.SpendingOverview.totalSpent(for: selectedPeriod))
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
 
                 Text(verbatim: CurrencyPreference.string(for: abs(viewModel.totalSpent), code: currencyCode))
                     .font(.system(size: 40, weight: .semibold, design: .rounded))
@@ -140,46 +127,6 @@ struct SpendingOverviewView: View {
         .onChange(of: snapshot.id) {
             viewModel.apply(snapshot)
         }
-    }
-}
-
-private struct ComparisonBadge: View {
-    let comparison: PeriodComparison
-    let currencyCode: String
-    let label: LocalizedStringResource
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    private var color: Color {
-        switch comparison.trend {
-        case .higher: .trendWorse
-        case .lower: .trendBetter
-        case .same: .trendSame
-        }
-    }
-
-    private var symbol: String {
-        switch comparison.trend {
-        case .higher: AssetName.System.trendUp
-        case .lower: AssetName.System.trendDown
-        case .same: AssetName.System.trendFlat
-        }
-    }
-
-    var body: some View {
-        HStack(spacing: 3) {
-            Image(systemName: symbol)
-                .contentTransition(reduceMotion ? .identity : .symbolEffect(.replace))
-
-            Text(verbatim: comparison.formatted(currencyCode: currencyCode))
-                .monospacedDigit()
-                .contentTransition(reduceMotion ? .opacity : .numericText(value: comparison.numericValue))
-        }
-        .font(.system(.subheadline, design: .rounded, weight: .semibold))
-        .foregroundStyle(color)
-        .fixedSize()
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(label))
     }
 }
 

@@ -124,7 +124,6 @@ actor ExpenseRepository: ModelActor {
     /// The rest of the Home screen: newest rows of the period (no date filter for All Time) and the empty-state check.
     /// Meant for a second repository instance so it runs in parallel with `overviewChart`.
     func overviewSide(
-        period: SpendingPeriod,
         now: Date = .now,
         latestLimit: Int = 5,
         calendar: Calendar = .current
@@ -141,17 +140,7 @@ actor ExpenseRepository: ModelActor {
         anyDescriptor.fetchLimit = 1
         let hasAny = try !modelContext.fetchIdentifiers(anyDescriptor).isEmpty
 
-        let previousTotal = try period.previousInterval(calendar: calendar, now: now).map { try total(in: $0) }
-
-        return SideResult(latest: latest, hasAnyExpenses: hasAny, previousTotal: previousTotal)
-    }
-
-    private func total(in interval: DateInterval) throws -> Decimal {
-        var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(interval))
-        descriptor.propertiesToFetch = [\.amount]
-        var sum = Decimal(0)
-        try modelContext.enumerate(descriptor, batchSize: 1000) { sum += Decimal($0.amount) }
-        return sum
+        return SideResult(latest: latest, hasAnyExpenses: hasAny)
     }
 
     func cumulativeDays(in month: DateInterval, calendar: Calendar = .current) throws -> [Double] {
