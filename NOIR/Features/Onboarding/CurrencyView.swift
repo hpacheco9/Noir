@@ -13,7 +13,6 @@ struct CurrencyView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            // Same header as the name, budget and notifications steps.
             VStack(alignment: .leading, spacing: 12) {
                 Text(L10n.Onboarding.currencyTitle)
                     .font(.system(size: titleSize, weight: .bold))
@@ -45,7 +44,6 @@ struct CurrencyView: View {
             }
             .scrollContentBackground(.hidden)
             .scrollBounceBehavior(.basedOnSize)
-            .hapticFeedback(.selection, trigger: currencyCode)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .opacity(isAppeared ? 1 : 0)

@@ -4457,37 +4457,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deine Beträge werden darin angezeigt. Du kannst sie jederzeit in den Einstellungen ändern."
+            "value" : "Alle Beträge werden in dieser Währung angezeigt. Du kannst sie jederzeit in den Einstellungen ändern."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your amounts will be shown in it. You can change it anytime in Settings."
+            "value" : "All amounts are shown in this currency. You can change it anytime in Settings."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tus importes se mostrarán en ella. Puedes cambiarla cuando quieras en Ajustes."
+            "value" : "Todos los importes se muestran en esta moneda. Puedes cambiarla cuando quieras en Ajustes."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tes montants seront affichés dans cette devise. Tu peux la changer à tout moment dans les Réglages."
+            "value" : "Tous les montants sont affichés dans cette devise. Tu peux la changer à tout moment dans les Réglages."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seus valores serão exibidos nela. Você pode mudar quando quiser em Ajustes."
+            "value" : "Todos os valores são exibidos nesta moeda. Você pode mudar quando quiser em Ajustes."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os seus valores serão apresentados nela. Pode alterá-la quando quiser nas Definições."
+            "value" : "Todos os valores são apresentados nesta moeda. Pode alterá-la quando quiser nas Definições."
           }
         }
       }

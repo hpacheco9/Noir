@@ -5,10 +5,9 @@
 
 import SwiftUI
 
-/// Settings → Profile → Monthly budget. Edits the stored budget live; the widget is refreshed once on leaving.
 struct BudgetEditorView: View {
     @AppStorage(OnboardingStorage.monthlyBudgetKey) private var budget = OnboardingStorage.defaultMonthlyBudget
-    @State private var budgetOnAppear: Double?
+    @State private var publishTask: Task<Void, Never>?
 
     var body: some View {
         VStack(spacing: 24) {
@@ -27,10 +26,13 @@ struct BudgetEditorView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle(Text(L10n.Profile.budget))
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { budgetOnAppear = budget }
-        .onDisappear {
-            guard budgetOnAppear != budget else { return }
-            Task { await WidgetSnapshotPublisher.publish() }
+        .onChange(of: budget) {
+            publishTask?.cancel()
+            publishTask = Task {
+                try? await Task.sleep(for: .milliseconds(500))
+                guard !Task.isCancelled else { return }
+                await WidgetSnapshotPublisher.publish()
+            }
         }
     }
 }

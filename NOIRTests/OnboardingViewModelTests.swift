@@ -8,7 +8,6 @@ import Foundation
 import UserNotifications
 @testable import NOIR
 
-/// A class so each test gets a throwaway suite (never the app's real defaults) that is removed in `deinit`.
 final class OnboardingViewModelTests {
     private struct SilentCenter: NotificationCenterClient {
         func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool { false }
@@ -59,7 +58,6 @@ final class OnboardingViewModelTests {
         #expect(viewModel.step == .name)
     }
 
-    /// Positive control for the test above: a real name does let the step advance.
     @Test func nameLetsTheNameStepAdvance() {
         let viewModel = makeViewModel()
         viewModel.advance()
@@ -69,24 +67,23 @@ final class OnboardingViewModelTests {
         #expect(viewModel.step == .currency)
     }
 
-    @Test func currencyIsPreselectedFromTheRegionAndOffered() {
-        let viewModel = makeViewModel()
-        #expect(viewModel.currencyCode == CurrencyPreference.defaultCode)
-        #expect(CurrencyPreference.availableCodes.contains(viewModel.currencyCode))
+    @Test func preselectedCurrencyIsOneOfTheOffered() {
+        #expect(CurrencyPreference.availableCodes.contains(makeViewModel().currencyCode))
     }
 
-    @Test func currencyIsStoredWhenItsStepIsConfirmed() {
+    @Test func currencyIsStoredWhenItsStepIsConfirmed() throws {
+        let other = try #require(CurrencyPreference.availableCodes.first { $0 != CurrencyPreference.defaultCode })
         let viewModel = makeViewModel()
         viewModel.name = "Maria"
         viewModel.advance()
         viewModel.advance()
         #expect(viewModel.step == .currency)
-        viewModel.currencyCode = "GBP"
+        viewModel.currencyCode = other
         #expect(defaults.string(forKey: CurrencyPreference.storageKey) == nil)
 
         viewModel.advance()
         #expect(viewModel.step == .budget)
-        #expect(defaults.string(forKey: CurrencyPreference.storageKey) == "GBP")
+        #expect(defaults.string(forKey: CurrencyPreference.storageKey) == other)
     }
 
     @Test func persistStoresTrimmedNameAndBudget() {

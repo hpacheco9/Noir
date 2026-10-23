@@ -11,7 +11,6 @@ struct ProfileView: View {
     @AppStorage(OnboardingStorage.monthlyBudgetKey) private var budget = OnboardingStorage.defaultMonthlyBudget
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
-    /// Edited here and stored only when it isn't blank, so the saved name is never empty.
     @State private var draftName = ""
 
     var body: some View {
@@ -21,7 +20,7 @@ struct ProfileView: View {
                     .textContentType(.givenName)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.done)
-                    .onSubmit(commitName)
+                    .onSubmit(restoreDraft)
             }
 
             Section {
@@ -54,12 +53,14 @@ struct ProfileView: View {
         }
         .navigationTitle(Text(L10n.Profile.title))
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { draftName = name }
-        .onDisappear(perform: commitName)
+        .onAppear(perform: restoreDraft)
+        .onChange(of: draftName) { _, draft in
+            name = ProfileStorage.nameToStore(draft: draft, current: name)
+        }
+        .onDisappear(perform: restoreDraft)
     }
 
-    private func commitName() {
-        name = ProfileStorage.nameToStore(draft: draftName, current: name)
+    private func restoreDraft() {
         draftName = name
     }
 }

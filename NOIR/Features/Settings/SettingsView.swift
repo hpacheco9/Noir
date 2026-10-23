@@ -18,6 +18,11 @@ struct SettingsView: View {
 
     private static let showsProCard = false
 
+    private var profileName: String {
+        let trimmed = ProfileStorage.trimmed(name)
+        return trimmed.isEmpty ? String(localized: L10n.Profile.namePlaceholder) : trimmed
+    }
+
     var body: some View {
         Form {
             if Self.showsProCard {
@@ -72,7 +77,7 @@ struct SettingsView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(verbatim: ProfileStorage.trimmed(name))
+                        Text(verbatim: profileName)
                             .font(.body.weight(.medium))
 
                         Text(L10n.Profile.description)
