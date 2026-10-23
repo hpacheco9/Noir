@@ -94,10 +94,14 @@ struct RootView: View {
 }
 
 private extension RootView {
+    // Only the selected tab can have a sheet up, so Add Expense goes on its coordinator.
     func openAddExpense() {
         guard addExpenseRequest.consume() else { return }
-        selectedTab = .home
-        Coordinator.openAddExpense(home: homeCoordinator, otherTabs: [dashboardCoordinator, searchCoordinator])
+        switch selectedTab {
+        case .home: homeCoordinator.presentAddExpenseIfNeeded()
+        case .dashboard: dashboardCoordinator.presentAddExpenseIfNeeded()
+        case .search: searchCoordinator.presentAddExpenseIfNeeded()
+        }
     }
 }
 

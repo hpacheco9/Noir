@@ -5,10 +5,9 @@
 
 import AppIntents
 
-/// Opens NOIR on the Add Expense sheet. Compiled into the app and the widget extension (the control's action);
-/// `.foreground` makes the system run `perform()` in the app process.
 struct OpenAddExpenseIntent: AppIntent {
     static let title: LocalizedStringResource = "app_intent.open_add_expense"
+    // Foreground: the system runs perform() in the app, not in the widget extension that hosts the control.
     static var supportedModes: IntentModes { .foreground }
 
     @MainActor

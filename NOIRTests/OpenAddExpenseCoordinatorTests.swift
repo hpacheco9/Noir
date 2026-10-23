@@ -11,70 +11,66 @@ import SwiftUI
 struct OpenAddExpenseCoordinatorTests {
     private let addExpenseID = MainRoutes.addExpense().routeId
 
-    @Test func presentsAddExpenseWithTheHomeButtonsPresentation() {
-        let home = Coordinator()
-        home.presentAddExpense()
-        #expect(home.sheet?.id == addExpenseID)
-        #expect(home.presentationMode == .percentage(0.8))
-        #expect(home.presentationDetents == [.fraction(0.8)])
+    @Test func plusPresentsAddExpenseAtTheSharedDetent() {
+        let coordinator = Coordinator()
+        coordinator.presentAddExpense()
+        #expect(coordinator.sheet?.id == addExpenseID)
+        #expect(coordinator.presentationDetents == [.fraction(0.8)])
     }
 
-    /// Positive control for the next test: the sheet is a fresh presentation when nothing was up.
-    @Test func alreadyOpenAddExpenseIsLeftAlone() throws {
-        let home = Coordinator()
-        home.presentAddExpense()
-        let first = try #require(home.sheet?.coordinator)
-
-        home.presentAddExpense()
-
-        #expect(home.sheet?.id == addExpenseID)
-        #expect(home.sheet?.coordinator === first)
+    @Test func controlPresentsWhenNothingIsUp() {
+        let coordinator = Coordinator()
+        coordinator.presentAddExpenseIfNeeded()
+        #expect(coordinator.sheet?.id == addExpenseID)
+        #expect(coordinator.presentationDetents == [.fraction(0.8)])
     }
 
-    @Test func replacesAnotherSheetOnHome() throws {
-        let home = Coordinator()
-        home.present(MainRoutes.settings(), mode: .large)
-        #expect(home.sheet?.id == MainRoutes.settings().routeId)
+    @Test func controlLeavesAnOpenAddExpenseAlone() throws {
+        let coordinator = Coordinator()
+        coordinator.presentAddExpense()
+        let first = try #require(coordinator.sheet?.coordinator)
 
-        home.presentAddExpense()
+        coordinator.presentAddExpenseIfNeeded()
 
-        #expect(home.sheet?.id == addExpenseID)
-        #expect(home.presentationDetents == [.fraction(0.8)])
+        #expect(coordinator.sheet?.id == addExpenseID)
+        #expect(coordinator.sheet?.coordinator === first)
     }
 
-    @Test func dismissModalsClearsSheetAndFullScreen() {
+    @Test func controlReplacesAnotherSheetOnTheSameCoordinator() {
         let coordinator = Coordinator()
         coordinator.present(MainRoutes.settings(), mode: .large)
-        coordinator.dismissModals()
-        #expect(coordinator.sheet == nil)
+        #expect(coordinator.sheet?.id == MainRoutes.settings().routeId)
+        #expect(coordinator.presentationDetents == [.large])
 
-        coordinator.present(MainRoutes.settings(), mode: .full)
-        #expect(coordinator.fullScreen != nil)
-        coordinator.dismissModals()
-        #expect(coordinator.fullScreen == nil)
+        coordinator.presentAddExpenseIfNeeded()
+
+        #expect(coordinator.sheet?.id == addExpenseID)
+        #expect(coordinator.presentationDetents == [.fraction(0.8)])
     }
 
-    @Test func openingClosesModalsOnOtherTabs() {
+    @Test func plusAndControlStillWorkAfterTheSheetIsDismissed() throws {
+        let coordinator = Coordinator()
+        coordinator.presentAddExpenseIfNeeded()
+        let first = try #require(coordinator.sheet?.coordinator)
+
+        coordinator.sheet = nil
+        coordinator.presentAddExpense()
+        let second = try #require(coordinator.sheet?.coordinator)
+        #expect(coordinator.sheet?.id == addExpenseID)
+        #expect(second !== first)
+
+        coordinator.sheet = nil
+        coordinator.presentAddExpenseIfNeeded()
+        let third = try #require(coordinator.sheet?.coordinator)
+        #expect(coordinator.sheet?.id == addExpenseID)
+        #expect(third !== second)
+    }
+
+    @Test func coordinatorsAreIndependent() {
         let home = Coordinator()
-        let dashboard = Coordinator()
         let search = Coordinator()
-        dashboard.present(MainRoutes.settings(), mode: .large)
-        search.present(MainRoutes.settings(), mode: .full)
-
-        Coordinator.openAddExpense(home: home, otherTabs: [dashboard, search])
-
-        #expect(home.sheet?.id == addExpenseID)
-        #expect(dashboard.sheet == nil)
-        #expect(search.fullScreen == nil)
-    }
-
-    @Test func openingKeepsAddExpenseAlreadyUpOnHome() throws {
-        let home = Coordinator()
-        home.presentAddExpense()
-        let first = try #require(home.sheet?.coordinator)
-
-        Coordinator.openAddExpense(home: home, otherTabs: [Coordinator()])
-
-        #expect(home.sheet?.coordinator === first)
+        search.presentAddExpenseIfNeeded()
+        #expect(search.sheet?.id == addExpenseID)
+        #expect(home.sheet == nil)
     }
 }

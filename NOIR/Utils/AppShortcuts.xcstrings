@@ -62,46 +62,6 @@
         }
       }
     },
-    "Open add expense in ${applicationName}" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ausgabe hinzufügen in ${applicationName} öffnen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open add expense in ${applicationName}"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abrir registrar gasto en ${applicationName}"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ouvrir ajouter une dépense dans ${applicationName}"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abrir adicionar despesa no ${applicationName}"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abrir adicionar despesa no ${applicationName}"
-          }
-        }
-      }
-    },
     "Record expense in ${applicationName}" : {
       "extractionState" : "stale",
       "localizations" : {

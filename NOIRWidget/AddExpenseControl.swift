@@ -6,7 +6,6 @@
 import SwiftUI
 import WidgetKit
 
-/// One tap from Control Center, the Lock Screen or the Action button to the Add Expense sheet.
 struct AddExpenseControl: ControlWidget {
     static let kind = "henrique-dev.NOIR.AddExpenseControl"
 

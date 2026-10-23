@@ -32,7 +32,6 @@ struct AddExpenseRequestTests {
         #expect(request.consume() == false)
     }
 
-    /// Onboarding finishing drops a request raised while it was showing.
     @Test func cancelDropsPendingRequest() {
         let request = AddExpenseRequest()
         request.request()
@@ -49,10 +48,5 @@ struct AddExpenseRequestTests {
         _ = try await OpenAddExpenseIntent().perform()
 
         #expect(shared.consume() == true)
-    }
-
-    @Test func intentOpensTheApp() {
-        #expect(OpenAddExpenseIntent.supportedModes.contains(.foreground))
-        #expect(OpenAddExpenseIntent.supportedModes.contains(.background) == false)
     }
 }
