@@ -96,6 +96,29 @@ enum L10n {
         static let upgrade: LocalizedStringResource = "noir_pro.upgrade"
     }
 
+    enum Paywall {
+        static let title: LocalizedStringResource = "paywall.title"
+        static func unlock(price: String) -> LocalizedStringResource {
+            "paywall.unlock \(price)"
+        }
+        static let restore: LocalizedStringResource = "paywall.restore"
+
+        enum Feature {
+            static let syncTitle: LocalizedStringResource = "paywall.feature.sync.title"
+            static let syncDescription: LocalizedStringResource = "paywall.feature.sync.description"
+            static let categoriesTitle: LocalizedStringResource = "paywall.feature.categories.title"
+            static let categoriesDescription: LocalizedStringResource = "paywall.feature.categories.description"
+            static let widgetsTitle: LocalizedStringResource = "paywall.feature.widgets.title"
+            static let widgetsDescription: LocalizedStringResource = "paywall.feature.widgets.description"
+            static let insightsTitle: LocalizedStringResource = "paywall.feature.insights.title"
+            static let insightsDescription: LocalizedStringResource = "paywall.feature.insights.description"
+            static let exportTitle: LocalizedStringResource = "paywall.feature.export.title"
+            static let exportDescription: LocalizedStringResource = "paywall.feature.export.description"
+            static let alertsTitle: LocalizedStringResource = "paywall.feature.alerts.title"
+            static let alertsDescription: LocalizedStringResource = "paywall.feature.alerts.description"
+        }
+    }
+
     enum Preferences {
         static let title: LocalizedStringResource = "preferences.title"
         static let currency: LocalizedStringResource = "preferences.currency"

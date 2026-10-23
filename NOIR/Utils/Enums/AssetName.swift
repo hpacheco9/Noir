@@ -10,6 +10,7 @@ import Foundation
 nonisolated enum AssetName {
     enum System {
         static let add = "plus"
+        static let budgetAlerts = "bell.badge"
         static let calendar = "calendar"
         static let card = "creditcard"
         static let checkmark = "checkmark"
@@ -18,19 +19,24 @@ nonisolated enum AssetName {
         static let dashboard = "chart.pie"
         static let delete = "trash"
         static let disclosure = "chevron.right"
+        static let export = "square.and.arrow.up"
         static let filter = "line.3.horizontal.decrease"
         static let home = "text.rectangle.page"
+        static let iCloud = "icloud"
         static let legal = "doc.text.fill"
         static let note = "text.alignleft"
         static let picker = "chevron.up.chevron.down"
         static let privacy = "hand.raised.fill"
+        static let pro = "sparkles"
         static let reset = "arrow.counterclockwise"
         static let rest = "ellipsis.circle"
         static let search = "magnifyingglass"
         static let shortcuts = "command"
+        static let tag = "tag"
         static let title = "textformat"
         static let transactions = "creditcard.fill"
         static let warning = "exclamationmark.triangle"
+        static let widgets = "widget.small"
     }
 
     enum ExpenseCategory {
