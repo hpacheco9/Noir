@@ -20,20 +20,24 @@ struct ShortcutsView: View {
                 SettingsRow(
                     title: L10n.ShortcutsView.applePayTitle,
                     systemImage: AssetName.System.applePay,
-                    subtitle: L10n.ShortcutsView.applePayDescription,
                     accessory: AssetName.System.externalLink
                 ) {
                     coordinator.present(SettingsRoutes.safari(url: AppLinks.walletAutomationGuide), mode: .large)
                 }
+            } footer: {
+                Text(L10n.ShortcutsView.applePayDescription)
+            }
 
+            Section {
                 SettingsRow(
                     title: L10n.ShortcutsView.addExpenseTitle,
                     systemImage: AssetName.System.shortcutGuide,
-                    subtitle: L10n.ShortcutsView.addExpenseDescription,
                     accessory: AssetName.System.externalLink
                 ) {
                     coordinator.present(SettingsRoutes.safari(url: AppLinks.shortcutsGuide), mode: .large)
                 }
+            } footer: {
+                Text(L10n.ShortcutsView.addExpenseDescription)
             }
 
             Section {

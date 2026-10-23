@@ -10,7 +10,7 @@ import Foundation
 nonisolated enum AssetName {
     enum System {
         static let add = "plus"
-        static let applePay = "wallet.pass"
+        static let applePay = "wave.3.forward.circle.fill"
         static let calendar = "calendar"
         static let card = "creditcard"
         static let checkmark = "checkmark"
