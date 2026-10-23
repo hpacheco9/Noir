@@ -271,25 +271,6 @@ enum L10n {
         }
         static let chartPeriod: LocalizedStringResource = "spending_overview.chart_period"
         static let chartAmount: LocalizedStringResource = "spending_overview.chart_amount"
-
-        static func comparison(_ comparison: PeriodComparison, for period: NOIR.SpendingPeriod, currencyCode: String) -> LocalizedStringResource? {
-            let percent = comparison.formatted(currencyCode: currencyCode)
-            switch (comparison.trend, period) {
-            case (.higher, .day): return "spending_overview.comparison.higher.day \(percent)"
-            case (.higher, .week): return "spending_overview.comparison.higher.week \(percent)"
-            case (.higher, .month): return "spending_overview.comparison.higher.month \(percent)"
-            case (.higher, .year): return "spending_overview.comparison.higher.year \(percent)"
-            case (.lower, .day): return "spending_overview.comparison.lower.day \(percent)"
-            case (.lower, .week): return "spending_overview.comparison.lower.week \(percent)"
-            case (.lower, .month): return "spending_overview.comparison.lower.month \(percent)"
-            case (.lower, .year): return "spending_overview.comparison.lower.year \(percent)"
-            case (.same, .day): return "spending_overview.comparison.same.day"
-            case (.same, .week): return "spending_overview.comparison.same.week"
-            case (.same, .month): return "spending_overview.comparison.same.month"
-            case (.same, .year): return "spending_overview.comparison.same.year"
-            case (_, .allTime): return nil
-            }
-        }
     }
 
     enum AppIntent {

@@ -18,10 +18,10 @@ extension CategoryBreakdownRepositoryTests {
             if case .loaded(let snapshot) = viewModel.state { snapshot } else { nil }
         }
 
-        @Test func previousTotalReachesTheSnapshot() async throws {
+        @Test func chartAndSideLoadsReachTheSnapshot() async throws {
             let calendar = Calendar.current
             let month = try #require(SpendingPeriod.month.dateInterval(calendar: calendar))
-            let lastMonth = try #require(SpendingPeriod.month.previousInterval(calendar: calendar))
+            let lastMonth = try #require(calendar.dateInterval(of: .month, for: month.start.addingTimeInterval(-1)))
 
             let container = try ModelContainer(
                 for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
@@ -42,15 +42,14 @@ extension CategoryBreakdownRepositoryTests {
                 let monthSnapshot = try #require(loaded(viewModel))
                 #expect(monthSnapshot.period == .month)
                 #expect(monthSnapshot.total == 10)
-                #expect(monthSnapshot.previousTotal == 40)
+                #expect(monthSnapshot.latest.count == 2)
+                #expect(monthSnapshot.hasAnyExpenses)
 
-                // All Time has no previous period.
                 viewModel.adoptPeriod(.allTime)
                 await viewModel.fetchData()
                 let allTimeSnapshot = try #require(loaded(viewModel))
                 #expect(allTimeSnapshot.period == .allTime)
                 #expect(allTimeSnapshot.total == 50)
-                #expect(allTimeSnapshot.previousTotal == nil)
             }
         }
     }

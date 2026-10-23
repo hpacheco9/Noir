@@ -8,65 +8,46 @@ import Foundation
 @testable import NOIR
 
 struct SpendingOverviewViewModelTests {
-    private func snapshot(
-        _ period: SpendingPeriod, total: Decimal, previous: Decimal?
-    ) -> OverviewSnapshot {
-        OverviewSnapshot(
-            period: period, points: [], total: total, latest: [], hasAnyExpenses: true,
-            previousTotal: previous
-        )
+    private func snapshot(_ period: SpendingPeriod, total: Decimal) -> OverviewSnapshot {
+        OverviewSnapshot(period: period, points: [], total: total, latest: [], hasAnyExpenses: true)
     }
 
-    @Test func applyingASnapshotSetsTheComparison() {
+    @Test func applyingASnapshotSetsTheTotalAndPeriod() {
         let viewModel = SpendingOverviewViewModel()
-        viewModel.apply(snapshot(.week, total: 120, previous: 100))
+        viewModel.markLoading(for: .week)
+        #expect(viewModel.isComputing)
 
-        #expect(viewModel.comparison == PeriodComparison(percent: 20))
+        viewModel.apply(snapshot(.week, total: 120))
+
+        #expect(viewModel.totalSpent == 120)
         #expect(viewModel.appliedPeriod == .week)
+        #expect(!viewModel.isComputing)
     }
 
-    @Test func aLowerTotalComparesNegative() {
+    @Test func freshDataForTheSamePeriodReplacesTheTotal() {
         let viewModel = SpendingOverviewViewModel()
-        viewModel.apply(snapshot(.month, total: 40, previous: 160))
-        #expect(viewModel.comparison == PeriodComparison(percent: -75))
-        #expect(viewModel.comparison?.trend == .lower)
+        viewModel.apply(snapshot(.week, total: 120))
+        viewModel.apply(snapshot(.week, total: 90))
+        #expect(viewModel.totalSpent == 90)
     }
 
-    @Test func allTimeClearsTheComparison() {
+    @Test func waitingResumesOnceThePeriodIsApplied() async {
         let viewModel = SpendingOverviewViewModel()
-        viewModel.apply(snapshot(.week, total: 120, previous: 100))
-        #expect(viewModel.comparison != nil)
+        let waiting = Task { await viewModel.waitUntilApplied(for: .month) }
+        await Task.yield()
 
-        viewModel.apply(snapshot(.allTime, total: 900, previous: nil))
-        #expect(viewModel.comparison == nil)
-        #expect(viewModel.appliedPeriod == .allTime)
+        viewModel.apply(snapshot(.week, total: 1))
+        viewModel.apply(snapshot(.month, total: 2))
+        await waiting.value
+
+        #expect(viewModel.appliedPeriod == .month)
     }
 
-    @Test func aPreviousPeriodWithoutSpendingShowsTheNewSpending() {
-        let viewModel = SpendingOverviewViewModel()
-        viewModel.apply(snapshot(.day, total: 25, previous: 0))
-        #expect(viewModel.comparison == PeriodComparison(amount: 25))
-    }
-
-    @Test func nothingSpentNowOrBeforeIsTheSame() {
-        let viewModel = SpendingOverviewViewModel()
-        viewModel.apply(snapshot(.month, total: 0, previous: 0))
-        #expect(viewModel.comparison == PeriodComparison(percent: 0))
-    }
-
-    @Test func freshDataForTheSamePeriodUpdatesTheComparison() {
-        let viewModel = SpendingOverviewViewModel()
-        viewModel.apply(snapshot(.week, total: 120, previous: 100))
-        viewModel.apply(snapshot(.week, total: 90, previous: 100))
-        #expect(viewModel.comparison == PeriodComparison(percent: -10))
-    }
-
-    @Test func retaggingDropsTheComparisonAndKeepsTheTotal() {
-        let original = snapshot(.week, total: 120, previous: 100)
+    @Test func retaggingKeepsTheDataUnderANewPeriodAndId() {
+        let original = snapshot(.week, total: 120)
         let retagged = original.retagged(for: .allTime)
 
         #expect(retagged.period == .allTime)
-        #expect(retagged.previousTotal == nil)
         #expect(retagged.total == 120)
         #expect(retagged.id != original.id)
     }

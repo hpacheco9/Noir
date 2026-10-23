@@ -20,5 +20,4 @@ nonisolated struct ChartResult: Sendable {
 nonisolated struct SideResult: Sendable {
     let latest: [ExpenseDTO]
     let hasAnyExpenses: Bool
-    let previousTotal: Decimal?
 }

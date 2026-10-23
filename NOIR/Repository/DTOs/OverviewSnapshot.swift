@@ -14,24 +14,18 @@ nonisolated struct OverviewSnapshot: Sendable, Identifiable {
     let total: Decimal
     let latest: [ExpenseDTO]
     let hasAnyExpenses: Bool
-    let previousTotal: Decimal?
 
     nonisolated init(period: SpendingPeriod, points: [SpendingDataPoint], total: Decimal,
-                     latest: [ExpenseDTO], hasAnyExpenses: Bool,
-                     previousTotal: Decimal?) {
+                     latest: [ExpenseDTO], hasAnyExpenses: Bool) {
         self.period = period
         self.points = points
         self.total = total
         self.latest = latest
         self.hasAnyExpenses = hasAnyExpenses
-        self.previousTotal = previousTotal
     }
 
     /// Same data under a new id and period. Used when a load fails so the chart can still be shown.
     nonisolated func retagged(for period: SpendingPeriod) -> OverviewSnapshot {
-        OverviewSnapshot(
-            period: period, points: points, total: total, latest: latest, hasAnyExpenses: hasAnyExpenses,
-            previousTotal: nil
-        )
+        OverviewSnapshot(period: period, points: points, total: total, latest: latest, hasAnyExpenses: hasAnyExpenses)
     }
 }
