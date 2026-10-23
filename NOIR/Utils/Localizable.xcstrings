@@ -6620,6 +6620,166 @@
         }
       }
     },
+    "shortcuts_view.add_expense_description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Füge Ausgaben über Siri, Spotlight oder die Kurzbefehle-App hinzu."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add expenses from Siri, Spotlight or the Shortcuts app."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade gastos desde Siri, Spotlight o la app Atajos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoute des dépenses depuis Siri, Spotlight ou l’app Raccourcis."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicione despesas pela Siri, pelo Spotlight ou pelo app Atalhos."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicione despesas com a Siri, o Spotlight ou a app Atalhos."
+          }
+        }
+      }
+    },
+    "shortcuts_view.add_expense_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurzbefehl „Ausgabe hinzufügen“"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Expense shortcut"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atajo “Registrar gasto”"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raccourci « Ajouter une dépense »"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalho “Adicionar Despesa”"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalho Adicionar despesa"
+          }
+        }
+      }
+    },
+    "shortcuts_view.apple_pay_description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erfasse jede Apple-Pay-Zahlung automatisch mit einer Wallet-Automation."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log every Apple Pay payment automatically with a Wallet automation."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra cada pago con Apple Pay automáticamente con una automatización de Wallet."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre chaque paiement Apple Pay automatiquement avec une automatisation Wallet."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registre cada pagamento do Apple Pay automaticamente com uma automação do Wallet."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registe cada pagamento do Apple Pay automaticamente com uma automatização do Wallet."
+          }
+        }
+      }
+    },
+    "shortcuts_view.apple_pay_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Apple Pay automatisieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automate with Apple Pay"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatizar con Apple Pay"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatiser avec Apple Pay"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatizar com Apple Pay"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatizar com o Apple Pay"
+          }
+        }
+      }
+    },
     "shortcuts_view.description" : {
       "localizations" : {
         "de" : {

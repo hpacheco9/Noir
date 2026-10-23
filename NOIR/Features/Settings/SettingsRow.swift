@@ -8,7 +8,9 @@ import SwiftUI
 struct SettingsRow: View {
     let title: LocalizedStringResource
     let systemImage: String
+    var subtitle: LocalizedStringResource?
     var detail: String?
+    var accessory = AssetName.System.disclosure
     let action: () -> Void
 
     var body: some View {
@@ -17,7 +19,16 @@ struct SettingsRow: View {
                 Image(systemName: systemImage)
                     .foregroundStyle(.secondary)
 
-                Text(title)
+                if let subtitle {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(title)
+                        Text(subtitle)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                } else {
+                    Text(title)
+                }
 
                 Spacer()
 
@@ -26,7 +37,7 @@ struct SettingsRow: View {
                         .foregroundStyle(.secondary)
                 }
 
-                Image(systemName: AssetName.System.disclosure)
+                Image(systemName: accessory)
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.tertiary)
             }
