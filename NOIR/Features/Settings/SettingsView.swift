@@ -16,8 +16,6 @@ struct SettingsView: View {
     @State private var reviewStatusText = ""
 #endif
 
-    private static let showsProCard = false
-
     private var profileName: String {
         let trimmed = ProfileStorage.trimmed(name)
         return trimmed.isEmpty ? String(localized: L10n.Profile.namePlaceholder) : trimmed
@@ -25,34 +23,35 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            if Self.showsProCard {
-                Section {
+            Section {
+                Button {
+                    coordinator.present(SettingsRoutes.paywall(), mode: .large)
+                } label: {
                     HStack(spacing: 12) {
                         VStack(alignment: .leading, spacing: 6) {
                             Text(L10n.NoirPro.title)
                                 .font(.title2)
                                 .fontWeight(.bold)
-                            
+
                             Text(L10n.NoirPro.description)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
-                        
+
                         Spacer()
 
-                        Button {
-                            coordinator.present(SettingsRoutes.paywall(), mode: .large)
-                        } label: {
-                            Text(L10n.NoirPro.upgrade)
-                                .foregroundColor(Color(uiColor: .systemBackground))
-                                .fontWeight(.semibold)
-                                .fontDesign(.rounded)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.primary)
+                        Text(L10n.NoirPro.upgrade)
+                            .foregroundStyle(Color(uiColor: .systemBackground))
+                            .fontWeight(.semibold)
+                            .fontDesign(.rounded)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 7)
+                            .background(.primary, in: .capsule)
                     }
                     .padding(.vertical, 8)
+                    .contentShape(.rect)
                 }
+                .tint(.primary)
             }
 
             Section(String(localized: L10n.Profile.title)) {
@@ -140,17 +139,6 @@ struct SettingsView: View {
                         Image(systemName: AssetName.System.reset)
                     }
                 }
-
-                Button {
-                    coordinator.present(SettingsRoutes.paywall(), mode: .large)
-                } label: {
-                    Label {
-                        Text(verbatim: "Show paywall")
-                    } icon: {
-                        Image(systemName: AssetName.System.pro)
-                    }
-                }
-                .tint(.primary)
             } header: {
                 Text(verbatim: "Developer")
             }
