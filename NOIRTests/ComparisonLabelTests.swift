@@ -50,13 +50,4 @@ struct ComparisonLabelTests {
             #expect(amount.key == percent.key)
         }
     }
-
-    @Test(arguments: languages)
-    func budgetMessagesResolveAndKeepTheirAmounts(language: String) throws {
-        let left = try localized(L10n.BudgetSummary.left("%@", of: "%@").key, language: language)
-        let over = try localized(L10n.BudgetSummary.over("%@").key, language: language)
-        #expect(left != Self.missing && over != Self.missing)
-        #expect(left.contains("%1$@") && left.contains("%2$@"), "\(language): \(left)")
-        #expect(over.contains("%@"), "\(language): \(over)")
-    }
 }

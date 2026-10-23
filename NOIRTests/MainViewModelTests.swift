@@ -25,7 +25,7 @@ struct MainViewModelTests {
     private static func snapshot(_ period: SpendingPeriod, total: Decimal, hasAnyExpenses: Bool = true) -> OverviewSnapshot {
         OverviewSnapshot(
             period: period, points: [], total: total, latest: [], hasAnyExpenses: hasAnyExpenses,
-            previousTotal: nil, monthTotal: 0
+            previousTotal: nil
         )
     }
 

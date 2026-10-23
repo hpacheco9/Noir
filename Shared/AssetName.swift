@@ -10,8 +10,6 @@ import Foundation
 nonisolated enum AssetName {
     enum System {
         static let add = "plus"
-        static let budget = "wallet.bifold.fill"
-        static let budgetAlerts = "bell.badge"
         static let calendar = "calendar"
         static let card = "creditcard"
         static let checkmark = "checkmark"

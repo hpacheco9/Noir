@@ -31,8 +31,8 @@ final class OnboardingViewModelTests {
         OnboardingViewModel(notificationService: NotificationService(center: SilentCenter()), defaults: defaults)
     }
 
-    @Test func currencyComesBetweenNameAndBudget() {
-        #expect(OnboardingViewModel.Step.allCases == [.welcome, .name, .currency, .budget, .notifications])
+    @Test func currencyComesBetweenNameAndNotifications() {
+        #expect(OnboardingViewModel.Step.allCases == [.welcome, .name, .currency, .notifications])
     }
 
     @Test func advanceWalksThroughEveryStep() {
@@ -82,18 +82,16 @@ final class OnboardingViewModelTests {
         #expect(defaults.string(forKey: CurrencyPreference.storageKey) == nil)
 
         viewModel.advance()
-        #expect(viewModel.step == .budget)
+        #expect(viewModel.step == .notifications)
         #expect(defaults.string(forKey: CurrencyPreference.storageKey) == other)
     }
 
-    @Test func persistStoresTrimmedNameAndBudget() {
+    @Test func persistStoresTrimmedName() {
         let viewModel = makeViewModel()
         viewModel.name = "  Maria  "
-        viewModel.budget = 1500
         viewModel.persist()
 
         #expect(defaults.string(forKey: ProfileStorage.nameKey) == "Maria")
-        #expect(defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) == 1500)
     }
 
     @Test func completeStoresTheProfile() async {
@@ -102,6 +100,5 @@ final class OnboardingViewModelTests {
         await viewModel.complete(requestingNotifications: false)
 
         #expect(defaults.string(forKey: ProfileStorage.nameKey) == "Maria")
-        #expect(defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) == OnboardingStorage.defaultMonthlyBudget)
     }
 }

@@ -121,7 +121,7 @@ struct PaywallView: View {
 }
 
 private enum PaywallFeature: CaseIterable, Identifiable {
-    case sync, categories, widgets, insights, export, alerts
+    case sync, categories, widgets, insights, export
 
     var id: Self { self }
 
@@ -132,7 +132,6 @@ private enum PaywallFeature: CaseIterable, Identifiable {
         case .widgets: AssetName.System.widgets
         case .insights: AssetName.System.dashboard
         case .export: AssetName.System.export
-        case .alerts: AssetName.System.budgetAlerts
         }
     }
 
@@ -143,7 +142,6 @@ private enum PaywallFeature: CaseIterable, Identifiable {
         case .widgets: L10n.Paywall.Feature.widgetsTitle
         case .insights: L10n.Paywall.Feature.insightsTitle
         case .export: L10n.Paywall.Feature.exportTitle
-        case .alerts: L10n.Paywall.Feature.alertsTitle
         }
     }
 
@@ -154,7 +152,6 @@ private enum PaywallFeature: CaseIterable, Identifiable {
         case .widgets: L10n.Paywall.Feature.widgetsDescription
         case .insights: L10n.Paywall.Feature.insightsDescription
         case .export: L10n.Paywall.Feature.exportDescription
-        case .alerts: L10n.Paywall.Feature.alertsDescription
         }
     }
 }

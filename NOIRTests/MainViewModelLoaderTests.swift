@@ -18,7 +18,7 @@ extension CategoryBreakdownRepositoryTests {
             if case .loaded(let snapshot) = viewModel.state { snapshot } else { nil }
         }
 
-        @Test func previousAndMonthTotalsReachTheSnapshot() async throws {
+        @Test func previousTotalReachesTheSnapshot() async throws {
             let calendar = Calendar.current
             let month = try #require(SpendingPeriod.month.dateInterval(calendar: calendar))
             let lastMonth = try #require(SpendingPeriod.month.previousInterval(calendar: calendar))
@@ -43,16 +43,14 @@ extension CategoryBreakdownRepositoryTests {
                 #expect(monthSnapshot.period == .month)
                 #expect(monthSnapshot.total == 10)
                 #expect(monthSnapshot.previousTotal == 40)
-                #expect(monthSnapshot.monthTotal == 10)
 
-                // All Time has no previous period, and the month total does not follow the period.
+                // All Time has no previous period.
                 viewModel.adoptPeriod(.allTime)
                 await viewModel.fetchData()
                 let allTimeSnapshot = try #require(loaded(viewModel))
                 #expect(allTimeSnapshot.period == .allTime)
                 #expect(allTimeSnapshot.total == 50)
                 #expect(allTimeSnapshot.previousTotal == nil)
-                #expect(allTimeSnapshot.monthTotal == 10)
             }
         }
     }

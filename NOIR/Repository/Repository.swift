@@ -142,9 +142,8 @@ actor ExpenseRepository: ModelActor {
         let hasAny = try !modelContext.fetchIdentifiers(anyDescriptor).isEmpty
 
         let previousTotal = try period.previousInterval(calendar: calendar, now: now).map { try total(in: $0) }
-        let monthTotal = try SpendingPeriod.month.dateInterval(calendar: calendar, now: now).map { try total(in: $0) } ?? 0
 
-        return SideResult(latest: latest, hasAnyExpenses: hasAny, previousTotal: previousTotal, monthTotal: monthTotal)
+        return SideResult(latest: latest, hasAnyExpenses: hasAny, previousTotal: previousTotal)
     }
 
     private func total(in interval: DateInterval) throws -> Decimal {

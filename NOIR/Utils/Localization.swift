@@ -114,8 +114,6 @@ enum L10n {
             static let insightsDescription: LocalizedStringResource = "paywall.feature.insights.description"
             static let exportTitle: LocalizedStringResource = "paywall.feature.export.title"
             static let exportDescription: LocalizedStringResource = "paywall.feature.export.description"
-            static let alertsTitle: LocalizedStringResource = "paywall.feature.alerts.title"
-            static let alertsDescription: LocalizedStringResource = "paywall.feature.alerts.description"
         }
     }
 
@@ -134,8 +132,6 @@ enum L10n {
         static let description: LocalizedStringResource = "profile.description"
         static let nameSection: LocalizedStringResource = "profile.name_section"
         static let namePlaceholder: LocalizedStringResource = "profile.name_placeholder"
-        static let budget: LocalizedStringResource = "profile.budget"
-        static let budgetFooter: LocalizedStringResource = "profile.budget_footer"
     }
 
     enum Categories {
@@ -217,7 +213,6 @@ enum L10n {
     enum Onboarding {
         static let getStarted: LocalizedStringResource = "onboarding.get_started"
         static let `continue`: LocalizedStringResource = "onboarding.continue"
-        static let setBudget: LocalizedStringResource = "onboarding.set_budget"
         static let finishing: LocalizedStringResource = "onboarding.finishing"
         static let nameTitle: LocalizedStringResource = "onboarding.name.title"
         static let nameSubtitle: LocalizedStringResource = "onboarding.name.subtitle"
@@ -234,8 +229,6 @@ enum L10n {
         static let demoTimestamp: LocalizedStringResource = "onboarding.notifications.demo_timestamp"
         static let welcomeTitle: LocalizedStringResource = "onboarding.welcome.title"
         static let welcomeSubtitle: LocalizedStringResource = "onboarding.welcome.subtitle"
-        static let budgetTitle: LocalizedStringResource = "onboarding.budget.title"
-        static let budgetSubtitle: LocalizedStringResource = "onboarding.budget.subtitle"
         static func demoAccessibilityLabel(appName: String, title: String, message: String) -> LocalizedStringResource {
             "onboarding.notifications.demo_accessibility_label \(appName) \(title) \(message)"
         }
@@ -296,16 +289,6 @@ enum L10n {
             case (.same, .year): return "spending_overview.comparison.same.year"
             case (_, .allTime): return nil
             }
-        }
-    }
-
-    enum BudgetSummary {
-        static func left(_ left: String, of budget: String) -> LocalizedStringResource {
-            "budget_summary.left \(left) \(budget)"
-        }
-
-        static func over(_ amount: String) -> LocalizedStringResource {
-            "budget_summary.over \(amount)"
         }
     }
 

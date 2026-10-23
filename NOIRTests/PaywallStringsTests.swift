@@ -20,7 +20,6 @@ struct PaywallStringsTests {
         L10n.Paywall.Feature.widgetsTitle, L10n.Paywall.Feature.widgetsDescription,
         L10n.Paywall.Feature.insightsTitle, L10n.Paywall.Feature.insightsDescription,
         L10n.Paywall.Feature.exportTitle, L10n.Paywall.Feature.exportDescription,
-        L10n.Paywall.Feature.alertsTitle, L10n.Paywall.Feature.alertsDescription,
         L10n.NoirPro.description,
         L10n.Legal.termsOfService,
         L10n.Legal.privacyPolicy,

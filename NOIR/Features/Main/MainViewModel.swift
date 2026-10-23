@@ -49,8 +49,7 @@ final class MainViewModel {
                 total: chart.total,
                 latest: side.latest,
                 hasAnyExpenses: side.hasAnyExpenses,
-                previousTotal: side.previousTotal,
-                monthTotal: side.monthTotal
+                previousTotal: side.previousTotal
             )
         }
     }

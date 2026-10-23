@@ -9,11 +9,11 @@ import Foundation
 
 struct SpendingOverviewViewModelTests {
     private func snapshot(
-        _ period: SpendingPeriod, total: Decimal, previous: Decimal?, month: Decimal = 0
+        _ period: SpendingPeriod, total: Decimal, previous: Decimal?
     ) -> OverviewSnapshot {
         OverviewSnapshot(
             period: period, points: [], total: total, latest: [], hasAnyExpenses: true,
-            previousTotal: previous, monthTotal: month
+            previousTotal: previous
         )
     }
 
@@ -61,13 +61,12 @@ struct SpendingOverviewViewModelTests {
         #expect(viewModel.comparison == PeriodComparison(percent: -10))
     }
 
-    @Test func retaggingDropsTheComparisonAndKeepsTheMonthTotal() {
-        let original = snapshot(.week, total: 120, previous: 100, month: 480)
+    @Test func retaggingDropsTheComparisonAndKeepsTheTotal() {
+        let original = snapshot(.week, total: 120, previous: 100)
         let retagged = original.retagged(for: .allTime)
 
         #expect(retagged.period == .allTime)
         #expect(retagged.previousTotal == nil)
-        #expect(retagged.monthTotal == 480)
         #expect(retagged.total == 120)
         #expect(retagged.id != original.id)
     }
