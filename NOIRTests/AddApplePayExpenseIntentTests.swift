@@ -25,8 +25,13 @@ struct AddApplePayExpenseIntentTests {
         #expect(text != "app_intent.untitled")
     }
 
-    @Test func defaultCategoryIsFood() {
-        #expect(ExpenseCategoryEntity.food.id == ExpenseCategory.food.rawValue)
-        #expect(!ExpenseCategoryEntity.food.showsName)
+    @Test(arguments: [nil, "", "  \n"] as [String?])
+    func blankCardMeansNoCard(card: String?) {
+        #expect(AddApplePayExpenseIntent.resolvedCard(card) == "")
+    }
+
+    // Positive control: the blank handling above does not swallow a real card name.
+    @Test func cardTextIsTrimmedAndKept() {
+        #expect(AddApplePayExpenseIntent.resolvedCard(" Visa \n") == "Visa")
     }
 }

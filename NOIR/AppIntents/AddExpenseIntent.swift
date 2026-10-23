@@ -5,6 +5,7 @@
 
 import AppIntents
 import Foundation
+import SwiftData
 
 struct AddExpenseIntent: AppIntent {
     static var title: LocalizedStringResource = "app_intent.title"
@@ -52,13 +53,14 @@ struct AddExpenseIntent: AppIntent {
         }
 
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-        var categoryKey = category?.id ?? ExpenseCategory.food.rawValue
+        // Resolved here so a stale id (old "other", deleted custom category) still preselects a summary row.
+        var categoryKey = CategoryCatalog.resolvedKey(category?.id, in: ModelContext(NOIRApp.sharedModelContainer))
         var trimmedCard = card.name.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if IntentSummaryPreference.isEnabled() {
             // The default entity has no localized name, so read the category's current title from the catalog.
-            let categoryName = try CategoryCatalog.entities().first { $0.id == categoryKey }?.name
-                ?? category?.name ?? ExpenseCategory.food.title
+            let categoryName = (try? CategoryCatalog.entities())?.first { $0.id == categoryKey }?.name
+                ?? ExpenseCategory(rawValue: categoryKey)?.title ?? category?.name ?? ""
             ExpenseSummaryDraft(categoryKey: categoryKey, categoryName: categoryName, card: trimmedCard).save()
             defer { ExpenseSummaryDraft.clear() }
             let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode

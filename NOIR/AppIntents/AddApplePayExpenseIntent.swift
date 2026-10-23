@@ -23,7 +23,7 @@ struct AddApplePayExpenseIntent: AppIntent {
     @Parameter(title: "app_intent.amount", requestValueDialog: "app_intent.amount_prompt")
     var amount: Double
 
-    // Optional with a default: an unattended automation must never stop to ask for these.
+    // Optional/plain text so an unattended automation never stops to ask or disambiguate (the card is text for that reason).
     @Parameter(
         title: LocalizedStringResource("app_intent.category", table: "AppIntents"),
         default: ExpenseCategoryEntity.food
@@ -31,11 +31,15 @@ struct AddApplePayExpenseIntent: AppIntent {
     var category: ExpenseCategoryEntity?
 
     @Parameter(title: LocalizedStringResource("app_intent.card", table: "AppIntents"))
-    var card: ExpenseCardEntity?
+    var card: String?
 
     nonisolated static func resolvedName(_ name: String?, untitled: String) -> String {
         let trimmed = name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         return trimmed.isEmpty ? untitled : trimmed
+    }
+
+    nonisolated static func resolvedCard(_ card: String?) -> String {
+        card?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     }
 
     @MainActor
@@ -50,7 +54,7 @@ struct AddApplePayExpenseIntent: AppIntent {
             date: .now,
             categoryKey: category?.id ?? ExpenseCategory.food.rawValue,
             note: "",
-            card: card?.name.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            card: Self.resolvedCard(card)
         )
 
         return .result(
