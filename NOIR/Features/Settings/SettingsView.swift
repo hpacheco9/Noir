@@ -41,7 +41,7 @@ struct SettingsView: View {
                         Spacer()
 
                         Button {
-                       
+                            coordinator.present(SettingsRoutes.paywall(), mode: .large)
                         } label: {
                             Text(L10n.NoirPro.upgrade)
                                 .foregroundColor(Color(uiColor: .systemBackground))
@@ -140,6 +140,17 @@ struct SettingsView: View {
                         Image(systemName: AssetName.System.reset)
                     }
                 }
+
+                Button {
+                    coordinator.present(SettingsRoutes.paywall(), mode: .large)
+                } label: {
+                    Label {
+                        Text(verbatim: "Show paywall")
+                    } icon: {
+                        Image(systemName: AssetName.System.pro)
+                    }
+                }
+                .tint(.primary)
             } header: {
                 Text(verbatim: "Developer")
             }
