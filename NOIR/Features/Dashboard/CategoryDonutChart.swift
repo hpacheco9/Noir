@@ -6,14 +6,6 @@
 import SwiftUI
 import Charts
 
-/// What the donut's centre shows while something is highlighted.
-struct DonutFocus: Equatable {
-    let title: String
-    let amount: Decimal
-    /// E.g. "in All others" for a category that is collapsed into the rest slice.
-    let subtitle: String?
-}
-
 /// Donut of spending by category. The list under it acts as the legend, so the chart's own legend is hidden.
 struct CategoryDonutChart: View {
     /// Sectors at least this share of the total get their icon drawn on them (colour alone must not carry the meaning).

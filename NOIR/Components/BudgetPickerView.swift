@@ -93,7 +93,7 @@ struct BudgetPickerView: View {
 }
 
 // MARK: - Tick Component
-struct TickComponent: View {
+private struct TickComponent: View {
     let value: Int
     let isSelected: Bool
     let highlightColor: Color

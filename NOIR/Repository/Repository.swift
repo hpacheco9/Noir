@@ -8,17 +8,6 @@
 import Foundation
 import SwiftData
 
-enum RepositoryError: Error {
-       case notFound
-       case invalidAmount
-}
-
-/// Why `createCategory` or `updateCategory` refused a name.
-nonisolated enum CategoryError: Error, Equatable {
-    case emptyName
-    case duplicateName
-}
-
 /// Hand-written `ModelActor` conformance (equivalent to the `@ModelActor` macro). Where it runs is decided by the
 /// caller's isolation, not the init: see `ExpenseRepositoryProvider.perform`.
 actor ExpenseRepository: ModelActor {
@@ -453,21 +442,5 @@ actor ExpenseRepository: ModelActor {
             modelContext.rollback()
             throw error
         }
-    }
-}
-
-
-final class ExpenseRepositoryProvider: Sendable {
-    private let creation: Task<ExpenseRepository, Never>
-
-    init(container: ModelContainer) {
-        creation = Task.detached(priority: .userInitiated) {
-            ExpenseRepository(modelContainer: container)
-        }
-    }
-    @concurrent
-    func perform<T: Sendable>(_ body: @Sendable (ExpenseRepository) async throws -> T) async rethrows -> T {
-        let repository = await creation.value
-        return try await body(repository)
     }
 }
