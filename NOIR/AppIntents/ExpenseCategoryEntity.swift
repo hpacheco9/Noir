@@ -7,7 +7,7 @@ import AppIntents
 import Foundation
 
 /// A category (built-in or custom) as a Shortcuts parameter value. `id` is the category key stored on expenses
-/// (`food`, `other`, `custom:<uuid>`...), which is also what the old `ShortcutExpenseCategory` enum used for built-ins.
+/// (`food`, `custom:<uuid>`...), which is also what the old `ShortcutExpenseCategory` enum used for built-ins.
 nonisolated struct ExpenseCategoryEntity: AppEntity, Identifiable {
     static let typeDisplayRepresentation = TypeDisplayRepresentation(
         name: LocalizedStringResource("app_intent.category", table: "AppIntents")
@@ -50,7 +50,6 @@ nonisolated struct ExpenseCategoryEntity: AppEntity, Identifiable {
         case .leisure: LocalizedStringResource("app_intent.category.leisure", table: "AppIntents")
         case .health: LocalizedStringResource("app_intent.category.health", table: "AppIntents")
         case .shopping: LocalizedStringResource("app_intent.category.shopping", table: "AppIntents")
-        case .other: LocalizedStringResource("app_intent.category.other", table: "AppIntents")
         case nil: nil
         }
     }
@@ -60,11 +59,11 @@ nonisolated struct ExpenseCategoryQuery: EntityStringQuery {
     func entities(for identifiers: [String]) async throws -> [ExpenseCategoryEntity] {
         let all = try await CategoryCatalog.entities()
         // An id that no longer exists (deleted custom category, stale Shortcut) is handed back as a stand-in that
-        // displays as Other but keeps the requested id, so `CategoryCatalog.resolvedKey` is what falls back.
-        let other = all.first { $0.id == ExpenseCategory.other.rawValue }
+        // displays as Food but keeps the requested id, so `CategoryCatalog.resolvedKey` is what falls back.
+        let food = all.first { $0.id == ExpenseCategory.food.rawValue }
         return identifiers.compactMap { id in
             if let found = all.first(where: { $0.id == id }) { return found }
-            return other.map { ExpenseCategoryEntity(id: id, name: $0.name) }
+            return food.map { ExpenseCategoryEntity(id: id, name: $0.name) }
         }
     }
 

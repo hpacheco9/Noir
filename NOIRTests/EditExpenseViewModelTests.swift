@@ -19,7 +19,7 @@ struct EditExpenseViewModelTests {
         categories: [CategoryInfo] = CategoryInfo.builtIns
     ) -> ExpenseDTO {
         let row = Expense(
-            amount: amount, name: "Coffee", date: .now, category: .other, expenseDescription: "Morning", card: card
+            amount: amount, name: "Coffee", date: .now, category: .food, expenseDescription: "Morning", card: card
         )
         row.categoryRawValue = categoryKey
         return ExpenseDTO(row, categories: Dictionary(uniqueKeysWithValues: categories.map { ($0.key, $0) }))

@@ -7,7 +7,7 @@ import SwiftUI
 
 /// One sector of the Dashboard donut: a category, or the synthetic "All others" slice that sums the small ones.
 struct DonutSlice: Identifiable, Equatable {
-    /// Key of the synthetic slice. Not a category key, and not "Other" (that is a built-in category).
+    /// Key of the synthetic slice. Not a category key.
     static let restKey = "dashboard.rest"
     /// Above this many categories the smallest are summed into one slice.
     static let maxCategories = 6

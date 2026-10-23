@@ -28,7 +28,7 @@ nonisolated struct CategoryInfo: Sendable, Identifiable, Hashable {
     /// Localized for built-ins, the stored name for custom ones. Main actor: built-in titles come from `L10n`.
     @MainActor var title: String {
         if let customName { return customName }
-        return (ExpenseCategory(rawValue: key) ?? .other).title
+        return (ExpenseCategory(rawValue: key) ?? .food).title
     }
 
     /// The built-in this key stands for, if any.
@@ -65,7 +65,7 @@ nonisolated struct CategoryInfo: Sendable, Identifiable, Hashable {
         return UUID(uuidString: String(key.dropFirst(customPrefix.count)))
     }
 
-    static let other = CategoryInfo(builtIn: .other)
+    static let food = CategoryInfo(builtIn: .food)
 
     static var builtIns: [CategoryInfo] {
         ExpenseCategory.allCases.map { CategoryInfo(builtIn: $0) }

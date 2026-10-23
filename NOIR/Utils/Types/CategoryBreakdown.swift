@@ -25,7 +25,7 @@ nonisolated struct CategoryBreakdown: Sendable, Equatable {
     static let empty = CategoryBreakdown(total: 0, categories: [])
 
     /// Groups raw `(categoryKey, amount)` rows. Keys that no longer resolve (deleted custom category, unknown value)
-    /// count as the built-in Other, like `ExpenseDTO`. Categories whose total is not positive are dropped.
+    /// count as the built-in Food, like `ExpenseDTO`. Categories whose total is not positive are dropped.
     static func make(rows: [(key: String, amount: Double)], categories index: [String: CategoryInfo]) -> CategoryBreakdown {
         var accumulator = Accumulator()
         for row in rows { accumulator.add(key: row.key, amount: row.amount) }
@@ -44,7 +44,7 @@ nonisolated struct CategoryBreakdown: Sendable, Equatable {
         }
 
         func finish(categories index: [String: CategoryInfo]) -> CategoryBreakdown {
-            let fallback = index[ExpenseCategory.other.rawValue] ?? CategoryInfo.other
+            let fallback = index[ExpenseCategory.food.rawValue] ?? CategoryInfo.food
             var resolved: [String: (info: CategoryInfo, amount: Decimal, count: Int)] = [:]
             for (key, entry) in sums {
                 let info = index[key] ?? fallback

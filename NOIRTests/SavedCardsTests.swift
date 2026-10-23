@@ -24,7 +24,7 @@ struct SavedCardsTests {
         let start = Date(timeIntervalSince1970: 1_000_000)
         for (offset, card) in cards.enumerated() {
             context.insert(Expense(
-                amount: 1, name: "row \(offset)", date: start, category: .other, card: card,
+                amount: 1, name: "row \(offset)", date: start, category: .food, card: card,
                 createdAt: start.addingTimeInterval(TimeInterval(offset))
             ))
         }

@@ -21,9 +21,9 @@ final class CategoriesViewModel {
         self.repository = repository ?? .init(container: NOIRApp.sharedModelContainer)
     }
 
-    /// Other's current title, where deleted categories' expenses go.
-    var otherTitle: String {
-        builtIn.first { $0.key == ExpenseCategory.other.rawValue }?.title ?? ExpenseCategory.other.title
+    /// Food's current title, where deleted categories' expenses go.
+    var foodTitle: String {
+        builtIn.first { $0.key == ExpenseCategory.food.rawValue }?.title ?? ExpenseCategory.food.title
     }
 
     func load() async {
@@ -41,7 +41,7 @@ final class CategoriesViewModel {
         isLoaded = true
     }
 
-    /// Deletes a custom category; its expenses move to Other.
+    /// Deletes a custom category; its expenses move to Food.
     func delete(_ category: CategoryInfo) async {
         guard let id = category.customID else { return }
         do {

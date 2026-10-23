@@ -13,9 +13,9 @@ enum CategoryCatalog {
         return try CategoryInfo.all(in: context).map(ExpenseCategoryEntity.init)
     }
 
-    /// `key` if it is a built-in or an existing custom category, otherwise `other` (a deleted category, a stale Shortcut).
+    /// `key` if it is a built-in or an existing custom category, otherwise `food` (a deleted category, a stale Shortcut).
     static func resolvedKey(_ key: String?, in context: ModelContext) -> String {
-        let fallback = ExpenseCategory.other.rawValue
+        let fallback = ExpenseCategory.food.rawValue
         guard let key else { return fallback }
         if ExpenseCategory(rawValue: key) != nil { return key }
         guard let id = CategoryInfo.customID(fromKey: key) else { return fallback }

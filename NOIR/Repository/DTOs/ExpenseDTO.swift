@@ -18,7 +18,7 @@ struct ExpenseDTO: Sendable, Identifiable {
     nonisolated init(_ expense: Expense, categories: [String: CategoryInfo]) {
         self.id = expense.persistentModelID
         self.name = expense.name
-        self.categoryInfo = categories[expense.categoryRawValue] ?? categories[ExpenseCategory.other.rawValue] ?? CategoryInfo.other
+        self.categoryInfo = categories[expense.categoryRawValue] ?? categories[ExpenseCategory.food.rawValue] ?? CategoryInfo.food
         self.date = expense.date
         self.amount = expense.amount
         self.description = expense.expenseDescription

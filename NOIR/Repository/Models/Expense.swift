@@ -32,7 +32,7 @@ final class Expense {
     }
 
     var category: ExpenseCategory {
-        get { ExpenseCategory(rawValue: categoryRawValue) ?? .other }
+        get { ExpenseCategory(rawValue: categoryRawValue) ?? .food }
         set { categoryRawValue = newValue.rawValue }
     }
 

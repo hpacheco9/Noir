@@ -11,7 +11,7 @@ nonisolated struct ExpenseForm: Sendable {
     var name = ""
     var date = Date.now
     /// `CategoryInfo.key` of the selected category (built-in raw value or `custom:<uuid>`).
-    var category: String = ExpenseCategory.other.rawValue
+    var category: String = ExpenseCategory.food.rawValue
     var description = ""
     var card = ""
 

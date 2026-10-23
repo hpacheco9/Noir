@@ -10,14 +10,15 @@ import SwiftUI
 
 struct DonutSliceTests {
     private func spending(_ key: String, _ amount: Decimal, count: Int = 1) -> CategorySpending {
-        let builtIn = ExpenseCategory(rawValue: key) ?? .other
+        let builtIn = ExpenseCategory(rawValue: key) ?? .food
         return CategorySpending(info: CategoryInfo(builtIn: builtIn), amount: amount, count: count)
     }
 
-    /// Seven built-in-backed categories, largest first (keys only need to be distinct for slicing).
+    /// Up to seven categories (the built-ins plus one custom), largest first (keys only need to be distinct for slicing).
     private func categories(_ n: Int) -> [CategorySpending] {
-        let keys = ExpenseCategory.allCases.map(\.rawValue)
-        return (0..<n).map { spending(keys[$0], Decimal(100 - $0 * 10), count: $0 + 1) }
+        let custom = CustomCategory(name: "Pets", symbol: AssetName.CategorySymbols.all[0], colorRawValue: "teal")
+        let infos = ExpenseCategory.allCases.map { CategoryInfo(builtIn: $0) } + [CategoryInfo(custom: custom)]
+        return (0..<n).map { CategorySpending(info: infos[$0], amount: Decimal(100 - $0 * 10), count: $0 + 1) }
     }
 
     @Test(arguments: [0, 1, 5, 6])

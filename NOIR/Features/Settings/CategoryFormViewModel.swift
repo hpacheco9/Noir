@@ -68,9 +68,9 @@ final class CategoryFormViewModel {
         isDuplicate ? String(localized: L10n.NewCategory.duplicateError) : errorMessage
     }
 
-    /// Other's current title, where a deleted category's expenses go.
-    var otherTitle: String {
-        existing.first { $0.key == ExpenseCategory.other.rawValue }?.title ?? ExpenseCategory.other.title
+    /// Food's current title, where a deleted category's expenses go.
+    var foodTitle: String {
+        existing.first { $0.key == ExpenseCategory.food.rawValue }?.title ?? ExpenseCategory.food.title
     }
 
     func loadExistingNames() async {
@@ -104,7 +104,7 @@ final class CategoryFormViewModel {
         deleteErrorMessage = nil
     }
 
-    /// Custom categories can be deleted; built-ins can't (Other is the fallback for deleted ones).
+    /// Custom categories can be deleted; built-ins can't (Food is the fallback for deleted ones).
     var canDelete: Bool { editingCategory.map { !$0.isBuiltIn } ?? false }
     /// A built-in that has an override can go back to its defaults.
     var canRestore: Bool { editingCategory.map { $0.isBuiltIn && $0.isOverridden } ?? false }
@@ -131,7 +131,7 @@ final class CategoryFormViewModel {
 
     var title: LocalizedStringResource { isEditing ? L10n.NewCategory.editTitle : L10n.NewCategory.title }
 
-    /// Deletes the edited category (its expenses move to Other). Returns whether it was deleted.
+    /// Deletes the edited category (its expenses move to Food). Returns whether it was deleted.
     func delete() async -> Bool {
         guard let id = editingCategory?.customID, !isWorking else { return false }
         isWorking = true
