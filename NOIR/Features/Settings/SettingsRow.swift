@@ -10,15 +10,15 @@ struct SettingsRow: View {
     let systemImage: String
     var detail: String?
     var accessory = AssetName.System.disclosure
-    var prominentIcon = false
+    var largeIcon = false
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
                 Image(systemName: systemImage)
-                    .font(prominentIcon ? .largeTitle : nil)
-                    .foregroundStyle(prominentIcon ? .primary : .secondary)
+                    .font(largeIcon ? .title : nil)
+                    .foregroundStyle(.secondary)
 
                 Text(title)
 
