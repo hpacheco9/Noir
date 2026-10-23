@@ -20,7 +20,8 @@ struct ShortcutsView: View {
                 SettingsRow(
                     title: L10n.ShortcutsView.applePayTitle,
                     systemImage: AssetName.System.applePay,
-                    accessory: AssetName.System.externalLink
+                    accessory: AssetName.System.externalLink,
+                    prominentIcon: true
                 ) {
                     coordinator.present(SettingsRoutes.safari(url: AppLinks.walletAutomationGuide), mode: .large)
                 }
