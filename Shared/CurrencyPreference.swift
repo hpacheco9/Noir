@@ -37,13 +37,20 @@ nonisolated enum CurrencyPreference {
         }
     }
 
+    // SEK, NOK and DKK all write "kr", so they show their code instead.
+    private static let codeShownCodes: Set = ["SEK", "NOK", "DKK"]
+
+    static func presentation(for code: String) -> CurrencyFormatStyleConfiguration.Presentation {
+        codeShownCodes.contains(code) ? .isoCode : .narrow
+    }
+
     /// Format and parse style for amounts: the currency's own locale, narrow symbol ("$" for USD and CAD).
     static func formatStyle(for code: String) -> Decimal.FormatStyle.Currency {
-        Decimal.FormatStyle.Currency(code: code, locale: locale(for: code)).presentation(.narrow)
+        Decimal.FormatStyle.Currency(code: code, locale: locale(for: code)).presentation(presentation(for: code))
     }
 
     static func doubleFormatStyle(for code: String) -> FloatingPointFormatStyle<Double>.Currency {
-        FloatingPointFormatStyle<Double>.Currency(code: code, locale: locale(for: code)).presentation(.narrow)
+        FloatingPointFormatStyle<Double>.Currency(code: code, locale: locale(for: code)).presentation(presentation(for: code))
     }
 
     /// Rendered to a String on purpose: `Text(_, format:)` swaps the style's locale for the environment's, which

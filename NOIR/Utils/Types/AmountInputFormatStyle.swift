@@ -33,7 +33,7 @@ nonisolated struct AmountInputFormatStyle: ParseableFormatStyle {
     private var currencyLocale: Locale { Locale(identifier: currencyLocaleIdentifier) }
 
     private var base: Decimal.FormatStyle.Currency {
-        Decimal.FormatStyle.Currency(code: code, locale: currencyLocale).presentation(.narrow)
+        Decimal.FormatStyle.Currency(code: code, locale: currencyLocale).presentation(CurrencyPreference.presentation(for: code))
     }
 
     func format(_ value: Decimal) -> String {
