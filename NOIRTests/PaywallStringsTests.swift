@@ -9,7 +9,7 @@ import Foundation
 
 struct PaywallStringsTests {
     private static let missing = "<missing>"
-    nonisolated static let languages = ["en", "pt-PT", "pt-BR", "es", "de", "fr"]
+    nonisolated static let languages = ["en", "pt-PT", "pt-BR", "es", "de", "fr", "nb", "da", "fi"]
 
     private static let resources: [LocalizedStringResource] = [
         L10n.Paywall.title,

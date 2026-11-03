@@ -4,6 +4,12 @@
     "Add ${amount} at ${name} in ${category} with ${card}" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj ${amount} hos ${name} i ${category} med ${card}"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22,10 +28,22 @@
             "value" : "Añadir ${amount} en ${name} (${category}) con ${card}"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää kulu ${amount} nimellä ${name} kategoriaan ${category} kortilla ${card}"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter ${amount} chez ${name} dans ${category} avec ${card}"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til ${amount} hos ${name} i ${category} med ${card}"
           }
         },
         "pt-BR" : {
@@ -45,6 +63,12 @@
     "app_intent.card" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kort"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63,10 +87,22 @@
             "value" : "Tarjeta"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kortti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Carte"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kort"
           }
         },
         "pt-BR" : {
@@ -86,6 +122,12 @@
     "app_intent.card.none" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intet kort"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104,10 +146,22 @@
             "value" : "Sin tarjeta"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei korttia"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucune carte"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen kort"
           }
         },
         "pt-BR" : {
@@ -127,6 +181,12 @@
     "app_intent.card_prompt" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvilket kort?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -145,10 +205,22 @@
             "value" : "¿Con qué tarjeta?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikä kortti?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quelle carte ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvilket kort?"
           }
         },
         "pt-BR" : {
@@ -167,6 +239,12 @@
     },
     "app_intent.category" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -185,10 +263,22 @@
             "value" : "Categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategoria"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
           }
         },
         "pt-BR" : {
@@ -207,6 +297,12 @@
     },
     "app_intent.category.shopping" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopping"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -225,10 +321,22 @@
             "value" : "Compras"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostokset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Achats"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopping"
           }
         },
         "pt-BR" : {
@@ -248,6 +356,12 @@
     "app_intent.category_prompt" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvilken kategori?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -266,10 +380,22 @@
             "value" : "¿Qué categoría?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikä kategoria?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quelle catégorie ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvilken kategori?"
           }
         },
         "pt-BR" : {
@@ -288,6 +414,12 @@
     },
     "app_intent.category.food" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mad"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -306,10 +438,22 @@
             "value" : "Comida"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruoka"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alimentation"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mat"
           }
         },
         "pt-BR" : {
@@ -328,6 +472,12 @@
     },
     "app_intent.category.health" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sundhed"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -346,10 +496,22 @@
             "value" : "Salud"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terveys"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Santé"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Helse"
           }
         },
         "pt-BR" : {
@@ -368,6 +530,12 @@
     },
     "app_intent.category.home" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bolig"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -386,10 +554,22 @@
             "value" : "Hogar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logement"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bolig"
           }
         },
         "pt-BR" : {
@@ -408,6 +588,12 @@
     },
     "app_intent.category.leisure" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fritid"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -426,10 +612,22 @@
             "value" : "Ocio"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vapaa-aika"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loisirs"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fritid"
           }
         },
         "pt-BR" : {
@@ -448,6 +646,12 @@
     },
     "app_intent.category.transport" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transport"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -466,10 +670,22 @@
             "value" : "Transporte"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liikenne"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transports"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transport"
           }
         },
         "pt-BR" : {
@@ -489,6 +705,12 @@
     "app_intent.summary.change_card" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skift kort"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -507,10 +729,22 @@
             "value" : "Cambiar tarjeta"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaihda kortti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Changer de carte"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endre kort"
           }
         },
         "pt-BR" : {
@@ -530,6 +764,12 @@
     "app_intent.summary.change_category" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skift kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -548,10 +788,22 @@
             "value" : "Cambiar categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaihda kategoria"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Changer de catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endre kategori"
           }
         },
         "pt-BR" : {
@@ -571,6 +823,12 @@
     "app_intent.summary.toggle_list" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis valgmuligheder"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -589,10 +847,22 @@
             "value" : "Mostrar opciones"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä vaihtoehdot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Afficher les options"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis alternativer"
           }
         },
         "pt-BR" : {
@@ -612,6 +882,12 @@
     "apple_pay_intent.description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gem en Apple Pay-betaling som udgift uden at stille spørgsmål. Designet til en Wallet-automatisering."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -630,10 +906,22 @@
             "value" : "Guarda un pago con Apple Pay como gasto, sin hacer preguntas. Pensado para una automatización de Wallet."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallentaa Apple Pay -maksun kuluksi kysymättä mitään. Tarkoitettu Lompakon automaatiota varten."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistre un paiement Apple Pay comme dépense, sans poser de questions. Conçu pour une automatisation Wallet."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagre en Apple Pay-betaling som en utgift uten å spørre om noe. Laget for en Lommebok-automatisering."
           }
         },
         "pt-BR" : {
@@ -653,6 +941,12 @@
     "apple_pay_intent.merchant" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forhandler"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -671,10 +965,22 @@
             "value" : "Comercio"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kauppias"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Commerçant"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forhandler"
           }
         },
         "pt-BR" : {
@@ -694,6 +1000,12 @@
     "apple_pay_intent.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj Apple Pay-udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -712,10 +1024,22 @@
             "value" : "Registrar gasto de Apple Pay"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää Apple Pay -kulu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter une dépense Apple Pay"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til Apple Pay-utgift"
           }
         },
         "pt-BR" : {

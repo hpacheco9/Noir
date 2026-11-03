@@ -11,6 +11,12 @@
     },
     "app_intent.open_add_expense" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åbn Tilføj udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29,10 +35,22 @@
             "value" : "Abrir Registrar gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa Lisää kulu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir Ajouter une dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpne Legg til utgift"
           }
         },
         "pt-BR" : {
@@ -51,6 +69,12 @@
     },
     "widget.add_expense.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gå direkte til at tilføje en udgift."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69,10 +93,22 @@
             "value" : "Ve directamente a registrar un gasto."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirry suoraan kulun lisäämiseen."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accède directement à l’ajout d’une dépense."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gå rett til å legge til en utgift."
           }
         },
         "pt-BR" : {
@@ -91,6 +127,12 @@
     },
     "widget.add_expense.display_name" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -109,10 +151,22 @@
             "value" : "Registrar gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää kulu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter une dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til utgift"
           }
         },
         "pt-BR" : {
@@ -131,6 +185,12 @@
     },
     "widget.month_total.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit samlede forbrug denne måned."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149,10 +209,22 @@
             "value" : "Tu gasto total de este mes."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokonaiskulutuksesi tässä kuussa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le total de tes dépenses ce mois-ci."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det totale forbruket ditt denne måneden."
           }
         },
         "pt-BR" : {
@@ -171,6 +243,12 @@
     },
     "widget.month_total.display_name" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forbrug denne måned"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -189,10 +267,22 @@
             "value" : "Gasto del mes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulutus tässä kuussa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépenses du mois"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brukt denne måneden"
           }
         },
         "pt-BR" : {
@@ -211,6 +301,12 @@
     },
     "widget.month_total.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne måned"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -229,10 +325,22 @@
             "value" : "Este mes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä kuukausi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce mois-ci"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne måneden"
           }
         },
         "pt-BR" : {

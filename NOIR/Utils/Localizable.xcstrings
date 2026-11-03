@@ -8,6 +8,12 @@
     },
     "add_expense.amount_accessibility_label" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgiftens beløb"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26,10 +32,22 @@
             "value" : "Importe del gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulun summa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Montant de la dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgiftsbeløp"
           }
         },
         "pt-BR" : {
@@ -48,6 +66,12 @@
     },
     "add_expense.card" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kort"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66,10 +90,22 @@
             "value" : "Tarjeta"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kortti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Carte"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kort"
           }
         },
         "pt-BR" : {
@@ -88,6 +124,12 @@
     },
     "add_expense.card.name_placeholder" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kortnavn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -106,10 +148,22 @@
             "value" : "Nombre de la tarjeta"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kortin nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom de la carte"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kortnavn"
           }
         },
         "pt-BR" : {
@@ -128,6 +182,12 @@
     },
     "add_expense.card.new" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nyt kort…"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -146,10 +206,22 @@
             "value" : "Nueva tarjeta…"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uusi kortti…"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle carte…"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nytt kort…"
           }
         },
         "pt-BR" : {
@@ -168,6 +240,12 @@
     },
     "add_expense.card.none" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -186,10 +264,22 @@
             "value" : "Ninguna"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei mitään"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucune"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen"
           }
         },
         "pt-BR" : {
@@ -208,6 +298,12 @@
     },
     "add_expense.category" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -226,10 +322,22 @@
             "value" : "Categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategoria"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
           }
         },
         "pt-BR" : {
@@ -248,6 +356,12 @@
     },
     "add_expense.create_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -266,10 +380,22 @@
             "value" : "Nuevo gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uusi kulu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny utgift"
           }
         },
         "pt-BR" : {
@@ -288,6 +414,12 @@
     },
     "add_expense.date" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dato"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -306,10 +438,22 @@
             "value" : "Fecha"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivämäärä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dato"
           }
         },
         "pt-BR" : {
@@ -328,6 +472,12 @@
     },
     "add_expense.description_section" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskrivelse"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -346,10 +496,22 @@
             "value" : "Descripción"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuvaus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Description"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskrivelse"
           }
         },
         "pt-BR" : {
@@ -368,6 +530,12 @@
     },
     "add_expense.details_section" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detaljer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -386,10 +554,22 @@
             "value" : "Detalles"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiedot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Détails"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detaljer"
           }
         },
         "pt-BR" : {
@@ -408,6 +588,12 @@
     },
     "add_expense.edit_hint" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åbner udgiften til redigering"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -426,10 +612,22 @@
             "value" : "Abre el gasto para editarlo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa kulun muokattavaksi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvre la dépense pour la modifier"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpner utgiften for redigering"
           }
         },
         "pt-BR" : {
@@ -448,6 +646,12 @@
     },
     "add_expense.edit_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -466,10 +670,22 @@
             "value" : "Editar gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muokkaa kulua"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modifier la dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger utgift"
           }
         },
         "pt-BR" : {
@@ -488,6 +704,12 @@
     },
     "add_expense.expense_section" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -506,10 +728,22 @@
             "value" : "Gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgift"
           }
         },
         "pt-BR" : {
@@ -528,6 +762,12 @@
     },
     "add_expense.name" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -546,10 +786,22 @@
             "value" : "Nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
           }
         },
         "pt-BR" : {
@@ -568,6 +820,12 @@
     },
     "add_expense.note_placeholder" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj en note"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -586,10 +844,22 @@
             "value" : "Escribe una nota"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää muistiinpano"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter une note"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til et notat"
           }
         },
         "pt-BR" : {
@@ -608,6 +878,12 @@
     },
     "add_expense.save_error_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgiften kunne ikke gemmes"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -626,10 +902,22 @@
             "value" : "No se pudo guardar el gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulua ei voitu tallentaa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossible d’enregistrer la dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke lagre utgiften"
           }
         },
         "pt-BR" : {
@@ -648,6 +936,12 @@
     },
     "app_intent.amount" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0,00 kr."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -666,10 +960,22 @@
             "value" : "0,00 €"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0,00 €"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "0,00 €"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0,00 kr"
           }
         },
         "pt-BR" : {
@@ -688,6 +994,12 @@
     },
     "app_intent.amount_prompt" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvad er udgiftens beløb?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -706,10 +1018,22 @@
             "value" : "¿Cuál es el importe del gasto?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikä on kulun summa?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quel est le montant ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hva er beløpet på utgiften?"
           }
         },
         "pt-BR" : {
@@ -728,6 +1052,12 @@
     },
     "app_intent.date" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dato"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -746,10 +1076,22 @@
             "value" : "Fecha"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivämäärä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dato"
           }
         },
         "pt-BR" : {
@@ -768,6 +1110,12 @@
     },
     "app_intent.date_prompt" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvornår var udgiften?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -786,10 +1134,22 @@
             "value" : "¿Cuándo fue este gasto?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Milloin kulu tehtiin?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quand as-tu fait cette dépense ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Når var denne utgiften?"
           }
         },
         "pt-BR" : {
@@ -808,6 +1168,12 @@
     },
     "app_intent.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gem en ny udgift i NOIR."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -826,10 +1192,22 @@
             "value" : "Guarda un nuevo gasto en NOIR."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallentaa uuden kulun sovellukseen NOIR."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistre une nouvelle dépense dans NOIR."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagre en ny utgift i NOIR."
           }
         },
         "pt-BR" : {
@@ -848,6 +1226,12 @@
     },
     "app_intent.empty_name" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indtast et navn til udgiften."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -866,10 +1250,22 @@
             "value" : "Escribe un nombre para el gasto."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anna kulun nimi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indique un nom pour la dépense."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv inn et navn på utgiften."
           }
         },
         "pt-BR" : {
@@ -888,6 +1284,12 @@
     },
     "app_intent.expense_saved" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny udgift tilføjet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -906,10 +1308,22 @@
             "value" : "Gasto registrado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uusi kulu lisätty"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle dépense ajoutée"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny utgift lagt til"
           }
         },
         "pt-BR" : {
@@ -928,6 +1342,12 @@
     },
     "app_intent.invalid_amount" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indtast et beløb over nul."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -946,10 +1366,22 @@
             "value" : "El importe debe ser mayor que cero."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anna nollaa suurempi summa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indique un montant supérieur à zéro."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv inn et beløp som er større enn null."
           }
         },
         "pt-BR" : {
@@ -968,6 +1400,12 @@
     },
     "app_intent.name" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -986,10 +1424,22 @@
             "value" : "Nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
           }
         },
         "pt-BR" : {
@@ -1008,6 +1458,12 @@
     },
     "app_intent.name_prompt" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvad hedder udgiften?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1026,10 +1482,22 @@
             "value" : "¿Cómo se llama este gasto?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikä tämän kulun nimi on?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comment s’appelle cette dépense ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hva heter denne utgiften?"
           }
         },
         "pt-BR" : {
@@ -1048,6 +1516,12 @@
     },
     "app_intent.note" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1066,10 +1540,22 @@
             "value" : "Nota"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muistiinpano"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Note"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notat"
           }
         },
         "pt-BR" : {
@@ -1088,6 +1574,12 @@
     },
     "app_intent.open_add_expense" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åbn Tilføj udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1106,10 +1598,22 @@
             "value" : "Abrir Registrar gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa Lisää kulu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir Ajouter une dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpne Legg til utgift"
           }
         },
         "pt-BR" : {
@@ -1128,6 +1632,12 @@
     },
     "app_intent.summary.cancel" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuller"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1146,10 +1656,22 @@
             "value" : "Cancelar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peruuta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuler"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
           }
         },
         "pt-BR" : {
@@ -1168,6 +1690,12 @@
     },
     "app_intent.summary.header" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekræft detaljerne for udgiften:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1186,10 +1714,22 @@
             "value" : "Confirma los datos del gasto:"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vahvista kulun tiedot:"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vérifie les détails de la dépense :"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekreft utgiftsdetaljene:"
           }
         },
         "pt-BR" : {
@@ -1208,6 +1748,12 @@
     },
     "app_intent.summary.save" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gem"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1226,10 +1772,22 @@
             "value" : "Guardar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallenna"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistrer"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagre"
           }
         },
         "pt-BR" : {
@@ -1248,6 +1806,12 @@
     },
     "app_intent.summary.snippet_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgiftsoversigt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1266,10 +1830,22 @@
             "value" : "Resumen del gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulun yhteenveto"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vérifier la dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgiftsoppsummering"
           }
         },
         "pt-BR" : {
@@ -1289,6 +1865,12 @@
     "app_intent.summary.spoken %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gem %1$@ til %2$@?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1307,10 +1889,22 @@
             "value" : "¿Guardar %2$@ de %1$@?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallennetaanko %2$@ summalla %1$@?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistrer %1$@ pour %2$@ ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagre %1$@ for %2$@?"
           }
         },
         "pt-BR" : {
@@ -1329,6 +1923,12 @@
     },
     "app_intent.summary.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1347,10 +1947,22 @@
             "value" : "Nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tittel"
           }
         },
         "pt-BR" : {
@@ -1369,6 +1981,12 @@
     },
     "app_intent.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1387,10 +2005,22 @@
             "value" : "Registrar gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää kulu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter une dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til utgift"
           }
         },
         "pt-BR" : {
@@ -1409,6 +2039,12 @@
     },
     "app_intent.untitled" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uden titel"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1427,10 +2063,22 @@
             "value" : "Sin título"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimetön"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sans titre"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uten tittel"
           }
         },
         "pt-BR" : {
@@ -1450,6 +2098,12 @@
     "categories.add" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1468,10 +2122,22 @@
             "value" : "Nueva categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää kategoria"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter une catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til kategori"
           }
         },
         "pt-BR" : {
@@ -1491,6 +2157,12 @@
     "categories.built_in_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indbyggede"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1509,10 +2181,22 @@
             "value" : "Predeterminadas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sisäänrakennetut"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Par défaut"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Innebygde"
           }
         },
         "pt-BR" : {
@@ -1532,6 +2216,12 @@
     "categories.custom_empty" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen egne kategorier endnu. Tryk på + for at oprette en."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1550,10 +2240,22 @@
             "value" : "Aún no hay categorías personalizadas. Toca + para crear una."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei vielä omia kategorioita. Luo sellainen napauttamalla +."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucune catégorie personnalisée pour l’instant. Appuie sur + pour en créer une."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen egne kategorier ennå. Trykk på + for å opprette en."
           }
         },
         "pt-BR" : {
@@ -1573,6 +2275,12 @@
     "categories.custom_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egne"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1591,10 +2299,22 @@
             "value" : "Personalizadas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omat"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personnalisées"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egne"
           }
         },
         "pt-BR" : {
@@ -1614,6 +2334,12 @@
     "categories.delete_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorien kunne ikke slettes."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1632,10 +2358,22 @@
             "value" : "No se pudo eliminar la categoría."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategoriaa ei voitu poistaa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossible de supprimer la catégorie."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke slette kategorien."
           }
         },
         "pt-BR" : {
@@ -1655,6 +2393,12 @@
     "categories.delete_message %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgifterne i denne kategori flyttes til »%@«."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1673,10 +2417,22 @@
             "value" : "Sus gastos pasarán a “%@”."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sen kulut siirretään kategoriaan ”%@”."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ses dépenses seront déplacées vers « %@ »."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgiftene flyttes til «%@»."
           }
         },
         "pt-BR" : {
@@ -1696,6 +2452,12 @@
     "categories.delete_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du slette kategorien?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1714,10 +2476,22 @@
             "value" : "¿Eliminar categoría?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poistetaanko kategoria?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer la catégorie ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du slette kategorien?"
           }
         },
         "pt-BR" : {
@@ -1737,6 +2511,12 @@
     "categories.error_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noget gik galt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1755,10 +2535,22 @@
             "value" : "Se produjo un error"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jokin meni pieleen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une erreur s’est produite"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noe gikk galt"
           }
         },
         "pt-BR" : {
@@ -1778,6 +2570,12 @@
     "categories.load_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorierne kunne ikke indlæses."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1796,10 +2594,22 @@
             "value" : "No se pudieron cargar las categorías."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorioita ei voitu ladata."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossible de charger les catégories."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke laste inn kategoriene."
           }
         },
         "pt-BR" : {
@@ -1819,6 +2629,12 @@
     "categories.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorier"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1837,10 +2653,22 @@
             "value" : "Categorías"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategoriat"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Catégories"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorier"
           }
         },
         "pt-BR" : {
@@ -1860,6 +2688,12 @@
     "category_color.blue" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blå"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1878,10 +2712,22 @@
             "value" : "Azul"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sininen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bleu"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blå"
           }
         },
         "pt-BR" : {
@@ -1901,6 +2747,12 @@
     "category_color.brown" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brun"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1919,10 +2771,22 @@
             "value" : "Marrón"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruskea"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Marron"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brun"
           }
         },
         "pt-BR" : {
@@ -1942,6 +2806,12 @@
     "category_color.green" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grøn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1960,10 +2830,22 @@
             "value" : "Verde"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vihreä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vert"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grønn"
           }
         },
         "pt-BR" : {
@@ -1983,6 +2865,12 @@
     "category_color.indigo" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indigo"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2001,7 +2889,19 @@
             "value" : "Índigo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indigo"
+          }
+        },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indigo"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indigo"
@@ -2024,6 +2924,12 @@
     "category_color.orange" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orange"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2042,10 +2948,22 @@
             "value" : "Naranja"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oranssi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Orange"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oransje"
           }
         },
         "pt-BR" : {
@@ -2065,6 +2983,12 @@
     "category_color.pink" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyserød"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2083,10 +3007,22 @@
             "value" : "Rosa"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinkki"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rose"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosa"
           }
         },
         "pt-BR" : {
@@ -2106,6 +3042,12 @@
     "category_color.purple" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lilla"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2124,10 +3066,22 @@
             "value" : "Morado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Violetti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Violet"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lilla"
           }
         },
         "pt-BR" : {
@@ -2147,6 +3101,12 @@
     "category_color.red" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rød"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2165,10 +3125,22 @@
             "value" : "Rojo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Punainen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rouge"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rød"
           }
         },
         "pt-BR" : {
@@ -2188,6 +3160,12 @@
     "category_color.teal" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blågrøn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2206,10 +3184,22 @@
             "value" : "Verde azulado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinivihreä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sarcelle"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blågrønn"
           }
         },
         "pt-BR" : {
@@ -2229,6 +3219,12 @@
     "category_color.yellow" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gul"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2247,10 +3243,22 @@
             "value" : "Amarillo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keltainen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jaune"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gul"
           }
         },
         "pt-BR" : {
@@ -2269,6 +3277,12 @@
     },
     "dashboard.amount" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløb"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2287,10 +3301,22 @@
             "value" : "Importe"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Montant"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløp"
           }
         },
         "pt-BR" : {
@@ -2310,6 +3336,12 @@
     "dashboard.announcement %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: %2$@ brugt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2328,10 +3360,22 @@
             "value" : "%1$@: %2$@ en gastos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: kulutus %2$@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ : %2$@ de dépenses"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: %2$@ brukt"
           }
         },
         "pt-BR" : {
@@ -2350,6 +3394,12 @@
     },
     "dashboard.by_category" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Efter kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2368,10 +3418,22 @@
             "value" : "Por categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorioittain"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Par catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etter kategori"
           }
         },
         "pt-BR" : {
@@ -2390,6 +3452,12 @@
     },
     "dashboard.category" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2408,10 +3476,22 @@
             "value" : "Categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategoria"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
           }
         },
         "pt-BR" : {
@@ -2430,6 +3510,12 @@
     },
     "dashboard.chart_label" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forbrug efter kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2448,10 +3534,22 @@
             "value" : "Gastos por categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulutus kategorioittain"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépenses par catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forbruk etter kategori"
           }
         },
         "pt-BR" : {
@@ -2470,6 +3568,12 @@
     },
     "dashboard.empty_description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgifter, du tilføjer i denne periode, vises her grupperet efter kategori."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2488,10 +3592,22 @@
             "value" : "Los gastos que registres en este periodo aparecerán aquí, agrupados por categoría."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tänä ajanjaksona lisäämäsi kulut näkyvät tässä kategorioittain ryhmiteltyinä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les dépenses que tu ajoutes sur cette période apparaîtront ici, regroupées par catégorie."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgifter du legger til i denne perioden, vises her, gruppert etter kategori."
           }
         },
         "pt-BR" : {
@@ -2510,6 +3626,12 @@
     },
     "dashboard.empty_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intet forbrug endnu"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2528,10 +3650,22 @@
             "value" : "Aún no hay gastos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei vielä kulutusta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucune dépense pour l’instant"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen utgifter ennå"
           }
         },
         "pt-BR" : {
@@ -2550,6 +3684,12 @@
     },
     "dashboard.error_description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der opstod en fejl under indlæsning af dine udgifter. Prøv igen."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2568,10 +3708,22 @@
             "value" : "Se produjo un error al leer tus gastos. Prueba otra vez."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulujen lukemisessa tapahtui virhe. Yritä uudelleen."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une erreur s’est produite lors du chargement de tes dépenses. Réessaie."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noe gikk galt under lesing av utgiftene dine. Prøv igjen."
           }
         },
         "pt-BR" : {
@@ -2590,6 +3742,12 @@
     },
     "dashboard.error_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit forbrug kunne ikke indlæses"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2608,10 +3766,22 @@
             "value" : "No se pudieron cargar tus gastos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulutusta ei voitu ladata"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossible de charger tes dépenses"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke laste inn forbruket ditt"
           }
         },
         "pt-BR" : {
@@ -2631,6 +3801,24 @@
     "dashboard.expense_count %lld" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld udgift"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld udgifter"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -2685,6 +3873,24 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kulu"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kulua"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -2698,6 +3904,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld dépenses"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld utgift"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld utgifter"
                 }
               }
             }
@@ -2750,6 +3974,12 @@
     "dashboard.in_rest %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "i %@"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2768,10 +3998,22 @@
             "value" : "en “%@”"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ryhmässä %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "dans « %@ »"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "i %@"
           }
         },
         "pt-BR" : {
@@ -2790,6 +4032,12 @@
     },
     "dashboard.period_picker" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periode"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2808,10 +4056,22 @@
             "value" : "Periodo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajanjakso"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Période"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periode"
           }
         },
         "pt-BR" : {
@@ -2830,6 +4090,12 @@
     },
     "dashboard.rest" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle andre"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2848,10 +4114,22 @@
             "value" : "Resto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muut"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le reste"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle andre"
           }
         },
         "pt-BR" : {
@@ -2870,6 +4148,12 @@
     },
     "dashboard.retry" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv igen"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2888,10 +4172,22 @@
             "value" : "Reintentar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yritä uudelleen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réessayer"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv igjen"
           }
         },
         "pt-BR" : {
@@ -2910,6 +4206,12 @@
     },
     "dashboard.row_hint" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fremhæver kategorien i diagrammet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2928,10 +4230,22 @@
             "value" : "Resalta esta categoría en el gráfico"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Korostaa tämän kategorian kaaviossa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Met en évidence cette catégorie dans le graphique"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fremhever denne kategorien i diagrammet"
           }
         },
         "pt-BR" : {
@@ -2950,6 +4264,12 @@
     },
     "dashboard.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oversigt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2968,10 +4288,22 @@
             "value" : "Resumen"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yleiskatsaus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Résumé"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oversikt"
           }
         },
         "pt-BR" : {
@@ -2991,6 +4323,12 @@
     "dashboard.value %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ af totalen"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3009,10 +4347,22 @@
             "value" : "%1$@, %2$@ del total"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ kokonaissummasta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@ du total"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ av totalen"
           }
         },
         "pt-BR" : {
@@ -3032,6 +4382,12 @@
     "dashboard.value_with_members %@ %@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ af totalen. Inkluderer %3$@"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3050,10 +4406,22 @@
             "value" : "%1$@, %2$@ del total. Incluye %3$@"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ kokonaissummasta. Sisältää: %3$@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@ du total. Comprend %3$@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ av totalen. Inkluderer %3$@"
           }
         },
         "pt-BR" : {
@@ -3072,6 +4440,12 @@
     },
     "expense_category.food" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mad"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3090,10 +4464,22 @@
             "value" : "Comida"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruoka"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alimentation"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mat"
           }
         },
         "pt-BR" : {
@@ -3112,6 +4498,12 @@
     },
     "expense_category.health" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sundhed"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3130,10 +4522,22 @@
             "value" : "Salud"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terveys"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Santé"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Helse"
           }
         },
         "pt-BR" : {
@@ -3152,6 +4556,12 @@
     },
     "expense_category.home" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bolig"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3170,10 +4580,22 @@
             "value" : "Hogar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logement"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bolig"
           }
         },
         "pt-BR" : {
@@ -3192,6 +4614,12 @@
     },
     "expense_category.leisure" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fritid"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3210,10 +4638,22 @@
             "value" : "Ocio"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vapaa-aika"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loisirs"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fritid"
           }
         },
         "pt-BR" : {
@@ -3232,6 +4672,12 @@
     },
     "expense_category.shopping" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopping"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3250,10 +4696,22 @@
             "value" : "Compras"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostokset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Achats"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopping"
           }
         },
         "pt-BR" : {
@@ -3272,6 +4730,12 @@
     },
     "expense_category.transport" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transport"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3290,10 +4754,22 @@
             "value" : "Transporte"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liikenne"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transports"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transport"
           }
         },
         "pt-BR" : {
@@ -3312,6 +4788,12 @@
     },
     "expense_deletion.message" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgiften fjernes permanent."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3330,10 +4812,22 @@
             "value" : "Este gasto se eliminará de forma permanente."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä kulu poistetaan pysyvästi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette dépense sera définitivement supprimée."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne utgiften fjernes permanent."
           }
         },
         "pt-BR" : {
@@ -3352,6 +4846,12 @@
     },
     "expense_deletion.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du slette udgiften?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3370,10 +4870,22 @@
             "value" : "¿Eliminar gasto?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poistetaanko kulu?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer la dépense ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du slette utgiften?"
           }
         },
         "pt-BR" : {
@@ -3392,6 +4904,12 @@
     },
     "legal.privacy_policy" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privatlivspolitik"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3410,10 +4928,22 @@
             "value" : "Política de privacidad"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietosuojakäytäntö"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Politique de confidentialité"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personvernerklæring"
           }
         },
         "pt-BR" : {
@@ -3432,6 +4962,12 @@
     },
     "legal.terms_of_service" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servicevilkår"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3450,10 +4986,22 @@
             "value" : "Condiciones del servicio"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käyttöehdot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conditions d’utilisation"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruksvilkår"
           }
         },
         "pt-BR" : {
@@ -3472,6 +5020,12 @@
     },
     "legal.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om & juridisk"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3490,10 +5044,22 @@
             "value" : "Información y aviso legal"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietoja ja oikeudelliset asiat"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "À propos et mentions légales"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om og juridisk"
           }
         },
         "pt-BR" : {
@@ -3512,6 +5078,12 @@
     },
     "main_view.empty_description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryk på + øverst for at tilføje din første udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3530,10 +5102,22 @@
             "value" : "Toca el botón + de arriba para registrar tu primer gasto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää ensimmäinen kulusi napauttamalla yllä olevaa +-painiketta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Appuie sur + en haut pour ajouter ta première dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trykk på +-knappen over for å legge til din første utgift"
           }
         },
         "pt-BR" : {
@@ -3552,6 +5136,12 @@
     },
     "main_view.empty_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen transaktioner"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3570,10 +5160,22 @@
             "value" : "Sin gastos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei tapahtumia"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucune dépense"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen transaksjoner"
           }
         },
         "pt-BR" : {
@@ -3592,6 +5194,12 @@
     },
     "main_view.latest_transactions" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seneste transaktioner"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3610,10 +5218,22 @@
             "value" : "Gastos recientes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viimeisimmät tapahtumat"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dernières dépenses"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siste transaksjoner"
           }
         },
         "pt-BR" : {
@@ -3633,6 +5253,12 @@
     "new_category.color_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Farve"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3651,10 +5277,22 @@
             "value" : "Color"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Väri"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Couleur"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Farge"
           }
         },
         "pt-BR" : {
@@ -3674,6 +5312,12 @@
     "new_category.duplicate_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der findes allerede en kategori med dette navn."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3692,10 +5336,22 @@
             "value" : "Ya existe una categoría con este nombre."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämänniminen kategoria on jo olemassa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une catégorie porte déjà ce nom."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det finnes allerede en kategori med dette navnet."
           }
         },
         "pt-BR" : {
@@ -3715,6 +5371,12 @@
     "new_category.edit_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3733,10 +5395,22 @@
             "value" : "Editar categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muokkaa kategoriaa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modifier la catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger kategori"
           }
         },
         "pt-BR" : {
@@ -3756,6 +5430,12 @@
     "new_category.empty_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indtast et navn til kategorien."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3774,10 +5454,22 @@
             "value" : "Escribe un nombre para la categoría."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anna kategorialle nimi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indique un nom pour la catégorie."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv inn et navn på kategorien."
           }
         },
         "pt-BR" : {
@@ -3797,6 +5489,12 @@
     "new_category.name_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorinavn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3815,10 +5513,22 @@
             "value" : "Nombre de la categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorian nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom de la catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorinavn"
           }
         },
         "pt-BR" : {
@@ -3838,6 +5548,12 @@
     "new_category.name_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3856,10 +5572,22 @@
             "value" : "Nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
           }
         },
         "pt-BR" : {
@@ -3879,6 +5607,12 @@
     "new_category.preview_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3897,10 +5631,22 @@
             "value" : "Categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategoria"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
           }
         },
         "pt-BR" : {
@@ -3920,6 +5666,12 @@
     "new_category.restore_default" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gendan standard"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3938,10 +5690,22 @@
             "value" : "Restablecer categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palauta oletus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rétablir la catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gjenopprett standard"
           }
         },
         "pt-BR" : {
@@ -3961,6 +5725,12 @@
     "new_category.restore_duplicate_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En anden kategori bruger allerede standardnavnet. Omdøb den først."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3979,10 +5749,22 @@
             "value" : "Otra categoría ya usa el nombre predeterminado. Cámbiale el nombre primero."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toinen kategoria käyttää jo oletusnimeä. Nimeä se ensin uudelleen."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une autre catégorie utilise déjà le nom par défaut. Renomme-la d’abord."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En annen kategori bruker allerede standardnavnet. Gi den et nytt navn først."
           }
         },
         "pt-BR" : {
@@ -4002,6 +5784,12 @@
     "new_category.restore_message" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorien får sit oprindelige navn, ikon og farve tilbage."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4020,10 +5808,22 @@
             "value" : "Esta categoría recupera su nombre, icono y color originales."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorian alkuperäinen nimi, kuvake ja väri palautetaan."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette catégorie retrouvera son nom, son symbole et sa couleur d’origine."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne kategorien går tilbake til det opprinnelige navnet, ikonet og fargen."
           }
         },
         "pt-BR" : {
@@ -4043,6 +5843,12 @@
     "new_category.restore_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du gendanne standard?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4061,10 +5867,22 @@
             "value" : "¿Restablecer la categoría?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palautetaanko oletus?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rétablir la catégorie ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vil du gjenopprette standarden?"
           }
         },
         "pt-BR" : {
@@ -4084,6 +5902,12 @@
     "new_category.save_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorien kunne ikke gemmes."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4102,10 +5926,22 @@
             "value" : "No se pudo guardar la categoría."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategoriaa ei voitu tallentaa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossible d’enregistrer la catégorie."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke lagre kategorien."
           }
         },
         "pt-BR" : {
@@ -4125,6 +5961,12 @@
     "new_category.symbol_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4143,10 +5985,22 @@
             "value" : "Símbolo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symboli"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Symbole"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol"
           }
         },
         "pt-BR" : {
@@ -4166,6 +6020,12 @@
     "new_category.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny kategori"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4184,10 +6044,22 @@
             "value" : "Nueva categoría"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uusi kategoria"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle catégorie"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny kategori"
           }
         },
         "pt-BR" : {
@@ -4206,6 +6078,12 @@
     },
     "noir_pro.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betal én gang. Din for altid."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4224,10 +6102,22 @@
             "value" : "Un solo pago. Para siempre."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maksa kerran. Omasi ikuisesti."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paie une fois. Profites-en à vie."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betal én gang. Din for alltid."
           }
         },
         "pt-BR" : {
@@ -4246,6 +6136,12 @@
     },
     "noir_pro.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noir Pro"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4264,7 +6160,19 @@
             "value" : "Noir Pro"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noir Pro"
+          }
+        },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noir Pro"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Noir Pro"
@@ -4286,6 +6194,12 @@
     },
     "noir_pro.upgrade" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgrader"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4304,10 +6218,22 @@
             "value" : "Mejorar a Pro"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivitä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Passer à Pro"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader"
           }
         },
         "pt-BR" : {
@@ -4326,6 +6252,12 @@
     },
     "notification.expense_added_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny udgift tilføjet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4344,10 +6276,22 @@
             "value" : "Gasto registrado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uusi kulu lisätty"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle dépense ajoutée"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny utgift lagt til"
           }
         },
         "pt-BR" : {
@@ -4366,6 +6310,12 @@
     },
     "onboarding.continue" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsæt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4384,10 +6334,22 @@
             "value" : "Continuar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jatka"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continuer"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsett"
           }
         },
         "pt-BR" : {
@@ -4407,6 +6369,12 @@
     "onboarding.currency.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle beløb vises i denne valuta. Du kan altid ændre den i Indstillinger."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4425,10 +6393,22 @@
             "value" : "Todos los importes se muestran en esta moneda. Puedes cambiarla cuando quieras en Ajustes."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaikki summat näytetään tässä valuutassa. Voit vaihtaa sen milloin tahansa Asetuksissa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tous les montants sont affichés dans cette devise. Tu peux la changer à tout moment dans les Réglages."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle beløp vises i denne valutaen. Du kan endre den når som helst i Innstillinger."
           }
         },
         "pt-BR" : {
@@ -4448,6 +6428,12 @@
     "onboarding.currency.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vælg din valuta."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4466,10 +6452,22 @@
             "value" : "Elige tu moneda."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valitse valuuttasi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choisis ta devise."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg valutaen din."
           }
         },
         "pt-BR" : {
@@ -4488,6 +6486,12 @@
     },
     "onboarding.get_started" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kom i gang"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4506,10 +6510,22 @@
             "value" : "Empezar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aloita"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Commencer"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kom i gang"
           }
         },
         "pt-BR" : {
@@ -4528,6 +6544,12 @@
     },
     "onboarding.name.greeting" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hej,"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4546,10 +6568,22 @@
             "value" : "Hola,"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hei,"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bonjour,"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hei,"
           }
         },
         "pt-BR" : {
@@ -4568,6 +6602,12 @@
     },
     "onboarding.name.placeholder" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4586,10 +6626,22 @@
             "value" : "Nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
           }
         },
         "pt-BR" : {
@@ -4608,6 +6660,12 @@
     },
     "onboarding.name.subtitle" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortæl os dit navn, så vi kan tilpasse din oplevelse i Noir."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4626,10 +6684,22 @@
             "value" : "Dinos tu nombre para que personalicemos tu experiencia en Noir."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kerro nimesi, niin voimme personoida Noir-kokemuksesi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indique ton nom pour personnaliser ton expérience dans Noir."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortell oss hva du heter, så kan vi tilpasse opplevelsen din i Noir."
           }
         },
         "pt-BR" : {
@@ -4648,6 +6718,12 @@
     },
     "onboarding.name.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvad skal vi kalde dig?"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4666,10 +6742,22 @@
             "value" : "¿Cómo quieres que te llamemos?"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miten sinua kutsutaan?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comment t’appelles-tu ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hva skal vi kalle deg?"
           }
         },
         "pt-BR" : {
@@ -4690,6 +6778,12 @@
       "comment" : "VoiceOver label of the demo notification: app name, title, message.",
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@. %3$@"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4708,7 +6802,19 @@
             "value" : "%1$@, %2$@. %3$@"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@. %3$@"
+          }
+        },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@. %3$@"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@. %3$@"
@@ -4731,6 +6837,12 @@
     "onboarding.notifications.demo_message %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har brugt %@ i denne uge."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4749,10 +6861,22 @@
             "value" : "Esta semana llevas %@ en gastos."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytit tällä viikolla %@."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tu as dépensé %@ cette semaine."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du brukte %@ denne uken."
           }
         },
         "pt-BR" : {
@@ -4772,6 +6896,12 @@
     "onboarding.notifications.demo_timestamp" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nu"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4790,10 +6920,22 @@
             "value" : "ahora"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nyt"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "maintenant"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nå"
           }
         },
         "pt-BR" : {
@@ -4813,6 +6955,12 @@
     "onboarding.notifications.demo_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ugentlig oversigt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4831,10 +6979,22 @@
             "value" : "Resumen semanal"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viikkoyhteenveto"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bilan hebdomadaire"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukesoppsummering"
           }
         },
         "pt-BR" : {
@@ -4853,6 +7013,12 @@
     },
     "onboarding.notifications.enable" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivér notifikationer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4871,10 +7037,22 @@
             "value" : "Activar notificaciones"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ota ilmoitukset käyttöön"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activer les notifications"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slå på varsler"
           }
         },
         "pt-BR" : {
@@ -4893,6 +7071,12 @@
     },
     "onboarding.notifications.not_now" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke nu"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4911,10 +7095,22 @@
             "value" : "Ahora no"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei nyt"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus tard"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke nå"
           }
         },
         "pt-BR" : {
@@ -4934,6 +7130,12 @@
     "onboarding.notifications.open_settings" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åbn Indstillinger"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4952,10 +7154,22 @@
             "value" : "Abrir ajustes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa Asetukset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir Réglages"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åpne Innstillinger"
           }
         },
         "pt-BR" : {
@@ -4974,6 +7188,12 @@
     },
     "onboarding.notifications.subtitle" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få en ugentlig oversigt over dit forbrug direkte på din låseskærm."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4992,10 +7212,22 @@
             "value" : "Recibe cada semana un resumen de tus gastos directamente en la pantalla de bloqueo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saat viikoittaisen yhteenvedon kulutuksestasi suoraan lukittuun näyttöön."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reçois chaque semaine un bilan de tes dépenses directement sur l’écran verrouillé."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få en ukentlig oppsummering av forbruket ditt, rett på Låst skjerm."
           }
         },
         "pt-BR" : {
@@ -5014,6 +7246,12 @@
     },
     "onboarding.notifications.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold styr på dit forbrug."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5032,10 +7270,22 @@
             "value" : "Mantén tus gastos bajo control."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pidä kulutuksesi hallinnassa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Garde un œil sur tes dépenses."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold oversikt over forbruket ditt."
           }
         },
         "pt-BR" : {
@@ -5055,6 +7305,12 @@
     "onboarding.welcome.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Følg dit forbrug. Tag kontrol over dine penge."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5073,10 +7329,22 @@
             "value" : "Registra tus gastos. Toma el control de tu dinero."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seuraa kulutustasi. Ota rahasi hallintaan."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suis tes dépenses. Garde le contrôle de ton argent."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Følg med på forbruket ditt. Ta kontroll over pengene dine."
           }
         },
         "pt-BR" : {
@@ -5096,6 +7364,12 @@
     "onboarding.welcome.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velkommen til Noir."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5114,10 +7388,22 @@
             "value" : "Te damos la bienvenida a Noir."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tervetuloa Noiriin."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bienvenue dans Noir."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velkommen til Noir."
           }
         },
         "pt-BR" : {
@@ -5136,6 +7422,12 @@
     },
     "paywall.continue_free" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsæt gratis"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5154,10 +7446,22 @@
             "value" : "Continuar gratis"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jatka ilmaiseksi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continuer gratuitement"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsett gratis"
           }
         },
         "pt-BR" : {
@@ -5176,6 +7480,12 @@
     },
     "paywall.feature.categories.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opret så mange kategorier, du har brug for."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5194,10 +7504,22 @@
             "value" : "Crea todas las categorías que necesites."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo niin monta kategoriaa kuin tarvitset."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crée autant de catégories que nécessaire."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett så mange kategorier du trenger."
           }
         },
         "pt-BR" : {
@@ -5216,6 +7538,12 @@
     },
     "paywall.feature.categories.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrænsede kategorier"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5234,10 +7562,22 @@
             "value" : "Categorías ilimitadas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rajattomat kategoriat"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Catégories illimitées"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubegrensede kategorier"
           }
         },
         "pt-BR" : {
@@ -5256,6 +7596,12 @@
     },
     "paywall.feature.export.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag dine data med over i et regneark."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5274,10 +7620,22 @@
             "value" : "Lleva tus datos a una hoja de cálculo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vie tietosi taulukkoon."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Emporte tes données dans un tableur."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta dataene dine med til et regneark."
           }
         },
         "pt-BR" : {
@@ -5296,6 +7654,12 @@
     },
     "paywall.feature.export.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eksportér til CSV"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5314,10 +7678,22 @@
             "value" : "Exportar a CSV"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CSV-vienti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Export CSV"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eksporter til CSV"
           }
         },
         "pt-BR" : {
@@ -5336,6 +7712,12 @@
     },
     "paywall.feature.insights.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se dit forbrug efter kategori for året eller for alle tider."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5354,10 +7736,22 @@
             "value" : "Tus gastos por categoría, por año y de todo el tiempo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulutuksesi kategorioittain koko vuodelta ja kaikilta ajoilta."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tes dépenses par catégorie, sur l’année et depuis le début."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visning av forbruket ditt etter kategori for år og totalt."
           }
         },
         "pt-BR" : {
@@ -5376,6 +7770,12 @@
     },
     "paywall.feature.insights.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuld indsigt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5394,10 +7794,22 @@
             "value" : "Análisis completo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Täydelliset tilastot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Analyses complètes"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full innsikt"
           }
         },
         "pt-BR" : {
@@ -5416,6 +7828,12 @@
     },
     "paywall.feature.sync.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dine udgifter på iPhone, iPad og Mac."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5434,10 +7852,22 @@
             "value" : "Tus gastos en iPhone, iPad y Mac."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulusi iPhonella, iPadilla ja Macilla."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tes dépenses sur iPhone, iPad et Mac."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgiftene dine på iPhone, iPad og Mac."
           }
         },
         "pt-BR" : {
@@ -5456,6 +7886,12 @@
     },
     "paywall.feature.sync.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud-synkronisering"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5474,10 +7910,22 @@
             "value" : "Sincronización con iCloud"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud-synkronointi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Synchronisation iCloud"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud-synkronisering"
           }
         },
         "pt-BR" : {
@@ -5496,6 +7944,12 @@
     },
     "paywall.feature.widgets.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit forbrug med et blik på hjemmeskærmen og låseskærmen."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5514,10 +7968,22 @@
             "value" : "Tus gastos de un vistazo en la pantalla de inicio y de bloqueo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kulutuksesi yhdellä silmäyksellä Koti-valikossa ja lukitussa näytössä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tes dépenses en un coup d’œil sur l’écran d’accueil et l’écran verrouillé."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forbruket ditt med ett blikk, på Hjem-skjermen og Låst skjerm."
           }
         },
         "pt-BR" : {
@@ -5536,6 +8002,12 @@
     },
     "paywall.feature.widgets.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widgets & kontrolelementer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5554,10 +8026,22 @@
             "value" : "Widgets y controles"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widgetit ja säätimet"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Widgets et commandes"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widgeter og kontroller"
           }
         },
         "pt-BR" : {
@@ -5576,6 +8060,12 @@
     },
     "paywall.restore" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gendan køb"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5594,10 +8084,22 @@
             "value" : "Restaurar compras"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palauta ostokset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restaurer les achats"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gjenopprett kjøp"
           }
         },
         "pt-BR" : {
@@ -5616,6 +8118,12 @@
     },
     "paywall.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås NOIR Pro op"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5634,10 +8142,22 @@
             "value" : "Desbloquea NOIR Pro"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanki NOIR Pro"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Débloquer NOIR Pro"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås opp NOIR Pro"
           }
         },
         "pt-BR" : {
@@ -5657,6 +8177,12 @@
     "paywall.unlock %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås op for %@"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5675,10 +8201,22 @@
             "value" : "Desbloquear por %@"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanki hintaan %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Débloquer pour %@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lås opp for %@"
           }
         },
         "pt-BR" : {
@@ -5697,6 +8235,12 @@
     },
     "preferences.currency" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valuta"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5715,10 +8259,22 @@
             "value" : "Moneda"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valuutta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Devise"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valuta"
           }
         },
         "pt-BR" : {
@@ -5737,6 +8293,12 @@
     },
     "preferences.haptics" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptisk feedback"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5755,10 +8317,22 @@
             "value" : "Vibración"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptinen palaute"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Retour tactile"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptisk tilbakemelding"
           }
         },
         "pt-BR" : {
@@ -5777,6 +8351,12 @@
     },
     "preferences.haptics_footer" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibrerer, når du trykker, gemmer eller trækker fingeren hen over diagrammerne."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5795,10 +8375,22 @@
             "value" : "Vibra al tocar, guardar o recorrer los gráficos."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Värähtelee, kun napautat, tallennat tai selaat kaavioita."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vibre lorsque tu touches, enregistres ou parcours les graphiques."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibrerer når du trykker, lagrer eller drar fingeren over diagrammene."
           }
         },
         "pt-BR" : {
@@ -5817,6 +8409,12 @@
     },
     "preferences.intent_summary" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oversigt i genvej"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5835,10 +8433,22 @@
             "value" : "Confirmación en Atajos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pikakomennon yhteenveto"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirmation dans Raccourcis"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppsummering i snarvei"
           }
         },
         "pt-BR" : {
@@ -5857,6 +8467,12 @@
     },
     "preferences.intent_summary_footer" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viser udgiften med Gem og Annuller, før genvejen Tilføj udgift gemmer den. Når den er slået fra, gemmes udgiften lige efter datoen."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5875,10 +8491,22 @@
             "value" : "Muestra el gasto con “Guardar” y “Cancelar” antes de que el atajo “Registrar gasto” lo guarde. Si lo desactivas, se guarda en cuanto indicas la fecha."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näyttää kulun Tallenna- ja Peruuta-painikkeineen ennen kuin Lisää kulu -pikakomento tallentaa sen. Kun asetus on pois päältä, kulu tallennetaan heti päivämäärän jälkeen."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Affiche la dépense avec les boutons « Enregistrer » et « Annuler » avant que le raccourci « Ajouter une dépense » ne l’enregistre. Si l’option est désactivée, la dépense est enregistrée dès que la date est indiquée."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viser utgiften med knappene Lagre og Avbryt før snarveien Legg til utgift lagrer den. Når den er slått av, lagres utgiften rett etter datoen."
           }
         },
         "pt-BR" : {
@@ -5897,6 +8525,12 @@
     },
     "preferences.shortcuts" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genveje"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5915,10 +8549,22 @@
             "value" : "Atajos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pikakomennot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Raccourcis"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snarveier"
           }
         },
         "pt-BR" : {
@@ -5937,6 +8583,12 @@
     },
     "preferences.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Præferencer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5955,10 +8607,22 @@
             "value" : "Preferencias"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yleiset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Préférences"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferanser"
           }
         },
         "pt-BR" : {
@@ -5977,6 +8641,12 @@
     },
     "profile.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontooplysninger, kategorier og mere"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5995,10 +8665,22 @@
             "value" : "Información de la cuenta, categorías y más"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilin tiedot, kategoriat ja paljon muuta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compte, catégories et plus encore"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontoinformasjon, kategorier og mer"
           }
         },
         "pt-BR" : {
@@ -6018,6 +8700,12 @@
     "profile.name_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit navn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6036,10 +8724,22 @@
             "value" : "Tu nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimesi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ton nom"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navnet ditt"
           }
         },
         "pt-BR" : {
@@ -6059,6 +8759,12 @@
     "profile.name_section" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6077,10 +8783,22 @@
             "value" : "Nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn"
           }
         },
         "pt-BR" : {
@@ -6099,6 +8817,12 @@
     },
     "profile.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6117,7 +8841,19 @@
             "value" : "Perfil"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profiili"
+          }
+        },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profil"
@@ -6139,6 +8875,12 @@
     },
     "search_view.empty_description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Her vises udgifter, der matcher din søgning."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6157,10 +8899,22 @@
             "value" : "Aquí verás los gastos que coincidan con tu búsqueda."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hakua vastaavat kulut näkyvät tässä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les dépenses correspondant à ta recherche apparaîtront ici."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utgifter som samsvarer med søket, vises her."
           }
         },
         "pt-BR" : {
@@ -6179,6 +8933,12 @@
     },
     "search_view.empty_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søg i dine udgifter"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6197,10 +8957,22 @@
             "value" : "Busca tus gastos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hae kuluja"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recherche tes dépenses"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i utgiftene dine"
           }
         },
         "pt-BR" : {
@@ -6220,6 +8992,12 @@
     "search_view.error_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fejl i søgning"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6238,10 +9016,22 @@
             "value" : "Error de búsqueda"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hakuvirhe"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erreur de recherche"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søkefeil"
           }
         },
         "pt-BR" : {
@@ -6261,6 +9051,12 @@
     "search_view.no_results_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv en anden søgning."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6279,10 +9075,22 @@
             "value" : "Prueba con otra búsqueda."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokeile eri hakua."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Essaie une autre recherche."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prøv et annet søk."
           }
         },
         "pt-BR" : {
@@ -6302,6 +9110,12 @@
     "search_view.no_results_title %@" : {
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen resultater for »%@«"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6320,10 +9134,22 @@
             "value" : "No se encontró nada para «%@»"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haulla ”%@” ei löytynyt mitään"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun résultat pour « %@ »"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fant ingenting for «%@»"
           }
         },
         "pt-BR" : {
@@ -6342,6 +9168,12 @@
     },
     "search_view.prompt" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn, kategori eller kort"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6360,10 +9192,22 @@
             "value" : "Nombre, categoría o tarjeta"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi, kategoria tai kortti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom, catégorie ou carte"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navn, kategori eller kort"
           }
         },
         "pt-BR" : {
@@ -6382,6 +9226,12 @@
     },
     "search_view.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søg"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6400,10 +9250,22 @@
             "value" : "Buscar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haku"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk"
           }
         },
         "pt-BR" : {
@@ -6422,6 +9284,12 @@
     },
     "settings_view.title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indstillinger"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6440,10 +9308,22 @@
             "value" : "Ajustes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asetukset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réglages"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Innstillinger"
           }
         },
         "pt-BR" : {
@@ -6462,6 +9342,12 @@
     },
     "shared.cancel" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuller"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6480,10 +9366,22 @@
             "value" : "Cancelar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peruuta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuler"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
           }
         },
         "pt-BR" : {
@@ -6502,6 +9400,12 @@
     },
     "shared.delete" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6520,10 +9424,22 @@
             "value" : "Eliminar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slett"
           }
         },
         "pt-BR" : {
@@ -6542,6 +9458,12 @@
     },
     "shared.ok" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6560,7 +9482,19 @@
             "value" : "OK"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -6582,6 +9516,12 @@
     },
     "shared.unexpected_error" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der opstod en uventet fejl."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6600,10 +9540,22 @@
             "value" : "Se produjo un error inesperado."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapahtui odottamaton virhe."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une erreur inattendue s’est produite."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det oppstod en uventet feil."
           }
         },
         "pt-BR" : {
@@ -6622,6 +9574,12 @@
     },
     "shortcuts_view.add_expense_description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj udgifter fra Siri, Spotlight eller appen Genveje."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6640,10 +9598,22 @@
             "value" : "Añade gastos desde Siri, Spotlight o la app Atajos."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää kuluja Sirillä, Spotlightilla tai Pikakomennoilla."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajoute des dépenses depuis Siri, Spotlight ou l’app Raccourcis."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til utgifter fra Siri, Spotlight eller Snarveier-appen."
           }
         },
         "pt-BR" : {
@@ -6662,6 +9632,12 @@
     },
     "shortcuts_view.add_expense_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genvejen Tilføj udgift"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6680,10 +9656,22 @@
             "value" : "Atajo “Registrar gasto”"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää kulu -pikakomento"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Raccourci « Ajouter une dépense »"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snarvei for å legge til utgift"
           }
         },
         "pt-BR" : {
@@ -6702,6 +9690,12 @@
     },
     "shortcuts_view.apple_pay_description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrer hver Apple Pay-betaling automatisk med en Wallet-automatisering."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6720,10 +9714,22 @@
             "value" : "Registra cada pago con Apple Pay automáticamente con una automatización de Wallet."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirjaa jokainen Apple Pay -maksu automaattisesti Lompakon automaatiolla."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistre chaque paiement Apple Pay automatiquement avec une automatisation Wallet."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrer hver Apple Pay-betaling automatisk med en Lommebok-automatisering."
           }
         },
         "pt-BR" : {
@@ -6742,6 +9748,12 @@
     },
     "shortcuts_view.apple_pay_title" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatiser med Apple Pay"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6760,10 +9772,22 @@
             "value" : "Automatizar con Apple Pay"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisoi Apple Pay -maksut"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatiser avec Apple Pay"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatiser med Apple Pay"
           }
         },
         "pt-BR" : {
@@ -6782,6 +9806,12 @@
     },
     "shortcuts_view.description" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dine genveje vises her, når de er tilgængelige."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6800,10 +9830,22 @@
             "value" : "Tus atajos aparecerán aquí cuando estén disponibles."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pikakomentosi näkyvät tässä, kun ne ovat saatavilla."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tes raccourcis apparaîtront ici lorsqu’ils seront disponibles."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snarveiene dine vises her når de er tilgjengelige."
           }
         },
         "pt-BR" : {
@@ -6822,6 +9864,12 @@
     },
     "spending_overview.chart_amount" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløb"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6840,10 +9888,22 @@
             "value" : "Importe"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Montant"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløp"
           }
         },
         "pt-BR" : {
@@ -6862,6 +9922,12 @@
     },
     "spending_overview.chart_period" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periode"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6880,10 +9946,22 @@
             "value" : "Periodo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajanjakso"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Période"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periode"
           }
         },
         "pt-BR" : {
@@ -6902,6 +9980,12 @@
     },
     "spending_overview.total_spent.all_time" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forbrug i alt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6920,10 +10004,22 @@
             "value" : "Gasto total"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokonaiskulutus koko ajalta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépenses totales"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt brukt hittil"
           }
         },
         "pt-BR" : {
@@ -6942,6 +10038,12 @@
     },
     "spending_overview.total_spent.month" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlet forbrug denne måned"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6960,10 +10062,22 @@
             "value" : "Gasto de este mes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokonaiskulutus tässä kuussa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépenses du mois"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt brukt denne måneden"
           }
         },
         "pt-BR" : {
@@ -6982,6 +10096,12 @@
     },
     "spending_overview.total_spent.today" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlet forbrug i dag"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7000,10 +10120,22 @@
             "value" : "Gasto de hoy"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokonaiskulutus tänään"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépenses du jour"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt brukt i dag"
           }
         },
         "pt-BR" : {
@@ -7022,6 +10154,12 @@
     },
     "spending_overview.total_spent.week" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlet forbrug denne uge"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7040,10 +10178,22 @@
             "value" : "Gasto de esta semana"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokonaiskulutus tällä viikolla"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépenses de la semaine"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt brukt denne uken"
           }
         },
         "pt-BR" : {
@@ -7062,6 +10212,12 @@
     },
     "spending_overview.total_spent.year" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlet forbrug i år"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7080,10 +10236,22 @@
             "value" : "Gasto de este año"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokonaiskulutus tänä vuonna"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dépenses de l’année"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt brukt i år"
           }
         },
         "pt-BR" : {
@@ -7102,6 +10270,12 @@
     },
     "spending_period.all_time" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle tider"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7120,10 +10294,22 @@
             "value" : "Todo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koko aika"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Depuis le début"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt"
           }
         },
         "pt-BR" : {
@@ -7142,6 +10328,12 @@
     },
     "spending_period.month" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Måned"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7160,10 +10352,22 @@
             "value" : "Mes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuukausi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mois"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Måned"
           }
         },
         "pt-BR" : {
@@ -7182,6 +10386,12 @@
     },
     "spending_period.today" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7200,10 +10410,22 @@
             "value" : "Hoy"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tänään"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aujourd’hui"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag"
           }
         },
         "pt-BR" : {
@@ -7222,6 +10444,12 @@
     },
     "spending_period.week" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uge"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7240,10 +10468,22 @@
             "value" : "Semana"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viikko"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Semaine"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uke"
           }
         },
         "pt-BR" : {
@@ -7262,6 +10502,12 @@
     },
     "spending_period.year" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "År"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7280,10 +10526,22 @@
             "value" : "Año"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuosi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Année"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "År"
           }
         },
         "pt-BR" : {
@@ -7302,6 +10560,12 @@
     },
     "tab.dashboard" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oversigt"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7320,10 +10584,22 @@
             "value" : "Resumen"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yleiskatsaus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Résumé"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oversikt"
           }
         },
         "pt-BR" : {
@@ -7342,6 +10618,12 @@
     },
     "tab.home" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hjem"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7360,10 +10642,22 @@
             "value" : "Inicio"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accueil"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hjem"
           }
         },
         "pt-BR" : {
@@ -7382,6 +10676,12 @@
     },
     "tab.search" : {
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søg"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7400,10 +10700,22 @@
             "value" : "Buscar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haku"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk"
           }
         },
         "pt-BR" : {

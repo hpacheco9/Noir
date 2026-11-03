@@ -36,6 +36,16 @@ struct AddApplePayExpenseIntentTests {
         }
     }
 
+    // Letters before the symbol ("US$", "CA$") and a currency without minor units ("¥1,234" is 1234, not 1.234).
+    @Test(arguments: [
+        ("US$1,234.56", "USD", 1234.56), ("-US$4.50", "USD", 4.5), ("R$ 1.234,56", "BRL", 1234.56),
+        ("-R$ 4,50", "BRL", 4.5), ("CA$12.50", "CAD", 12.5), ("-¥1,234", "JPY", 1234), ("¥1,234", "JPY", 1234),
+        ("-¥12", "JPY", 12),
+    ])
+    func walletTextWithLetterPrefixedOrWholeCurrencies(text: String, code: String, expected: Double) {
+        #expect(AddApplePayExpenseIntent.parsedAmount(text, code: code) == expected, "\(text)")
+    }
+
     @Test(arguments: ["EUR", "USD"])
     func unusableWalletAmountTextIsRejected(code: String) {
         for text in ["", "abc", "0", "-0,00 €", "-", ",", "€", "99999999999999"] {
