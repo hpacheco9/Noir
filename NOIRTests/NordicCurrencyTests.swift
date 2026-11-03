@@ -33,11 +33,11 @@ struct NordicCurrencyTests {
 
     // MARK: Formatting
 
-    // Measured: sv_SE and nb_NO group with U+00A0 and put "kr" after a U+00A0; da_DK groups with "." and writes "kr.".
+    // Measured: sv_SE and nb_NO group with U+00A0; da_DK groups with "."; the ISO code follows a U+00A0.
     @Test(arguments: [
-        ("SEK", "1\u{00A0}234,50\u{00A0}kr"),
-        ("NOK", "1\u{00A0}234,50\u{00A0}kr"),
-        ("DKK", "1.234,50\u{00A0}kr."),
+        ("SEK", "1\u{00A0}234,50\u{00A0}SEK"),
+        ("NOK", "1\u{00A0}234,50\u{00A0}NOK"),
+        ("DKK", "1.234,50\u{00A0}DKK"),
         ("EUR", "1234,50\u{00A0}\u{20AC}"),
         ("USD", "$1,234.50"),
     ])
