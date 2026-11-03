@@ -38,12 +38,11 @@ struct AddApplePayExpenseIntent: AppIntent {
         return trimmed.isEmpty ? untitled : trimmed
     }
 
-    // Wallet's Amount is text like "-4,50 €" or "-$1,234.56". Dropping everything but digits and marks drops the sign too.
+    // Wallet's Amount is text like "-4,50 €", "-$1,234.56" or "-45,50 kr.". The sign is dropped: it's always positive.
     nonisolated static func parsedAmount(_ text: String, code: String) -> Double? {
-        let cleaned = String(text.filter { ($0.isASCII && $0.isNumber) || $0 == "." || $0 == "," })
         let style = CurrencyPreference.amountInputStyle(for: code)
-        guard let value = try? style.parseStrategy.parse(cleaned) else { return nil }
-        let amount = ExpenseForm(amount: value).amountValue
+        guard let value = try? style.parseStrategy.parse(text) else { return nil }
+        let amount = ExpenseForm(amount: value.magnitude).amountValue
         return Expense.isValidAmount(amount) ? amount : nil
     }
 

@@ -8,7 +8,7 @@ import Foundation
 nonisolated enum CurrencyPreference {
     static let storageKey = "settings.currency_code"
 
-    private static let baseCodes = ["EUR", "USD", "GBP", "BRL", "JPY", "CAD"]
+    private static let baseCodes = ["EUR", "USD", "GBP", "BRL", "JPY", "CAD", "SEK", "NOK", "DKK"]
 
     static var defaultCode: String {
         Locale.current.currency?.identifier ?? "USD"
@@ -30,6 +30,9 @@ nonisolated enum CurrencyPreference {
         case "BRL": Locale(identifier: "pt_BR")
         case "JPY": Locale(identifier: "en_US")
         case "CAD": Locale(identifier: "en_CA")
+        case "SEK": Locale(identifier: "sv_SE")
+        case "NOK": Locale(identifier: "nb_NO")
+        case "DKK": Locale(identifier: "da_DK")
         default: .current
         }
     }

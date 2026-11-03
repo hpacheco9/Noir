@@ -41,9 +41,14 @@ nonisolated struct AmountInputFormatStyle: ParseableFormatStyle {
     }
 
     var parseStrategy: AmountInputParseStrategy {
-        AmountInputParseStrategy(
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = code
+        formatter.locale = currencyLocale
+        return AmountInputParseStrategy(
             currencyDecimalSeparator: currencyLocale.decimalSeparator ?? ".",
-            deviceDecimalSeparator: deviceDecimalSeparator
+            deviceDecimalSeparator: deviceDecimalSeparator,
+            fractionDigits: formatter.maximumFractionDigits
         )
     }
 }
@@ -51,11 +56,14 @@ nonisolated struct AmountInputFormatStyle: ParseableFormatStyle {
 nonisolated struct AmountInputParseStrategy: ParseStrategy {
     var currencyDecimalSeparator: String
     var deviceDecimalSeparator: String
+    /// Minor units of the currency (0 for JPY): with none, every mark is grouping.
+    var fractionDigits = 2
 
     struct ParseError: Error {}
 
     /// Keeps digits, a leading minus and the "." / "," marks (currency symbols, letters and every kind of space
-    /// go), then decides which mark is the decimal one:
+    /// go, and so does a mark right after a letter: the dot of "kr."), then decides which mark is the decimal one:
+    /// - currency without minor units: every mark is grouping;
     /// - both marks present: the last one is the decimal mark, the other is grouping;
     /// - one mark repeated: grouping;
     /// - one mark once: decimal if it is the device's or the currency's decimal separator, or if it isn't followed
@@ -63,10 +71,12 @@ nonisolated struct AmountInputParseStrategy: ParseStrategy {
     func parse(_ value: String) throws -> Decimal {
         var negative = false
         var cleaned = ""
+        var previous: Character?
         for character in value {
+            defer { previous = character }
             if character.isASCII, character.isNumber {
                 cleaned.append(character)
-            } else if character == "." || character == "," {
+            } else if character == "." || character == ",", previous?.isLetter != true {
                 cleaned.append(character)
             } else if character == "-" || character == "\u{2212}" {
                 negative = true
@@ -77,7 +87,9 @@ nonisolated struct AmountInputParseStrategy: ParseStrategy {
         let decimalMark: Character?
         let dot = cleaned.filter { $0 == "." }.count
         let comma = cleaned.filter { $0 == "," }.count
-        if dot > 0, comma > 0 {
+        if fractionDigits == 0 {
+            decimalMark = nil
+        } else if dot > 0, comma > 0 {
             decimalMark = cleaned.last { $0 == "." || $0 == "," }
         } else if dot + comma == 1 {
             let mark: Character = dot == 1 ? "." : ","

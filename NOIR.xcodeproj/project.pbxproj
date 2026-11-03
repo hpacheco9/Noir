@@ -231,10 +231,13 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				da,
 				de,
 				en,
 				es,
+				fi,
 				fr,
+				nb,
 				"pt-BR",
 				"pt-PT",
 				Base,
