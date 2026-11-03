@@ -34,7 +34,6 @@ struct CategoriesView: View {
                                 } label: {
                                     Image(systemName: AssetName.System.delete)
                                 }
-                                .tint(.red)
                             }
                         }
                     }
