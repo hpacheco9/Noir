@@ -26,7 +26,7 @@ extension CategoryBreakdownRepositoryTests {
         }
 
         private let emptyLoader: MainViewModel.Loader = { period, _ in
-            OverviewSnapshot(period: period, points: [], total: 0, latest: [], hasAnyExpenses: false)
+            OverviewSnapshot(period: period, points: [], total: 0, latest: [], hasAnyExpenses: false, monthTotal: 0)
         }
 
         private func withFixture(_ body: (Fixture) async throws -> Void) async throws {

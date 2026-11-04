@@ -36,5 +36,6 @@ enum ExpenseIntentSaver {
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         await WidgetSnapshotPublisher.publish()
         try? await NotificationService.shared.notifyExpenseAdded(name: name, amount: amount)
+        await ExpenseRepositoryProvider(container: NOIRApp.sharedModelContainer).checkBudget()
     }
 }

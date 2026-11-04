@@ -48,6 +48,18 @@ extension ExpenseRepositoryProvider {
             )
         }
         if let recurring { await notifications.scheduleRecurringReminder(recurring) }
+        await checkBudget()
+    }
+
+    func delete(id: PersistentIdentifier) async throws {
+        try await perform { try await $0.delete(id: id) }
+        await checkBudget()
+    }
+
+    func checkBudget(now: Date = .now, calendar: Calendar = .current) async {
+        guard notifications.monthlyBudget > 0,
+              let spent = try? await perform({ try await $0.monthTotal(now: now, calendar: calendar) }) else { return }
+        await notifications.notifyBudgetIfNeeded(spent: spent, now: now, calendar: calendar)
     }
 
     func saveRecurring(_ form: ExpenseForm, frequency: RecurrenceFrequency, nextDueDate: Date?, id: UUID?) async throws {
@@ -75,6 +87,7 @@ extension ExpenseRepositoryProvider {
     func addDueOccurrence(id: UUID) async throws -> RecurringExpenseDTO {
         let recurring = try await perform { try await $0.addDueOccurrence(id: id) }
         await notifications.scheduleRecurringReminder(recurring)
+        await checkBudget()
         return recurring
     }
 

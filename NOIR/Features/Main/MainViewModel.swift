@@ -60,7 +60,8 @@ final class MainViewModel {
                 points: chart.points,
                 total: chart.total,
                 latest: side.latest,
-                hasAnyExpenses: side.hasAnyExpenses
+                hasAnyExpenses: side.hasAnyExpenses,
+                monthTotal: side.monthTotal
             )
         }
     }
@@ -162,7 +163,7 @@ final class MainViewModel {
     @MainActor
     func delete(id: PersistentIdentifier) async {
         do {
-            try await repository.perform { try await $0.delete(id: id) }
+            try await repository.delete(id: id)
             // Home reloads from its own listener; Search and Dashboard need the notification too.
             NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         } catch {

@@ -6,12 +6,14 @@ import UserNotifications
 @Observable
 final class OnboardingViewModel {
     enum Step: Int, CaseIterable {
-        case welcome, name, currency, notifications, paywall
+        case welcome, name, currency, budget, notifications, paywall
 
         var primaryActionTitle: LocalizedStringResource {
             switch self {
             case .welcome:
                 L10n.Onboarding.getStarted
+            case .budget:
+                L10n.Onboarding.setBudget
             case .name, .currency:
                 L10n.Onboarding.continue
             case .notifications:
@@ -36,6 +38,7 @@ final class OnboardingViewModel {
     private(set) var notificationPermission: NotificationPermission = .undetermined
     var name = ""
     var currencyCode = CurrencyPreference.defaultCode
+    var budget = OnboardingStorage.defaultMonthlyBudget
 
     private let notificationService: NotificationService
     private let defaults: UserDefaults
@@ -81,7 +84,7 @@ final class OnboardingViewModel {
 
     func advance() {
         guard canAdvance, !isLastStep else { return }
-        // Saved as soon as it's chosen: the notification demo and the paywall price read the stored currency.
+        // Saved as soon as it's chosen: the budget ruler, the notification demo and the paywall price read the stored currency.
         if step == .currency {
             defaults.set(currencyCode, forKey: CurrencyPreference.storageKey)
         }
@@ -90,6 +93,7 @@ final class OnboardingViewModel {
 
     func persist() {
         defaults.set(ProfileStorage.trimmed(name), forKey: ProfileStorage.nameKey)
+        defaults.set(budget, forKey: OnboardingStorage.monthlyBudgetKey)
     }
 
     /// Asks for notification permission. Never throws: a denial or failure must not block onboarding.

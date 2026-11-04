@@ -92,6 +92,8 @@ struct SpendingOverviewView: View {
                     }
                 }
             }
+
+            BudgetSummaryView(monthTotal: snapshot.monthTotal, currencyCode: currencyCode)
         }
         .frame(maxWidth: .infinity)
         .padding()

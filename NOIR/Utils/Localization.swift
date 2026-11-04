@@ -137,6 +137,8 @@ enum L10n {
         static let description: LocalizedStringResource = "profile.description"
         static let nameSection: LocalizedStringResource = "profile.name_section"
         static let namePlaceholder: LocalizedStringResource = "profile.name_placeholder"
+        static let budget: LocalizedStringResource = "profile.budget"
+        static let budgetFooter: LocalizedStringResource = "profile.budget_footer"
     }
 
     enum Categories {
@@ -218,6 +220,7 @@ enum L10n {
     enum Onboarding {
         static let getStarted: LocalizedStringResource = "onboarding.get_started"
         static let `continue`: LocalizedStringResource = "onboarding.continue"
+        static let setBudget: LocalizedStringResource = "onboarding.set_budget"
         static let nameTitle: LocalizedStringResource = "onboarding.name.title"
         static let nameSubtitle: LocalizedStringResource = "onboarding.name.subtitle"
         static let nameGreeting: LocalizedStringResource = "onboarding.name.greeting"
@@ -233,6 +236,8 @@ enum L10n {
         static let demoTimestamp: LocalizedStringResource = "onboarding.notifications.demo_timestamp"
         static let welcomeTitle: LocalizedStringResource = "onboarding.welcome.title"
         static let welcomeSubtitle: LocalizedStringResource = "onboarding.welcome.subtitle"
+        static let budgetTitle: LocalizedStringResource = "onboarding.budget.title"
+        static let budgetSubtitle: LocalizedStringResource = "onboarding.budget.subtitle"
         static func demoAccessibilityLabel(appName: String, title: String, message: String) -> LocalizedStringResource {
             "onboarding.notifications.demo_accessibility_label \(appName) \(title) \(message)"
         }
@@ -245,6 +250,11 @@ enum L10n {
         static let expenseAddedTitle: LocalizedStringResource = "notification.expense_added_title"
         static func recurringDueTitle(name: String) -> LocalizedStringResource {
             "notification.recurring_due_title \(name)"
+        }
+        static let budgetNearTitle: LocalizedStringResource = "notification.budget_near_title"
+        static let budgetOverTitle: LocalizedStringResource = "notification.budget_over_title"
+        static func budgetBody(spent: String, budget: String) -> LocalizedStringResource {
+            "notification.budget_body \(spent) \(budget)"
         }
     }
 
@@ -303,6 +313,16 @@ enum L10n {
         }
         static let chartPeriod: LocalizedStringResource = "spending_overview.chart_period"
         static let chartAmount: LocalizedStringResource = "spending_overview.chart_amount"
+    }
+
+    enum BudgetSummary {
+        static func left(_ left: String, of budget: String) -> LocalizedStringResource {
+            "budget_summary.left \(left) \(budget)"
+        }
+
+        static func over(_ amount: String) -> LocalizedStringResource {
+            "budget_summary.over \(amount)"
+        }
     }
 
     enum AppIntent {

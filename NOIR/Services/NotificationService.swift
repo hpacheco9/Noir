@@ -56,6 +56,30 @@ final class NotificationService: @unchecked Sendable {
         try await center.add(request)
     }
 
+    var monthlyBudget: Double { defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) }
+
+    // Reading and claiming the level happen with no await between them, so two checks never send the same one.
+    func notifyBudgetIfNeeded(spent: Decimal, now: Date = .now, calendar: Calendar = .current) async {
+        let budget = monthlyBudget
+        guard budget > 0, await canPostNotifications() else { return }
+        let key = BudgetAlert.storageKey(for: now, calendar: calendar)
+        guard let alert = BudgetAlert.next(
+            total: spent, budget: budget, lastSent: BudgetAlert(rawValue: defaults.integer(forKey: key))
+        ) else { return }
+        defaults.set(alert.rawValue, forKey: key)
+
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: alert == .over ? L10n.Notification.budgetOverTitle : L10n.Notification.budgetNearTitle)
+        content.body = String(localized: L10n.Notification.budgetBody(
+            spent: CurrencyPreference.string(for: spent, code: currencyCode),
+            budget: CurrencyPreference.wholeString(for: budget, code: currencyCode)
+        ))
+        content.sound = .default
+
+        let request = UNNotificationRequest(identifier: "\(key).\(alert.rawValue)", content: content, trigger: nil)
+        try? await center.add(request)
+    }
+
     static func recurringIdentifier(_ id: UUID) -> String { "recurring.\(id.uuidString)" }
 
     // Nothing is scheduled (and a pending or delivered one is dropped) without permission or for a past moment.

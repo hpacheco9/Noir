@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 @main
 struct NOIRApp: App {
@@ -29,6 +30,7 @@ struct NOIRApp: App {
     }()
 
     init() {
+        UNUserNotificationCenter.current().delegate = ForegroundNotificationPresenter.shared
         Task { await ExpenseRepositoryProvider(container: Self.sharedModelContainer).retireOtherCategoryOnce() }
     }
 

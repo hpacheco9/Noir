@@ -8,8 +8,8 @@ import Foundation
 @testable import NOIR
 
 struct SpendingOverviewViewModelTests {
-    private func snapshot(_ period: SpendingPeriod, total: Decimal) -> OverviewSnapshot {
-        OverviewSnapshot(period: period, points: [], total: total, latest: [], hasAnyExpenses: true)
+    private func snapshot(_ period: SpendingPeriod, total: Decimal, month: Decimal = 0) -> OverviewSnapshot {
+        OverviewSnapshot(period: period, points: [], total: total, latest: [], hasAnyExpenses: true, monthTotal: month)
     }
 
     @Test func applyingASnapshotSetsTheTotalAndPeriod() {
@@ -43,11 +43,12 @@ struct SpendingOverviewViewModelTests {
         #expect(viewModel.appliedPeriod == .month)
     }
 
-    @Test func retaggingKeepsTheDataUnderANewPeriodAndId() {
-        let original = snapshot(.week, total: 120)
+    @Test func retaggingKeepsTheDataAndTheMonthTotalUnderANewPeriodAndId() {
+        let original = snapshot(.week, total: 120, month: 480)
         let retagged = original.retagged(for: .allTime)
 
         #expect(retagged.period == .allTime)
+        #expect(retagged.monthTotal == 480)
         #expect(retagged.total == 120)
         #expect(retagged.id != original.id)
     }

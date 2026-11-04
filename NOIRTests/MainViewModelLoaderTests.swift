@@ -18,7 +18,7 @@ extension CategoryBreakdownRepositoryTests {
             if case .loaded(let snapshot) = viewModel.state { snapshot } else { nil }
         }
 
-        @Test func chartAndSideLoadsReachTheSnapshot() async throws {
+        @Test func chartSideAndMonthTotalReachTheSnapshot() async throws {
             let calendar = Calendar.current
             let month = try #require(SpendingPeriod.month.dateInterval(calendar: calendar))
             let lastMonth = try #require(calendar.dateInterval(of: .month, for: month.start.addingTimeInterval(-1)))
@@ -42,6 +42,7 @@ extension CategoryBreakdownRepositoryTests {
                 let monthSnapshot = try #require(loaded(viewModel))
                 #expect(monthSnapshot.period == .month)
                 #expect(monthSnapshot.total == 10)
+                #expect(monthSnapshot.monthTotal == 10)
                 #expect(monthSnapshot.latest.count == 2)
                 #expect(monthSnapshot.hasAnyExpenses)
 
@@ -50,6 +51,8 @@ extension CategoryBreakdownRepositoryTests {
                 let allTimeSnapshot = try #require(loaded(viewModel))
                 #expect(allTimeSnapshot.period == .allTime)
                 #expect(allTimeSnapshot.total == 50)
+                // The budget is monthly whatever period Home shows.
+                #expect(allTimeSnapshot.monthTotal == 10)
             }
         }
     }

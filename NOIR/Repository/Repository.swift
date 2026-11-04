@@ -121,7 +121,7 @@ actor ExpenseRepository: ModelActor {
         return ChartResult(points: layout.points(from: memo.buckets), total: memo.total)
     }
 
-    /// The rest of the Home screen: newest rows of the period (no date filter for All Time) and the empty-state check.
+    /// The rest of the Home screen: newest rows (no date filter), the empty-state check and this month's total (the budget).
     /// Meant for a second repository instance so it runs in parallel with `overviewChart`.
     func overviewSide(
         now: Date = .now,
@@ -140,7 +140,16 @@ actor ExpenseRepository: ModelActor {
         anyDescriptor.fetchLimit = 1
         let hasAny = try !modelContext.fetchIdentifiers(anyDescriptor).isEmpty
 
-        return SideResult(latest: latest, hasAnyExpenses: hasAny)
+        return SideResult(latest: latest, hasAnyExpenses: hasAny, monthTotal: try monthTotal(now: now, calendar: calendar))
+    }
+
+    func monthTotal(now: Date = .now, calendar: Calendar = .current) throws -> Decimal {
+        guard let month = SpendingPeriod.month.dateInterval(calendar: calendar, now: now) else { return 0 }
+        var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(month))
+        descriptor.propertiesToFetch = [\.amount]
+        var sum = Decimal(0)
+        try modelContext.enumerate(descriptor, batchSize: 1000) { sum += Decimal($0.amount) }
+        return sum
     }
 
     func cumulativeDays(in month: DateInterval, calendar: Calendar = .current) throws -> [Double] {

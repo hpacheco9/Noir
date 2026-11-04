@@ -31,12 +31,23 @@ final class MonthTotalSnapshotTests {
     private var month: DateInterval { calendar.dateInterval(of: .month, for: calendar.date(from: DateComponents(year: 2026, month: 10, day: 15))!)! }
 
     private var snapshot: MonthTotalSnapshot {
-        MonthTotalSnapshot(month: month, total: total, currencyCode: "EUR")
+        MonthTotalSnapshot(month: month, total: total, budget: 500, currencyCode: "EUR")
     }
 
     @Test func roundTripsThroughDefaults() {
         snapshot.save(to: defaults)
         #expect(MonthTotalSnapshot.load(from: defaults) == snapshot)
+    }
+
+    @Test func theBudgetSurvivesTheRoundTrip() {
+        snapshot.save(to: defaults)
+        #expect(MonthTotalSnapshot.load(from: defaults)?.budget == 500)
+
+        var changed = snapshot
+        changed.budget = 750
+        changed.save(to: defaults)
+        #expect(MonthTotalSnapshot.load(from: defaults)?.budget == 750)
+        #expect(changed != snapshot)
     }
 
     /// 00:30 on 1 October in Lisbon is still 30 September in the Azores: a calendar-based check there showed 0.
@@ -78,13 +89,5 @@ final class MonthTotalSnapshotTests {
         snapshot.days = MonthTotalSnapshot.cumulativeDays([(day(2), 4), (day(9), 6)], in: month, calendar: calendar)
         #expect(snapshot.visibleDays(asOf: day(5), calendar: calendar).count == 9)
         #expect(snapshot.visibleDays(asOf: month.end, calendar: calendar).isEmpty)
-    }
-
-    @Test func aSnapshotPublishedWithABudgetStillLoads() throws {
-        let encoded = try JSONEncoder().encode(snapshot)
-        try #require(encoded.first == UInt8(ascii: "{"))
-        defaults.set(Data(#"{"budget":500,"#.utf8) + encoded.dropFirst(), forKey: MonthTotalSnapshot.storageKey)
-
-        #expect(MonthTotalSnapshot.load(from: defaults) == snapshot)
     }
 }

@@ -9,6 +9,7 @@ import WidgetKit
 nonisolated struct MonthTotalEntry: TimelineEntry {
     let date: Date
     let total: Decimal
+    let progress: BudgetProgress?
     let currencyCode: String
     let days: [Double]
     let dayCount: Int
@@ -16,6 +17,7 @@ nonisolated struct MonthTotalEntry: TimelineEntry {
     init(date: Date, snapshot: MonthTotalSnapshot?, calendar: Calendar = .current) {
         self.date = date
         total = snapshot?.total(asOf: date) ?? 0
+        progress = BudgetProgress(total: total, budget: snapshot?.budget ?? 0)
         currencyCode = snapshot?.currencyCode ?? CurrencyPreference.defaultCode
         days = snapshot?.visibleDays(asOf: date, calendar: calendar) ?? []
         dayCount = calendar.range(of: .day, in: .month, for: date)?.count ?? 31
