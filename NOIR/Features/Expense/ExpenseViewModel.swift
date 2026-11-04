@@ -46,7 +46,6 @@ final class ExpenseViewModel {
         try await saveExpense(form.trimmed)
         reviewPrompt.recordCreatedExpense()
         NotificationCenter.default.post(name: .expensesDidChange, object: self)
-        if form.repeats != nil { NotificationCenter.default.post(name: .recurringDidChange, object: self) }
         return true
     }
 

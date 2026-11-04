@@ -5,15 +5,13 @@
 
 import SwiftUI
 
-/// The list rows of Add and Edit Expense (and the recurring form): amount, name, date, category, card and note.
+/// The list rows of Add and Edit Expense: amount, name, date, category, card and note.
 struct ExpenseFormFields: View {
     @Binding var form: ExpenseForm
     let categories: [CategoryInfo]
     let cards: [String]
     var dateTitle: LocalizedStringResource = L10n.AddExpenseView.date
-    // The Repeat picker (`form.repeats`). Add Expense offers "Never"; the recurring form always has a frequency.
-    var showsRepeat = false
-    var allowsNeverRepeat = true
+    var repeatIncludesNever: Bool?
 
     @State private var isNewCard = false
 
@@ -50,9 +48,9 @@ struct ExpenseFormFields: View {
                 }
             }
 
-            if showsRepeat {
+            if let repeatIncludesNever {
                 Picker(selection: $form.repeats) {
-                    if allowsNeverRepeat {
+                    if repeatIncludesNever {
                         Text(L10n.Recurring.never).tag(RecurrenceFrequency?.none)
                     }
                     ForEach(RecurrenceFrequency.allCases) { frequency in

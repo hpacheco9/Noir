@@ -10,7 +10,6 @@ import Observation
 @Observable
 final class RecurringExpensesViewModel {
     private(set) var items: [RecurringExpenseDTO] = []
-    // False until the first load finishes, so the empty state doesn't flash before the list arrives.
     private(set) var isLoaded = false
     var errorMessage: String?
 
@@ -24,12 +23,11 @@ final class RecurringExpensesViewModel {
         do {
             items = try await repository.perform { try await $0.fetchRecurring() }
         } catch {
-            errorMessage = String(localized: L10n.Recurring.loadError)
+            errorMessage = String(localized: L10n.Shared.unexpectedError)
         }
         isLoaded = true
     }
 
-    // Past expenses stay.
     func stopRepeating(_ item: RecurringExpenseDTO) async {
         do {
             try await repository.deleteRecurring(id: item.id)

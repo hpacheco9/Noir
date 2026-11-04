@@ -16,7 +16,16 @@ struct RecurringExpensesView: View {
                 Button {
                     coordinator.present(SettingsRoutes.editRecurring(item), mode: .large)
                 } label: {
-                    RecurringExpenseRow(recurring: item)
+                    ExpenseRowLabel(
+                        category: item.categoryInfo,
+                        title: item.name,
+                        subtitle: String(localized: L10n.Recurring.rowDetail(
+                            frequency: String(localized: item.frequency.title),
+                            next: item.nextDueDate.formatted(.dateTime.day().month(.abbreviated))
+                        )),
+                        amount: item.amount
+                    )
+                    .accessibilityElement(children: .combine)
                 }
                 .tint(.primary)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
@@ -77,42 +86,6 @@ struct RecurringExpensesView: View {
         } message: {
             Text(viewModel.errorMessage ?? String(localized: L10n.Shared.unexpectedError))
         }
-    }
-}
-
-private struct RecurringExpenseRow: View {
-    let recurring: RecurringExpenseDTO
-    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
-
-    var body: some View {
-        HStack(spacing: 10) {
-            Image(systemName: recurring.categoryInfo.icon)
-                .font(.headline)
-                .foregroundStyle(recurring.categoryInfo.color)
-                .frame(width: 40, height: 40)
-                .background(recurring.categoryInfo.color.opacity(0.12), in: Circle())
-                .accessibilityHidden(true)
-
-            VStack(alignment: .leading) {
-                Text(recurring.name)
-                    .lineLimit(1)
-                    .font(.headline)
-
-                Text(L10n.Recurring.rowDetail(
-                    frequency: String(localized: recurring.frequency.title),
-                    next: recurring.nextDueDate.formatted(.dateTime.day().month(.abbreviated))
-                ))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            Text(verbatim: CurrencyPreference.string(for: recurring.amount, code: currencyCode))
-                .font(.headline)
-        }
-        .contentShape(Rectangle())
-        .accessibilityElement(children: .combine)
     }
 }
 

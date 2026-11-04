@@ -18,12 +18,20 @@ final class RecurringExpenseFormViewModel {
     var canSave: Bool { form.canSave }
     var isEditing: Bool { recurringID != nil }
 
+    // An untouched date is not sent, so a schedule advanced elsewhere in the meantime isn't moved back.
+    private var dateToSend: Date? {
+        guard let loadedDate, Calendar.current.isDate(form.date, inSameDayAs: loadedDate) else { return form.date }
+        return nil
+    }
+
     private let recurringID: UUID?
+    private let loadedDate: Date?
     private let repository: ExpenseRepositoryProvider
 
     init(editing recurring: RecurringExpenseDTO? = nil, repository: ExpenseRepositoryProvider? = nil) {
         self.repository = repository ?? .init(container: NOIRApp.sharedModelContainer)
         recurringID = recurring?.id
+        loadedDate = recurring?.nextDueDate
         guard let recurring else {
             form = ExpenseForm(repeats: .monthly)
             return
@@ -51,7 +59,7 @@ final class RecurringExpenseFormViewModel {
         isSaving = true
         defer { isSaving = false }
 
-        try await repository.saveRecurring(form.trimmed, frequency: form.repeats ?? .monthly, id: recurringID)
+        try await repository.saveRecurring(form.trimmed, frequency: form.repeats ?? .monthly, nextDueDate: dateToSend, id: recurringID)
         NotificationCenter.default.post(name: .recurringDidChange, object: nil)
         return true
     }
@@ -62,7 +70,11 @@ final class RecurringExpenseFormViewModel {
         isSaving = true
         defer { isSaving = false }
 
-        try await repository.deleteRecurring(id: recurringID)
+        do {
+            try await repository.deleteRecurring(id: recurringID)
+        } catch RepositoryError.notFound {
+            // Already gone: same result.
+        }
         NotificationCenter.default.post(name: .recurringDidChange, object: nil)
         return true
     }

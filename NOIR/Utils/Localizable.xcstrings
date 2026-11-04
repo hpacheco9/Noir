@@ -9092,7 +9092,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forfalt"
+            "value" : "Forfaller"
           }
         },
         "pt-BR" : {
@@ -9463,65 +9463,6 @@
         }
       }
     },
-    "recurring.load_error" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tilbagevendende udgifter kunne ikke indlæses."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiederkehrende Ausgaben konnten nicht geladen werden."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Couldn't load recurring expenses."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudieron cargar los gastos recurrentes."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toistuvia kuluja ei voitu ladata."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossible de charger les dépenses récurrentes."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kunne ikke laste gjentakende utgifter."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível carregar as despesas recorrentes."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível carregar as despesas recorrentes."
-          }
-        }
-      }
-    },
     "recurring.never" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9670,7 +9611,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seuraava päivä"
+            "value" : "Seuraava eräpäivä"
           }
         },
         "fr" : {
@@ -9941,7 +9882,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udgifter, du allerede har tilføjet, bliver liggende."
+            "value" : "Udgifter, du allerede har tilføjet, bevares."
           }
         },
         "de" : {

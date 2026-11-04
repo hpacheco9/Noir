@@ -33,8 +33,7 @@ extension ExpenseRepositoryProvider {
         defaults.set(true, forKey: Self.otherRetiredKey)
     }
 
-    /// Inserts (`id == nil`) or updates an expense with the form's values. A new expense with `form.repeats` set
-    /// also becomes a recurring expense.
+    /// Inserts (`id == nil`) or updates an expense with the form's values.
     func save(_ form: ExpenseForm, id: PersistentIdentifier?) async throws {
         let recurring = try await perform {
             try await $0.save(
@@ -51,8 +50,7 @@ extension ExpenseRepositoryProvider {
         if let recurring { await notifications.scheduleRecurringReminder(recurring) }
     }
 
-    /// Inserts (`id == nil`) or updates a recurring expense; the form's date is its next due date.
-    func saveRecurring(_ form: ExpenseForm, frequency: RecurrenceFrequency, id: UUID?) async throws {
+    func saveRecurring(_ form: ExpenseForm, frequency: RecurrenceFrequency, nextDueDate: Date?, id: UUID?) async throws {
         let recurring = try await perform {
             try await $0.saveRecurring(
                 id: id,
@@ -62,7 +60,7 @@ extension ExpenseRepositoryProvider {
                 card: form.card,
                 note: form.description,
                 frequency: frequency,
-                nextDueDate: form.date
+                nextDueDate: nextDueDate
             )
         }
         await notifications.scheduleRecurringReminder(recurring)
@@ -73,7 +71,6 @@ extension ExpenseRepositoryProvider {
         notifications.cancelRecurringReminder(id: id)
     }
 
-    /// Adds the due expense and moves the recurring one to its next date, which is returned.
     @discardableResult
     func addDueOccurrence(id: UUID) async throws -> RecurringExpenseDTO {
         let recurring = try await perform { try await $0.addDueOccurrence(id: id) }
@@ -86,5 +83,10 @@ extension ExpenseRepositoryProvider {
         let recurring = try await perform { try await $0.skipDueOccurrence(id: id) }
         await notifications.scheduleRecurringReminder(recurring)
         return recurring
+    }
+
+    func resyncReminders() async {
+        guard let all = try? await perform({ try await $0.fetchRecurring() }) else { return }
+        for recurring in all { await notifications.scheduleRecurringReminder(recurring) }
     }
 }

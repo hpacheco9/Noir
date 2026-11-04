@@ -9,6 +9,7 @@ struct RecurringExpenseFormView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @State private var viewModel: RecurringExpenseFormViewModel
     @State private var saveError: String?
+    @State private var stopError: String?
     @State private var isStopConfirmationPresented = false
 
     init(recurring: RecurringExpenseDTO?) {
@@ -24,8 +25,7 @@ struct RecurringExpenseFormView: View {
                 categories: viewModel.categories,
                 cards: viewModel.cards,
                 dateTitle: L10n.Recurring.nextDate,
-                showsRepeat: true,
-                allowsNeverRepeat: false
+                repeatIncludesNever: false
             )
 
             if viewModel.isEditing {
@@ -61,6 +61,14 @@ struct RecurringExpenseFormView: View {
         } message: {
             Text(saveError ?? String(localized: L10n.Shared.unexpectedError))
         }
+        .alert(Text(L10n.Categories.errorTitle), isPresented: .init(
+            get: { stopError != nil },
+            set: { if !$0 { stopError = nil } }
+        )) {
+            Button(String(localized: L10n.Shared.ok), role: .cancel) { stopError = nil }
+        } message: {
+            Text(stopError ?? String(localized: L10n.Shared.unexpectedError))
+        }
         .alert(Text(L10n.Recurring.stopTitle), isPresented: $isStopConfirmationPresented) {
             Button(String(localized: L10n.Shared.cancel), role: .cancel) {}
             Button(String(localized: L10n.Recurring.stop), role: .destructive) {
@@ -68,7 +76,7 @@ struct RecurringExpenseFormView: View {
                     do {
                         if try await viewModel.stopRepeating() { coordinator.dismiss() }
                     } catch {
-                        saveError = error.localizedDescription
+                        stopError = error.localizedDescription
                     }
                 }
             }

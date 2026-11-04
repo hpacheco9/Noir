@@ -8,11 +8,11 @@ import Foundation
 import UserNotifications
 @testable import NOIR
 
-/// Records what the notification service asks the system for.
 final class RecordingNotificationCenter: NotificationCenterClient, @unchecked Sendable {
     var status: UNAuthorizationStatus
     private(set) var added: [UNNotificationRequest] = []
     private(set) var removed: [String] = []
+    private(set) var removedDelivered: [String] = []
 
     init(status: UNAuthorizationStatus = .authorized) { self.status = status }
 
@@ -20,6 +20,7 @@ final class RecordingNotificationCenter: NotificationCenterClient, @unchecked Se
     func authorizationStatus() async -> UNAuthorizationStatus { status }
     func add(_ request: UNNotificationRequest) async throws { added.append(request) }
     func removePendingNotificationRequests(withIdentifiers identifiers: [String]) { removed += identifiers }
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String]) { removedDelivered += identifiers }
 }
 
 struct RecurringReminderTests {
@@ -44,8 +45,12 @@ struct RecurringReminderTests {
     private func schedule(
         _ item: RecurringExpenseDTO, now: Date, center: RecordingNotificationCenter
     ) async {
-        await NotificationService(center: center)
-            .scheduleRecurringReminder(item, now: now, calendar: calendar, currencyCode: "EUR")
+        let suite = "NOIRTests.reminder.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.set("BRL", forKey: CurrencyPreference.storageKey)
+        defer { defaults.removePersistentDomain(forName: suite) }
+        await NotificationService(center: center, defaults: defaults)
+            .scheduleRecurringReminder(item, now: now, calendar: calendar)
     }
 
     @Test func schedulesOneReminderAtNineOnTheDueDay() async throws {
@@ -57,7 +62,7 @@ struct RecurringReminderTests {
         #expect(center.added.count == 1)
         #expect(request.identifier == "recurring.\(item.id.uuidString)")
         #expect(request.content.title == String(localized: L10n.Notification.recurringDueTitle(name: "Rent")))
-        #expect(request.content.body == CurrencyPreference.string(for: 12.5, code: "EUR"))
+        #expect(request.content.body == CurrencyPreference.string(for: 12.5, code: "BRL"))
         let trigger = try #require(request.trigger as? UNCalendarNotificationTrigger)
         #expect(trigger.repeats == false)
         #expect(trigger.dateComponents.year == 2026)
@@ -96,10 +101,11 @@ struct RecurringReminderTests {
         #expect(late.added.isEmpty)
     }
 
-    @Test func cancelRemovesTheReminderById() {
+    @Test func cancelRemovesThePendingAndTheDeliveredReminderById() {
         let center = RecordingNotificationCenter()
         let id = UUID()
         NotificationService(center: center).cancelRecurringReminder(id: id)
         #expect(center.removed == ["recurring.\(id.uuidString)"])
+        #expect(center.removedDelivered == ["recurring.\(id.uuidString)"])
     }
 }

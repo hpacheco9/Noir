@@ -13,7 +13,6 @@ nonisolated struct RecurringExpenseDTO: Sendable, Identifiable, Equatable {
     let card: String
     let note: String
     let frequency: RecurrenceFrequency
-    let startDate: Date
     let nextDueDate: Date
 
     nonisolated init(_ recurring: RecurringExpense, categories: [String: CategoryInfo]) {
@@ -24,7 +23,6 @@ nonisolated struct RecurringExpenseDTO: Sendable, Identifiable, Equatable {
         self.card = recurring.card
         self.note = recurring.note
         self.frequency = recurring.frequency
-        self.startDate = recurring.startDate
         self.nextDueDate = recurring.nextDueDate
     }
 }

@@ -5,9 +5,11 @@ final class NotificationService: @unchecked Sendable {
     static let shared = NotificationService()
 
     private let center: NotificationCenterClient
+    private let defaults: UserDefaults
 
-    init(center: NotificationCenterClient = UNUserNotificationCenter.current()) {
+    init(center: NotificationCenterClient = UNUserNotificationCenter.current(), defaults: UserDefaults = .standard) {
         self.center = center
+        self.defaults = defaults
     }
 
     @discardableResult
@@ -56,14 +58,8 @@ final class NotificationService: @unchecked Sendable {
 
     static func recurringIdentifier(_ id: UUID) -> String { "recurring.\(id.uuidString)" }
 
-    /// One reminder at 9:00 on the day the recurring expense is next due, replacing the one before it. Nothing is
-    /// scheduled (and a pending one is dropped) when notifications aren't allowed or that moment has passed.
-    func scheduleRecurringReminder(
-        _ recurring: RecurringExpenseDTO,
-        now: Date = .now,
-        calendar: Calendar = .current,
-        currencyCode: String? = nil
-    ) async {
+    // Nothing is scheduled (and a pending or delivered one is dropped) without permission or for a past moment.
+    func scheduleRecurringReminder(_ recurring: RecurringExpenseDTO, now: Date = .now, calendar: Calendar = .current) async {
         var day = calendar.dateComponents([.year, .month, .day], from: recurring.nextDueDate)
         day.hour = 9
         guard await canPostNotifications(), let fireDate = calendar.date(from: day), fireDate > now else {
@@ -73,10 +69,7 @@ final class NotificationService: @unchecked Sendable {
 
         let content = UNMutableNotificationContent()
         content.title = String(localized: L10n.Notification.recurringDueTitle(name: recurring.name))
-        let code = currencyCode
-            ?? UserDefaults.standard.string(forKey: CurrencyPreference.storageKey)
-            ?? CurrencyPreference.defaultCode
-        content.body = CurrencyPreference.string(for: recurring.amount, code: code)
+        content.body = CurrencyPreference.string(for: recurring.amount, code: currencyCode)
         content.sound = .default
 
         let request = UNNotificationRequest(
@@ -88,6 +81,12 @@ final class NotificationService: @unchecked Sendable {
     }
 
     func cancelRecurringReminder(id: UUID) {
-        center.removePendingNotificationRequests(withIdentifiers: [Self.recurringIdentifier(id)])
+        let identifiers = [Self.recurringIdentifier(id)]
+        center.removePendingNotificationRequests(withIdentifiers: identifiers)
+        center.removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
+
+    private var currencyCode: String {
+        defaults.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
     }
 }

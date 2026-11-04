@@ -5,41 +5,25 @@
 
 import SwiftUI
 
-// Add inserts the due occurrence as an expense, Skip moves on to its next date.
 struct DueRecurringRow: View {
     let recurring: RecurringExpenseDTO
     let isBusy: Bool
     let onAdd: () -> Void
     let onSkip: () -> Void
 
-    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
-
     var body: some View {
         VStack(spacing: 12) {
-            HStack(spacing: 10) {
-                Image(systemName: recurring.categoryInfo.icon)
-                    .font(.headline)
-                    .foregroundStyle(recurring.categoryInfo.color)
-                    .frame(width: 40, height: 40)
-                    .background(recurring.categoryInfo.color.opacity(0.12), in: Circle())
-                    .accessibilityHidden(true)
-
-                VStack(alignment: .leading) {
-                    Text(recurring.name)
-                        .lineLimit(1)
-                        .font(.headline)
-
-                    Text(L10n.Recurring.due(date: recurring.nextDueDate.formatted(.dateTime.day().month(.abbreviated))))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-
-                Text(verbatim: CurrencyPreference.string(for: recurring.amount, code: currencyCode))
-                    .font(.headline)
-            }
+            ExpenseRowLabel(
+                category: recurring.categoryInfo,
+                title: recurring.name,
+                subtitle: String(localized: L10n.Recurring.due(date: recurring.nextDueDate.formatted(.dateTime.day().month(.abbreviated)))),
+                amount: recurring.amount
+            )
             .accessibilityElement(children: .combine)
+            .accessibilityActions {
+                Button(String(localized: L10n.Recurring.add), action: onAdd)
+                Button(String(localized: L10n.Recurring.skip), action: onSkip)
+            }
 
             HStack(spacing: 8) {
                 Button(action: onSkip) {
@@ -61,6 +45,7 @@ struct DueRecurringRow: View {
                 .buttonStyle(.glassProminent)
             }
             .disabled(isBusy)
+            .accessibilityHidden(true)
         }
         .padding(.vertical, 4)
     }

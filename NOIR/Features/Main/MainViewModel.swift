@@ -26,9 +26,7 @@ final class MainViewModel {
     static let latestLimit = 5
 
     private(set) var period: SpendingPeriod = .week
-    // Recurring expenses due today or earlier, soonest first.
     private(set) var dueRecurring: [RecurringExpenseDTO] = []
-    // Ids with an Add or Skip in flight, so a second tap can't run it twice.
     private(set) var processingDue: Set<UUID> = []
     private var requestID = 0
     private var dueRequestID = 0
@@ -125,51 +123,40 @@ final class MainViewModel {
         do {
             let all = try await sideRepository.perform { try await $0.fetchRecurring() }
             guard id == dueRequestID else { return }
-            withAnimation(.snappy) { dueRecurring = all.filter { isDue($0, now: now, calendar: calendar) } }
+            withAnimation(.snappy) {
+                dueRecurring = all.filter { RecurringExpense.isDue($0.nextDueDate, now: now, calendar: calendar) }
+            }
         } catch {
             print("Failed to fetch recurring expenses: \(error)")
         }
     }
 
     @MainActor
-    func addDue(_ id: UUID) async {
-        guard await advanceDue(id, { try await $0.addDueOccurrence(id: id) }) else { return }
-        reviewPrompt.recordCreatedExpense()
-        NotificationCenter.default.post(name: .expensesDidChange, object: self)
-    }
-
-    @MainActor
-    func skipDue(_ id: UUID) async {
-        await advanceDue(id) { try await $0.skipDueOccurrence(id: id) }
-    }
-
-    // Shows the new next date right away (or drops the row when it is no longer due); the notification then reloads.
-    @MainActor
-    @discardableResult
-    private func advanceDue(
-        _ id: UUID,
-        _ action: (ExpenseRepositoryProvider) async throws -> RecurringExpenseDTO
-    ) async -> Bool {
-        guard processingDue.insert(id).inserted else { return false }
-        defer { processingDue.remove(id) }
-        do {
-            let updated = try await action(sideRepository)
-            withAnimation(.snappy) {
-                if let index = dueRecurring.firstIndex(where: { $0.id == id }) {
-                    if isDue(updated) { dueRecurring[index] = updated } else { dueRecurring.remove(at: index) }
-                }
-            }
-            NotificationCenter.default.post(name: .recurringDidChange, object: self)
-            return true
-        } catch {
-            print("Failed to advance recurring expense: \(error)")
-            await loadDue()
-            return false
+    func addDue(_ id: UUID) async throws {
+        try await advanceDue(id) {
+            try await $0.addDueOccurrence(id: id)
+            reviewPrompt.recordCreatedExpense()
+            NotificationCenter.default.post(name: .expensesDidChange, object: self)
         }
     }
 
-    private func isDue(_ recurring: RecurringExpenseDTO, now: Date = .now, calendar: Calendar = .current) -> Bool {
-        recurring.nextDueDate < (calendar.dateInterval(of: .day, for: now)?.end ?? now)
+    @MainActor
+    func skipDue(_ id: UUID) async throws {
+        try await advanceDue(id) { try await $0.skipDueOccurrence(id: id) }
+    }
+
+    // The row stays disabled until the reload has replaced it.
+    @MainActor
+    private func advanceDue(_ id: UUID, _ action: (ExpenseRepositoryProvider) async throws -> Void) async throws {
+        guard processingDue.insert(id).inserted else { return }
+        defer { processingDue.remove(id) }
+        do {
+            try await action(sideRepository)
+        } catch {
+            await loadDue()
+            throw error
+        }
+        await loadDue()
     }
 
     @MainActor

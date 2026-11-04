@@ -14,6 +14,7 @@ struct ContentView: View {
     @Environment(MainViewModel.self) private var viewModel
 
     @State private var expensePendingDeletion: ExpenseDTO?
+    @State private var isDueErrorPresented = false
 
     @Environment(\.requestReview) private var requestReview
     @Environment(\.scenePhase) private var scenePhase
@@ -81,6 +82,11 @@ struct ContentView: View {
             }
         } message: { _ in
             Text(L10n.ExpenseDeletion.message)
+        }
+        .alert(Text(L10n.Categories.errorTitle), isPresented: $isDueErrorPresented) {
+            Button(String(localized: L10n.Shared.ok), role: .cancel) {}
+        } message: {
+            Text(L10n.Shared.unexpectedError)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -171,18 +177,24 @@ struct ContentView: View {
                     DueRecurringRow(
                         recurring: recurring,
                         isBusy: viewModel.processingDue.contains(recurring.id),
-                        onAdd: {
-                            Haptics.play(.tap)
-                            Task { await viewModel.addDue(recurring.id) }
-                        },
-                        onSkip: {
-                            Haptics.play(.tap)
-                            Task { await viewModel.skipDue(recurring.id) }
-                        }
+                        onAdd: { advanceDue(.success) { try await viewModel.addDue(recurring.id) } },
+                        onSkip: { advanceDue(.tap) { try await viewModel.skipDue(recurring.id) } }
                     )
                 }
             } header: {
                 Text(L10n.Recurring.dueHeader)
+            }
+        }
+    }
+
+    private func advanceDue(_ success: HapticFeedback, _ action: @escaping () async throws -> Void) {
+        Task {
+            do {
+                try await action()
+                Haptics.play(success)
+            } catch {
+                Haptics.play(.error)
+                isDueErrorPresented = true
             }
         }
     }

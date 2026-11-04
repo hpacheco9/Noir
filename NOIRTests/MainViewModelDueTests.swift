@@ -16,7 +16,6 @@ extension CategoryBreakdownRepositoryTests {
     struct MainViewModelDueTests {
         private final class Heard {
             var expenses = 0
-            var recurring = 0
         }
 
         private struct Fixture {
@@ -41,7 +40,7 @@ extension CategoryBreakdownRepositoryTests {
             let center = RecordingNotificationCenter()
             let viewModel = MainViewModel(
                 model: container, loader: emptyLoader, reviewPrompt: review,
-                notifications: NotificationService(center: center)
+                notifications: NotificationService(center: center, defaults: UserDefaults(suiteName: suite)!)
             )
             try await OverviewMemoStore.$suiteName.withValue(suite) {
                 try await SavedCards.$suiteName.withValue(suite) {
@@ -81,16 +80,10 @@ extension CategoryBreakdownRepositoryTests {
         private func listening(
             to viewModel: MainViewModel, into heard: Heard, _ body: () async throws -> Void
         ) async rethrows {
-            let expenses = NotificationCenter.default.addObserver(
+            let token = NotificationCenter.default.addObserver(
                 forName: .expensesDidChange, object: viewModel, queue: nil
             ) { _ in MainActor.assumeIsolated { heard.expenses += 1 } }
-            let recurring = NotificationCenter.default.addObserver(
-                forName: .recurringDidChange, object: viewModel, queue: nil
-            ) { _ in MainActor.assumeIsolated { heard.recurring += 1 } }
-            defer {
-                NotificationCenter.default.removeObserver(expenses)
-                NotificationCenter.default.removeObserver(recurring)
-            }
+            defer { NotificationCenter.default.removeObserver(token) }
             try await body()
         }
 
@@ -134,9 +127,9 @@ extension CategoryBreakdownRepositoryTests {
                 #expect(fixture.viewModel.dueRecurring.count == 1)
 
                 let heard = Heard()
-                await listening(to: fixture.viewModel, into: heard) {
-                    #expect(heard.expenses == 0 && heard.recurring == 0)
-                    await fixture.viewModel.addDue(id)
+                try await listening(to: fixture.viewModel, into: heard) {
+                    #expect(heard.expenses == 0)
+                    try await fixture.viewModel.addDue(id)
                 }
 
                 #expect(try expenseDates(in: fixture.container) == [today])
@@ -146,7 +139,6 @@ extension CategoryBreakdownRepositoryTests {
                 #expect(next == Calendar.current.date(byAdding: .month, value: 1, to: today))
                 #expect(fixture.review.createdCount == 1)
                 #expect(heard.expenses == 1)
-                #expect(heard.recurring == 1)
                 #expect(fixture.center.added.map(\.identifier) == ["recurring.\(id.uuidString)"])
                 #expect(fixture.viewModel.processingDue.isEmpty)
             }
@@ -157,11 +149,11 @@ extension CategoryBreakdownRepositoryTests {
                 let id = try insertTemplate(frequency: .weekly, next: days(-14, from: today), into: fixture.container)
                 await fixture.viewModel.loadDue()
 
-                await fixture.viewModel.addDue(id)
+                try await fixture.viewModel.addDue(id)
                 #expect(fixture.viewModel.dueRecurring.map(\.nextDueDate) == [days(-7, from: today)])
-                await fixture.viewModel.addDue(id)
+                try await fixture.viewModel.addDue(id)
                 #expect(fixture.viewModel.dueRecurring.map(\.nextDueDate) == [today])
-                await fixture.viewModel.addDue(id)
+                try await fixture.viewModel.addDue(id)
                 #expect(fixture.viewModel.dueRecurring.isEmpty)
 
                 #expect(try expenseDates(in: fixture.container) == [days(-14, from: today), days(-7, from: today), today])
@@ -177,12 +169,12 @@ extension CategoryBreakdownRepositoryTests {
                 await fixture.viewModel.loadDue()
 
                 let heard = Heard()
-                await listening(to: fixture.viewModel, into: heard) {
-                    await fixture.viewModel.skipDue(id)
+                try await listening(to: fixture.viewModel, into: heard) {
+                    try await fixture.viewModel.skipDue(id)
                     #expect(fixture.viewModel.dueRecurring.map(\.nextDueDate) == [days(-7, from: today)])
-                    await fixture.viewModel.skipDue(id)
+                    try await fixture.viewModel.skipDue(id)
                     #expect(fixture.viewModel.dueRecurring.map(\.nextDueDate) == [today])
-                    await fixture.viewModel.skipDue(id)
+                    try await fixture.viewModel.skipDue(id)
                 }
 
                 #expect(fixture.viewModel.dueRecurring.isEmpty)
@@ -190,7 +182,6 @@ extension CategoryBreakdownRepositoryTests {
                 #expect(try expenseDates(in: fixture.container).isEmpty)
                 #expect(fixture.review.createdCount == 0)
                 #expect(heard.expenses == 0)
-                #expect(heard.recurring == 3)
                 // The reminder for a past date is dropped, so only the last skip (a week ahead) schedules one.
                 #expect(fixture.center.added.last?.identifier == "recurring.\(id.uuidString)")
                 #expect(fixture.center.removed.contains("recurring.\(id.uuidString)"))
@@ -208,13 +199,32 @@ extension CategoryBreakdownRepositoryTests {
                 for row in try context.fetch(FetchDescriptor<RecurringExpense>()) { context.delete(row) }
                 try context.save()
 
-                await fixture.viewModel.addDue(id)
+                await #expect(throws: RepositoryError.notFound) { try await fixture.viewModel.addDue(id) }
+                await #expect(throws: RepositoryError.notFound) { try await fixture.viewModel.skipDue(id) }
 
+                // The failed taps reloaded the list, so the row is gone.
                 #expect(try expenseDates(in: fixture.container).isEmpty)
                 #expect(fixture.review.createdCount == 0)
                 #expect(fixture.viewModel.dueRecurring.isEmpty)
                 #expect(fixture.viewModel.processingDue.isEmpty)
                 #expect(fixture.center.added.isEmpty)
+            }
+        }
+
+        @Test func aRowAdvancedElsewhereCannotBeAddedAgain() async throws {
+            try await withFixture { fixture in
+                let id = try insertTemplate(frequency: .weekly, next: today, into: fixture.container)
+                await fixture.viewModel.loadDue()
+                #expect(fixture.viewModel.dueRecurring.count == 1)
+                // Skipped from another screen, so it is a week away now.
+                try await ExpenseRepository(modelContainer: fixture.container).skipDueOccurrence(id: id)
+
+                await #expect(throws: RepositoryError.notDue) { try await fixture.viewModel.addDue(id) }
+
+                #expect(try expenseDates(in: fixture.container).isEmpty)
+                #expect(fixture.review.createdCount == 0)
+                #expect(fixture.viewModel.dueRecurring.isEmpty)
+                #expect(try nextDue(of: id, in: fixture.container) == days(7, from: today))
             }
         }
 
@@ -225,14 +235,14 @@ extension CategoryBreakdownRepositoryTests {
 
                 async let first: Void = fixture.viewModel.addDue(id)
                 async let second: Void = fixture.viewModel.addDue(id)
-                _ = await (first, second)
+                _ = try await (first, second)
 
                 #expect(try expenseDates(in: fixture.container) == [days(-14, from: today)])
                 #expect(try nextDue(of: id, in: fixture.container) == days(-7, from: today))
                 #expect(fixture.review.createdCount == 1)
 
                 // Once the first one is done, the next tap goes through.
-                await fixture.viewModel.addDue(id)
+                try await fixture.viewModel.addDue(id)
                 #expect(try expenseDates(in: fixture.container).count == 2)
             }
         }

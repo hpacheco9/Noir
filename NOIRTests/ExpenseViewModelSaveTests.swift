@@ -14,7 +14,6 @@ final class ExpenseViewModelSaveTests {
     private final class Recorder {
         var saved: [ExpenseForm] = []
         var notifications = 0
-        var recurringNotifications = 0
     }
 
     private struct SaveFailed: Error {}
@@ -42,13 +41,7 @@ final class ExpenseViewModelSaveTests {
         let token = NotificationCenter.default.addObserver(
             forName: .expensesDidChange, object: viewModel, queue: nil
         ) { _ in MainActor.assumeIsolated { recorder.notifications += 1 } }  // posted on the main actor
-        let recurringToken = NotificationCenter.default.addObserver(
-            forName: .recurringDidChange, object: viewModel, queue: nil
-        ) { _ in MainActor.assumeIsolated { recorder.recurringNotifications += 1 } }
-        defer {
-            NotificationCenter.default.removeObserver(token)
-            NotificationCenter.default.removeObserver(recurringToken)
-        }
+        defer { NotificationCenter.default.removeObserver(token) }
         try await body()
     }
 
@@ -107,36 +100,5 @@ final class ExpenseViewModelSaveTests {
         #expect(viewModel.isSaving == false)
         #expect(ReviewPromptStore(defaults: defaults).createdCount == 0)
         #expect(recorder.notifications == 0)
-    }
-
-    @Test func saveWithRepeatPassesItOnAndAnnouncesTheRecurringChange() async throws {
-        let recorder = Recorder()
-        let viewModel = makeViewModel { form in await MainActor.run { recorder.saved.append(form) } }
-        viewModel.form.amount = 9
-        viewModel.form.name = "Netflix"
-        viewModel.form.repeats = .monthly
-
-        try await countingNotifications(from: viewModel, into: recorder) {
-            _ = try await viewModel.save()
-        }
-
-        #expect(recorder.saved.first?.repeats == .monthly)
-        #expect(recorder.notifications == 1)
-        #expect(recorder.recurringNotifications == 1)
-    }
-
-    @Test func saveWithoutRepeatDoesNotAnnounceARecurringChange() async throws {
-        let recorder = Recorder()
-        let viewModel = makeViewModel { form in await MainActor.run { recorder.saved.append(form) } }
-        viewModel.form.amount = 9
-        viewModel.form.name = "Coffee"
-
-        try await countingNotifications(from: viewModel, into: recorder) {
-            _ = try await viewModel.save()
-        }
-
-        #expect(recorder.saved.first?.repeats == nil)
-        #expect(recorder.notifications == 1)
-        #expect(recorder.recurringNotifications == 0)
     }
 }

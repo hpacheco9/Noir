@@ -256,7 +256,6 @@ enum L10n {
         static let monthly: LocalizedStringResource = "recurring.frequency.monthly"
         static let yearly: LocalizedStringResource = "recurring.frequency.yearly"
         static let dueHeader: LocalizedStringResource = "recurring.due_header"
-        /// "Due 3 Nov".
         static func due(date: String) -> LocalizedStringResource {
             "recurring.due \(date)"
         }
@@ -267,14 +266,12 @@ enum L10n {
         static let editTitle: LocalizedStringResource = "recurring.edit_title"
         static let emptyTitle: LocalizedStringResource = "recurring.empty_title"
         static let emptyDescription: LocalizedStringResource = "recurring.empty_description"
-        /// "Every month · Next: 3 Nov".
         static func rowDetail(frequency: String, next: String) -> LocalizedStringResource {
             "recurring.row_detail \(frequency) \(next)"
         }
         static let stop: LocalizedStringResource = "recurring.stop"
         static let stopTitle: LocalizedStringResource = "recurring.stop_title"
         static let stopMessage: LocalizedStringResource = "recurring.stop_message"
-        static let loadError: LocalizedStringResource = "recurring.load_error"
     }
 
     enum ExpenseCategory {

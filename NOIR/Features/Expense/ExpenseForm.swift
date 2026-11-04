@@ -14,7 +14,6 @@ nonisolated struct ExpenseForm: Sendable {
     var category: String = ExpenseCategory.food.rawValue
     var description = ""
     var card = ""
-    /// Add Expense only: also create a recurring expense with this frequency.
     var repeats: RecurrenceFrequency?
 
     var canSave: Bool {

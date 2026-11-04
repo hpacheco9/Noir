@@ -226,6 +226,11 @@ actor ExpenseRepository: ModelActor {
         return titles
     }
 
+    // Noon, not midnight: a date stored at noon stays on the same day when the time zone changes.
+    nonisolated private static func noon(_ date: Date, _ calendar: Calendar) -> Date {
+        calendar.date(bySettingHour: 12, minute: 0, second: 0, of: date) ?? date
+    }
+
     nonisolated private static func sameTitle(_ a: String, _ b: String) -> Bool {
         a.compare(b, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
     }
@@ -324,7 +329,7 @@ actor ExpenseRepository: ModelActor {
         return CategoryInfo(builtIn: builtIn)
     }
 
-    /// Deletes a custom category and moves its expenses and recurring expenses to `food` in the same save.
+    /// Deletes a custom category and moves its expenses to `food` in the same save.
     /// Returns how many expenses were reassigned.
     @discardableResult
     func deleteCategory(id: UUID) throws -> Int {
@@ -368,8 +373,6 @@ actor ExpenseRepository: ModelActor {
         return count > 0 ? CategoryInfo.key(forCustomID: id) : ExpenseCategory.food.rawValue
     }
 
-    /// With `repeating` set, a new expense (`id == nil`) also creates its `RecurringExpense` in the same save, due
-    /// again one period after `date`; returned so the caller can schedule its reminder. Edits ignore it.
     @discardableResult
     func save(
         id: PersistentIdentifier?,
@@ -380,12 +383,13 @@ actor ExpenseRepository: ModelActor {
         description: String,
         card: String,
         repeating: RecurrenceFrequency? = nil,
+        now: Date = .now,
         calendar: Calendar = .current
     ) throws -> RecurringExpenseDTO? {
         guard Expense.isValidAmount(amount) else { throw RepositoryError.invalidAmount }
         let categoryKey = try resolvedCategoryKey(categoryKey)
         let existing = try id.map(existingExpense)
-        let categories = try categoryIndex()
+        let categories = try (id == nil && repeating != nil) ? categoryIndex() : [:]
         // Two-phase with the overview memos: nothing may save a memo while this write is in flight.
         OverviewMemoStore.beginWrite()
 
@@ -424,7 +428,7 @@ actor ExpenseRepository: ModelActor {
             expense.createdAt = .now
             modelContext.insert(expense)
             let template = repeating.map { frequency in
-                let anchor = calendar.startOfDay(for: date)
+                let anchor = Self.noon(date, calendar)
                 return RecurringExpense(
                     name: name,
                     amount: amount,
@@ -433,7 +437,7 @@ actor ExpenseRepository: ModelActor {
                     note: description,
                     frequency: frequency,
                     startDate: anchor,
-                    nextDueDate: frequency.firstOccurrence(after: date, anchor: anchor, calendar: calendar)
+                    nextDueDate: frequency.firstOccurrence(after: max(date, now), anchor: anchor, calendar: calendar)
                 )
             }
             if let template { modelContext.insert(template) }
@@ -455,16 +459,14 @@ actor ExpenseRepository: ModelActor {
 
     // MARK: - Recurring
 
-    /// All recurring expenses, soonest due first.
     func fetchRecurring() throws -> [RecurringExpenseDTO] {
         let categories = try categoryIndex()
         let descriptor = FetchDescriptor<RecurringExpense>(sortBy: [SortDescriptor(\.nextDueDate), SortDescriptor(\.name)])
         return try modelContext.fetch(descriptor).map { RecurringExpenseDTO($0, categories: categories) }
     }
 
-    /// Inserts (`id == nil`) or updates a recurring expense. `nextDueDate` is kept to its day. Changing the
-    /// frequency or that day restarts the schedule from it; any other edit keeps the anchor (so a monthly
-    /// expense on the 31st doesn't settle on the 28th just because it was renamed).
+    // `nextDueDate` nil keeps the stored one. A new frequency or day restarts the schedule from it; any other
+    // edit keeps the anchor, so renaming a monthly expense on the 31st doesn't settle it on the 28th.
     @discardableResult
     func saveRecurring(
         id: UUID?,
@@ -474,17 +476,18 @@ actor ExpenseRepository: ModelActor {
         card: String,
         note: String,
         frequency: RecurrenceFrequency,
-        nextDueDate: Date,
+        nextDueDate: Date?,
         calendar: Calendar = .current
     ) throws -> RecurringExpenseDTO {
         guard Expense.isValidAmount(amount) else { throw RepositoryError.invalidAmount }
         let categoryKey = try resolvedCategoryKey(categoryKey)
         let categories = try categoryIndex()
-        let day = calendar.startOfDay(for: nextDueDate)
+        let existing = try id.map(existingRecurring)
+        let day = Self.noon(nextDueDate ?? existing?.nextDueDate ?? .now, calendar)
 
         let recurring: RecurringExpense
-        if let id {
-            recurring = try existingRecurring(id)
+        if let existing {
+            recurring = existing
             if recurring.frequency != frequency || !calendar.isDate(recurring.nextDueDate, inSameDayAs: day) {
                 recurring.frequency = frequency
                 recurring.startDate = day
@@ -506,17 +509,15 @@ actor ExpenseRepository: ModelActor {
         return RecurringExpenseDTO(recurring, categories: categories)
     }
 
-    /// Past expenses stay.
     func deleteRecurring(id: UUID) throws {
         modelContext.delete(try existingRecurring(id))
         try commit()
     }
 
-    /// Inserts the due occurrence as a normal expense dated on its due day and moves the template to its next
-    /// occurrence, in one save. Like `save`, it leaves the overview memos for the next delta load to pick up.
     @discardableResult
-    func addDueOccurrence(id: UUID, calendar: Calendar = .current) throws -> RecurringExpenseDTO {
+    func addDueOccurrence(id: UUID, now: Date = .now, calendar: Calendar = .current) throws -> RecurringExpenseDTO {
         let recurring = try existingRecurring(id)
+        guard RecurringExpense.isDue(recurring.nextDueDate, now: now, calendar: calendar) else { throw RepositoryError.notDue }
         guard Expense.isValidAmount(recurring.amount) else { throw RepositoryError.invalidAmount }
         let categoryKey = try resolvedCategoryKey(recurring.categoryRawValue)
         let categories = try categoryIndex()
@@ -548,10 +549,10 @@ actor ExpenseRepository: ModelActor {
         return RecurringExpenseDTO(recurring, categories: categories)
     }
 
-    /// Moves the template to its next occurrence without adding an expense.
     @discardableResult
-    func skipDueOccurrence(id: UUID, calendar: Calendar = .current) throws -> RecurringExpenseDTO {
+    func skipDueOccurrence(id: UUID, now: Date = .now, calendar: Calendar = .current) throws -> RecurringExpenseDTO {
         let recurring = try existingRecurring(id)
+        guard RecurringExpense.isDue(recurring.nextDueDate, now: now, calendar: calendar) else { throw RepositoryError.notDue }
         let categories = try categoryIndex()
         recurring.nextDueDate = recurring.frequency.firstOccurrence(
             after: recurring.nextDueDate, anchor: recurring.startDate, calendar: calendar
