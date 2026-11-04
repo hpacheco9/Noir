@@ -56,6 +56,12 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
             Task { await viewModel.fetchData() }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .recurringDidChange)) { _ in
+            Task { await viewModel.loadDue() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
+            Task { await viewModel.loadDue() }
+        }
         .alert(
             Text(L10n.ExpenseDeletion.title),
             isPresented: Binding(
@@ -93,6 +99,7 @@ struct ContentView: View {
     private var expenseListContent: some View {
         switch viewModel.state {
         case .empty:
+            dueSection
             emptyStateSection
         case .loaded(let snapshot):
             loadedSections(for: snapshot)
@@ -128,6 +135,8 @@ struct ContentView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
+        dueSection
+
         let latestExpenses = snapshot.latest
         if !latestExpenses.isEmpty {
             Section {
@@ -150,6 +159,30 @@ struct ContentView: View {
                 }
             } header: {
                 Text(L10n.MainView.latestTransactions)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var dueSection: some View {
+        if !viewModel.dueRecurring.isEmpty {
+            Section {
+                ForEach(viewModel.dueRecurring) { recurring in
+                    DueRecurringRow(
+                        recurring: recurring,
+                        isBusy: viewModel.processingDue.contains(recurring.id),
+                        onAdd: {
+                            Haptics.play(.tap)
+                            Task { await viewModel.addDue(recurring.id) }
+                        },
+                        onSkip: {
+                            Haptics.play(.tap)
+                            Task { await viewModel.skipDue(recurring.id) }
+                        }
+                    )
+                }
+            } header: {
+                Text(L10n.Recurring.dueHeader)
             }
         }
     }
@@ -236,7 +269,7 @@ struct ContentView: View {
 #Preview {
     CoordinatorView {
         ContentView()
-            .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self], inMemory: true)
+            .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self], inMemory: true)
     }
     .environmentObject(Coordinator())
     .environment(MainViewModel(model: NOIRApp.sharedModelContainer))

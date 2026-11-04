@@ -21,7 +21,7 @@ struct SearchViewModelDeleteTests {
 
     private func makeContainer() throws -> ModelContainer {
         let container = try ModelContainer(
-            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
+            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         let context = ModelContext(container)

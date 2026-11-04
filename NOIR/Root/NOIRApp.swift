@@ -17,6 +17,7 @@ struct NOIRApp: App {
             Expense.self,
             CustomCategory.self,
             BuiltInCategoryOverride.self,
+            RecurringExpense.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

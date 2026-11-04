@@ -26,15 +26,29 @@ final class MainViewModel {
     static let latestLimit = 5
 
     private(set) var period: SpendingPeriod = .week
+    // Recurring expenses due today or earlier, soonest first.
+    private(set) var dueRecurring: [RecurringExpenseDTO] = []
+    // Ids with an Add or Skip in flight, so a second tap can't run it twice.
+    private(set) var processingDue: Set<UUID> = []
     private var requestID = 0
+    private var dueRequestID = 0
     private var loadTask: Task<Void, Never>?
     private let loader: Loader
+    private let sideRepository: ExpenseRepositoryProvider
+    private let reviewPrompt: ReviewPromptStore
 
-    init(model: ModelContainer, loader: Loader? = nil) {
-        let repository = ExpenseRepositoryProvider(container: model)
-        let sideRepository = ExpenseRepositoryProvider(container: model)
+    init(
+        model: ModelContainer,
+        loader: Loader? = nil,
+        reviewPrompt: ReviewPromptStore = ReviewPromptStore(),
+        notifications: NotificationService = .shared
+    ) {
+        let repository = ExpenseRepositoryProvider(container: model, notifications: notifications)
+        let sideRepository = ExpenseRepositoryProvider(container: model, notifications: notifications)
         let latestLimit = Self.latestLimit
         self.repository = repository
+        self.sideRepository = sideRepository
+        self.reviewPrompt = reviewPrompt
         self.loader = loader ?? { period, now in
             async let chartLoad = repository.perform { try await $0.overviewChart(period: period, now: now) }
             async let sideLoad = sideRepository.perform {
@@ -71,7 +85,9 @@ final class MainViewModel {
         loadTask?.cancel()
         let task = Task { await load() }
         loadTask = task
+        async let due: Void = loadDue()
         await task.value
+        await due
     }
 
     @MainActor
@@ -100,6 +116,60 @@ final class MainViewModel {
                 break
             }
         }
+    }
+
+    @MainActor
+    func loadDue(now: Date = .now, calendar: Calendar = .current) async {
+        dueRequestID += 1
+        let id = dueRequestID
+        do {
+            let all = try await sideRepository.perform { try await $0.fetchRecurring() }
+            guard id == dueRequestID else { return }
+            withAnimation(.snappy) { dueRecurring = all.filter { isDue($0, now: now, calendar: calendar) } }
+        } catch {
+            print("Failed to fetch recurring expenses: \(error)")
+        }
+    }
+
+    @MainActor
+    func addDue(_ id: UUID) async {
+        guard await advanceDue(id, { try await $0.addDueOccurrence(id: id) }) else { return }
+        reviewPrompt.recordCreatedExpense()
+        NotificationCenter.default.post(name: .expensesDidChange, object: self)
+    }
+
+    @MainActor
+    func skipDue(_ id: UUID) async {
+        await advanceDue(id) { try await $0.skipDueOccurrence(id: id) }
+    }
+
+    // Shows the new next date right away (or drops the row when it is no longer due); the notification then reloads.
+    @MainActor
+    @discardableResult
+    private func advanceDue(
+        _ id: UUID,
+        _ action: (ExpenseRepositoryProvider) async throws -> RecurringExpenseDTO
+    ) async -> Bool {
+        guard processingDue.insert(id).inserted else { return false }
+        defer { processingDue.remove(id) }
+        do {
+            let updated = try await action(sideRepository)
+            withAnimation(.snappy) {
+                if let index = dueRecurring.firstIndex(where: { $0.id == id }) {
+                    if isDue(updated) { dueRecurring[index] = updated } else { dueRecurring.remove(at: index) }
+                }
+            }
+            NotificationCenter.default.post(name: .recurringDidChange, object: self)
+            return true
+        } catch {
+            print("Failed to advance recurring expense: \(error)")
+            await loadDue()
+            return false
+        }
+    }
+
+    private func isDue(_ recurring: RecurringExpenseDTO, now: Date = .now, calendar: Calendar = .current) -> Bool {
+        recurring.nextDueDate < (calendar.dateInterval(of: .day, for: now)?.end ?? now)
     }
 
     @MainActor

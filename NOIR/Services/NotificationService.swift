@@ -53,4 +53,41 @@ final class NotificationService: @unchecked Sendable {
         )
         try await center.add(request)
     }
+
+    static func recurringIdentifier(_ id: UUID) -> String { "recurring.\(id.uuidString)" }
+
+    /// One reminder at 9:00 on the day the recurring expense is next due, replacing the one before it. Nothing is
+    /// scheduled (and a pending one is dropped) when notifications aren't allowed or that moment has passed.
+    func scheduleRecurringReminder(
+        _ recurring: RecurringExpenseDTO,
+        now: Date = .now,
+        calendar: Calendar = .current,
+        currencyCode: String? = nil
+    ) async {
+        var day = calendar.dateComponents([.year, .month, .day], from: recurring.nextDueDate)
+        day.hour = 9
+        guard await canPostNotifications(), let fireDate = calendar.date(from: day), fireDate > now else {
+            cancelRecurringReminder(id: recurring.id)
+            return
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: L10n.Notification.recurringDueTitle(name: recurring.name))
+        let code = currencyCode
+            ?? UserDefaults.standard.string(forKey: CurrencyPreference.storageKey)
+            ?? CurrencyPreference.defaultCode
+        content.body = CurrencyPreference.string(for: recurring.amount, code: code)
+        content.sound = .default
+
+        let request = UNNotificationRequest(
+            identifier: Self.recurringIdentifier(recurring.id),
+            content: content,
+            trigger: UNCalendarNotificationTrigger(dateMatching: day, repeats: false)
+        )
+        try? await center.add(request)
+    }
+
+    func cancelRecurringReminder(id: UUID) {
+        center.removePendingNotificationRequests(withIdentifiers: [Self.recurringIdentifier(id)])
+    }
 }

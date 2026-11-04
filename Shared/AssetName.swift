@@ -30,6 +30,7 @@ nonisolated enum AssetName {
         static let picker = "chevron.up.chevron.down"
         static let privacy = "hand.raised.fill"
         static let pro = "sparkles"
+        static let recurring = "repeat"
         static let reset = "arrow.counterclockwise"
         static let rest = "ellipsis.circle"
         static let search = "magnifyingglass"

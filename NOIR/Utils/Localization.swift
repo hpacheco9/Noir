@@ -243,6 +243,38 @@ enum L10n {
 
     enum Notification {
         static let expenseAddedTitle: LocalizedStringResource = "notification.expense_added_title"
+        static func recurringDueTitle(name: String) -> LocalizedStringResource {
+            "notification.recurring_due_title \(name)"
+        }
+    }
+
+    enum Recurring {
+        static let title: LocalizedStringResource = "recurring.title"
+        static let repeatTitle: LocalizedStringResource = "recurring.repeat"
+        static let never: LocalizedStringResource = "recurring.never"
+        static let weekly: LocalizedStringResource = "recurring.frequency.weekly"
+        static let monthly: LocalizedStringResource = "recurring.frequency.monthly"
+        static let yearly: LocalizedStringResource = "recurring.frequency.yearly"
+        static let dueHeader: LocalizedStringResource = "recurring.due_header"
+        /// "Due 3 Nov".
+        static func due(date: String) -> LocalizedStringResource {
+            "recurring.due \(date)"
+        }
+        static let add: LocalizedStringResource = "recurring.add"
+        static let skip: LocalizedStringResource = "recurring.skip"
+        static let nextDate: LocalizedStringResource = "recurring.next_date"
+        static let newTitle: LocalizedStringResource = "recurring.new_title"
+        static let editTitle: LocalizedStringResource = "recurring.edit_title"
+        static let emptyTitle: LocalizedStringResource = "recurring.empty_title"
+        static let emptyDescription: LocalizedStringResource = "recurring.empty_description"
+        /// "Every month · Next: 3 Nov".
+        static func rowDetail(frequency: String, next: String) -> LocalizedStringResource {
+            "recurring.row_detail \(frequency) \(next)"
+        }
+        static let stop: LocalizedStringResource = "recurring.stop"
+        static let stopTitle: LocalizedStringResource = "recurring.stop_title"
+        static let stopMessage: LocalizedStringResource = "recurring.stop_message"
+        static let loadError: LocalizedStringResource = "recurring.load_error"
     }
 
     enum ExpenseCategory {

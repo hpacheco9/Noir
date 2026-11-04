@@ -107,5 +107,5 @@ private extension RootView {
 
 #Preview {
     RootView(mainViewModel: MainViewModel(model: NOIRApp.sharedModelContainer))
-        .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self], inMemory: true)
+        .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self], inMemory: true)
 }

@@ -24,6 +24,7 @@ final class OnboardingViewModelTests {
         }
         func authorizationStatus() async -> UNAuthorizationStatus { .notDetermined }
         func add(_ request: UNNotificationRequest) async throws {}
+        func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {}
     }
 
     private let suiteName = "OnboardingViewModelTests.\(UUID().uuidString)"

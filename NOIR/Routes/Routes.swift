@@ -98,6 +98,43 @@ extension SettingsRoutes {
         return EditCategoryViewRoute(routeId: "settings-edit-category-\(category.key)", category: category)
     }
 
+    static func recurring() -> any RouteRepresentable {
+        struct RecurringExpensesViewRoute: RouteRepresentable {
+            let routeId: String = "settings-recurring"
+
+            func routeView() -> any View {
+                RecurringExpensesView()
+            }
+        }
+
+        return RecurringExpensesViewRoute()
+    }
+
+    static func newRecurring() -> any RouteRepresentable {
+        struct NewRecurringViewRoute: RouteRepresentable {
+            let routeId: String = "settings-new-recurring"
+
+            func routeView() -> any View {
+                RecurringExpenseFormView(recurring: nil)
+            }
+        }
+
+        return NewRecurringViewRoute()
+    }
+
+    static func editRecurring(_ recurring: RecurringExpenseDTO) -> any RouteRepresentable {
+        struct EditRecurringViewRoute: RouteRepresentable {
+            let routeId: String
+            let recurring: RecurringExpenseDTO
+
+            func routeView() -> any View {
+                RecurringExpenseFormView(recurring: recurring)
+            }
+        }
+
+        return EditRecurringViewRoute(routeId: "settings-edit-recurring-\(recurring.id)", recurring: recurring)
+    }
+
     static func shortcuts() -> any RouteRepresentable {
         struct ShortcutsViewRoute: RouteRepresentable {
             let routeId: String = "settings-shortcuts"
