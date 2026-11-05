@@ -132,6 +132,18 @@ enum L10n {
         static let shortcuts: LocalizedStringResource = "preferences.shortcuts"
     }
 
+    enum Export {
+        static let title: LocalizedStringResource = "export.title"
+        static let csv: LocalizedStringResource = "export.csv"
+        static let headerDate: LocalizedStringResource = "export.header_date"
+        static let headerName: LocalizedStringResource = "export.header_name"
+        static let headerAmount: LocalizedStringResource = "export.header_amount"
+        static let headerCurrency: LocalizedStringResource = "export.header_currency"
+        static let headerCategory: LocalizedStringResource = "export.header_category"
+        static let headerCard: LocalizedStringResource = "export.header_card"
+        static let headerNote: LocalizedStringResource = "export.header_note"
+    }
+
     enum Profile {
         static let title: LocalizedStringResource = "profile.title"
         static let description: LocalizedStringResource = "profile.description"

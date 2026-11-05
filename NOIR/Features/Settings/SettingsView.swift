@@ -111,6 +111,20 @@ struct SettingsView: View {
                 }
             }
 
+            Section(String(localized: L10n.Export.title)) {
+                ShareLink(
+                    item: ExpenseCSVExport(
+                        container: NOIRApp.sharedModelContainer,
+                        headers: .localized,
+                        currencyCode: currencyCode
+                    ),
+                    preview: SharePreview(ExpenseCSV.fileName(for: .now))
+                ) {
+                    SettingsRowLabel(title: L10n.Export.csv, systemImage: AssetName.System.export)
+                }
+                .tint(.primary)
+            }
+
             Section(String(localized: L10n.Legal.title)) {
                 SettingsRow(
                     title: L10n.Legal.privacyPolicy,
