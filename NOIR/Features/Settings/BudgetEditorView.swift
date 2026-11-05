@@ -31,6 +31,7 @@ struct BudgetEditorView: View {
             publishTask = Task {
                 try? await Task.sleep(for: .milliseconds(500))
                 guard !Task.isCancelled else { return }
+                BudgetAlert.reset()
                 await WidgetSnapshotPublisher.publish()
             }
         }

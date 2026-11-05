@@ -6680,7 +6680,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We'll help you to stay on track and spend intentionally."
+            "value" : "We'll help you stay on track and spend intentionally."
           }
         },
         "es" : {
@@ -7821,7 +7821,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Definir Orçamento"
+            "value" : "Definir orçamento"
           }
         },
         "pt-PT" : {
@@ -9234,55 +9234,55 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bruges til budgetfremdriften og advarslerne."
+            "value" : "Bruges til budgetfremdriften og advarslerne. Sæt det til 0 for at slå budgettet fra."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wird für den Budgetfortschritt und die Warnungen verwendet."
+            "value" : "Wird für den Budgetfortschritt und die Warnungen verwendet. Mit 0 schaltest du das Budget aus."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Used for your budget progress and alerts."
+            "value" : "Used for your budget progress and alerts. Set it to 0 to turn the budget off."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se usa para el progreso del presupuesto y las alertas."
+            "value" : "Se usa para el progreso del presupuesto y las alertas. Ponlo a 0 para desactivar el presupuesto."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Käytetään budjetin edistymiseen ja hälytyksiin."
+            "value" : "Käytetään budjetin edistymiseen ja hälytyksiin. Aseta arvoksi 0, niin budjetti poistuu käytöstä."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sert à afficher la progression du budget et à envoyer les alertes."
+            "value" : "Sert à afficher la progression du budget et à envoyer les alertes. Mets 0 pour désactiver le budget."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brukes til budsjettfremdriften og varslene."
+            "value" : "Brukes til budsjettfremdriften og varslene. Sett det til 0 for å slå av budsjettet."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usado para o progresso do orçamento e para os alertas."
+            "value" : "Usado para o progresso do orçamento e para os alertas. Defina 0 para desativar o orçamento."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usado para o progresso do orçamento e para os alertas."
+            "value" : "Usado para o progresso do orçamento e para os alertas. Defina 0 para desativar o orçamento."
           }
         }
       }

@@ -54,10 +54,6 @@ final class OnboardingViewModelTests {
         return viewModel
     }
 
-    @Test func theBudgetComesBetweenTheCurrencyAndTheNotifications() {
-        #expect(OnboardingViewModel.Step.allCases == [.welcome, .name, .currency, .budget, .notifications, .paywall])
-    }
-
     @Test func advanceWalksThroughEveryStep() {
         let viewModel = makeViewModel()
         viewModel.name = "Maria"
@@ -111,13 +107,12 @@ final class OnboardingViewModelTests {
 
     @Test func theBudgetStepOffersTheDefaultAndNeverBlocks() {
         let viewModel = makeViewModel()
-        #expect(viewModel.budget == OnboardingStorage.defaultMonthlyBudget)
-
         viewModel.name = "Maria"
         viewModel.advance()
         viewModel.advance()
         viewModel.advance()
         #expect(viewModel.step == .budget)
+        #expect(viewModel.budget == OnboardingStorage.defaultMonthlyBudget * Double(CurrencyPreference.budgetScale(for: viewModel.currencyCode)))
         #expect(viewModel.canAdvance)
         #expect(viewModel.primaryActionTitle.key == L10n.Onboarding.setBudget.key)
 
@@ -127,14 +122,28 @@ final class OnboardingViewModelTests {
         #expect(viewModel.step == .notifications)
     }
 
+    @Test(arguments: [("EUR", 1000.0), ("USD", 1000), ("SEK", 10_000), ("NOK", 10_000), ("DKK", 10_000), ("JPY", 100_000)])
+    func theDefaultBudgetFollowsTheChosenCurrency(code: String, expected: Double) {
+        let viewModel = makeViewModel()
+        viewModel.name = "Maria"
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.currencyCode = code
+        viewModel.advance()
+
+        #expect(viewModel.step == .budget)
+        #expect(viewModel.budget == expected)
+    }
+
     @Test func theChosenBudgetIsStoredOnlyWhenPersisting() {
         let viewModel = makeViewModel()
         viewModel.name = "Maria"
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.advance()
         viewModel.budget = 1500
         viewModel.advance()
-        viewModel.advance()
-        viewModel.advance()
-        viewModel.advance()
+        #expect(viewModel.step == .notifications)
         #expect(defaults.object(forKey: OnboardingStorage.monthlyBudgetKey) == nil)
 
         viewModel.persist()

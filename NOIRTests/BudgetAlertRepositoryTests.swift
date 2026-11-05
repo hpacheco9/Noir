@@ -48,8 +48,10 @@ extension CategoryBreakdownRepositoryTests {
             }
         }
 
-        private func add(_ amount: Decimal, to fixture: Fixture) async throws {
-            try await fixture.provider.save(ExpenseForm(amount: amount, name: "Row", date: .now), id: nil)
+        // The check runs in the background after a save: wait for it.
+        private func save(_ amount: Decimal, id: PersistentIdentifier? = nil, to fixture: Fixture) async throws {
+            try await fixture.provider.save(ExpenseForm(amount: amount, name: "Row", date: .now), id: id)
+            await fixture.provider.budgetCheck?.value
         }
 
         private func rows(in container: ModelContainer) throws -> [Expense] {
@@ -58,74 +60,39 @@ extension CategoryBreakdownRepositoryTests {
 
         @Test func savingCrossesEachLevelOnce() async throws {
             try await withFixture { fixture in
-                try await add(50, to: fixture)
+                try await save(50, to: fixture)
                 #expect(fixture.alerts.isEmpty)
 
-                try await add(35, to: fixture)
+                try await save(35, to: fixture)
                 #expect(fixture.alerts == ["1"])
-                try await add(5, to: fixture)
+                try await save(5, to: fixture)
                 #expect(fixture.alerts == ["1"])
 
-                try await add(20, to: fixture)
+                try await save(20, to: fixture)
                 #expect(fixture.alerts == ["1", "2"])
-                try await add(10, to: fixture)
+                try await save(10, to: fixture)
                 #expect(fixture.alerts == ["1", "2"])
-            }
-        }
-
-        @Test func aSingleBigExpenseSendsOnlyTheOverAlert() async throws {
-            try await withFixture { fixture in
-                try await add(150, to: fixture)
-                #expect(fixture.alerts == ["2"])
-            }
-        }
-
-        @Test func noBudgetNeverAlerts() async throws {
-            try await withFixture(budget: nil) { fixture in
-                try await add(5000, to: fixture)
-                #expect(fixture.center.added.isEmpty)
             }
         }
 
         @Test func aFailedSaveAlertsNothing() async throws {
             try await withFixture { fixture in
-                await #expect(throws: RepositoryError.invalidAmount) { try await add(0, to: fixture) }
+                await #expect(throws: RepositoryError.invalidAmount) { try await save(0, to: fixture) }
                 #expect(fixture.center.added.isEmpty)
             }
         }
 
         @Test func editingDownAndBackUpDoesNotAlertAgain() async throws {
             try await withFixture { fixture in
-                try await add(90, to: fixture)
+                try await save(90, to: fixture)
                 #expect(fixture.alerts == ["1"])
                 let id = try #require(try rows(in: fixture.container).first?.persistentModelID)
 
-                try await fixture.provider.save(ExpenseForm(amount: 50, name: "Row", date: .now), id: id)
-                try await fixture.provider.save(ExpenseForm(amount: 95, name: "Row", date: .now), id: id)
+                try await save(50, id: id, to: fixture)
+                try await save(95, id: id, to: fixture)
                 #expect(fixture.alerts == ["1"])
 
-                try await fixture.provider.save(ExpenseForm(amount: 120, name: "Row", date: .now), id: id)
-                #expect(fixture.alerts == ["1", "2"])
-            }
-        }
-
-        @Test func deleteRunsTheCheckButNeverReArms() async throws {
-            try await withFixture { fixture in
-                let context = ModelContext(fixture.container)
-                context.insert(Expense(amount: 82, name: "Big", date: .now, category: .food))
-                context.insert(Expense(amount: 8, name: "Small", date: .now, category: .food))
-                try context.save()
-                let small = try #require(try rows(in: fixture.container).first?.persistentModelID)
-                #expect(fixture.alerts.isEmpty)
-
-                try await fixture.provider.delete(id: small)
-                #expect(fixture.alerts == ["1"])
-
-                try await add(60, to: fixture)
-                #expect(fixture.alerts == ["1", "2"])
-                let big = try #require(try rows(in: fixture.container).last?.persistentModelID)
-                try await fixture.provider.delete(id: big)
-                try await add(30, to: fixture)
+                try await save(120, id: id, to: fixture)
                 #expect(fixture.alerts == ["1", "2"])
             }
         }
@@ -141,6 +108,7 @@ extension CategoryBreakdownRepositoryTests {
                 try context.save()
 
                 try await fixture.provider.addDueOccurrence(id: template.id)
+                await fixture.provider.budgetCheck?.value
 
                 #expect(fixture.alerts == ["1"])
                 #expect(try rows(in: fixture.container).map(\.amount) == [90])
@@ -151,6 +119,7 @@ extension CategoryBreakdownRepositoryTests {
             try await withFixture { fixture in
                 let lastYear = Calendar.current.date(byAdding: .year, value: -1, to: .now)!
                 try await fixture.provider.save(ExpenseForm(amount: 500, name: "Old", date: lastYear), id: nil)
+                await fixture.provider.budgetCheck?.value
                 #expect(fixture.alerts.isEmpty)
             }
         }

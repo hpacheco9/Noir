@@ -11,10 +11,15 @@ import UserNotifications
 final class ForegroundNotificationPresenter: NSObject, UNUserNotificationCenterDelegate {
     static let shared = ForegroundNotificationPresenter()
 
+    nonisolated static func options(forIdentifier identifier: String) -> UNNotificationPresentationOptions {
+        let shown = identifier.hasPrefix(BudgetAlert.storageKey) || identifier.hasPrefix("recurring.")
+        return shown ? [.banner, .list, .sound] : []
+    }
+
     nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
-        [.banner, .list, .sound]
+        Self.options(forIdentifier: notification.request.identifier)
     }
 }

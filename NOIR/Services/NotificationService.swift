@@ -60,13 +60,14 @@ final class NotificationService: @unchecked Sendable {
 
     // Reading and claiming the level happen with no await between them, so two checks never send the same one.
     func notifyBudgetIfNeeded(spent: Decimal, now: Date = .now, calendar: Calendar = .current) async {
+        guard await canPostNotifications() else { return }
         let budget = monthlyBudget
-        guard budget > 0, await canPostNotifications() else { return }
-        let key = BudgetAlert.storageKey(for: now, calendar: calendar)
-        guard let alert = BudgetAlert.next(
-            total: spent, budget: budget, lastSent: BudgetAlert(rawValue: defaults.integer(forKey: key))
-        ) else { return }
-        defaults.set(alert.rawValue, forKey: key)
+        let lastSent = BudgetAlert.lastSent(
+            state: defaults.string(forKey: BudgetAlert.storageKey), now: now, calendar: calendar
+        )
+        guard let alert = BudgetAlert.next(total: spent, budget: budget, lastSent: lastSent) else { return }
+        let state = BudgetAlert.state(for: alert, now: now, calendar: calendar)
+        defaults.set(state, forKey: BudgetAlert.storageKey)
 
         let content = UNMutableNotificationContent()
         content.title = String(localized: alert == .over ? L10n.Notification.budgetOverTitle : L10n.Notification.budgetNearTitle)
@@ -76,7 +77,7 @@ final class NotificationService: @unchecked Sendable {
         ))
         content.sound = .default
 
-        let request = UNNotificationRequest(identifier: "\(key).\(alert.rawValue)", content: content, trigger: nil)
+        let request = UNNotificationRequest(identifier: "\(BudgetAlert.storageKey).\(state)", content: content, trigger: nil)
         try? await center.add(request)
     }
 

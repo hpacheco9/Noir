@@ -9,28 +9,32 @@ import SwiftUI
 
 struct BudgetPickerView: View {
     @Binding var budget: Double
-
-    private static let minValue = 0
-    private static let maxValue = 5000
-    private static let step = 10
+    
+    private static let baseStep = 10
+    private static let baseMax = 5000
     private let tickSpacing: CGFloat = 12
-
+    
     @State private var scrollID: Int?
     @State private var hasUserScrolled = false
-
+    
     private let highlightColor = Color.blue
-
-    private var ticks: [Int] {
-        Array(stride(from: Self.minValue, through: Self.maxValue, by: Self.step))
-    }
 
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
 
-    init(budget: Binding<Double>) {
-        _budget = budget
-        _scrollID = State(initialValue: Self.nearestTick(to: budget.wrappedValue))
+    private var scale: Int { CurrencyPreference.budgetScale(for: currencyCode) }
+    private var step: Int { Self.baseStep * scale }
+
+    private var ticks: [Int] {
+        Array(stride(from: 0, through: Self.baseMax * scale, by: step))
     }
 
+    init(budget: Binding<Double>) {
+        _budget = budget
+        let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
+        let scale = CurrencyPreference.budgetScale(for: code)
+        _scrollID = State(initialValue: Self.nearestTick(to: budget.wrappedValue, scale: scale))
+    }
+    
     var body: some View {
         VStack(spacing: 24) {
             Text(verbatim: CurrencyPreference.wholeString(for: budget, code: currencyCode))
@@ -38,13 +42,14 @@ struct BudgetPickerView: View {
                 .contentTransition(.numericText())
                 .animation(.snappy(duration: 0.15), value: budget)
                 .padding(.top, -70)
-
+            
             GeometryReader { geo in
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 0) {
                         ForEach(ticks, id: \.self) { tickValue in
                             TickComponent(
                                 value: tickValue,
+                                step: step,
                                 isSelected: tickValue == scrollID,
                                 highlightColor: highlightColor
                             )
@@ -67,21 +72,21 @@ struct BudgetPickerView: View {
         .accessibilityLabel(Text(L10n.Profile.budget))
         .accessibilityValue(Text(verbatim: CurrencyPreference.wholeString(for: budget, code: currencyCode)))
         .accessibilityAdjustableAction { direction in
-            budget = Self.adjusted(budget, direction)
+            budget = Self.adjusted(budget, direction, scale: scale)
         }
         .onAppear {
-            scrollID = Self.nearestTick(to: budget)
+            scrollID = Self.nearestTick(to: budget, scale: scale)
         }
         .onChange(of: scrollID) { oldValue, newValue in
             guard hasUserScrolled,
                   let newValue,
-                  newValue != Self.nearestTick(to: budget) else { return }
+                  newValue != Self.nearestTick(to: budget, scale: scale) else { return }
 
             budget = Double(newValue)
             Haptics.play(.selection)
         }
         .onChange(of: budget) { oldValue, newValue in
-            let intValue = Self.nearestTick(to: newValue)
+            let intValue = Self.nearestTick(to: newValue, scale: scale)
             if scrollID != intValue {
                 withAnimation(.snappy) {
                     scrollID = intValue
@@ -90,49 +95,56 @@ struct BudgetPickerView: View {
         }
     }
 
-    private static func nearestTick(to value: Double) -> Int {
-        let roundedValue = Int((value / Double(step)).rounded() * Double(step))
-        return min(max(roundedValue, minValue), maxValue)
+    private static func nearestTick(to value: Double, scale: Int) -> Int {
+        let step = baseStep * scale
+        let roundedValue = Int((value / Double(step)).rounded()) * step
+        return min(max(roundedValue, 0), baseMax * scale)
     }
 
-    static func adjusted(_ value: Double, _ direction: AccessibilityAdjustmentDirection) -> Double {
-        let delta: Int
+    // VoiceOver moves a hundred at a time (the ruler's major ticks), landing on that grid from wherever it is.
+    static func adjusted(_ value: Double, _ direction: AccessibilityAdjustmentDirection, scale: Int) -> Double {
+        let step = Double(100 * scale)
+        let moved: Double
         switch direction {
-        case .increment: delta = Self.step
-        case .decrement: delta = -Self.step
+        case .increment: moved = (value / step).rounded(.down) * step + step
+        case .decrement: moved = (value / step).rounded(.up) * step - step
         @unknown default: return value
         }
-        return Double(min(max(nearestTick(to: value) + delta, minValue), maxValue))
+        return min(max(moved, 0), Double(baseMax * scale))
     }
 }
 
 private struct TickComponent: View {
     let value: Int
+    let step: Int
     let isSelected: Bool
     let highlightColor: Color
-
+    
+    private var isMajor: Bool { value % (step * 10) == 0 }
+    private var isMedium: Bool { value % (step * 5) == 0 }
+    
     private var tickHeight: CGFloat {
-        if value % 100 == 0 { return 36 }
-        if value % 50 == 0 { return 24 }
+        if isMajor { return 36 }
+        if isMedium { return 24 }
         return 14
     }
-
+    
     private var tickColor: Color {
         if isSelected {
             return highlightColor
         }
-        return value % 100 == 0 ? .primary : (value % 50 == 0 ? .gray : .secondary.opacity(0.4))
+        return isMajor ? .primary : (isMedium ? .gray : .secondary.opacity(0.4))
     }
-
+    
     var body: some View {
         ZStack {
             Rectangle()
                 .fill(tickColor)
                 .frame(width: isSelected ? 2 : 1, height: tickHeight)
                 .animation(.easeOut(duration: 0.1), value: isSelected)
-
-            if value % 100 == 0 {
-                Text("\(value)")
+            
+            if isMajor {
+                Text(value, format: .number)
                     .font(.system(size: 18, weight: .medium, design: .rounded))
                     .foregroundStyle(isSelected ? highlightColor : .secondary)
                     .fixedSize()

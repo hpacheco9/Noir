@@ -79,10 +79,4 @@ struct BudgetProgressTests {
     func noBudgetMeansNoProgress(budget: Double) {
         #expect(BudgetProgress(total: 100, budget: budget) == nil)
     }
-
-    @Test func keepsTheCentRoundedSpentAndBudget() throws {
-        let progress = try #require(BudgetProgress(total: Decimal(string: "12.345")!, budget: 20.004))
-        #expect(progress.spent == Decimal(string: "12.35")!)
-        #expect(progress.budget == 20)
-    }
 }

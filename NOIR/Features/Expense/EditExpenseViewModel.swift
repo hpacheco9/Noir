@@ -59,7 +59,7 @@ final class EditExpenseViewModel {
         defer { isSaving = false }
 
         let id = expenseID
-        try await repository.delete(id: id)
+        try await repository.perform { try await $0.delete(id: id) }
         NotificationCenter.default.post(name: .expensesDidChange, object: nil)
         return true
     }

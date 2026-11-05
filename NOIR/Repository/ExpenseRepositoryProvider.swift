@@ -9,6 +9,7 @@ import SwiftData
 final class ExpenseRepositoryProvider: Sendable {
     private let creation: Task<ExpenseRepository, Never>
     private let notifications: NotificationService
+    private(set) var budgetCheck: Task<Void, Never>?
 
     init(container: ModelContainer, notifications: NotificationService = .shared) {
         creation = Task.detached(priority: .userInitiated) {
@@ -48,18 +49,19 @@ extension ExpenseRepositoryProvider {
             )
         }
         if let recurring { await notifications.scheduleRecurringReminder(recurring) }
-        await checkBudget()
+        scheduleBudgetCheck()
     }
 
-    func delete(id: PersistentIdentifier) async throws {
-        try await perform { try await $0.delete(id: id) }
-        await checkBudget()
+    // Saving doesn't wait for it; `budgetCheck` is there for whoever needs to.
+    private func scheduleBudgetCheck() {
+        budgetCheck = Task { await checkBudget() }
     }
 
-    func checkBudget(now: Date = .now, calendar: Calendar = .current) async {
+    func checkBudget() async {
+        let now = Date.now
         guard notifications.monthlyBudget > 0,
-              let spent = try? await perform({ try await $0.monthTotal(now: now, calendar: calendar) }) else { return }
-        await notifications.notifyBudgetIfNeeded(spent: spent, now: now, calendar: calendar)
+              let spent = try? await perform({ try await $0.monthTotal(now: now) }) else { return }
+        await notifications.notifyBudgetIfNeeded(spent: spent, now: now)
     }
 
     func saveRecurring(_ form: ExpenseForm, frequency: RecurrenceFrequency, nextDueDate: Date?, id: UUID?) async throws {
@@ -87,7 +89,7 @@ extension ExpenseRepositoryProvider {
     func addDueOccurrence(id: UUID) async throws -> RecurringExpenseDTO {
         let recurring = try await perform { try await $0.addDueOccurrence(id: id) }
         await notifications.scheduleRecurringReminder(recurring)
-        await checkBudget()
+        scheduleBudgetCheck()
         return recurring
     }
 

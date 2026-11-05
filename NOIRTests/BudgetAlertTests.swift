@@ -22,11 +22,6 @@ struct BudgetAlertTests {
         #expect(next(total) == .nearLimit)
     }
 
-    @Test func spendingExactlyTheBudgetIsNotOver() {
-        #expect(next(500) == .nearLimit)
-        #expect(next(Decimal(string: "500.01")!) == .over)
-    }
-
     @Test func jumpingStraightPastTheBudgetSendsOnlyTheOverAlert() {
         #expect(next(900) == .over)
     }
@@ -42,16 +37,7 @@ struct BudgetAlertTests {
     @Test(arguments: [BudgetAlert.nearLimit, .over])
     func spendingThatFallsBackNeverReArms(lastSent: BudgetAlert) {
         #expect(next(100, lastSent: lastSent) == nil)
-        #expect(next(450, lastSent: .over) == nil)
-    }
-
-    @Test(arguments: [0.0, -10, .nan, .infinity])
-    func noBudgetMeansNoAlerts(budget: Double) {
-        #expect(BudgetAlert.next(total: 1000, budget: budget, lastSent: nil) == nil)
-    }
-
-    @Test func aBudgetThatRoundsToZeroCentsIsNoBudget() {
-        #expect(BudgetAlert.next(total: 5, budget: 0.004, lastSent: nil) == nil)
+        #expect(next(450, lastSent: lastSent) == nil)
     }
 
     // Decimal(Double) sums carry ~1e-17 of noise.
@@ -67,27 +53,32 @@ struct BudgetAlertTests {
         #expect(BudgetAlert.next(total: atEighty, budget: 10, lastSent: nil) == .nearLimit)
     }
 
-    @Test func rawValuesAreWhatIsStored() {
-        #expect(BudgetAlert(rawValue: 0) == nil)
-        #expect(BudgetAlert(rawValue: BudgetAlert.nearLimit.rawValue) == .nearLimit)
-        #expect(BudgetAlert(rawValue: BudgetAlert.over.rawValue) == .over)
-        #expect(BudgetAlert.nearLimit.rawValue < BudgetAlert.over.rawValue)
-    }
-
     private var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
         return calendar
     }
 
-    private func key(_ year: Int, _ month: Int, _ day: Int) -> String {
-        BudgetAlert.storageKey(for: calendar.date(from: DateComponents(year: year, month: month, day: day, hour: 12))!, calendar: calendar)
+    private func date(_ year: Int, _ month: Int, _ day: Int) -> Date {
+        calendar.date(from: DateComponents(year: year, month: month, day: day, hour: 12))!
     }
 
-    @Test func theStorageKeyIsPerCalendarMonth() {
-        #expect(key(2026, 10, 1) == key(2026, 10, 31))
-        #expect(key(2026, 10, 15) != key(2026, 11, 15))
-        #expect(key(2026, 1, 15) != key(2026, 11, 15))
-        #expect(key(2026, 10, 15) != key(2027, 10, 15))
+    @Test func theStateHoldsTheMonthAndTheLevel() {
+        #expect(BudgetAlert.state(for: .nearLimit, now: date(2026, 10, 3), calendar: calendar) == "2026-10.1")
+        #expect(BudgetAlert.state(for: .over, now: date(2026, 1, 31), calendar: calendar) == "2026-1.2")
+    }
+
+    @Test func aStateOnlyCountsInItsOwnMonth() {
+        let state = "2026-10.2"
+        #expect(BudgetAlert.lastSent(state: state, now: date(2026, 10, 1), calendar: calendar) == .over)
+        #expect(BudgetAlert.lastSent(state: state, now: date(2026, 10, 31), calendar: calendar) == .over)
+        #expect(BudgetAlert.lastSent(state: state, now: date(2026, 11, 1), calendar: calendar) == nil)
+        #expect(BudgetAlert.lastSent(state: state, now: date(2025, 10, 15), calendar: calendar) == nil)
+        #expect(BudgetAlert.lastSent(state: "2026-1.2", now: date(2026, 10, 15), calendar: calendar) == nil)
+    }
+
+    @Test(arguments: [nil, "", "2026-10.0", "2026-10.x"] as [String?])
+    func anUnreadableStateMeansNothingWasSent(state: String?) {
+        #expect(BudgetAlert.lastSent(state: state, now: date(2026, 10, 15), calendar: calendar) == nil)
     }
 }

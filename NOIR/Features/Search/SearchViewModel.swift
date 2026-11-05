@@ -41,7 +41,7 @@ final class SearchViewModel {
         let repository = ExpenseRepositoryProvider(container: model)
         self.repository = repository
         self.deleteExpense = deleter ?? { id in
-            try await repository.delete(id: id)
+            try await repository.perform { try await $0.delete(id: id) }
         }
         self.calendar = calendar
         querySubject

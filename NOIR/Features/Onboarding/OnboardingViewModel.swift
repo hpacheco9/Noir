@@ -87,6 +87,7 @@ final class OnboardingViewModel {
         // Saved as soon as it's chosen: the budget ruler, the notification demo and the paywall price read the stored currency.
         if step == .currency {
             defaults.set(currencyCode, forKey: CurrencyPreference.storageKey)
+            budget = OnboardingStorage.defaultMonthlyBudget * Double(CurrencyPreference.budgetScale(for: currencyCode))
         }
         step = Step(rawValue: step.rawValue + 1) ?? step
     }

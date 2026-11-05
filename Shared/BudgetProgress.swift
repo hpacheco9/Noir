@@ -6,8 +6,6 @@
 import Foundation
 
 nonisolated struct BudgetProgress: Equatable, Sendable {
-    let spent: Decimal
-    let budget: Decimal
     let fraction: Double
     let left: Decimal
     let over: Decimal
@@ -23,8 +21,6 @@ nonisolated struct BudgetProgress: Equatable, Sendable {
         let spent = Self.rounded(total, scale: 2, .plain)
         let budgetAmount = Self.rounded(Decimal(budget), scale: 2, .plain)
         guard budgetAmount > 0 else { return nil }
-        self.spent = spent
-        self.budget = budgetAmount
         fraction = min(max(NSDecimalNumber(decimal: spent / budgetAmount).doubleValue, 0), 1)
         left = max(budgetAmount - spent, 0)
         over = max(spent - budgetAmount, 0)

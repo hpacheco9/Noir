@@ -39,15 +39,16 @@ final class MonthTotalSnapshotTests {
         #expect(MonthTotalSnapshot.load(from: defaults) == snapshot)
     }
 
-    @Test func theBudgetSurvivesTheRoundTrip() {
-        snapshot.save(to: defaults)
-        #expect(MonthTotalSnapshot.load(from: defaults)?.budget == 500)
+    // Published by a build that had no budget: the widget must keep showing the total.
+    @Test func aSnapshotWithoutABudgetStillLoads() throws {
+        var json = try #require(try JSONSerialization.jsonObject(with: JSONEncoder().encode(snapshot)) as? [String: Any])
+        try #require(json.removeValue(forKey: "budget") != nil)
+        defaults.set(try JSONSerialization.data(withJSONObject: json), forKey: MonthTotalSnapshot.storageKey)
 
-        var changed = snapshot
-        changed.budget = 750
-        changed.save(to: defaults)
-        #expect(MonthTotalSnapshot.load(from: defaults)?.budget == 750)
-        #expect(changed != snapshot)
+        let loaded = try #require(MonthTotalSnapshot.load(from: defaults))
+        #expect(loaded.budget == nil)
+        #expect(loaded.total == total)
+        #expect(loaded.currencyCode == "EUR")
     }
 
     /// 00:30 on 1 October in Lisbon is still 30 September in the Azores: a calendar-based check there showed 0.

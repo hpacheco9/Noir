@@ -90,11 +90,23 @@ final class BudgetNotificationTests {
         #expect(ids.count == 4)
     }
 
+    @Test func resettingTheAlertsReArmsBothLevelsInTheSameMonth() async {
+        await notify(520)
+        await notify(520)
+        #expect(ids == ["budget.alert.2026-10.2"])
+
+        BudgetAlert.reset(in: defaults)
+        await notify(410)
+        #expect(ids == ["budget.alert.2026-10.2", "budget.alert.2026-10.1"])
+        await notify(520)
+        #expect(ids.count == 3)
+    }
+
     @Test func withoutPermissionNothingIsSentOrClaimedUntilItIsGranted() async {
         center.status = .denied
         await notify(410)
         #expect(center.added.isEmpty)
-        #expect(defaults.object(forKey: BudgetAlert.storageKey(for: date(10), calendar: calendar)) == nil)
+        #expect(defaults.object(forKey: BudgetAlert.storageKey) == nil)
 
         center.status = .notDetermined
         await notify(410)
