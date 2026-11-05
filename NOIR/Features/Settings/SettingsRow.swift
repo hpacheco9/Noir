@@ -27,7 +27,6 @@ struct SettingsRow: View {
     }
 }
 
-// The row's look, for controls that are not a plain `Button` (e.g. `ShareLink`).
 struct SettingsRowLabel: View {
     let title: LocalizedStringResource
     let systemImage: String

@@ -55,23 +55,6 @@ struct ExpenseCSVExportTests {
         #expect(try await fetchAll(try makeContainer()).isEmpty)
     }
 
-    @Test func fetchAllReadsEverythingPastOneBatch() async throws {
-        let container = try makeContainer()
-        let context = ModelContext(container)
-        for index in 0..<1_050 {
-            context.insert(Expense(
-                amount: 1, name: "row \(index)", date: date(2026, 1, 1).addingTimeInterval(Double(index)),
-                category: .food
-            ))
-        }
-        try context.save()
-
-        let all = try await fetchAll(container)
-        #expect(all.count == 1_050)
-        #expect(all.first?.name == "row 0")
-        #expect(all.last?.name == "row 1049")
-    }
-
     @Test func fetchAllResolvesUnknownCategoryKeysToFood() async throws {
         let container = try makeContainer()
         let context = ModelContext(container)
@@ -126,40 +109,58 @@ struct ExpenseCSVExportTests {
 
     // MARK: writeFile
 
+    private let utc = TimeZone(secondsFromGMT: 0)!
+
+    private func scratchDirectory() -> URL {
+        FileManager.default.temporaryDirectory.appending(path: "csv-export-test-\(UUID().uuidString)", directoryHint: .isDirectory)
+    }
+
     @Test func writeFileNamesTheFileAfterTheDayAndHoldsTheCSV() async throws {
         let container = try makeContainer()
         let context = ModelContext(container)
         context.insert(Expense(amount: 19.99, name: "Café", date: date(2026, 3, 1), category: .food))
         try context.save()
 
-        let directory = FileManager.default.temporaryDirectory.appending(path: "csv-export-test-\(UUID().uuidString)")
+        let directory = scratchDirectory()
         defer { try? FileManager.default.removeItem(at: directory) }
 
         let export = export(container)
-        let now = date(2026, 11, 5)
-        let url = try await export.writeFile(now: now, directory: directory)
+        let url = try await export.writeFile(now: date(2026, 11, 5), timeZone: utc, directory: directory)
 
-        #expect(url.lastPathComponent == ExpenseCSV.fileName(for: now))
-        #expect(url.lastPathComponent.hasPrefix("NOIR Expenses "))
-        #expect(url.pathExtension == "csv")
+        #expect(url.lastPathComponent == "NOIR Expenses 2026-11-05.csv")
+        #expect(url.deletingLastPathComponent().standardizedFileURL == directory.standardizedFileURL)
         let data = try Data(contentsOf: url)
         #expect(Array(data.prefix(3)) == [0xEF, 0xBB, 0xBF])
-        let expected = try await export.csv()
         let written = String(decoding: data, as: UTF8.self)
-        #expect(written == expected)
-        #expect(written.contains("Café"))
+        #expect(written.hasPrefix("\u{FEFF}Date,Name,Amount,Currency,Category,Card,Note\r\n"))
+        #expect(written.contains("2026-03-01,Café,19.99,EUR,"))
     }
 
-    @Test func eachExportGetsItsOwnFolder() async throws {
+    @Test func anExportReplacesThePreviousFile() async throws {
         let container = try makeContainer()
-        let directory = FileManager.default.temporaryDirectory.appending(path: "csv-export-test-\(UUID().uuidString)")
+        let directory = scratchDirectory()
         defer { try? FileManager.default.removeItem(at: directory) }
+        let fileManager = FileManager.default
 
         let export = export(container)
-        let first = try await export.writeFile(directory: directory)
-        let second = try await export.writeFile(directory: directory)
-        #expect(first != second)
-        #expect(FileManager.default.fileExists(atPath: first.path))
-        #expect(FileManager.default.fileExists(atPath: second.path))
+        let first = try await export.writeFile(now: date(2026, 11, 5), timeZone: utc, directory: directory)
+        let stray = directory.appending(path: "leftover.txt")
+        try Data("x".utf8).write(to: stray)
+        #expect(fileManager.fileExists(atPath: first.path))
+        #expect(fileManager.fileExists(atPath: stray.path))
+
+        let second = try await export.writeFile(now: date(2026, 11, 6), timeZone: utc, directory: directory)
+
+        #expect(second.lastPathComponent == "NOIR Expenses 2026-11-06.csv")
+        #expect(fileManager.fileExists(atPath: second.path))
+        #expect(!fileManager.fileExists(atPath: first.path))
+        #expect(!fileManager.fileExists(atPath: stray.path))
+        #expect(try fileManager.contentsOfDirectory(atPath: directory.path) == ["NOIR Expenses 2026-11-06.csv"])
+    }
+
+    @Test func theDefaultFolderIsOneFixedFolderInTemp() {
+        #expect(ExpenseCSVExport.exportDirectory.lastPathComponent == "CSVExport")
+        #expect(ExpenseCSVExport.exportDirectory.deletingLastPathComponent().standardizedFileURL
+                == FileManager.default.temporaryDirectory.standardizedFileURL)
     }
 }

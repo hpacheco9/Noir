@@ -5013,7 +5013,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Montante"
+            "value" : "Valor"
           }
         }
       }
@@ -5313,7 +5313,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notat"
+            "value" : "Note"
           }
         },
         "de" : {

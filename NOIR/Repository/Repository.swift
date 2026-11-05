@@ -199,16 +199,10 @@ actor ExpenseRepository: ModelActor {
         return try modelContext.fetch(descriptor).map { ExpenseDTO($0, categories: categories) }
     }
 
-    // Every expense, oldest first (date, then insert time), for the CSV export.
     func fetchAll() throws -> [ExpenseDTO] {
         let categories = try categoryIndex()
         let descriptor = FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date), SortDescriptor(\.createdAt)])
-        var all: [ExpenseDTO] = []
-        // Streams the rows in batches, so a large export never holds every model at once.
-        try modelContext.enumerate(descriptor, batchSize: 1000) { expense in
-            all.append(ExpenseDTO(expense, categories: categories))
-        }
-        return all
+        return try modelContext.fetch(descriptor).map { ExpenseDTO($0, categories: categories) }
     }
 
     // MARK: - Categories

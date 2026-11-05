@@ -7,11 +7,14 @@ import SwiftUI
 import SwiftData
 import UniformTypeIdentifiers
 
-// Shared with `ShareLink`. Nothing is read until the share sheet asks for the file.
 nonisolated struct ExpenseCSVExport: Transferable {
     let container: ModelContainer
     let headers: ExpenseCSV.Headers
     let currencyCode: String
+
+    static var exportDirectory: URL {
+        FileManager.default.temporaryDirectory.appending(path: "CSVExport", directoryHint: .isDirectory)
+    }
 
     static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(exportedContentType: .commaSeparatedText) { export in
@@ -19,9 +22,9 @@ nonisolated struct ExpenseCSVExport: Transferable {
         }
     }
 
+    @concurrent
     func csv(timeZone: TimeZone = .current) async throws -> String {
         let expenses = try await ExpenseRepositoryProvider(container: container).perform { try await $0.fetchAll() }
-        // Category titles are localized on the main actor; resolve each distinct one once.
         let categories = Set(expenses.map(\.categoryInfo))
         let titles = await MainActor.run {
             Dictionary(categories.map { ($0.key, $0.title) }, uniquingKeysWith: { first, _ in first })
@@ -31,7 +34,7 @@ nonisolated struct ExpenseCSVExport: Transferable {
                 date: $0.date,
                 name: $0.name,
                 amount: $0.amount,
-                category: titles[$0.categoryInfo.key] ?? "",
+                category: titles[$0.categoryInfo.key]!,
                 card: $0.card,
                 note: $0.description
             )
@@ -39,15 +42,20 @@ nonisolated struct ExpenseCSVExport: Transferable {
         return ExpenseCSV.make(rows: rows, headers: headers, currencyCode: currencyCode, timeZone: timeZone)
     }
 
-    // Own folder per export, so the file keeps the right name and exports never overwrite each other.
+    @concurrent
     func writeFile(
         now: Date = .now,
-        directory: URL = FileManager.default.temporaryDirectory
+        timeZone: TimeZone = .current,
+        directory: URL = Self.exportDirectory
     ) async throws -> URL {
-        let text = try await csv()
-        let folder = directory.appending(path: UUID().uuidString, directoryHint: .isDirectory)
-        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        let file = folder.appending(path: ExpenseCSV.fileName(for: now))
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: directory.path) {
+            try fileManager.removeItem(at: directory)
+        }
+        try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+
+        let text = try await csv(timeZone: timeZone)
+        let file = directory.appending(path: ExpenseCSV.fileName(for: now, timeZone: timeZone))
         try Data(text.utf8).write(to: file, options: .atomic)
         return file
     }

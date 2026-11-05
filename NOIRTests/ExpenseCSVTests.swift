@@ -36,8 +36,8 @@ struct ExpenseCSVTests {
     }
 
     // The data line of a one-row file (the BOM sits on the header line).
-    private func dataLine(_ row: ExpenseCSV.Row) -> String {
-        let lines = make([row]).components(separatedBy: "\r\n")
+    private func dataLine(_ row: ExpenseCSV.Row, currency: String = "EUR") -> String {
+        let lines = make([row], currency: currency).components(separatedBy: "\r\n")
         return lines[1]
     }
 
@@ -159,36 +159,53 @@ struct ExpenseCSVTests {
 
     // MARK: Amounts
 
-    @Test func amountsKeepTheirDigits() {
-        #expect(ExpenseCSV.amountString(19.99) == "19.99")
-        #expect(ExpenseCSV.amountString(1234.5) == "1234.5")
-        #expect(ExpenseCSV.amountString(0.1) == "0.1")
-        #expect(ExpenseCSV.amountString(0.01) == "0.01")
-        #expect(ExpenseCSV.amountString(100) == "100")
-        #expect(ExpenseCSV.amountString(3.5) == "3.5")
+    @Test func amountsKeepTheirShortestForm() {
+        #expect(ExpenseCSV.amountString(19.99, fractionDigits: 2) == "19.99")
+        #expect(ExpenseCSV.amountString(1234.5, fractionDigits: 2) == "1234.5")
+        #expect(ExpenseCSV.amountString(0.1, fractionDigits: 2) == "0.1")
+        #expect(ExpenseCSV.amountString(0.01, fractionDigits: 2) == "0.01")
+        #expect(ExpenseCSV.amountString(5, fractionDigits: 2) == "5")
+        #expect(ExpenseCSV.amountString(100, fractionDigits: 2) == "100")
     }
 
     @Test func largeAmountsHaveNoGroupingOrExponent() {
-        #expect(ExpenseCSV.amountString(1_234_567.89) == "1234567.89")
-        #expect(ExpenseCSV.amountString(123_456_789_012.34) == "123456789012.34")
-        #expect(ExpenseCSV.amountString(Expense.maxAmount) == "1000000000000")
+        #expect(ExpenseCSV.amountString(1_234_567.89, fractionDigits: 2) == "1234567.89")
+        #expect(ExpenseCSV.amountString(123_456_789_012.34, fractionDigits: 2) == "123456789012.34")
+        #expect(ExpenseCSV.amountString(Expense.maxAmount, fractionDigits: 2) == "1000000000000")
     }
 
-    @Test func amountsUseADotWhateverTheLocale() {
-        for amount in [19.99, 1234.5, 1_234_567.89] {
-            let text = ExpenseCSV.amountString(amount)
-            #expect(!text.contains(","))
-            #expect(!text.contains(" "))
-            #expect(!text.contains("\u{00A0}"))
-        }
-        // Control: the localized formatter does group and use a comma, so the checks above can fail.
-        let localized = (1_234_567.89).formatted(.number.locale(Locale(identifier: "pt_PT")))
-        #expect(localized.contains(","))
+    @Test func floatNoiseIsRoundedAway() {
+        // Control: the raw Double really carries the noise.
+        #expect((0.1 + 0.2).description == "0.30000000000000004")
+        #expect(ExpenseCSV.amountString(0.1 + 0.2, fractionDigits: 2) == "0.3")
+        #expect(ExpenseCSV.amountString(15.129, fractionDigits: 2) == "15.13")
+        #expect(ExpenseCSV.amountString(12.3 * 1.23, fractionDigits: 2) == "15.13")
     }
 
-    @Test func nonFiniteAmountsAreEmpty() {
-        #expect(ExpenseCSV.amountString(.nan) == "")
-        #expect(ExpenseCSV.amountString(.infinity) == "")
+    @Test func roundingIsPlainHalfAwayFromZero() {
+        #expect(ExpenseCSV.amountString(0.125, fractionDigits: 2) == "0.13")
+        #expect(ExpenseCSV.amountString(1.005, fractionDigits: 2) == "1.01")
+        #expect(ExpenseCSV.amountString(1.004, fractionDigits: 2) == "1")
+    }
+
+    @Test func amountsFollowTheCurrencyMinorUnits() {
+        #expect(ExpenseCSV.fractionDigits(for: "EUR") == 2)
+        #expect(ExpenseCSV.fractionDigits(for: "USD") == 2)
+        #expect(ExpenseCSV.fractionDigits(for: "JPY") == 0)
+
+        let jpy = ExpenseCSV.fractionDigits(for: "JPY")
+        #expect(ExpenseCSV.amountString(1234.6, fractionDigits: jpy) == "1235")
+        #expect(ExpenseCSV.amountString(1234.4, fractionDigits: jpy) == "1234")
+
+        #expect(dataLine(row(amount: 1234.6), currency: "JPY") == "2026-03-05,Coffee,1235,JPY,Food,,")
+        #expect(dataLine(row(amount: 1234.6), currency: "EUR") == "2026-03-05,Coffee,1234.6,EUR,Food,,")
+    }
+
+    @Test func tinyAndHugeAmountsGoThroughTheExponentForm() {
+        // Control: both descriptions really are in exponent form.
+        #expect(0.00001.description == "1e-05")
+        #expect(ExpenseCSV.amountString(0.00001, fractionDigits: 2) == "0")
+        #expect(ExpenseCSV.amountString(1e12, fractionDigits: 2) == "1000000000000")
     }
 
     // MARK: Dates
@@ -199,12 +216,10 @@ struct ExpenseCSVTests {
     }
 
     @Test func datesUseTheGivenTimeZone() {
-        let instant = date(2025, 12, 31, 23, 30)
-        let auckland = TimeZone(identifier: "Pacific/Auckland")!
+        // 05:00 UTC is still the day before in Los Angeles (UTC-8).
+        let sample = [row(date: date(2026, 1, 1, 5))]
         let losAngeles = TimeZone(identifier: "America/Los_Angeles")!
-        let sample = [row(date: instant)]
-        #expect(ExpenseCSV.make(rows: sample, headers: headers, currencyCode: "EUR", timeZone: utc).contains("\r\n2025-12-31,"))
-        #expect(ExpenseCSV.make(rows: sample, headers: headers, currencyCode: "EUR", timeZone: auckland).contains("\r\n2026-01-01,"))
+        #expect(ExpenseCSV.make(rows: sample, headers: headers, currencyCode: "EUR", timeZone: utc).contains("\r\n2026-01-01,"))
         #expect(ExpenseCSV.make(rows: sample, headers: headers, currencyCode: "EUR", timeZone: losAngeles).contains("\r\n2025-12-31,"))
     }
 

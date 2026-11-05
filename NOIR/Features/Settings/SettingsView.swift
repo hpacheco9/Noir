@@ -118,7 +118,7 @@ struct SettingsView: View {
                         headers: .localized,
                         currencyCode: currencyCode
                     ),
-                    preview: SharePreview(ExpenseCSV.fileName(for: .now))
+                    preview: SharePreview(String(localized: L10n.Export.csv))
                 ) {
                     SettingsRowLabel(title: L10n.Export.csv, systemImage: AssetName.System.export)
                 }
