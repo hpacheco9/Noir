@@ -9,7 +9,7 @@ struct LockScreenPanel<Content: View>: View {
     var cornerRadius: CGFloat = 40
     var clockText: String = "9:41"
     var fadeHeight: CGFloat = 90
-    var showsDynamicIsland: Bool = true
+    var cutout: DeviceCutout = .current
  
     @ViewBuilder var content: () -> Content
  
@@ -31,7 +31,11 @@ struct LockScreenPanel<Content: View>: View {
         .frame(maxWidth: .infinity)
         .background { panel }
         .overlay(alignment: .top) {
-            if showsDynamicIsland { dynamicIsland }
+            switch cutout {
+            case .dynamicIsland: dynamicIsland
+            case .notch: notch
+            case .none: EmptyView()
+            }
         }
         .padding(.horizontal, 22)
     }
@@ -55,6 +59,17 @@ struct LockScreenPanel<Content: View>: View {
             .accessibilityHidden(true)
     }
  
+    private var notch: some View {
+        let shape = UnevenRoundedRectangle(bottomLeadingRadius: 20, bottomTrailingRadius: 20, style: .continuous)
+        return shape
+            .fill(.background.opacity(0.3))
+            .frame(width: 160, height: 30)
+            .overlay {
+                shape.strokeBorder(.white.opacity(0.05), lineWidth: 1)
+            }
+            .accessibilityHidden(true)
+    }
+
     private var panel: some View {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
             .fill(
