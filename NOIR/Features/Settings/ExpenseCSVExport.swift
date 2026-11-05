@@ -34,7 +34,7 @@ nonisolated struct ExpenseCSVExport: Transferable {
                 date: $0.date,
                 name: $0.name,
                 amount: $0.amount,
-                category: titles[$0.categoryInfo.key]!,
+                category: titles[$0.categoryInfo.key] ?? $0.categoryInfo.key,
                 card: $0.card,
                 note: $0.description
             )

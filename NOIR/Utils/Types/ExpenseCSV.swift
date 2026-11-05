@@ -68,7 +68,7 @@ nonisolated enum ExpenseCSV {
     }
 
     static func amountString(_ amount: Double, fractionDigits: Int) -> String {
-        var value = Decimal(string: amount.description)!
+        var value = Decimal(string: amount.description) ?? 0
         var rounded = Decimal()
         NSDecimalRound(&rounded, &value, fractionDigits, .plain)
         return rounded.description
