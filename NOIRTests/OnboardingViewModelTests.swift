@@ -116,7 +116,7 @@ final class OnboardingViewModelTests {
         #expect(viewModel.canAdvance)
         #expect(viewModel.primaryActionTitle.key == L10n.Onboarding.setBudget.key)
 
-        viewModel.budget = 0
+        viewModel.setBudget(0)
         #expect(viewModel.canAdvance)
         viewModel.advance()
         #expect(viewModel.step == .notifications)
@@ -141,13 +141,36 @@ final class OnboardingViewModelTests {
         viewModel.advance()
         viewModel.advance()
         viewModel.advance()
-        viewModel.budget = 1500
+        viewModel.setBudget(1500)
         viewModel.advance()
         #expect(viewModel.step == .notifications)
         #expect(defaults.object(forKey: OnboardingStorage.monthlyBudgetKey) == nil)
 
         viewModel.persist()
         #expect(defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) == 1500)
+    }
+
+    // The ruler reports a scroll position while its step slides out; that must not reach the saved budget.
+    @Test func theRulerCanOnlyChangeTheBudgetWhileItsStepIsShowing() {
+        let viewModel = makeViewModel()
+        viewModel.name = "Maria"
+        viewModel.setBudget(2222)
+        #expect(viewModel.budget == OnboardingStorage.defaultMonthlyBudget)
+
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.advance()
+        #expect(viewModel.step == .budget)
+        viewModel.setBudget(105)
+        #expect(viewModel.budget == 105)
+
+        viewModel.advance()
+        #expect(viewModel.step == .notifications)
+        viewModel.setBudget(120)
+        #expect(viewModel.budget == 105)
+
+        viewModel.persist()
+        #expect(defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) == 105)
     }
 
     @Test func persistStoresTrimmedNameAndTheDefaultBudget() {

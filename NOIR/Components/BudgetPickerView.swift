@@ -11,7 +11,6 @@ struct BudgetPickerView: View {
     @Binding var budget: Double
     
     private static let baseStep = 10
-    private static let baseMax = 5000
     private let tickSpacing: CGFloat = 12
     
     @State private var scrollID: Int?
@@ -25,7 +24,7 @@ struct BudgetPickerView: View {
     private var step: Int { Self.baseStep * scale }
 
     private var ticks: [Int] {
-        Array(stride(from: 0, through: Self.baseMax * scale, by: step))
+        Array(stride(from: 0, through: CurrencyPreference.budgetBaseMax * scale, by: step))
     }
 
     init(budget: Binding<Double>) {
@@ -75,6 +74,8 @@ struct BudgetPickerView: View {
             budget = Self.adjusted(budget, direction, scale: scale)
         }
         .onAppear {
+            let clamped = CurrencyPreference.clampedBudget(budget, for: currencyCode)
+            if clamped != budget { budget = clamped }
             scrollID = Self.nearestTick(to: budget, scale: scale)
         }
         .onChange(of: scrollID) { oldValue, newValue in
@@ -98,7 +99,7 @@ struct BudgetPickerView: View {
     private static func nearestTick(to value: Double, scale: Int) -> Int {
         let step = baseStep * scale
         let roundedValue = Int((value / Double(step)).rounded()) * step
-        return min(max(roundedValue, 0), baseMax * scale)
+        return min(max(roundedValue, 0), CurrencyPreference.budgetBaseMax * scale)
     }
 
     // VoiceOver moves a hundred at a time (the ruler's major ticks), landing on that grid from wherever it is.
@@ -110,7 +111,7 @@ struct BudgetPickerView: View {
         case .decrement: moved = (value / step).rounded(.up) * step - step
         @unknown default: return value
         }
-        return min(max(moved, 0), Double(baseMax * scale))
+        return min(max(moved, 0), Double(CurrencyPreference.budgetBaseMax * scale))
     }
 }
 

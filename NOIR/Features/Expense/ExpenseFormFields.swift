@@ -68,13 +68,7 @@ struct ExpenseFormFields: View {
 
             Picker(selection: $form.category) {
                 ForEach(categories) { category in
-                    Label {
-                        Text(category.title)
-                    } icon: {
-                        Image(systemName: category.icon)
-                            .foregroundStyle(category.color)
-                    }
-                    .tag(category.key)
+                    Text(category.title).tag(category.key)
                 }
             } label: {
                 Label {

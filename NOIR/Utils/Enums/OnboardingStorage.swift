@@ -12,4 +12,10 @@ enum OnboardingStorage {
     static let hasCompletedKey = "hasCompletedOnboarding"
     static let monthlyBudgetKey = "profile.monthlyBudget"
     static let defaultMonthlyBudget: Double = 1000
+
+    static func clampBudget(forCurrency code: String, in defaults: UserDefaults = .standard) {
+        let stored = defaults.double(forKey: monthlyBudgetKey)
+        let clamped = CurrencyPreference.clampedBudget(stored, for: code)
+        if clamped != stored { defaults.set(clamped, forKey: monthlyBudgetKey) }
+    }
 }

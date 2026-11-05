@@ -38,7 +38,7 @@ final class OnboardingViewModel {
     private(set) var notificationPermission: NotificationPermission = .undetermined
     var name = ""
     var currencyCode = CurrencyPreference.defaultCode
-    var budget = OnboardingStorage.defaultMonthlyBudget
+    private(set) var budget = OnboardingStorage.defaultMonthlyBudget
 
     private let notificationService: NotificationService
     private let defaults: UserDefaults
@@ -48,6 +48,12 @@ final class OnboardingViewModel {
     init(notificationService: NotificationService? = nil, defaults: UserDefaults = .standard) {
         self.notificationService = notificationService ?? .shared
         self.defaults = defaults
+    }
+
+    // The ruler can still report a scroll position while the step slides out: that must not change the budget.
+    func setBudget(_ value: Double) {
+        guard step == .budget else { return }
+        budget = value
     }
 
     var canAdvance: Bool {

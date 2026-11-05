@@ -89,6 +89,7 @@ struct RootView: View {
             }
         }
         .onChange(of: currencyCode) {
+            OnboardingStorage.clampBudget(forCurrency: currencyCode)
             Task { await WidgetSnapshotPublisher.publish() }
             Task { await recurringReminders.resyncReminders() }
         }
