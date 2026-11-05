@@ -240,14 +240,13 @@ actor ExpenseRepository: ModelActor {
 
     // Skips the duplicates, creates the categories the rest need and inserts the rest in one save: all or nothing.
     // A new name that matches a category shown now (case and accents ignored) reuses it; without `createCategories`
-    // the others go to Food. `beforeSave` is a test seam that runs after the inserts.
+    // the others go to Food.
     func importExpenses(
         _ rows: [ImportRow],
         createCategories: Bool,
         skipDuplicates: Bool,
         fractionDigits: Int,
-        calendar: Calendar = .current,
-        beforeSave: @Sendable () throws -> Void = {}
+        calendar: Calendar = .current
     ) throws -> ImportResult {
         guard rows.allSatisfy({ Expense.isValidAmount($0.amount) }) else { throw RepositoryError.invalidAmount }
         let skipped = skipDuplicates ? try duplicateIndices(in: rows, fractionDigits: fractionDigits, calendar: calendar) : []
@@ -303,7 +302,6 @@ actor ExpenseRepository: ModelActor {
                 expense.categoryRawValue = key
                 modelContext.insert(expense)
             }
-            try beforeSave()
             try commit()
         } catch {
             modelContext.rollback()

@@ -183,9 +183,17 @@ final class ImportReviewViewModel {
 
     // The names to create and the preview rows, for both settings of each switch, so drawing does no work.
     private func refreshDerived() {
-        let all = Self.newNames(in: rows)
+        // What the repository will do: names are cut, told apart after the cut, and a name some custom or
+        // overridden category already has is reused, not created again.
+        var existing: [String: CategoryInfo] = [:]
+        for info in categories {
+            if let name = info.customName { existing[name.searchKey] = info }
+        }
+        let all = Self.newNames(in: rows, existing: Set(existing.keys))
         namesWithDuplicates = all.map(\.name)
-        namesWithoutDuplicates = Self.newNames(in: rows.indices.filter { !duplicates.contains($0) }.map { rows[$0] }).map(\.name)
+        namesWithoutDuplicates = Self.newNames(
+            in: rows.indices.filter { !duplicates.contains($0) }.map { rows[$0] }, existing: Set(existing.keys)
+        ).map(\.name)
 
         let index = Dictionary(categories.map { ($0.key, $0) }, uniquingKeysWith: { first, _ in first })
         let food = index[ExpenseCategory.food.rawValue] ?? .food
@@ -201,8 +209,11 @@ final class ImportReviewViewModel {
             rows.prefix(Self.previewCount).map { row in
                 let info: CategoryInfo
                 switch row.category {
-                case .existing(let key): info = index[key] ?? food
-                case .new(let name): info = (creating ? created[name.searchKey] : nil) ?? food
+                case .existing(let key):
+                    info = index[key] ?? food
+                case .new(let name):
+                    let key = ImportCategory.categoryName(for: name).searchKey
+                    info = existing[key] ?? (creating ? created[key] : nil) ?? food
                 }
                 let expense = Expense(
                     amount: row.amount, name: row.name, date: row.date, category: .food,
@@ -216,12 +227,14 @@ final class ImportReviewViewModel {
         previewWithoutCategories = preview(creating: false)
     }
 
-    // The distinct new names (by what the file says) and what each category would be called.
-    private static func newNames(in rows: [ImportRow]) -> [(key: String, name: String)] {
-        var seen = Set<String>()
+    // The categories to create: new names, cut, without repeats and without those that already exist.
+    private static func newNames(in rows: [ImportRow], existing: Set<String>) -> [(key: String, name: String)] {
+        var seen = existing
         return rows.compactMap { row in
-            guard case .new(let name) = row.category, seen.insert(name.searchKey).inserted else { return nil }
-            return (name.searchKey, ImportCategory.categoryName(for: name))
+            guard case .new(let name) = row.category else { return nil }
+            let shown = ImportCategory.categoryName(for: name)
+            guard !shown.isEmpty, seen.insert(shown.searchKey).inserted else { return nil }
+            return (shown.searchKey, shown)
         }
     }
 

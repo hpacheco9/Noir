@@ -350,12 +350,28 @@ struct ExpenseCSVReaderTests {
 
     // MARK: Amount currency
 
-    @Test func ourOwnFormatIsAlwaysADotDecimal() throws {
-        let text = "Date,Amount\n2026-03-05,12.50\n"
-        #expect(amounts(try parse(text, currency: "EUR")) == [12.5])
-        // With JPY as the app currency the lenient reader would have called it 1250: now it is 12.5, rounded to
-        // the yen.
-        #expect(amounts(try parse(text, currency: "JPY")) == [13])
+    @Test func aDotDecimalIsTakenWhenItFitsTheCurrencysMinorUnits() throws {
+        // NOIR's own export never writes more decimals than the currency has.
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,12.5\n2026-03-06,12.50\n", currency: "EUR")) == [12.5, 12.5])
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,12.345\n", currency: "KWD")) == [12.345])
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,1234\n", currency: "JPY")) == [1234])
+    }
+
+    @Test func moreDecimalsThanTheCurrencyHasAreGroupingNotADecimal() throws {
+        // Control first: EUR "12.5" is plain, so it stays 12.5.
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,12.5\n", currency: "EUR")) == [12.5])
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,1.234\n", currency: "EUR")) == [1234])
+        // KWD has three, so the same text there is a decimal.
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,12.345\n", currency: "KWD")) == [12.345])
+        // JPY has none: "1.234" and "12.50" are grouped.
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,1.234\n2026-03-06,12.50\n", currency: "JPY")) == [1234, 1250])
+        // The row's currency decides, not the app's.
+        #expect(amounts(try parse("Date,Amount,Currency\n2026-03-05,12.345,KWD\n2026-03-06,1.234,EUR\n", currency: "JPY")) == [12.345, 1234])
+    }
+
+    @Test func aDotAmountTheLenientReaderCannotReadIsInvalid() throws {
+        #expect(try parse("Date,Amount\n2026-03-05,...\n2026-03-06,-.\n2026-03-07,1.234\n", currency: "EUR").invalid
+                == [.init(line: 2, reason: .amount), .init(line: 3, reason: .amount)])
     }
 
     @Test func otherTextFollowsTheRowsCurrencyThenTheAppsCurrency() throws {
@@ -368,14 +384,13 @@ struct ExpenseCSVReaderTests {
     }
 
     @Test func valuesAreRoundedToTheirCurrencysMinorUnits() throws {
-        let text = "Date,Amount,Currency\n2026-03-05,12.345,KWD\n2026-03-06,12.345,EUR\n2026-03-07,1234.6,JPY\n"
-        #expect(amounts(try parse(text, currency: "EUR")) == [12.345, 12.35, 1235])
+        // A decimal comma has no limit on its digits, so these are rounded: EUR to cents, KWD kept, JPY to the yen.
+        let text = "Date,Amount,Currency\n2026-03-05,\"12,345\",EUR\n2026-03-06,\"12,3456\",KWD\n2026-03-07,\"1,235\",JPY\n"
+        #expect(amounts(try parse(text, currency: "EUR")) == [12.35, 12.346, 1235])
         // Without a currency column the app's currency decides.
-        let plain = "Date,Amount\n2026-03-05,12.345\n"
-        #expect(amounts(try parse(plain, currency: "KWD")) == [12.345])
-        #expect(amounts(try parse(plain, currency: "EUR")) == [12.35])
+        #expect(amounts(try parse("Date,Amount\n2026-03-05,\"12,345\"\n", currency: "EUR")) == [12.35])
         // An amount that rounds to nothing is no amount.
-        #expect(try parse("Date,Amount\n2026-03-05,0.004\n", currency: "EUR").invalid == [.init(line: 2, reason: .amount)])
+        #expect(try parse("Date,Amount\n2026-03-05,\"0,004\"\n", currency: "EUR").invalid == [.init(line: 2, reason: .amount)])
     }
 
     @Test func aCurrencyCellThatIsNotACodeIsIgnored() throws {
@@ -441,6 +456,16 @@ struct ExpenseCSVReaderTests {
         let ansi = try #require(ExpenseCSVReader.decode("Date,Name,Amount\n2026-03-05,Café ñ,3\n".data(using: .windowsCP1252)!))
         #expect(ansi.contains("Café ñ"))
         #expect(!ansi.contains("\u{FFFD}"))
+    }
+
+    @Test func aWindows1252FileWithAnAccidentalUTF8PairIsStillWindows1252() throws {
+        let data = try #require("Date,Name,Amount\n2026-03-05,CAFÉ–BAR,3\n2026-03-06,Crème,2\n".data(using: .windowsCP1252))
+        // Control: "É–" (C9 96) happens to be a valid UTF-8 character, so a "has valid non-ASCII text" check is fooled.
+        #expect(String(decoding: data, as: UTF8.self).contains("\u{256}"))
+        let text = try #require(ExpenseCSVReader.decode(data))
+        #expect(text.contains("CAFÉ–BAR"))
+        #expect(text.contains("Crème"))
+        #expect(!text.contains("\u{FFFD}"))
     }
 
     // MARK: File

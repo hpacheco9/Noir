@@ -119,10 +119,12 @@ nonisolated enum ExpenseCSVReader {
         } else if data.starts(with: [0xFE, 0xFF]) {
             text = String(data: data.dropFirst(2), encoding: .utf16BigEndian)
         } else {
-            // Bad bytes in a file that has real UTF-8 text stay bad bytes; with none, it is Excel's Windows-1252.
+            // Mostly valid UTF-8 with a stray bad byte stays UTF-8. If the bad bytes are about half of the non-ASCII
+            // characters or more, it is Excel's Windows-1252 (a pair like "É–" even happens to be valid UTF-8).
             let utf8 = String(decoding: data, as: UTF8.self)
-            let hasText = utf8.unicodeScalars.contains { $0.value > 127 && $0 != "\u{FFFD}" }
-            text = hasText || !utf8.unicodeScalars.contains("\u{FFFD}")
+            let nonASCII = utf8.unicodeScalars.filter { $0.value > 127 }.count
+            let bad = utf8.unicodeScalars.filter { $0 == "\u{FFFD}" }.count
+            text = bad == 0 || bad * 2 < nonASCII
                 ? utf8
                 : String(data: data, encoding: .windowsCP1252) ?? String(data: data, encoding: .isoLatin1)
         }
@@ -263,7 +265,8 @@ nonisolated enum ExpenseCSVReader {
         return columns
     }
 
-    // NOIR's own "1234.5" is always a "." decimal. Anything else follows the row's currency, else the app's.
+    // "1234.5" with no more decimals than the currency has is a "." decimal, as NOIR's own export writes it.
+    // Anything else follows the row's currency, else the app's, with the lenient reader: "1.234" in EUR is 1234.
     private struct AmountParser {
         let appCurrency: String
         private var strategies: [String: AmountInputParseStrategy] = [:]
@@ -273,17 +276,20 @@ nonisolated enum ExpenseCSVReader {
 
         mutating func parse(_ text: String, currency: String) -> Double? {
             let code = Self.isCode(currency) ? currency : appCurrency
+            let digits = places[code] ?? ExpenseCSV.fractionDigits(for: code)
+            places[code] = digits
+
             let value: Decimal
-            if let plain = Self.plain(text) {
+            if let plain = Self.plain(text, maxDecimals: digits) {
                 value = plain
             } else {
-                let strategy = strategies[code] ?? CurrencyPreference.amountInputStyle(for: code).parseStrategy
+                // A file is not typed on this device's keyboard, so only the currency's own separators are decimals.
+                let locale = CurrencyPreference.locale(for: code)
+                let strategy = strategies[code] ?? AmountInputFormatStyle(code: code, currencyLocale: locale, deviceLocale: locale).parseStrategy
                 strategies[code] = strategy
                 guard let parsed = try? strategy.parse(text) else { return nil }
                 value = parsed
             }
-            let digits = places[code] ?? ExpenseCSV.fractionDigits(for: code)
-            places[code] = digits
             let amount = ExpenseForm(amount: ExpenseCSV.rounded(value.magnitude, fractionDigits: digits)).amountValue
             return Expense.isValidAmount(amount) ? amount : nil
         }
@@ -292,12 +298,13 @@ nonisolated enum ExpenseCSVReader {
             text.count == 3 && text.allSatisfy { $0.isASCII && $0.isLetter }
         }
 
-        private static func plain(_ text: String) -> Decimal? {
+        private static func plain(_ text: String, maxDecimals: Int) -> Decimal? {
             var body = Substring(text.trimmingCharacters(in: .whitespaces))
             if body.hasPrefix("-") { body = body.dropFirst() }
             let parts = body.split(separator: ".", omittingEmptySubsequences: false)
             guard (1...2).contains(parts.count),
-                  parts.allSatisfy({ !$0.isEmpty && $0.allSatisfy { $0.isASCII && $0.isNumber } })
+                  parts.allSatisfy({ !$0.isEmpty && $0.allSatisfy { $0.isASCII && $0.isNumber } }),
+                  parts.count == 1 || parts[1].count <= maxDecimals
             else { return nil }
             return Decimal(string: String(body), locale: Locale(identifier: "en_US_POSIX"))
         }

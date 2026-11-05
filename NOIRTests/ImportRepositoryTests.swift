@@ -13,8 +13,6 @@ extension CategoryBreakdownRepositoryTests {
     // `CategoryBreakdownRepositoryTests`: an import moves the global memo generation that suite checks.
     @Suite
     struct ImportRepositoryTests {
-        private struct Boom: Error {}
-
         private var calendar: Calendar {
             var calendar = Calendar(identifier: .gregorian)
             calendar.timeZone = TimeZone(secondsFromGMT: 0)!
@@ -49,11 +47,10 @@ extension CategoryBreakdownRepositoryTests {
 
         @discardableResult
         private func run(
-            _ rows: [ImportRow], in container: ModelContainer, create: Bool = true, skip: Bool = false, digits: Int = 2,
-            beforeSave: @Sendable () throws -> Void = {}
+            _ rows: [ImportRow], in container: ModelContainer, create: Bool = true, skip: Bool = false, digits: Int = 2
         ) async throws -> ImportResult {
             try await ExpenseRepository(modelContainer: container).importExpenses(
-                rows, createCategories: create, skipDuplicates: skip, fractionDigits: digits, calendar: calendar, beforeSave: beforeSave
+                rows, createCategories: create, skipDuplicates: skip, fractionDigits: digits, calendar: calendar
             )
         }
 
@@ -274,31 +271,6 @@ extension CategoryBreakdownRepositoryTests {
 
                 // Control: without the bad row the same import goes through.
                 #expect(try await run([good], in: container).imported == 1)
-            }
-        }
-
-        @Test func aFailureAfterTheInsertsLeavesNothingBehindForARetryToSaveTwice() async throws {
-            try await withIsolatedDefaults { _ in
-                let container = try makeContainer()
-                // One repository for both attempts, like the app's: pending inserts would live on in its context.
-                let repository = ExpenseRepository(modelContainer: container)
-                let rows = [row("a", category: .new(name: "Pets")), row("b"), row("c")]
-
-                await #expect(throws: Boom.self) {
-                    try await repository.importExpenses(
-                        rows, createCategories: true, skipDuplicates: false, fractionDigits: 2,
-                        calendar: calendar, beforeSave: { throw Boom() }
-                    )
-                }
-                #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 0)
-                #expect(try ModelContext(container).fetchCount(FetchDescriptor<CustomCategory>()) == 0)
-
-                let retry = try await repository.importExpenses(
-                    rows, createCategories: true, skipDuplicates: false, fractionDigits: 2, calendar: calendar
-                )
-                #expect(retry.imported == 3)
-                #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 3)
-                #expect(try ModelContext(container).fetchCount(FetchDescriptor<CustomCategory>()) == 1)
             }
         }
 

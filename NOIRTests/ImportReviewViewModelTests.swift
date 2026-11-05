@@ -233,6 +233,30 @@ extension CategoryBreakdownRepositoryTests {
             #expect(causes.invalid == [.init(line: 2, reason: .date), .init(line: 3, reason: .amount), .init(line: 5, reason: .columnCount)])
         }
 
+        @Test func theNewCategoryCountIsWhatImportingWillCreate() async throws {
+            let container = try makeContainer()
+            let limit = CategoryFormViewModel.maxNameLength
+            let context = ModelContext(container)
+            context.insert(CustomCategory(name: String(repeating: "x", count: limit), symbol: "star.fill", colorRawValue: "red"))
+            try context.save()
+            let long = String(repeating: "y", count: limit)
+            let text = """
+            Date,Name,Amount,Category
+            2026-03-05,a,1,\(String(repeating: "x", count: limit + 6))
+            2026-03-06,b,1,\(long)-one
+            2026-03-07,c,1,\(long)-two
+            2026-03-08,d,1,Hobbies
+            """
+            let viewModel = try makeViewModel(text, container: container)
+            await viewModel.load()
+
+            // The first name is cut to a category that exists, the next two are cut to the same name.
+            #expect(viewModel.newCategoryNames == [long, "Hobbies"])
+
+            _ = await viewModel.performImport()
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<CustomCategory>()) == 1 + viewModel.newCategoryNames.count)
+        }
+
         @Test func whatDrawingNeedsIsComputedOnceNotOnEveryRead() async throws {
             let viewModel = try makeViewModel(file, container: try makeContainer())
             await viewModel.load()

@@ -92,10 +92,10 @@ struct ImportReviewView: View {
             UnavailableView(
                 L10n.Import.loadFailedTitle,
                 systemImage: AssetName.System.warning,
-                description: L10n.Dashboard.errorDescription
+                description: L10n.Import.loadFailedDescription
             )
 
-            Button(String(localized: L10n.Dashboard.retry)) {
+            Button(String(localized: L10n.Import.retry)) {
                 Task { await viewModel.load() }
             }
             .buttonStyle(.borderedProminent)
