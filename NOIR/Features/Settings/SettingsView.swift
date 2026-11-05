@@ -5,11 +5,16 @@
 
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(ProfileStorage.nameKey) private var name = ""
+    @State private var isImporterPresented = false
+    @State private var importErrorMessage: String?
+    @State private var finishedImport: ImportReviewViewModel.Summary?
+    @State private var shownImport: ImportReviewViewModel.Summary?
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
@@ -123,6 +128,13 @@ struct SettingsView: View {
                     SettingsRowLabel(title: L10n.Export.csv, systemImage: AssetName.System.export)
                 }
                 .tint(.primary)
+
+                Button {
+                    isImporterPresented = true
+                } label: {
+                    SettingsRowLabel(title: L10n.Import.csv, systemImage: AssetName.System.importFile)
+                }
+                .tint(.primary)
             }
 
             Section(String(localized: L10n.Legal.title)) {
@@ -160,6 +172,39 @@ struct SettingsView: View {
             reviewPromptDeveloperSection
 #endif
         }
+        .fileImporter(isPresented: $isImporterPresented, allowedContentTypes: [.commaSeparatedText, .tabSeparatedText]) { result in
+            guard case .success(let url) = result else { return }
+            Task { await review(url) }
+        }
+        .onChange(of: coordinator.sheet == nil) { _, isClosed in
+            guard isClosed, let finished = finishedImport else { return }
+            finishedImport = nil
+            Task {
+                try? await Task.sleep(for: .milliseconds(600))
+                shownImport = finished
+            }
+        }
+        .alert(Text(L10n.Import.errorTitle), isPresented: .init(
+            get: { importErrorMessage != nil },
+            set: { if !$0 { importErrorMessage = nil } }
+        )) {
+            Button(String(localized: L10n.Shared.ok), role: .cancel) { importErrorMessage = nil }
+        } message: {
+            Text(importErrorMessage ?? String(localized: L10n.Shared.unexpectedError))
+        }
+        .alert(
+            shownImport.map { Text(L10n.Import.imported($0.imported)) } ?? Text(verbatim: ""),
+            isPresented: .init(
+                get: { shownImport != nil },
+                set: { if !$0 { shownImport = nil } }
+            )
+        ) {
+            Button(String(localized: L10n.Shared.ok), role: .cancel) { shownImport = nil }
+        } message: {
+            if let skipped = shownImport?.skipped, skipped > 0 {
+                Text(L10n.Import.skipped(skipped))
+            }
+        }
         .navigationTitle(Text(L10n.SettingsView.title))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -168,6 +213,22 @@ struct SettingsView: View {
                     coordinator.dismiss()
                 })
             }
+        }
+    }
+}
+
+private extension SettingsView {
+    func review(_ url: URL) async {
+        do {
+            let parsed = try await ExpenseCSVReader.read(contentsOf: url, currencyCode: currencyCode)
+            coordinator.present(
+                SettingsRoutes.importReview(parsed: parsed, currencyCode: currencyCode) { finishedImport = $0 },
+                mode: .large
+            )
+        } catch ExpenseCSVReader.ReadError.missingColumns {
+            importErrorMessage = String(localized: L10n.Import.errorColumns)
+        } catch {
+            importErrorMessage = String(localized: L10n.Import.errorUnreadable)
         }
     }
 }

@@ -36,7 +36,8 @@ nonisolated struct ExpenseCSVExport: Transferable {
                 amount: $0.amount,
                 category: titles[$0.categoryInfo.key] ?? $0.categoryInfo.key,
                 card: $0.card,
-                note: $0.description
+                note: $0.description,
+                categoryKey: $0.categoryInfo.key
             )
         }
         return ExpenseCSV.make(rows: rows, headers: headers, currencyCode: currencyCode, timeZone: timeZone)

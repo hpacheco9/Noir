@@ -205,6 +205,78 @@ actor ExpenseRepository: ModelActor {
         return try modelContext.fetch(descriptor).map { ExpenseDTO($0, categories: categories) }
     }
 
+    // MARK: - Import
+
+    // Indices of the rows that already exist: same day, amount at the currency's minor units, and name.
+    func duplicateIndices(in rows: [ImportRow], fractionDigits: Int, calendar: Calendar = .current) throws -> Set<Int> {
+        guard let first = rows.first else { return [] }
+        let dates = rows.reduce((first.date, first.date)) { (min($0.0, $1.date), max($0.1, $1.date)) }
+        let start = calendar.startOfDay(for: dates.0)
+        let end = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: dates.1)) ?? dates.1
+
+        var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(DateInterval(start: start, end: end)))
+        descriptor.propertiesToFetch = [\.date, \.amount, \.name]
+        let existing = Set(try modelContext.fetch(descriptor).map {
+            ExpenseDuplicateKey(date: $0.date, amount: $0.amount, name: $0.name, fractionDigits: fractionDigits, calendar: calendar)
+        })
+        return Set(rows.indices.filter { index in
+            let row = rows[index]
+            return existing.contains(ExpenseDuplicateKey(
+                date: row.date, amount: row.amount, name: row.name, fractionDigits: fractionDigits, calendar: calendar
+            ))
+        })
+    }
+
+    // Creates `newCategories` and inserts every row in one save: all or nothing. Rows named for a category that was
+    // not created go to Food. Returns the number of rows inserted.
+    func importExpenses(_ rows: [ImportRow], newCategories: [String]) throws -> Int {
+        guard rows.allSatisfy({ Expense.isValidAmount($0.amount) }) else { throw RepositoryError.invalidAmount }
+        OverviewMemoStore.beginWrite()
+        do {
+            var created: [String: String] = [:]
+            for name in newCategories where created[name.searchKey] == nil {
+                let category = CustomCategory(
+                    name: name,
+                    symbol: ImportDefaults.symbol,
+                    colorRawValue: ImportDefaults.color(at: created.count).rawValue
+                )
+                modelContext.insert(category)
+                created[name.searchKey] = CategoryInfo.key(forCustomID: category.id)
+            }
+
+            var existingKeys: [String: String] = [:]
+            let now = Date.now
+            for row in rows {
+                let key: String
+                switch row.category {
+                case .existing(let requested):
+                    if existingKeys[requested] == nil { existingKeys[requested] = try resolvedCategoryKey(requested) }
+                    key = existingKeys[requested]!
+                case .new(let name):
+                    key = created[name.searchKey] ?? ExpenseCategory.food.rawValue
+                }
+                let expense = Expense(
+                    amount: row.amount,
+                    name: row.name,
+                    date: row.date,
+                    category: .food,
+                    expenseDescription: row.note,
+                    card: row.card,
+                    createdAt: now
+                )
+                expense.categoryRawValue = key
+                modelContext.insert(expense)
+            }
+            try commit()
+        } catch {
+            OverviewMemoStore.cancelWrite()
+            throw error
+        }
+        OverviewMemoStore.finishWrite()
+        Set(rows.map(\.card)).forEach(SavedCards.remember)
+        return rows.count
+    }
+
     // MARK: - Categories
     // Overview memos only hold date/amount/createdAt, so category writes never touch them.
 

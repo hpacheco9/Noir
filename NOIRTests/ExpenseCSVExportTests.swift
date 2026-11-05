@@ -12,7 +12,7 @@ import SwiftData
 struct ExpenseCSVExportTests {
     private let headers = ExpenseCSV.Headers(
         date: "Date", name: "Name", amount: "Amount", currency: "Currency",
-        category: "Category", card: "Card", note: "Note"
+        category: "Category", card: "Card", note: "Note", categoryID: "Category ID"
     )
 
     private func date(_ year: Int, _ month: Int, _ day: Int, _ hour: Int = 12) -> Date {
@@ -78,7 +78,7 @@ struct ExpenseCSVExportTests {
 
     @Test func csvOfAnEmptyStoreIsTheHeaderOnly() async throws {
         let text = try await export(try makeContainer()).csv()
-        #expect(text == "\u{FEFF}Date,Name,Amount,Currency,Category,Card,Note\r\n")
+        #expect(text == "\u{FEFF}Date,Name,Amount,Currency,Category,Card,Note,Category ID\r\n")
     }
 
     @Test func csvShowsCustomNamesOverridesAndFoodFallback() async throws {
@@ -99,10 +99,10 @@ struct ExpenseCSVExportTests {
         let text = try await export(container, currency: "USD").csv(timeZone: TimeZone(secondsFromGMT: 0)!)
         let food = ExpenseCategory.food.title
         let expected = [
-            "Date,Name,Amount,Currency,Category,Card,Note",
-            "2026-03-01,Food for Fido,12.5,USD,\"Pets, \"\"Fido\"\"\",Visa,",
-            "2026-03-02,Checkup,40,USD,Doctor,,yearly",
-            "2026-03-03,Orphan,7,USD,\(food),,",
+            "Date,Name,Amount,Currency,Category,Card,Note,Category ID",
+            "2026-03-01,Food for Fido,12.5,USD,\"Pets, \"\"Fido\"\"\",Visa,,\(CategoryInfo.key(forCustomID: custom.id))",
+            "2026-03-02,Checkup,40,USD,Doctor,,yearly,health",
+            "2026-03-03,Orphan,7,USD,\(food),,,food",
         ].joined(separator: "\r\n") + "\r\n"
         #expect(text == "\u{FEFF}" + expected)
     }
@@ -132,7 +132,7 @@ struct ExpenseCSVExportTests {
         let data = try Data(contentsOf: url)
         #expect(Array(data.prefix(3)) == [0xEF, 0xBB, 0xBF])
         let written = String(decoding: data, as: UTF8.self)
-        #expect(written.hasPrefix("\u{FEFF}Date,Name,Amount,Currency,Category,Card,Note\r\n"))
+        #expect(written.hasPrefix("\u{FEFF}Date,Name,Amount,Currency,Category,Card,Note,Category ID\r\n"))
         #expect(written.contains("2026-03-01,Café,19.99,EUR,"))
     }
 

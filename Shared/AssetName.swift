@@ -23,6 +23,7 @@ nonisolated enum AssetName {
         static let externalLink = "arrow.up.right"
         static let filter = "line.3.horizontal.decrease"
         static let home = "text.rectangle.page"
+        static let importFile = "square.and.arrow.down"
         static let iCloud = "icloud"
         static let legal = "doc.text.fill"
         static let note = "text.alignleft"
@@ -53,9 +54,11 @@ nonisolated enum AssetName {
 
     /// Symbols a custom category can use (all verified in SF Symbols for iOS 26). Starts with the built-in icons.
     enum CategorySymbols {
+        static let generic = "square.grid.2x2.fill"
+
         static let all: [String] = [
             ExpenseCategory.food, ExpenseCategory.transport, ExpenseCategory.home, ExpenseCategory.leisure,
-            ExpenseCategory.health, ExpenseCategory.shopping, "square.grid.2x2.fill",
+            ExpenseCategory.health, ExpenseCategory.shopping, generic,
             "tshirt.fill", "bag.fill", "gift.fill", "cup.and.saucer.fill", "pawprint.fill", "airplane",
             "bus.fill", "fuelpump.fill", "gamecontroller.fill", "book.fill", "graduationcap.fill",
             "dumbbell.fill", "heart.fill", "wrench.and.screwdriver.fill", "bolt.fill", "phone.fill",

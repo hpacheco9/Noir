@@ -14,8 +14,9 @@ nonisolated enum ExpenseCSV {
         var category: String
         var card: String
         var note: String
+        var categoryID = ExpenseCSV.categoryIDHeader
 
-        var all: [String] { [date, name, amount, currency, category, card, note] }
+        var all: [String] { [date, name, amount, currency, category, card, note, categoryID] }
     }
 
     struct Row: Sendable {
@@ -25,12 +26,14 @@ nonisolated enum ExpenseCSV {
         var category: String
         var card: String
         var note: String
+        var categoryKey: String
     }
 
+    static let categoryIDHeader = "Category ID"
     static let byteOrderMark = "\u{FEFF}"
     static let lineEnding = "\r\n"
 
-    private static let formulaTriggers: Set<Unicode.Scalar> = ["=", "+", "-", "@", "\t", "\r"]
+    static let formulaTriggers: Set<Unicode.Scalar> = ["=", "+", "-", "@", "\t", "\r"]
 
     static func make(rows: [Row], headers: Headers, currencyCode: String, timeZone: TimeZone = .current) -> String {
         let dateStyle = dayStyle(timeZone)
@@ -45,6 +48,7 @@ nonisolated enum ExpenseCSV {
                 text(row.category),
                 text(row.card),
                 text(row.note),
+                row.categoryKey,
             ]
             lines.append(fields.map(escape).joined(separator: ","))
         }
@@ -67,11 +71,15 @@ nonisolated enum ExpenseCSV {
         return formatter.maximumFractionDigits
     }
 
-    static func amountString(_ amount: Double, fractionDigits: Int) -> String {
+    static func roundedAmount(_ amount: Double, fractionDigits: Int) -> Decimal {
         var value = Decimal(string: amount.description) ?? 0
         var rounded = Decimal()
         NSDecimalRound(&rounded, &value, fractionDigits, .plain)
-        return rounded.description
+        return rounded
+    }
+
+    static func amountString(_ amount: Double, fractionDigits: Int) -> String {
+        roundedAmount(amount, fractionDigits: fractionDigits).description
     }
 
     static func text(_ value: String) -> String {

@@ -10,9 +10,9 @@ import Foundation
 struct ExpenseCSVTests {
     private let headers = ExpenseCSV.Headers(
         date: "Date", name: "Name", amount: "Amount", currency: "Currency",
-        category: "Category", card: "Card", note: "Note"
+        category: "Category", card: "Card", note: "Note", categoryID: "Category ID"
     )
-    private let headerLine = "Date,Name,Amount,Currency,Category,Card,Note"
+    private let headerLine = "Date,Name,Amount,Currency,Category,Card,Note,Category ID"
     private let utc = TimeZone(secondsFromGMT: 0)!
 
     private func date(_ year: Int, _ month: Int, _ day: Int, _ hour: Int = 12, _ minute: Int = 0) -> Date {
@@ -23,11 +23,11 @@ struct ExpenseCSVTests {
 
     private func row(
         name: String = "Coffee", amount: Double = 3.5, category: String = "Food",
-        card: String = "", note: String = "", date: Date? = nil
+        card: String = "", note: String = "", date: Date? = nil, categoryKey: String = "food"
     ) -> ExpenseCSV.Row {
         ExpenseCSV.Row(
             date: date ?? self.date(2026, 3, 5), name: name, amount: amount,
-            category: category, card: card, note: note
+            category: category, card: card, note: note, categoryKey: categoryKey
         )
     }
 
@@ -73,7 +73,23 @@ struct ExpenseCSVTests {
 
     @Test func columnsAreInTheDocumentedOrder() {
         let line = dataLine(row(name: "Coffee", amount: 3.5, category: "Food", card: "Visa", note: "Morning"))
-        #expect(line == "2026-03-05,Coffee,3.5,EUR,Food,Visa,Morning")
+        #expect(line == "2026-03-05,Coffee,3.5,EUR,Food,Visa,Morning,food")
+    }
+
+    @Test func theLastColumnIsTheRawCategoryKey() {
+        let id = "custom:5E4F888E-D8BD-4798-9D2C-4EBD856B8B6E"
+        #expect(dataLine(row(category: "Pets", categoryKey: id)).hasSuffix(",Pets,,,\(id)"))
+        #expect(dataLine(row(category: "Shopping", categoryKey: "clothing")).hasSuffix(",Shopping,,,clothing"))
+        #expect(make([]).contains(",Note,Category ID\r\n"))
+    }
+
+    @Test func theCategoryIDHeaderIsEnglishWhateverTheLocalizedHeaders() {
+        let german = ExpenseCSV.Headers(
+            date: "Datum", name: "Name", amount: "Betrag", currency: "Währung",
+            category: "Kategorie", card: "Karte", note: "Notiz"
+        )
+        #expect(ExpenseCSV.make(rows: [], headers: german, currencyCode: "EUR", timeZone: utc)
+                == "\u{FEFF}Datum,Name,Betrag,Währung,Kategorie,Karte,Notiz,Category ID\r\n")
     }
 
     @Test func sampleFile() {
@@ -84,9 +100,9 @@ struct ExpenseCSVTests {
         ], currency: "USD")
         let expected = [
             headerLine,
-            "2026-03-05,Coffee,3.5,USD,Food,Visa,",
-            "2026-03-06,\"Dinner, \"\"Chez Paul\"\"\",19.99,USD,Leisure,,\"Line one\nLine two\"",
-            "2026-03-07,'=SUM(1),1234.5,USD,Home,,",
+            "2026-03-05,Coffee,3.5,USD,Food,Visa,,food",
+            "2026-03-06,\"Dinner, \"\"Chez Paul\"\"\",19.99,USD,Leisure,,\"Line one\nLine two\",food",
+            "2026-03-07,'=SUM(1),1234.5,USD,Home,,,food",
         ].joined(separator: "\r\n") + "\r\n"
         #expect(text == "\u{FEFF}" + expected)
     }
@@ -119,7 +135,7 @@ struct ExpenseCSVTests {
 
     @Test func commasAndQuotesInSeveralFieldsAreEscapedTogether() {
         let line = dataLine(row(name: "a,\"b\",c", note: "x,y"))
-        #expect(line == "2026-03-05,\"a,\"\"b\"\",c\",3.5,EUR,Food,,\"x,y\"")
+        #expect(line == "2026-03-05,\"a,\"\"b\"\",c\",3.5,EUR,Food,,\"x,y\",food")
     }
 
     @Test func headersAreEscapedToo() {
@@ -143,7 +159,7 @@ struct ExpenseCSVTests {
 
     @Test func guardAppliesToNameCategoryCardAndNote() {
         let line = dataLine(row(name: "=A", category: "+B", card: "-C", note: "@D"))
-        #expect(line == "2026-03-05,'=A,3.5,EUR,'+B,'-C,'@D")
+        #expect(line == "2026-03-05,'=A,3.5,EUR,'+B,'-C,'@D,food")
     }
 
     @Test func guardAndQuotingCombine() {
@@ -154,7 +170,7 @@ struct ExpenseCSVTests {
 
     @Test func guardDoesNotTouchDateAmountOrCurrency() {
         let line = dataLine(row(amount: 5))
-        #expect(line == "2026-03-05,Coffee,5,EUR,Food,,")
+        #expect(line == "2026-03-05,Coffee,5,EUR,Food,,,food")
     }
 
     // MARK: Amounts
@@ -197,8 +213,8 @@ struct ExpenseCSVTests {
         #expect(ExpenseCSV.amountString(1234.6, fractionDigits: jpy) == "1235")
         #expect(ExpenseCSV.amountString(1234.4, fractionDigits: jpy) == "1234")
 
-        #expect(dataLine(row(amount: 1234.6), currency: "JPY") == "2026-03-05,Coffee,1235,JPY,Food,,")
-        #expect(dataLine(row(amount: 1234.6), currency: "EUR") == "2026-03-05,Coffee,1234.6,EUR,Food,,")
+        #expect(dataLine(row(amount: 1234.6), currency: "JPY") == "2026-03-05,Coffee,1235,JPY,Food,,,food")
+        #expect(dataLine(row(amount: 1234.6), currency: "EUR") == "2026-03-05,Coffee,1234.6,EUR,Food,,,food")
     }
 
     @Test func tinyAndHugeAmountsGoThroughTheExponentForm() {

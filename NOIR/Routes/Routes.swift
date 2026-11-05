@@ -124,6 +124,25 @@ extension SettingsRoutes {
         return SafariViewRoute(routeId: "settings-safari-\(url.absoluteString)", url: url)
     }
 
+    static func importReview(
+        parsed: ExpenseCSVReader.Parsed,
+        currencyCode: String,
+        onFinish: @escaping (ImportReviewViewModel.Summary) -> Void
+    ) -> any RouteRepresentable {
+        struct ImportReviewViewRoute: RouteRepresentable {
+            let routeId: String = "settings-import-review"
+            let parsed: ExpenseCSVReader.Parsed
+            let currencyCode: String
+            let onFinish: (ImportReviewViewModel.Summary) -> Void
+
+            func routeView() -> any View {
+                ImportReviewView(parsed: parsed, currencyCode: currencyCode, onFinish: onFinish)
+            }
+        }
+
+        return ImportReviewViewRoute(parsed: parsed, currencyCode: currencyCode, onFinish: onFinish)
+    }
+
     static func paywall() -> any RouteRepresentable {
         struct PaywallViewRoute: RouteRepresentable {
             let routeId: String = "settings-paywall"

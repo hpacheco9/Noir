@@ -144,6 +144,32 @@ enum L10n {
         static let headerNote: LocalizedStringResource = "export.header_note"
     }
 
+    enum Import {
+        static let csv: LocalizedStringResource = "import.csv"
+        static func found(_ count: Int) -> LocalizedStringResource { "import.found \(count)" }
+        static func invalid(_ count: Int) -> LocalizedStringResource { "import.invalid \(count)" }
+        static func line(_ number: Int) -> LocalizedStringResource { "import.line \(number)" }
+        static let reasonDate: LocalizedStringResource = "import.reason_date"
+        static let reasonAmount: LocalizedStringResource = "import.reason_amount"
+        static let reasonColumns: LocalizedStringResource = "import.reason_columns"
+        static let preview: LocalizedStringResource = "import.preview"
+        static let dateFormat: LocalizedStringResource = "import.date_format"
+        static func createCategories(_ count: Int) -> LocalizedStringResource { "import.create_categories \(count)" }
+        static func skipDuplicates(_ count: Int) -> LocalizedStringResource { "import.skip_duplicates \(count)" }
+        static func currencyMismatch(file: String, current: String) -> LocalizedStringResource {
+            "import.currency_mismatch \(file) \(current)"
+        }
+        static func confirm(_ count: Int) -> LocalizedStringResource { "import.confirm \(count)" }
+        static let progress: LocalizedStringResource = "import.progress"
+        static func imported(_ count: Int) -> LocalizedStringResource { "import.imported \(count)" }
+        static func skipped(_ count: Int) -> LocalizedStringResource { "import.skipped \(count)" }
+        static let errorTitle: LocalizedStringResource = "import.error_title"
+        static let errorUnreadable: LocalizedStringResource = "import.error_unreadable"
+        static let errorColumns: LocalizedStringResource = "import.error_columns"
+        static let failedTitle: LocalizedStringResource = "import.failed_title"
+        static let failedMessage: LocalizedStringResource = "import.failed_message"
+    }
+
     enum Profile {
         static let title: LocalizedStringResource = "profile.title"
         static let description: LocalizedStringResource = "profile.description"
