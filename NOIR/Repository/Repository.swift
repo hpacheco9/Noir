@@ -207,7 +207,8 @@ actor ExpenseRepository: ModelActor {
 
     // MARK: - Import
 
-    // Indices of the rows that already exist: same day, amount at the currency's minor units, and name.
+    // Indices of the rows that already exist: same day, amount at the currency's minor units, and name. Each
+    // existing expense accounts for one row, so two identical rows against one expense leave one new.
     func duplicateIndices(in rows: [ImportRow], fractionDigits: Int, calendar: Calendar = .current) throws -> Set<Int> {
         guard let first = rows.first else { return [] }
         let dates = rows.reduce((first.date, first.date)) { (min($0.0, $1.date), max($0.1, $1.date)) }
@@ -216,45 +217,80 @@ actor ExpenseRepository: ModelActor {
 
         var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(DateInterval(start: start, end: end)))
         descriptor.propertiesToFetch = [\.date, \.amount, \.name]
-        let existing = Set(try modelContext.fetch(descriptor).map {
-            ExpenseDuplicateKey(date: $0.date, amount: $0.amount, name: $0.name, fractionDigits: fractionDigits, calendar: calendar)
-        })
-        return Set(rows.indices.filter { index in
-            let row = rows[index]
-            return existing.contains(ExpenseDuplicateKey(
+        var available: [ImportDuplicateKey: Int] = [:]
+        for expense in try modelContext.fetch(descriptor) {
+            let key = ImportDuplicateKey(
+                date: expense.date, amount: expense.amount, name: expense.name, fractionDigits: fractionDigits, calendar: calendar
+            )
+            available[key, default: 0] += 1
+        }
+
+        var found = Set<Int>()
+        for (index, row) in rows.enumerated() {
+            let key = ImportDuplicateKey(
                 date: row.date, amount: row.amount, name: row.name, fractionDigits: fractionDigits, calendar: calendar
-            ))
-        })
+            )
+            if let left = available[key], left > 0 {
+                available[key] = left - 1
+                found.insert(index)
+            }
+        }
+        return found
     }
 
-    // Creates `newCategories` and inserts every row in one save: all or nothing. Rows named for a category that was
-    // not created go to Food. Returns the number of rows inserted.
-    func importExpenses(_ rows: [ImportRow], newCategories: [String]) throws -> Int {
+    // Skips the duplicates, creates the categories the rest need and inserts the rest in one save: all or nothing.
+    // A new name that matches a category shown now (case and accents ignored) reuses it; without `createCategories`
+    // the others go to Food. `beforeSave` is a test seam that runs after the inserts.
+    func importExpenses(
+        _ rows: [ImportRow],
+        createCategories: Bool,
+        skipDuplicates: Bool,
+        fractionDigits: Int,
+        calendar: Calendar = .current,
+        beforeSave: @Sendable () throws -> Void = {}
+    ) throws -> ImportResult {
         guard rows.allSatisfy({ Expense.isValidAmount($0.amount) }) else { throw RepositoryError.invalidAmount }
+        let skipped = skipDuplicates ? try duplicateIndices(in: rows, fractionDigits: fractionDigits, calendar: calendar) : []
+        let importing = rows.indices.filter { !skipped.contains($0) }.map { rows[$0] }
+        guard !importing.isEmpty else { return ImportResult(imported: 0, duplicates: skipped.count, categoriesCreated: 0) }
+
+        var keysByName: [String: String] = [:]
+        for info in try fetchCategories() {
+            if let name = info.customName { keysByName[name.searchKey] = info.key }
+        }
+        var created: [CustomCategory] = []
+        var newKeys: [String: String] = [:]
+        var existingKeys: [String: String] = [:]
+        var keys: [String] = []
+        for row in importing {
+            switch row.category {
+            case .existing(let requested):
+                if existingKeys[requested] == nil { existingKeys[requested] = try resolvedCategoryKey(requested) }
+                keys.append(existingKeys[requested]!)
+            case .new(let name):
+                if let known = newKeys[name.searchKey] {
+                    keys.append(known)
+                    continue
+                }
+                let shown = ImportCategory.categoryName(for: name)
+                var key = keysByName[shown.searchKey]
+                if key == nil, createCategories, !shown.isEmpty {
+                    let color = CategoryColor.allCases[created.count % CategoryColor.allCases.count]
+                    let category = CustomCategory(name: shown, symbol: AssetName.CategorySymbols.generic, colorRawValue: color.rawValue)
+                    created.append(category)
+                    key = CategoryInfo.key(forCustomID: category.id)
+                    keysByName[shown.searchKey] = key
+                }
+                newKeys[name.searchKey] = key ?? ExpenseCategory.food.rawValue
+                keys.append(newKeys[name.searchKey]!)
+            }
+        }
+
         OverviewMemoStore.beginWrite()
         do {
-            var created: [String: String] = [:]
-            for name in newCategories where created[name.searchKey] == nil {
-                let category = CustomCategory(
-                    name: name,
-                    symbol: ImportDefaults.symbol,
-                    colorRawValue: ImportDefaults.color(at: created.count).rawValue
-                )
-                modelContext.insert(category)
-                created[name.searchKey] = CategoryInfo.key(forCustomID: category.id)
-            }
-
-            var existingKeys: [String: String] = [:]
+            for category in created { modelContext.insert(category) }
             let now = Date.now
-            for row in rows {
-                let key: String
-                switch row.category {
-                case .existing(let requested):
-                    if existingKeys[requested] == nil { existingKeys[requested] = try resolvedCategoryKey(requested) }
-                    key = existingKeys[requested]!
-                case .new(let name):
-                    key = created[name.searchKey] ?? ExpenseCategory.food.rawValue
-                }
+            for (row, key) in zip(importing, keys) {
                 let expense = Expense(
                     amount: row.amount,
                     name: row.name,
@@ -267,14 +303,16 @@ actor ExpenseRepository: ModelActor {
                 expense.categoryRawValue = key
                 modelContext.insert(expense)
             }
+            try beforeSave()
             try commit()
         } catch {
+            modelContext.rollback()
             OverviewMemoStore.cancelWrite()
             throw error
         }
         OverviewMemoStore.finishWrite()
-        Set(rows.map(\.card)).forEach(SavedCards.remember)
-        return rows.count
+        Set(importing.map(\.card)).forEach(SavedCards.remember)
+        return ImportResult(imported: importing.count, duplicates: skipped.count, categoriesCreated: created.count)
     }
 
     // MARK: - Categories
@@ -305,7 +343,7 @@ actor ExpenseRepository: ModelActor {
     }
 
     nonisolated private static func sameTitle(_ a: String, _ b: String) -> Bool {
-        a.compare(b, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
+        a.searchKey == b.searchKey
     }
 
     /// Creates a custom category. Throws `CategoryError.emptyName` for a blank name and `.duplicateName` when
@@ -535,5 +573,17 @@ actor ExpenseRepository: ModelActor {
             modelContext.rollback()
             throw error
         }
+    }
+}
+
+nonisolated private struct ImportDuplicateKey: Hashable {
+    let day: Date
+    let amount: String
+    let name: String
+
+    init(date: Date, amount: Double, name: String, fractionDigits: Int, calendar: Calendar) {
+        self.day = calendar.startOfDay(for: date)
+        self.amount = ExpenseCSV.amountString(amount, fractionDigits: fractionDigits)
+        self.name = name.searchKey
     }
 }

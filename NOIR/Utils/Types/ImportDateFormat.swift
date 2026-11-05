@@ -57,16 +57,15 @@ nonisolated enum ImportDateFormat: CaseIterable, Sendable, Hashable {
         return pieces[1].prefix(2).count == 2 && pieces[1].prefix(2).allSatisfy { $0.isASCII && $0.isNumber }
     }
 
-    // Formats that read every date: all of them when some fit every row, else the one that reads the most rows.
-    // Day-first and month-first only both stay when some row reads differently in the two.
+    // The formats that read the most dates (all of them when some read every row, so a junk row can't pick a format
+    // for the rest). Day-first and month-first both stay only when some date reads differently in the two.
     static func candidates(for texts: [String], timeZone: TimeZone = .current) -> [ImportDateFormat] {
         let texts = texts.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
-        let fits = allCases.map { format in (format, texts.filter { format.date(from: $0, timeZone: timeZone) != nil }.count) }
-        let full = fits.filter { $0.1 == texts.count }.map(\.0)
-        guard let first = full.first else {
-            return [fits.max { $0.1 < $1.1 }?.0 ?? allCases[0]]
-        }
-        let others = full.dropFirst().filter { other in
+        let counts = allCases.map { format in texts.filter { format.date(from: $0, timeZone: timeZone) != nil }.count }
+        let best = counts.max() ?? 0
+        let tied = zip(allCases, counts).filter { $0.1 == best }.map(\.0)
+        let first = tied[0]
+        let others = tied.dropFirst().filter { other in
             texts.contains { first.date(from: $0, timeZone: timeZone) != other.date(from: $0, timeZone: timeZone) }
         }
         return [first] + others

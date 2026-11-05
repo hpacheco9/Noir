@@ -35,11 +35,6 @@ nonisolated enum ExpenseCSVReader {
         let note: String
     }
 
-    struct DatedRecord: Sendable, Equatable {
-        let record: Record
-        let date: Date
-    }
-
     struct Parsed: Sendable {
         let records: [Record]
         let invalid: [InvalidRow]
@@ -48,19 +43,6 @@ nonisolated enum ExpenseCSVReader {
         let timeZone: TimeZone
 
         var isAmbiguous: Bool { dateFormats.count > 1 }
-
-        func dated(using format: ImportDateFormat) -> (rows: [DatedRecord], invalid: [InvalidRow]) {
-            var rows: [DatedRecord] = []
-            var invalid = self.invalid
-            for record in records {
-                if let date = format.date(from: record.dateText, timeZone: timeZone) {
-                    rows.append(DatedRecord(record: record, date: date))
-                } else {
-                    invalid.append(InvalidRow(line: record.line, reason: .date))
-                }
-            }
-            return (rows, invalid.sorted { $0.line < $1.line })
-        }
     }
 
     @concurrent
@@ -82,13 +64,18 @@ nonisolated enum ExpenseCSVReader {
         let columns = columns(in: header.fields)
         guard let dateIndex = columns[.date], let amountIndex = columns[.amount] else { throw ReadError.missingColumns }
 
-        let amountStyle = CurrencyPreference.amountInputStyle(for: currencyCode).parseStrategy
+        var amounts = AmountParser(appCurrency: currencyCode)
         var records: [Record] = []
         var invalid: [InvalidRow] = []
         var currencies: [String: Int] = [:]
 
         for line in lines {
-            let fields = line.fields
+            var fields = line.fields
+            if fields.count < header.fields.count, dateIndex < fields.count, amountIndex < fields.count {
+                fields += Array(repeating: "", count: header.fields.count - fields.count)
+            } else if fields.count > header.fields.count, fields[header.fields.count...].allSatisfy({ cleaned($0).isEmpty }) {
+                fields.removeLast(fields.count - header.fields.count)
+            }
             guard fields.count == header.fields.count else {
                 invalid.append(InvalidRow(line: line.number, reason: .columnCount))
                 continue
@@ -96,15 +83,12 @@ nonisolated enum ExpenseCSVReader {
             func cell(_ field: Field) -> String {
                 columns[field].map { cleaned(fields[$0]) } ?? ""
             }
-            guard let value = try? amountStyle.parse(fields[amountIndex]),
-                  case let amount = ExpenseForm(amount: value.magnitude).amountValue,
-                  Expense.isValidAmount(amount)
-            else {
+            let currency = cell(.currency).uppercased()
+            guard let amount = amounts.parse(fields[amountIndex], currency: currency) else {
                 invalid.append(InvalidRow(line: line.number, reason: .amount))
                 continue
             }
-            let currency = cell(.currency).uppercased()
-            if !currency.isEmpty { currencies[currency, default: 0] += 1 }
+            if AmountParser.isCode(currency) { currencies[currency, default: 0] += 1 }
             records.append(Record(
                 line: line.number,
                 dateText: cleaned(fields[dateIndex]),
@@ -135,10 +119,12 @@ nonisolated enum ExpenseCSVReader {
         } else if data.starts(with: [0xFE, 0xFF]) {
             text = String(data: data.dropFirst(2), encoding: .utf16BigEndian)
         } else {
-            // Excel's "CSV (comma delimited)" is Windows-1252, not UTF-8.
-            text = String(data: data, encoding: .utf8)
-                ?? String(data: data, encoding: .windowsCP1252)
-                ?? String(data: data, encoding: .isoLatin1)
+            // Bad bytes in a file that has real UTF-8 text stay bad bytes; with none, it is Excel's Windows-1252.
+            let utf8 = String(decoding: data, as: UTF8.self)
+            let hasText = utf8.unicodeScalars.contains { $0.value > 127 && $0 != "\u{FFFD}" }
+            text = hasText || !utf8.unicodeScalars.contains("\u{FFFD}")
+                ? utf8
+                : String(data: data, encoding: .windowsCP1252) ?? String(data: data, encoding: .isoLatin1)
         }
         if text?.unicodeScalars.first == "\u{FEFF}" { text?.unicodeScalars.removeFirst() }
         return text
@@ -218,7 +204,8 @@ nonisolated enum ExpenseCSVReader {
                     field.append(scalar)
                     if scalar == "\n" || (scalar == "\r" && next != "\n") { line += 1 }
                 }
-            } else if scalar == "\"" && field.isEmpty {
+            } else if scalar == "\"" && field.allSatisfy({ $0 == " " || $0 == "\t" }) {
+                field = String.UnicodeScalarView()
                 inQuotes = true
             } else if scalar == delimiter {
                 endField()
@@ -249,6 +236,7 @@ nonisolated enum ExpenseCSVReader {
     ]
 
     private static let synonyms: [Field: Set<String>] = [
+        .date: ["transaction date", "booking date", "posted date"],
         .name: ["title", "description", "payee", "merchant"],
         .amount: ["value", "price"],
         .note: ["memo", "notes"],
@@ -273,5 +261,45 @@ nonisolated enum ExpenseCSVReader {
             }
         }
         return columns
+    }
+
+    // NOIR's own "1234.5" is always a "." decimal. Anything else follows the row's currency, else the app's.
+    private struct AmountParser {
+        let appCurrency: String
+        private var strategies: [String: AmountInputParseStrategy] = [:]
+        private var places: [String: Int] = [:]
+
+        init(appCurrency: String) { self.appCurrency = appCurrency }
+
+        mutating func parse(_ text: String, currency: String) -> Double? {
+            let code = Self.isCode(currency) ? currency : appCurrency
+            let value: Decimal
+            if let plain = Self.plain(text) {
+                value = plain
+            } else {
+                let strategy = strategies[code] ?? CurrencyPreference.amountInputStyle(for: code).parseStrategy
+                strategies[code] = strategy
+                guard let parsed = try? strategy.parse(text) else { return nil }
+                value = parsed
+            }
+            let digits = places[code] ?? ExpenseCSV.fractionDigits(for: code)
+            places[code] = digits
+            let amount = ExpenseForm(amount: ExpenseCSV.rounded(value.magnitude, fractionDigits: digits)).amountValue
+            return Expense.isValidAmount(amount) ? amount : nil
+        }
+
+        static func isCode(_ text: String) -> Bool {
+            text.count == 3 && text.allSatisfy { $0.isASCII && $0.isLetter }
+        }
+
+        private static func plain(_ text: String) -> Decimal? {
+            var body = Substring(text.trimmingCharacters(in: .whitespaces))
+            if body.hasPrefix("-") { body = body.dropFirst() }
+            let parts = body.split(separator: ".", omittingEmptySubsequences: false)
+            guard (1...2).contains(parts.count),
+                  parts.allSatisfy({ !$0.isEmpty && $0.allSatisfy { $0.isASCII && $0.isNumber } })
+            else { return nil }
+            return Decimal(string: String(body), locale: Locale(identifier: "en_US_POSIX"))
+        }
     }
 }

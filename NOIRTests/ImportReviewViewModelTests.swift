@@ -6,6 +6,7 @@
 import Testing
 import Foundation
 import SwiftData
+import os
 @testable import NOIR
 
 extension CategoryBreakdownRepositoryTests {
@@ -34,15 +35,45 @@ extension CategoryBreakdownRepositoryTests {
             try context.save()
         }
 
+        private nonisolated struct Boom: Error {}
+
+        private nonisolated final class Switch: Sendable {
+            private let failing = OSAllocatedUnfairLock(initialState: true)
+            func set(failing value: Bool) { failing.withLock { $0 = value } }
+            func check() throws { if failing.withLock({ $0 }) { throw Boom() } }
+        }
+
+        private nonisolated final class Gate: Sendable {
+            private let state = OSAllocatedUnfairLock(initialState: (isOpen: true, waiters: [CheckedContinuation<Void, Never>]()))
+            func close() { state.withLock { $0.isOpen = false } }
+            func open() {
+                let waiting = state.withLock { state -> [CheckedContinuation<Void, Never>] in
+                    state.isOpen = true
+                    defer { state.waiters = [] }
+                    return state.waiters
+                }
+                waiting.forEach { $0.resume() }
+            }
+            func wait() async {
+                await withCheckedContinuation { continuation in
+                    let pass = state.withLock { state -> Bool in
+                        if !state.isOpen { state.waiters.append(continuation) }
+                        return state.isOpen
+                    }
+                    if pass { continuation.resume() }
+                }
+            }
+        }
+
         private func makeViewModel(
             _ text: String, container: ModelContainer, currency: String = "EUR",
+            adjust: (inout ImportReviewViewModel.Loader) -> Void = { _ in },
             afterImport: @escaping () async -> Void = {}
         ) throws -> ImportReviewViewModel {
             let parsed = try ExpenseCSVReader.parse(text: text, currencyCode: currency, timeZone: utc)
-            return ImportReviewViewModel(
-                parsed: parsed, currencyCode: currency,
-                repository: ExpenseRepositoryProvider(container: container), afterImport: afterImport
-            )
+            var loader = ImportReviewViewModel.Loader.live(ExpenseRepositoryProvider(container: container))
+            adjust(&loader)
+            return ImportReviewViewModel(parsed: parsed, currencyCode: currency, loader: loader, afterImport: afterImport)
         }
 
         private let file = """
@@ -182,6 +213,165 @@ extension CategoryBreakdownRepositoryTests {
             #expect(viewModel.previewRows[1].categoryInfo.title == ExpenseCategory.food.title)
         }
 
+        @Test func rowsThatCannotBeReadAreListedWithTheirLines() async throws {
+            let container = try makeContainer()
+            let bad = try makeViewModel(
+                "Date,Amount\n2026-03-05,1\n2026-13-45,1\nyesterday,1\n,1\n2026-02-30,1\n2026-03-06,1\n", container: container
+            )
+            await bad.load()
+            #expect(bad.rows.map(\.date) == [noon(2026, 3, 5), noon(2026, 3, 6)])
+            #expect(bad.invalid == [.init(line: 3, reason: .date), .init(line: 4, reason: .date),
+                                    .init(line: 5, reason: .date), .init(line: 6, reason: .date)])
+
+            let mixed = try makeViewModel("Date,Amount\n2026-03-05,1\n2026-03-06,1\n06.03.2026,1\n", container: container)
+            await mixed.load()
+            #expect(mixed.rows.count == 2)
+            #expect(mixed.invalid == [.init(line: 4, reason: .date)])
+
+            let causes = try makeViewModel("Date,Amount\nbad,1\n2026-03-06,oops\n2026-03-07,1\n2026-03-08\n", container: container)
+            await causes.load()
+            #expect(causes.invalid == [.init(line: 2, reason: .date), .init(line: 3, reason: .amount), .init(line: 5, reason: .columnCount)])
+        }
+
+        @Test func whatDrawingNeedsIsComputedOnceNotOnEveryRead() async throws {
+            let viewModel = try makeViewModel(file, container: try makeContainer())
+            await viewModel.load()
+            #expect(!viewModel.previewRows.isEmpty)
+            #expect(viewModel.previewRows.map(\.id) == viewModel.previewRows.map(\.id))
+            #expect(viewModel.newCategoryNames == viewModel.newCategoryNames)
+        }
+
+        // MARK: Failures
+
+        @Test func aFailedCategoryLoadIsShownAndBlocksImportUntilARetryWorks() async throws {
+            let container = try makeContainer()
+            let broken = Switch()
+            let viewModel = try makeViewModel(file, container: container, adjust: { loader in
+                let live = loader.categories
+                loader.categories = { try broken.check(); return try await live() }
+            })
+
+            await viewModel.load()
+
+            #expect(viewModel.loadFailed)
+            #expect(!viewModel.isLoading)
+            #expect(!viewModel.canImport)
+            #expect(await viewModel.performImport() == nil)
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 0)
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<CustomCategory>()) == 0)
+
+            broken.set(failing: false)
+            await viewModel.load()
+
+            // Control: the same view model imports once the load works.
+            #expect(!viewModel.loadFailed)
+            #expect(viewModel.canImport)
+            #expect(await viewModel.performImport() != nil)
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<CustomCategory>()) == 1)
+        }
+
+        @Test func aFailedDuplicateCheckIsShownAndNeverReadAsNoDuplicates() async throws {
+            let container = try makeContainer()
+            try insert("Coffee", 3.5, noon(2026, 3, 5), into: container)
+            let broken = Switch()
+            let viewModel = try makeViewModel(file, container: container, adjust: { loader in
+                let live = loader.duplicates
+                loader.duplicates = { rows, digits in try broken.check(); return try await live(rows, digits) }
+            })
+
+            await viewModel.load()
+
+            #expect(viewModel.loadFailed)
+            #expect(!viewModel.canImport)
+            #expect(await viewModel.performImport() == nil)
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 1)
+
+            broken.set(failing: false)
+            await viewModel.load()
+
+            #expect(!viewModel.loadFailed)
+            #expect(viewModel.duplicateCount == 1)
+            #expect(await viewModel.performImport() == .init(imported: 2, skipped: 2))
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 3)
+        }
+
+        @Test func aFailedImportReportsItAndCanBeTriedAgain() async throws {
+            let container = try makeContainer()
+            let broken = Switch()
+            var published = 0
+            let viewModel = try makeViewModel(file, container: container, adjust: { loader in
+                let live = loader.importRows
+                loader.importRows = { rows, create, skip, digits in
+                    try broken.check()
+                    return try await live(rows, create, skip, digits)
+                }
+            }, afterImport: { published += 1 })
+            await viewModel.load()
+            let recorder = Recorder()
+
+            await recording(from: viewModel, recorder) { _ = await viewModel.performImport() }
+
+            #expect(viewModel.failureMessage != nil)
+            #expect(viewModel.summary == nil)
+            #expect(!viewModel.isImporting)
+            #expect(recorder.expenses == 0 && recorder.categories == 0 && published == 0)
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 0)
+
+            broken.set(failing: false)
+            viewModel.failureMessage = nil
+            #expect(viewModel.canImport)
+            #expect(await viewModel.performImport() == .init(imported: 3, skipped: 1))
+            #expect(viewModel.failureMessage == nil)
+        }
+
+        @Test func importWaitsOutADateFormatChange() async throws {
+            let container = try makeContainer()
+            let gate = Gate()
+            let viewModel = try makeViewModel("Date,Name,Amount\n03/05/2026,Rent,500\n04/06/2026,Bills,80\n", container: container, adjust: { loader in
+                let live = loader.duplicates
+                loader.duplicates = { rows, digits in
+                    await gate.wait()
+                    return try await live(rows, digits)
+                }
+            })
+            await viewModel.load()
+            #expect(viewModel.canImport)
+
+            gate.close()
+            let change = Task { await viewModel.select(.monthDayYear) }
+            var spins = 0
+            while !viewModel.isRebuilding && spins < 1_000 {
+                await Task.yield()
+                spins += 1
+            }
+
+            #expect(viewModel.isRebuilding)
+            #expect(!viewModel.canImport)
+            #expect(await viewModel.performImport() == nil)
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 0)
+
+            gate.open()
+            await change.value
+
+            #expect(!viewModel.isRebuilding)
+            #expect(viewModel.canImport)
+            #expect(await viewModel.performImport()?.imported == 2)
+            let dates = try ModelContext(container).fetch(FetchDescriptor<Expense>(sortBy: [SortDescriptor(\.date)])).map(\.date)
+            #expect(dates == [noon(2026, 3, 5), noon(2026, 4, 6)])
+        }
+
+        @Test func aFinishedImportCannotBeRunTwice() async throws {
+            let container = try makeContainer()
+            let viewModel = try makeViewModel(file, container: container)
+            await viewModel.load()
+
+            #expect(await viewModel.performImport() == .init(imported: 3, skipped: 1))
+            #expect(viewModel.summary == .init(imported: 3, skipped: 1))
+            #expect(!viewModel.canImport)
+            #expect(await viewModel.performImport() == nil)
+            #expect(try ModelContext(container).fetchCount(FetchDescriptor<Expense>()) == 3)
+        }
+
         // MARK: Import
 
         @Test func importInsertsTheRowsSkipsDuplicatesAndTellsEveryone() async throws {
@@ -193,7 +383,7 @@ extension CategoryBreakdownRepositoryTests {
             let recorder = Recorder()
 
             var summary: ImportReviewViewModel.Summary?
-            try await recording(from: viewModel, recorder) { summary = await viewModel.performImport() }
+            await recording(from: viewModel, recorder) { summary = await viewModel.performImport() }
 
             #expect(summary == .init(imported: 2, skipped: 2))   // 1 duplicate + 1 unreadable row
             #expect(recorder.expenses == 1)
@@ -230,7 +420,7 @@ extension CategoryBreakdownRepositoryTests {
             viewModel.createsCategories = false
             let recorder = Recorder()
 
-            try await recording(from: viewModel, recorder) { _ = await viewModel.performImport() }
+            await recording(from: viewModel, recorder) { _ = await viewModel.performImport() }
 
             let context = ModelContext(container)
             #expect(try context.fetchCount(FetchDescriptor<CustomCategory>()) == 0)

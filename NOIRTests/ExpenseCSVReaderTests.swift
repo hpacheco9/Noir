@@ -22,6 +22,10 @@ struct ExpenseCSVReaderTests {
 
     private func amounts(_ parsed: ExpenseCSVReader.Parsed) -> [Double] { parsed.records.map(\.amount) }
 
+    private func dates(_ parsed: ExpenseCSVReader.Parsed, _ format: ImportDateFormat) -> [Date?] {
+        parsed.records.map { format.date(from: $0.dateText, timeZone: parsed.timeZone) }
+    }
+
     // MARK: Text
 
     @Test func utf8BOMIsStripped() throws {
@@ -253,13 +257,13 @@ struct ExpenseCSVReaderTests {
 
     @Test func datesAreNoonOfTheDayInTheGivenTimeZone() throws {
         let parsed = try parse("Date,Amount\n2026-03-05,1\n")
-        #expect(parsed.dated(using: parsed.dateFormats[0]).rows.first?.date == noon(2026, 3, 5))
+        #expect(dates(parsed, parsed.dateFormats[0]) == [noon(2026, 3, 5)])
 
         let auckland = TimeZone(identifier: "Pacific/Auckland")!
         let local = try ExpenseCSVReader.parse(text: "Date,Amount\n2026-03-05,1\n", currencyCode: "EUR", timeZone: auckland)
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = auckland
-        let date = try #require(local.dated(using: local.dateFormats[0]).rows.first?.date)
+        let date = try #require(dates(local, local.dateFormats[0]).first ?? nil)
         let read = calendar.dateComponents([.year, .month, .day, .hour], from: date)
         #expect([read.year, read.month, read.day, read.hour] == [2026, 3, 5, 12])
         #expect(date != noon(2026, 3, 5))
@@ -269,19 +273,19 @@ struct ExpenseCSVReaderTests {
         let dayFirst = try parse("Date,Amount\n13/03/2026,1\n05/03/2026,1\n")
         #expect(dayFirst.dateFormats == [.dayMonthYear])
         #expect(!dayFirst.isAmbiguous)
-        #expect(dayFirst.dated(using: .dayMonthYear).rows.map(\.date) == [noon(2026, 3, 13), noon(2026, 3, 5)])
+        #expect(dates(dayFirst, .dayMonthYear) == [noon(2026, 3, 13), noon(2026, 3, 5)])
 
         let monthFirst = try parse("Date,Amount\n03/13/2026,1\n03/05/2026,1\n")
         #expect(monthFirst.dateFormats == [.monthDayYear])
-        #expect(monthFirst.dated(using: .monthDayYear).rows.map(\.date) == [noon(2026, 3, 13), noon(2026, 3, 5)])
+        #expect(dates(monthFirst, .monthDayYear) == [noon(2026, 3, 13), noon(2026, 3, 5)])
     }
 
     @Test func slashDatesWithNoDayAfterTwelveAreAmbiguous() throws {
         let parsed = try parse("Date,Amount\n03/05/2026,1\n04/06/2026,1\n")
         #expect(parsed.isAmbiguous)
         #expect(parsed.dateFormats == [.dayMonthYear, .monthDayYear])
-        #expect(parsed.dated(using: .dayMonthYear).rows.map(\.date) == [noon(2026, 5, 3), noon(2026, 6, 4)])
-        #expect(parsed.dated(using: .monthDayYear).rows.map(\.date) == [noon(2026, 3, 5), noon(2026, 4, 6)])
+        #expect(dates(parsed, .dayMonthYear) == [noon(2026, 5, 3), noon(2026, 6, 4)])
+        #expect(dates(parsed, .monthDayYear) == [noon(2026, 3, 5), noon(2026, 4, 6)])
     }
 
     @Test func slashDatesThatReadTheSameEitherWayAreNotAmbiguous() throws {
@@ -303,7 +307,7 @@ struct ExpenseCSVReaderTests {
     func eachFormatIsDetectedFromTheColumn(text: String, format: ImportDateFormat) throws {
         let parsed = try parse("Date,Amount\n\(text),1\n")
         #expect(parsed.dateFormats.first == format)
-        #expect(parsed.dated(using: format).rows.first?.date == noon(2026, 3, 5))
+        #expect(dates(parsed, format) == [noon(2026, 3, 5)])
         #expect(parsed.invalid.isEmpty)
     }
 
@@ -311,29 +315,132 @@ struct ExpenseCSVReaderTests {
         #expect(try parse("Date,Amount\n2026-03-05,1\n2026-12-31,1\n").dateFormats == [.yearMonthDay])
     }
 
-    @Test func badDatesMakeTheRowInvalidWithItsLine() throws {
-        let parsed = try parse("Date,Amount\n2026-03-05,1\n2026-13-45,1\nyesterday,1\n,1\n2026-02-30,1\n2026-03-06,1\n")
-        let dated = parsed.dated(using: parsed.dateFormats[0])
-        #expect(dated.rows.map(\.date) == [noon(2026, 3, 5), noon(2026, 3, 6)])
-        #expect(dated.invalid == [
-            .init(line: 3, reason: .date), .init(line: 4, reason: .date),
-            .init(line: 5, reason: .date), .init(line: 6, reason: .date),
-        ])
-    }
-
-    @Test func aMixedColumnUsesTheBestFittingFormatAndFlagsTheRest() throws {
+    @Test func aMixedColumnUsesTheBestFittingFormat() throws {
         let parsed = try parse("Date,Amount\n2026-03-05,1\n2026-03-06,1\n06.03.2026,1\n")
         #expect(parsed.dateFormats == [.yearMonthDay])
-        let dated = parsed.dated(using: .yearMonthDay)
-        #expect(dated.rows.count == 2)
-        #expect(dated.invalid == [.init(line: 4, reason: .date)])
+        #expect(dates(parsed, .yearMonthDay) == [noon(2026, 3, 5), noon(2026, 3, 6), nil])
     }
 
-    @Test func invalidRowsFromAllCausesAreSortedByLine() throws {
-        let parsed = try parse("Date,Amount\nbad,1\n2026-03-06,oops\n2026-03-07,1\n2026-03-08\n")
-        #expect(parsed.dated(using: parsed.dateFormats[0]).invalid == [
-            .init(line: 2, reason: .date), .init(line: 3, reason: .amount), .init(line: 5, reason: .columnCount),
-        ])
+    @Test func aJunkRowDoesNotHideAnAmbiguousColumn() throws {
+        let clean = try parse("Date,Amount\n03/05/2026,1\n04/06/2026,1\n")
+        let junk = try parse("Date,Amount\n03/05/2026,1\n04/06/2026,1\nTotal,2\n")
+        // Control: the clean file asks, and so does the same file with a junk row.
+        #expect(clean.dateFormats == [.dayMonthYear, .monthDayYear])
+        #expect(junk.dateFormats == [.dayMonthYear, .monthDayYear])
+        #expect(junk.isAmbiguous)
+        #expect(dates(junk, .monthDayYear) == [noon(2026, 3, 5), noon(2026, 4, 6), nil])
+    }
+
+    @Test func aJunkRowDoesNotUnsettleAClearColumn() throws {
+        #expect(try parse("Date,Amount\n13/03/2026,1\n05/03/2026,1\nTotal,2\n").dateFormats == [.dayMonthYear])
+        #expect(try parse("Date,Amount\nnope,1\nnever,1\n").dateFormats.count == 1)
+    }
+
+    @Test func twoDigitYearsAreNotDates() throws {
+        #expect(ImportDateFormat.dayMonthYear.date(from: "05/03/26", timeZone: utc) == nil)
+        #expect(ImportDateFormat.dayMonthYear.date(from: "05/03/2026", timeZone: utc) == noon(2026, 3, 5))
+    }
+
+    @Test func dateColumnSynonymsAreAccepted() throws {
+        for header in ["Transaction Date", "Booking date", "posted date"] {
+            let parsed = try parse("\(header),Amount\n2026-03-05,1\n")
+            #expect(parsed.records.count == 1, "\(header)")
+        }
+    }
+
+    // MARK: Amount currency
+
+    @Test func ourOwnFormatIsAlwaysADotDecimal() throws {
+        let text = "Date,Amount\n2026-03-05,12.50\n"
+        #expect(amounts(try parse(text, currency: "EUR")) == [12.5])
+        // With JPY as the app currency the lenient reader would have called it 1250: now it is 12.5, rounded to
+        // the yen.
+        #expect(amounts(try parse(text, currency: "JPY")) == [13])
+    }
+
+    @Test func otherTextFollowsTheRowsCurrencyThenTheAppsCurrency() throws {
+        let grouped = "Date,Amount\n2026-03-05,\"1,234\"\n"
+        // JPY has no minor units, so the comma is grouping; EUR reads it as a decimal comma.
+        #expect(amounts(try parse(grouped, currency: "JPY")) == [1234])
+        #expect(amounts(try parse(grouped, currency: "EUR")) == [1.23])
+        // The row's own currency wins over the app's.
+        #expect(amounts(try parse("Date,Amount,Currency\n2026-03-05,\"1,234\",JPY\n", currency: "EUR")) == [1234])
+    }
+
+    @Test func valuesAreRoundedToTheirCurrencysMinorUnits() throws {
+        let text = "Date,Amount,Currency\n2026-03-05,12.345,KWD\n2026-03-06,12.345,EUR\n2026-03-07,1234.6,JPY\n"
+        #expect(amounts(try parse(text, currency: "EUR")) == [12.345, 12.35, 1235])
+        // Without a currency column the app's currency decides.
+        let plain = "Date,Amount\n2026-03-05,12.345\n"
+        #expect(amounts(try parse(plain, currency: "KWD")) == [12.345])
+        #expect(amounts(try parse(plain, currency: "EUR")) == [12.35])
+        // An amount that rounds to nothing is no amount.
+        #expect(try parse("Date,Amount\n2026-03-05,0.004\n", currency: "EUR").invalid == [.init(line: 2, reason: .amount)])
+    }
+
+    @Test func aCurrencyCellThatIsNotACodeIsIgnored() throws {
+        #expect(amounts(try parse("Date,Amount,Currency\n2026-03-05,\"1,234\",euros\n", currency: "JPY")) == [1234])
+    }
+
+    @Test(arguments: [
+        ("JPY", [1235.0, 80, 5000]),
+        ("KWD", [12.345, 0.5, 1000.001]),
+        ("EUR", [19.99, 1234.5, 0.05]),
+        ("USD", [3.5, 100, 1_000_000.25]),
+    ])
+    func exportedAmountsComeBackInEveryCurrency(code: String, values: [Double]) throws {
+        let rows = values.map {
+            ExpenseCSV.Row(date: noon(2026, 3, 5), name: "x", amount: $0, category: "Food", card: "", note: "", categoryKey: "food")
+        }
+        let headers = ExpenseCSV.Headers(
+            date: "Date", name: "Name", amount: "Amount", currency: "Currency", category: "Category", card: "Card", note: "Note"
+        )
+        let csv = ExpenseCSV.make(rows: rows, headers: headers, currencyCode: code, timeZone: utc)
+        // Whatever the app's currency is, the file's own column decides.
+        for appCurrency in ["EUR", "JPY", "DKK", code] {
+            #expect(amounts(try parse(csv, currency: appCurrency)) == values, "\(code) read as \(appCurrency)")
+        }
+    }
+
+    // MARK: Row shapes
+
+    @Test func shortRowsArePaddedWhenOnlyOptionalColumnsAreMissing() throws {
+        let parsed = try parse("Date,Name,Amount,Card,Note\n2026-03-05,Tea,2\n2026-03-06,Coffee,3,Visa\n")
+        #expect(parsed.invalid.isEmpty)
+        #expect(parsed.records.map(\.card) == ["", "Visa"])
+        #expect(parsed.records.map(\.note) == ["", ""])
+        // Control: a row missing the Amount cell is still invalid.
+        #expect(try parse("Date,Name,Amount\n2026-03-05,Tea\n").invalid == [.init(line: 2, reason: .columnCount)])
+        #expect(try parse("Date,Name,Amount\n2026-03-05\n").invalid == [.init(line: 2, reason: .columnCount)])
+    }
+
+    @Test func extraEmptyColumnsAreIgnoredButExtraValuesAreNot() throws {
+        let parsed = try parse("Date,Name,Amount\n2026-03-05,Tea,2,,\n2026-03-06,Tea,2, \n2026-03-07,Tea,2,x\n")
+        #expect(parsed.records.map(\.line) == [2, 3])
+        #expect(parsed.invalid == [.init(line: 4, reason: .columnCount)])
+    }
+
+    @Test func spacesBeforeAnOpeningQuoteStillOpenIt() throws {
+        let parsed = try parse("Date,Name,Amount\n2026-03-05, \"Coffee, large\",3.5\n2026-03-06,\t\"Tea, big\" ,2\n")
+        #expect(parsed.invalid.isEmpty)
+        #expect(parsed.records.map(\.name) == ["Coffee, large", "Tea, big"])
+        // Control: a quote inside text is just text.
+        #expect(try parse("Date,Name,Amount\n2026-03-05,5\" pipe,3.5\n").records.first?.name == "5\" pipe")
+    }
+
+    // MARK: Bad bytes
+
+    @Test func oneBadByteInUTF8TextDoesNotTurnTheFileIntoWindows1252() throws {
+        var data = Data("Date,Name,Amount\n2026-03-05,Crème brûlée ç,3\n2026-03-06,Caf".utf8)
+        data.append(0xE9)
+        data.append(contentsOf: "\n".utf8)
+        let text = try #require(ExpenseCSVReader.decode(data))
+        #expect(text.contains("Crème brûlée ç"))
+        #expect(text.contains("\u{FFFD}"))
+        // Control: with no valid UTF-8 text at all, high bytes are Windows-1252.
+        let ansi = try #require(ExpenseCSVReader.decode("Date,Name,Amount\n2026-03-05,Café ñ,3\n".data(using: .windowsCP1252)!))
+        #expect(ansi.contains("Café ñ"))
+        #expect(!ansi.contains("\u{FFFD}"))
     }
 
     // MARK: File

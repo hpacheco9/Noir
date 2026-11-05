@@ -168,6 +168,7 @@ enum L10n {
         static let errorColumns: LocalizedStringResource = "import.error_columns"
         static let failedTitle: LocalizedStringResource = "import.failed_title"
         static let failedMessage: LocalizedStringResource = "import.failed_message"
+        static let loadFailedTitle: LocalizedStringResource = "import.load_failed_title"
     }
 
     enum Profile {

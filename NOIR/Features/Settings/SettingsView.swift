@@ -12,9 +12,8 @@ struct SettingsView: View {
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(ProfileStorage.nameKey) private var name = ""
     @State private var isImporterPresented = false
+    @State private var isReadingImport = false
     @State private var importErrorMessage: String?
-    @State private var finishedImport: ImportReviewViewModel.Summary?
-    @State private var shownImport: ImportReviewViewModel.Summary?
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
@@ -132,9 +131,13 @@ struct SettingsView: View {
                 Button {
                     isImporterPresented = true
                 } label: {
-                    SettingsRowLabel(title: L10n.Import.csv, systemImage: AssetName.System.importFile)
+                    HStack {
+                        SettingsRowLabel(title: L10n.Import.csv, systemImage: AssetName.System.importFile)
+                        if isReadingImport { ProgressView() }
+                    }
                 }
                 .tint(.primary)
+                .disabled(isReadingImport)
             }
 
             Section(String(localized: L10n.Legal.title)) {
@@ -176,14 +179,6 @@ struct SettingsView: View {
             guard case .success(let url) = result else { return }
             Task { await review(url) }
         }
-        .onChange(of: coordinator.sheet == nil) { _, isClosed in
-            guard isClosed, let finished = finishedImport else { return }
-            finishedImport = nil
-            Task {
-                try? await Task.sleep(for: .milliseconds(600))
-                shownImport = finished
-            }
-        }
         .alert(Text(L10n.Import.errorTitle), isPresented: .init(
             get: { importErrorMessage != nil },
             set: { if !$0 { importErrorMessage = nil } }
@@ -191,19 +186,6 @@ struct SettingsView: View {
             Button(String(localized: L10n.Shared.ok), role: .cancel) { importErrorMessage = nil }
         } message: {
             Text(importErrorMessage ?? String(localized: L10n.Shared.unexpectedError))
-        }
-        .alert(
-            shownImport.map { Text(L10n.Import.imported($0.imported)) } ?? Text(verbatim: ""),
-            isPresented: .init(
-                get: { shownImport != nil },
-                set: { if !$0 { shownImport = nil } }
-            )
-        ) {
-            Button(String(localized: L10n.Shared.ok), role: .cancel) { shownImport = nil }
-        } message: {
-            if let skipped = shownImport?.skipped, skipped > 0 {
-                Text(L10n.Import.skipped(skipped))
-            }
         }
         .navigationTitle(Text(L10n.SettingsView.title))
         .navigationBarTitleDisplayMode(.inline)
@@ -219,12 +201,12 @@ struct SettingsView: View {
 
 private extension SettingsView {
     func review(_ url: URL) async {
+        guard !isReadingImport else { return }
+        isReadingImport = true
+        defer { isReadingImport = false }
         do {
             let parsed = try await ExpenseCSVReader.read(contentsOf: url, currencyCode: currencyCode)
-            coordinator.present(
-                SettingsRoutes.importReview(parsed: parsed, currencyCode: currencyCode) { finishedImport = $0 },
-                mode: .large
-            )
+            coordinator.present(SettingsRoutes.importReview(parsed: parsed, currencyCode: currencyCode), mode: .large)
         } catch ExpenseCSVReader.ReadError.missingColumns {
             importErrorMessage = String(localized: L10n.Import.errorColumns)
         } catch {

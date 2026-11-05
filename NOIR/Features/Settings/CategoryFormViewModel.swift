@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 @Observable
 final class CategoryFormViewModel {
-    static let maxNameLength = 24
+    nonisolated static let maxNameLength = 24
 
     var name = ""
     var symbol = AssetName.CategorySymbols.all[0]

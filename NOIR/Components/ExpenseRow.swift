@@ -9,18 +9,21 @@ import SwiftUI
 
 struct ExpenseRow: View {
     let expense: ExpenseDTO
-    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
-    
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) { label }
+        Button(action: action) { ExpenseRowLabel(expense: expense) }
             .buttonStyle(.plain)
             .accessibilityElement(children: .combine)
             .accessibilityHint(Text(L10n.AddExpenseView.editHint))
     }
+}
 
-    private var label: some View {
+struct ExpenseRowLabel: View {
+    let expense: ExpenseDTO
+    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+
+    var body: some View {
         HStack(spacing: 10) {
             Image(systemName: expense.categoryInfo.icon)
                 .font(.headline)

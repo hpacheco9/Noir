@@ -8,6 +8,12 @@ import Foundation
 nonisolated enum ImportCategory: Sendable, Equatable {
     case existing(key: String)
     case new(name: String)
+
+    // What a new category is called: the name cut to what the category form allows.
+    static func categoryName(for name: String) -> String {
+        String(name.trimmingCharacters(in: .whitespacesAndNewlines).prefix(CategoryFormViewModel.maxNameLength))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }
 
 nonisolated struct ImportRow: Sendable, Equatable {
@@ -19,29 +25,8 @@ nonisolated struct ImportRow: Sendable, Equatable {
     var note: String
 }
 
-nonisolated enum ImportDefaults {
-    static let symbol = AssetName.CategorySymbols.generic
-
-    static func color(at index: Int) -> CategoryColor {
-        CategoryColor.allCases[index % CategoryColor.allCases.count]
-    }
-}
-
-// Same day, same amount at the currency's minor units, same name ignoring case and accents.
-nonisolated struct ExpenseDuplicateKey: Hashable, Sendable {
-    let day: Date
-    let amount: String
-    let name: String
-
-    init(date: Date, amount: Double, name: String, fractionDigits: Int, calendar: Calendar = .current) {
-        self.day = calendar.startOfDay(for: date)
-        self.amount = ExpenseCSV.amountString(amount, fractionDigits: fractionDigits)
-        self.name = name.searchKey
-    }
-}
-
-extension String {
-    nonisolated var searchKey: String {
-        trimmingCharacters(in: .whitespacesAndNewlines).folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
-    }
+nonisolated struct ImportResult: Sendable, Equatable {
+    let imported: Int
+    let duplicates: Int
+    let categoriesCreated: Int
 }

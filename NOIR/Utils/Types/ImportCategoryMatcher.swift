@@ -8,8 +8,6 @@ import Foundation
 // Decides which category an imported row lands in: its Category ID if that exists, else its name against the titles
 // shown now and the built-in titles of every language, else a new category.
 nonisolated struct ImportCategoryMatcher: Sendable {
-    static let maxNameLength = 24
-
     private let keys: Set<String>
     private let currentTitles: [String: String]
     private let builtInTitles: [String: String]
@@ -30,8 +28,7 @@ nonisolated struct ImportCategoryMatcher: Sendable {
         if id == "other" { return food }
         if keys.contains(id) { return .existing(key: id) }
 
-        let name = String(name.trimmingCharacters(in: .whitespacesAndNewlines).prefix(Self.maxNameLength))
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !name.isEmpty else { return food }
         let key = name.searchKey
         if let match = currentTitles[key] ?? builtInTitles[key] { return .existing(key: match) }

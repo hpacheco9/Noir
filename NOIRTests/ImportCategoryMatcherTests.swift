@@ -92,10 +92,11 @@ struct ImportCategoryMatcherTests {
         #expect(matcher.resolve(id: "nonsense", name: " Hobbies ") == .new(name: "Hobbies"))
     }
 
-    @Test func newNamesAreCutToTheCategoryLimit() {
+    @Test func aLongNewNameStaysWholeUntilTheCategoryIsCreated() {
         let long = String(repeating: "x", count: 40)
-        #expect(matcher.resolve(id: "", name: long) == .new(name: String(repeating: "x", count: ImportCategoryMatcher.maxNameLength)))
-        #expect(ImportCategoryMatcher.maxNameLength == CategoryFormViewModel.maxNameLength)
+        #expect(matcher.resolve(id: "", name: long) == .new(name: long))
+        #expect(ImportCategory.categoryName(for: " \(long) ") == String(repeating: "x", count: CategoryFormViewModel.maxNameLength))
+        #expect(ImportCategory.categoryName(for: " Pets ") == "Pets")
     }
 
     @Test func aBlankCategoryIsFood() {

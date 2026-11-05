@@ -12,7 +12,7 @@ import Foundation
 struct ImportHeaderTranslationTests {
     private static let languages = ["da", "de", "en", "es", "fi", "fr", "nb", "pt-BR", "pt-PT"]
 
-    private static let headerKeys: [(key: String, field: ExpenseCSVReader.Field)] = [
+    private nonisolated static let headerKeys: [(key: String, field: ExpenseCSVReader.Field)] = [
         ("export.header_date", .date), ("export.header_name", .name), ("export.header_amount", .amount),
         ("export.header_currency", .currency), ("export.header_category", .category),
         ("export.header_card", .card), ("export.header_note", .note),

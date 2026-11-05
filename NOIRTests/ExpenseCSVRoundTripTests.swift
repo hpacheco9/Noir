@@ -80,7 +80,7 @@ extension CategoryBreakdownRepositoryTests {
             let parsed = try ExpenseCSVReader.parse(text: csv, currencyCode: "EUR", timeZone: utc)
             let viewModel = ImportReviewViewModel(
                 parsed: parsed, currencyCode: "EUR",
-                repository: ExpenseRepositoryProvider(container: container), afterImport: {}
+                loader: .live(ExpenseRepositoryProvider(container: container)), afterImport: {}
             )
             await viewModel.load()
             return viewModel
@@ -151,6 +151,31 @@ extension CategoryBreakdownRepositoryTests {
             let viewModel = try await review(try await export(source), into: source)
             #expect(viewModel.duplicateCount == 7)
             #expect(viewModel.newCategoryNames.isEmpty)
+        }
+
+        @Test(arguments: [("JPY", [1235.0, 80]), ("KWD", [12.345, 1000.001])])
+        func currenciesWithOtherMinorUnitsComeBackWithTheirDigits(code: String, values: [Double]) async throws {
+            let source = try makeContainer()
+            let context = ModelContext(source)
+            for (offset, value) in values.enumerated() {
+                context.insert(Expense(amount: value, name: "row \(offset)", date: noon(2026, 3, offset + 1), category: .food))
+            }
+            try context.save()
+            let csv = try await ExpenseCSVExport(container: source, headers: headers, currencyCode: code).csv(timeZone: utc)
+
+            // Read by an app that uses another currency: the file's Currency column decides.
+            let target = try makeContainer()
+            let other = try await review(csv, into: target)
+            _ = await other.performImport()
+            #expect(try await snapshots(target).map(\.amount) == values)
+
+            // Read by an app on the same currency, it recognises every row as already there.
+            let parsed = try ExpenseCSVReader.parse(text: csv, currencyCode: code, timeZone: utc)
+            let same = ImportReviewViewModel(
+                parsed: parsed, currencyCode: code, loader: .live(ExpenseRepositoryProvider(container: target)), afterImport: {}
+            )
+            await same.load()
+            #expect(same.duplicateCount == values.count)
         }
     }
 }

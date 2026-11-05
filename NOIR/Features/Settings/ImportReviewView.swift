@@ -8,38 +8,39 @@ import SwiftUI
 struct ImportReviewView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @State private var viewModel: ImportReviewViewModel
-    let onFinish: (ImportReviewViewModel.Summary) -> Void
+    @State private var isSummaryPresented = false
 
-    init(
-        parsed: ExpenseCSVReader.Parsed,
-        currencyCode: String,
-        onFinish: @escaping (ImportReviewViewModel.Summary) -> Void
-    ) {
+    init(parsed: ExpenseCSVReader.Parsed, currencyCode: String) {
         _viewModel = State(initialValue: ImportReviewViewModel(parsed: parsed, currencyCode: currencyCode))
-        self.onFinish = onFinish
     }
 
     var body: some View {
         @Bindable var viewModel = viewModel
 
-        Form {
-            if !viewModel.isLoading {
-                summarySection
-                previewSection
-                dateFormatSection
-                categoriesSection(createsCategories: $viewModel.createsCategories)
-                duplicatesSection(skipsDuplicates: $viewModel.skipsDuplicates)
+        Group {
+            if viewModel.loadFailed {
+                failedState
+            } else {
+                Form {
+                    if !viewModel.isLoading {
+                        summarySection
+                        previewSection
+                        dateFormatSection
+                        categoriesSection(createsCategories: $viewModel.createsCategories)
+                        duplicatesSection(skipsDuplicates: $viewModel.skipsDuplicates)
+                    }
+                }
+                .disabled(viewModel.isImporting || viewModel.isRebuilding)
             }
         }
-        .disabled(viewModel.isImporting)
         .overlay {
-            if viewModel.isLoading || viewModel.isImporting {
+            if viewModel.isLoading || viewModel.isRebuilding || viewModel.isImporting {
                 ProgressView()
                     .controlSize(.large)
                     .accessibilityLabel(Text(L10n.Import.progress))
             }
         }
-        .interactiveDismissDisabled(viewModel.isImporting)
+        .interactiveDismissDisabled(viewModel.isImporting || isSummaryPresented)
         .task { await viewModel.load() }
         .navigationTitle(Text(L10n.Import.csv))
         .navigationBarTitleDisplayMode(.inline)
@@ -50,6 +51,13 @@ struct ImportReviewView: View {
             Button(String(localized: L10n.Shared.ok), role: .cancel) { viewModel.failureMessage = nil }
         } message: {
             Text(viewModel.failureMessage ?? String(localized: L10n.Shared.unexpectedError))
+        }
+        .alert(Text(L10n.Import.imported(viewModel.summary?.imported ?? 0)), isPresented: $isSummaryPresented) {
+            Button(String(localized: L10n.Shared.ok), role: .cancel) { coordinator.dismiss() }
+        } message: {
+            if let skipped = viewModel.summary?.skipped, skipped > 0 {
+                Text(L10n.Import.skipped(skipped))
+            }
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -71,13 +79,28 @@ struct ImportReviewView: View {
     }
 
     private func runImport() async {
-        if let summary = await viewModel.performImport() {
+        if await viewModel.performImport() != nil {
             Haptics.play(.success)
-            onFinish(summary)
-            coordinator.dismiss()
+            isSummaryPresented = true
         } else if viewModel.failureMessage != nil {
             Haptics.play(.error)
         }
+    }
+
+    private var failedState: some View {
+        VStack(spacing: 16) {
+            UnavailableView(
+                L10n.Import.loadFailedTitle,
+                systemImage: AssetName.System.warning,
+                description: L10n.Dashboard.errorDescription
+            )
+
+            Button(String(localized: L10n.Dashboard.retry)) {
+                Task { await viewModel.load() }
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .tint(.primary)
     }
 
     private var summarySection: some View {
@@ -112,8 +135,8 @@ struct ImportReviewView: View {
         if !rows.isEmpty {
             Section {
                 ForEach(rows) { expense in
-                    ExpenseRow(expense: expense) {}
-                        .allowsHitTesting(false)
+                    ExpenseRowLabel(expense: expense)
+                        .accessibilityElement(children: .combine)
                 }
             } header: {
                 Text(L10n.Import.preview)

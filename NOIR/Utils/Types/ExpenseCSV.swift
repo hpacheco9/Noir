@@ -71,15 +71,15 @@ nonisolated enum ExpenseCSV {
         return formatter.maximumFractionDigits
     }
 
-    static func roundedAmount(_ amount: Double, fractionDigits: Int) -> Decimal {
-        var value = Decimal(string: amount.description) ?? 0
+    static func rounded(_ value: Decimal, fractionDigits: Int) -> Decimal {
+        var value = value
         var rounded = Decimal()
         NSDecimalRound(&rounded, &value, fractionDigits, .plain)
         return rounded
     }
 
     static func amountString(_ amount: Double, fractionDigits: Int) -> String {
-        roundedAmount(amount, fractionDigits: fractionDigits).description
+        rounded(Decimal(string: amount.description) ?? 0, fractionDigits: fractionDigits).description
     }
 
     static func text(_ value: String) -> String {
