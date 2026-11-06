@@ -52,6 +52,8 @@ struct AddApplePayExpenseIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
+        try ExpenseIntentSaver.requireAccess()
+
         let code = UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode
         guard let value = Self.parsedAmount(amount, code: code) else {
             throw AddExpenseIntentError.invalidAmount

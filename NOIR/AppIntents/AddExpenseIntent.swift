@@ -43,6 +43,8 @@ struct AddExpenseIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
+        try ExpenseIntentSaver.requireAccess()
+
         guard Expense.isValidAmount(amount) else {
             throw AddExpenseIntentError.invalidAmount
         }
@@ -110,6 +112,7 @@ struct AddExpenseIntent: AppIntent {
 enum AddExpenseIntentError: LocalizedError {
     case invalidAmount
     case emptyName
+    case subscriptionRequired
 
     var errorDescription: String? {
         switch self {
@@ -117,6 +120,8 @@ enum AddExpenseIntentError: LocalizedError {
             String(localized: L10n.AppIntent.invalidAmount)
         case .emptyName:
             String(localized: L10n.AppIntent.emptyName)
+        case .subscriptionRequired:
+            String(localized: L10n.AppIntent.subscriptionRequired)
         }
     }
 }

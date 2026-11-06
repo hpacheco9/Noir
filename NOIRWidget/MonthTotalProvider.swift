@@ -12,9 +12,11 @@ nonisolated struct MonthTotalEntry: TimelineEntry {
     let currencyCode: String
     let days: [Double]
     let dayCount: Int
+    let hasAccess: Bool
 
-    init(date: Date, snapshot: MonthTotalSnapshot?, calendar: Calendar = .current) {
+    init(date: Date, snapshot: MonthTotalSnapshot?, hasAccess: Bool, calendar: Calendar = .current) {
         self.date = date
+        self.hasAccess = hasAccess
         total = snapshot?.total(asOf: date) ?? 0
         currencyCode = snapshot?.currencyCode ?? CurrencyPreference.defaultCode
         days = snapshot?.visibleDays(asOf: date, calendar: calendar) ?? []
@@ -24,7 +26,7 @@ nonisolated struct MonthTotalEntry: TimelineEntry {
 
 nonisolated struct MonthTotalProvider: TimelineProvider {
     func placeholder(in context: Context) -> MonthTotalEntry {
-        MonthTotalEntry(date: .now, snapshot: nil)
+        MonthTotalEntry(date: .now, snapshot: nil, hasAccess: true)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (MonthTotalEntry) -> Void) {
@@ -34,16 +36,21 @@ nonisolated struct MonthTotalProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<MonthTotalEntry>) -> Void) {
         let now = Date.now
         let snapshot = loadSnapshot()
-        var entries = [MonthTotalEntry(date: now, snapshot: snapshot)]
+        let hasAccess = loadAccess()
+        var entries = [MonthTotalEntry(date: now, snapshot: snapshot, hasAccess: hasAccess)]
         let ends = [snapshot?.month.end, Calendar.current.dateInterval(of: .month, for: now)?.end]
         if let monthEnd = ends.compactMap({ $0 }).first(where: { $0 > now }) {
-            entries.append(MonthTotalEntry(date: monthEnd, snapshot: snapshot))
+            entries.append(MonthTotalEntry(date: monthEnd, snapshot: snapshot, hasAccess: hasAccess))
         }
         completion(Timeline(entries: entries, policy: .atEnd))
     }
 
     private func entry(at date: Date) -> MonthTotalEntry {
-        MonthTotalEntry(date: date, snapshot: loadSnapshot())
+        MonthTotalEntry(date: date, snapshot: loadSnapshot(), hasAccess: loadAccess())
+    }
+
+    private func loadAccess() -> Bool {
+        ProAccess.isGranted(in: MonthTotalSnapshot.sharedDefaults)
     }
 
     private func loadSnapshot() -> MonthTotalSnapshot? {

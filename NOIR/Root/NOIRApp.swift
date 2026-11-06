@@ -10,7 +10,9 @@ import SwiftData
 
 @main
 struct NOIRApp: App {
-    @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding: Bool = false
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var purchaseStore: PurchaseStore
+    @State private var mainViewModel: MainViewModel
 
     static let sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -28,22 +30,24 @@ struct NOIRApp: App {
     }()
 
     init() {
+        let purchaseStore = PurchaseStore.shared
+        if !RevenueCatConfig.isRunningTests {
+            RevenueCatConfig.configure()
+            purchaseStore.start()
+        }
+        _purchaseStore = State(initialValue: purchaseStore)
+        _mainViewModel = State(initialValue: MainViewModel(model: Self.sharedModelContainer))
         Task { await ExpenseRepositoryProvider(container: Self.sharedModelContainer).retireOtherCategoryOnce() }
     }
 
     var body: some Scene {
         WindowGroup {
-            if hasCompletedOnboarding {
-                RootView(mainViewModel: MainViewModel(model: Self.sharedModelContainer))
-           } else {
-               NavigationStack {
-                   MainOnboarding(onComplete: {
-                       AddExpenseRequest.shared.cancel() // a control tap during onboarding must not open a sheet later
-                       hasCompletedOnboarding = true
-                   })
-               }
-           }
+            AppGate(mainViewModel: mainViewModel)
         }
         .modelContainer(Self.sharedModelContainer)
+        .environment(purchaseStore)
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            if phase == .active { Task { await purchaseStore.refresh() } }
+        }
     }
 }

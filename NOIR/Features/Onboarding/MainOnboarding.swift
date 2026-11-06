@@ -12,6 +12,7 @@ struct MainOnboarding: View {
     @State private var viewModel = OnboardingViewModel()
     @State private var isRequesting = false
     @State private var hasFinished = false
+    @Environment(PurchaseStore.self) private var purchaseStore
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
 
@@ -29,7 +30,7 @@ struct MainOnboarding: View {
                     case .notifications:
                         NotificationsView()
                     case .paywall:
-                        PaywallView(onClose: finish)
+                        if !purchaseStore.hasAccess { PaywallView() }
                 }
 
                 Spacer(minLength: 0)
@@ -44,6 +45,10 @@ struct MainOnboarding: View {
             }
         }
         .task { await viewModel.refreshNotificationPermission() }
+        // A purchase or a restore arrives as access (a reinstall needs Restore, there is no account to sign in to).
+        .onChange(of: purchaseStore.hasAccess && viewModel.step == .paywall, initial: true) { _, unlocked in
+            if unlocked { finish() }
+        }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { Task { await viewModel.refreshNotificationPermission() } }
         }
@@ -127,6 +132,7 @@ struct MainOnboarding: View {
     NavigationStack {
         MainOnboarding(onComplete: {})
     }
+    .environment(PurchaseStore(defaults: nil))
     .preferredColorScheme(.light)
 }
 
@@ -134,5 +140,6 @@ struct MainOnboarding: View {
     NavigationStack {
         MainOnboarding(onComplete: {})
     }
+    .environment(PurchaseStore(defaults: nil))
     .preferredColorScheme(.dark)
 }

@@ -9,8 +9,9 @@ struct SettingsRow: View {
     let title: LocalizedStringResource
     let systemImage: String
     var detail: String?
-    var accessory = AssetName.System.disclosure
+    var accessory: String? = AssetName.System.disclosure
     var largeIcon = false
+    var isLoading = false
     let action: () -> Void
 
     var body: some View {
@@ -30,11 +31,16 @@ struct SettingsRow: View {
                         .foregroundStyle(.secondary)
                 }
 
-                Image(systemName: accessory)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.tertiary)
+                if isLoading {
+                    ProgressView()
+                } else if let accessory {
+                    Image(systemName: accessory)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.tertiary)
+                }
             }
         }
         .tint(.primary)
+        .disabled(isLoading)
     }
 }

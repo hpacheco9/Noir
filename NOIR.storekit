@@ -1,0 +1,123 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "5F2A9C13",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "49.99",
+      "familyShareable" : false,
+      "internalID" : "7D21F3B6",
+      "localizations" : [
+        {
+          "description" : "Full access to NOIR, one-time purchase",
+          "displayName" : "NOIR Pro Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "henrique-dev.NOIR.pro.lifetime",
+      "referenceName" : "NOIR Pro Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "pt_PT",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "PRT",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "6C1D8E42",
+      "localizations" : [
+
+      ],
+      "name" : "NOIR Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "2.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "A3F5C710",
+          "introductoryOffer" : {
+            "internalID" : "E92B64D1",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "Full access to NOIR, billed monthly",
+              "displayName" : "NOIR Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "henrique-dev.NOIR.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "NOIR Pro Monthly",
+          "subscriptionGroupID" : "6C1D8E42",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "4B07D9A8",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Full access to NOIR, billed yearly",
+              "displayName" : "NOIR Pro Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "henrique-dev.NOIR.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "NOIR Pro Yearly",
+          "subscriptionGroupID" : "6C1D8E42",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

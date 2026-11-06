@@ -123,16 +123,4 @@ extension SettingsRoutes {
 
         return SafariViewRoute(routeId: "settings-safari-\(url.absoluteString)", url: url)
     }
-
-    static func paywall() -> any RouteRepresentable {
-        struct PaywallViewRoute: RouteRepresentable {
-            let routeId: String = "settings-paywall"
-
-            func routeView() -> any View {
-                PaywallView()
-            }
-        }
-
-        return PaywallViewRoute()
-    }
 }
