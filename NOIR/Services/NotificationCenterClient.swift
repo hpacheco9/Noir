@@ -11,6 +11,8 @@ protocol NotificationCenterClient: Sendable {
     /// Current permission state. Reading it never shows the system prompt.
     func authorizationStatus() async -> UNAuthorizationStatus
     func add(_ request: UNNotificationRequest) async throws
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String])
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String])
 }
 
 // `nonisolated`: under default MainActor isolation the completion handlers below would be inferred

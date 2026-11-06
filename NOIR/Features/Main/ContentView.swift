@@ -14,6 +14,7 @@ struct ContentView: View {
     @Environment(MainViewModel.self) private var viewModel
 
     @State private var expensePendingDeletion: ExpenseDTO?
+    @State private var isDueErrorPresented = false
 
     @Environment(\.requestReview) private var requestReview
     @Environment(\.scenePhase) private var scenePhase
@@ -56,6 +57,12 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
             Task { await viewModel.fetchData() }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .recurringDidChange)) { _ in
+            Task { await viewModel.loadDue() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
+            Task { await viewModel.loadDue() }
+        }
         .alert(
             Text(L10n.ExpenseDeletion.title),
             isPresented: Binding(
@@ -76,6 +83,11 @@ struct ContentView: View {
         } message: { _ in
             Text(L10n.ExpenseDeletion.message)
         }
+        .alert(Text(L10n.Categories.errorTitle), isPresented: $isDueErrorPresented) {
+            Button(String(localized: L10n.Shared.ok), role: .cancel) {}
+        } message: {
+            Text(L10n.Shared.unexpectedError)
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 ProfileAvatarButton()
@@ -93,6 +105,7 @@ struct ContentView: View {
     private var expenseListContent: some View {
         switch viewModel.state {
         case .empty:
+            dueSection
             emptyStateSection
         case .loaded(let snapshot):
             loadedSections(for: snapshot)
@@ -128,6 +141,8 @@ struct ContentView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
+        dueSection
+
         let latestExpenses = snapshot.latest
         if !latestExpenses.isEmpty {
             Section {
@@ -150,6 +165,36 @@ struct ContentView: View {
                 }
             } header: {
                 Text(L10n.MainView.latestTransactions)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var dueSection: some View {
+        if !viewModel.dueRecurring.isEmpty {
+            Section {
+                ForEach(viewModel.dueRecurring) { recurring in
+                    DueRecurringRow(
+                        recurring: recurring,
+                        isBusy: viewModel.processingDue.contains(recurring.id),
+                        onAdd: { advanceDue(.success) { try await viewModel.addDue(recurring.id) } },
+                        onSkip: { advanceDue(.tap) { try await viewModel.skipDue(recurring.id) } }
+                    )
+                }
+            } header: {
+                Text(L10n.Recurring.dueHeader)
+            }
+        }
+    }
+
+    private func advanceDue(_ success: HapticFeedback, _ action: @escaping () async throws -> Void) {
+        Task {
+            do {
+                try await action()
+                Haptics.play(success)
+            } catch {
+                Haptics.play(.error)
+                isDueErrorPresented = true
             }
         }
     }
@@ -236,7 +281,7 @@ struct ContentView: View {
 #Preview {
     CoordinatorView {
         ContentView()
-            .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self], inMemory: true)
+            .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self], inMemory: true)
     }
     .environmentObject(Coordinator())
     .environment(MainViewModel(model: NOIRApp.sharedModelContainer))

@@ -27,6 +27,8 @@ struct MainOnboarding: View {
                         UserNameView(name: $viewModel.name)
                     case .currency:
                         CurrencyView(currencyCode: $viewModel.currencyCode)
+                    case .budget:
+                        BudgetView(budget: Binding(get: { viewModel.budget }, set: { viewModel.setBudget($0) }))
                     case .notifications:
                         NotificationsView()
                     case .paywall:

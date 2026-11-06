@@ -8,6 +8,8 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(ProfileStorage.nameKey) private var name = ""
+    @AppStorage(OnboardingStorage.monthlyBudgetKey) private var budget = 0.0
+    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(HapticsPreference.storageKey) private var hapticsEnabled = HapticsPreference.defaultValue
     @State private var draftName = ""
     @State private var nameOnAppear = ""
@@ -23,6 +25,14 @@ struct ProfileView: View {
             }
 
             Section {
+                SettingsRow(
+                    title: L10n.Profile.budget,
+                    systemImage: AssetName.System.budget,
+                    detail: CurrencyPreference.wholeString(for: budget, code: currencyCode)
+                ) {
+                    coordinator.navigate(to: SettingsRoutes.budget())
+                }
+
                 SettingsRow(
                     title: L10n.Categories.title,
                     systemImage: AssetName.System.categories

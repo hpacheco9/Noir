@@ -14,7 +14,7 @@ struct AddExpenseView: View {
         @Bindable var viewModel = viewModel
 
         List {
-            ExpenseFormFields(form: $viewModel.form, categories: viewModel.categories, cards: viewModel.cards)
+            ExpenseFormFields(form: $viewModel.form, categories: viewModel.categories, cards: viewModel.cards, repeatIncludesNever: true)
         }
         .task {
             await viewModel.loadCategories()

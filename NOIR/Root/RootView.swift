@@ -19,6 +19,7 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     let mainViewModel: MainViewModel
     private let addExpenseRequest = AddExpenseRequest.shared
+    private let recurringReminders = ExpenseRepositoryProvider(container: NOIRApp.sharedModelContainer)
 
     init(mainViewModel: MainViewModel) {
         self.mainViewModel = mainViewModel
@@ -82,10 +83,15 @@ struct RootView: View {
             if isPending { openAddExpense() }
         }
         .onChange(of: scenePhase, initial: true) { _, phase in
-            if phase == .active { Task { await WidgetSnapshotPublisher.publish() } }
+            if phase == .active {
+                Task { await WidgetSnapshotPublisher.publish() }
+                Task { await recurringReminders.resyncReminders() }
+            }
         }
         .onChange(of: currencyCode) {
+            OnboardingStorage.clampBudget(forCurrency: currencyCode)
             Task { await WidgetSnapshotPublisher.publish() }
+            Task { await recurringReminders.resyncReminders() }
         }
         .onReceive(NotificationCenter.default.publisher(for: .expensesDidChange)) { _ in
             Task { await WidgetSnapshotPublisher.publish() }
@@ -107,5 +113,5 @@ private extension RootView {
 
 #Preview {
     RootView(mainViewModel: MainViewModel(model: NOIRApp.sharedModelContainer))
-        .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self], inMemory: true)
+        .modelContainer(for: [Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self], inMemory: true)
 }

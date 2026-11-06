@@ -59,6 +59,27 @@ nonisolated enum CurrencyPreference {
         amount.formatted(formatStyle(for: code))
     }
 
+    static let budgetBaseMax = 5000
+
+    // How much larger the budget ruler runs than for EUR: JPY has no minor units, SEK, NOK and DKK amounts are
+    // about ten times higher.
+    static func budgetScale(for code: String) -> Int {
+        switch code {
+        case "JPY": 100
+        case "SEK", "NOK", "DKK": 10
+        default: 1
+        }
+    }
+
+    // A budget from another currency can sit outside this one's ruler.
+    static func clampedBudget(_ budget: Double, for code: String) -> Double {
+        min(max(budget, 0), Double(budgetBaseMax * budgetScale(for: code)))
+    }
+
+    static func wholeString(for amount: Double, code: String) -> String {
+        amount.formatted(doubleFormatStyle(for: code).precision(.fractionLength(0)))
+    }
+
     static func string(for amount: Double, code: String) -> String {
         amount.formatted(doubleFormatStyle(for: code))
     }

@@ -8,11 +8,14 @@ import SwiftData
 
 final class ExpenseRepositoryProvider: Sendable {
     private let creation: Task<ExpenseRepository, Never>
+    private let notifications: NotificationService
+    private(set) var budgetCheck: Task<Void, Never>?
 
-    init(container: ModelContainer) {
+    init(container: ModelContainer, notifications: NotificationService = .shared) {
         creation = Task.detached(priority: .userInitiated) {
             ExpenseRepository(modelContainer: container)
         }
+        self.notifications = notifications
     }
     @concurrent
     func perform<T: Sendable>(_ body: @Sendable (ExpenseRepository) async throws -> T) async rethrows -> T {
@@ -33,7 +36,7 @@ extension ExpenseRepositoryProvider {
 
     /// Inserts (`id == nil`) or updates an expense with the form's values.
     func save(_ form: ExpenseForm, id: PersistentIdentifier?) async throws {
-        try await perform {
+        let recurring = try await perform {
             try await $0.save(
                 id: id,
                 amount: form.amountValue,
@@ -41,8 +44,64 @@ extension ExpenseRepositoryProvider {
                 date: form.date,
                 categoryKey: form.category,
                 description: form.description,
-                card: form.card
+                card: form.card,
+                repeating: form.repeats
             )
         }
+        if let recurring { await notifications.scheduleRecurringReminder(recurring) }
+        scheduleBudgetCheck()
+    }
+
+    // Saving doesn't wait for it; `budgetCheck` is there for whoever needs to.
+    private func scheduleBudgetCheck() {
+        budgetCheck = Task { await checkBudget() }
+    }
+
+    func checkBudget() async {
+        let now = Date.now
+        guard notifications.monthlyBudget > 0,
+              let spent = try? await perform({ try await $0.monthTotal(now: now) }) else { return }
+        await notifications.notifyBudgetIfNeeded(spent: spent, now: now)
+    }
+
+    func saveRecurring(_ form: ExpenseForm, frequency: RecurrenceFrequency, nextDueDate: Date?, id: UUID?) async throws {
+        let recurring = try await perform {
+            try await $0.saveRecurring(
+                id: id,
+                amount: form.amountValue,
+                name: form.name,
+                categoryKey: form.category,
+                card: form.card,
+                note: form.description,
+                frequency: frequency,
+                nextDueDate: nextDueDate
+            )
+        }
+        await notifications.scheduleRecurringReminder(recurring)
+    }
+
+    func deleteRecurring(id: UUID) async throws {
+        try await perform { try await $0.deleteRecurring(id: id) }
+        notifications.cancelRecurringReminder(id: id)
+    }
+
+    @discardableResult
+    func addDueOccurrence(id: UUID) async throws -> RecurringExpenseDTO {
+        let recurring = try await perform { try await $0.addDueOccurrence(id: id) }
+        await notifications.scheduleRecurringReminder(recurring)
+        scheduleBudgetCheck()
+        return recurring
+    }
+
+    @discardableResult
+    func skipDueOccurrence(id: UUID) async throws -> RecurringExpenseDTO {
+        let recurring = try await perform { try await $0.skipDueOccurrence(id: id) }
+        await notifications.scheduleRecurringReminder(recurring)
+        return recurring
+    }
+
+    func resyncReminders() async {
+        guard let all = try? await perform({ try await $0.fetchRecurring() }) else { return }
+        for recurring in all { await notifications.scheduleRecurringReminder(recurring) }
     }
 }

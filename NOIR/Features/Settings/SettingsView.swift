@@ -107,6 +107,13 @@ struct SettingsView: View {
                 }
 
                 SettingsRow(
+                    title: L10n.Recurring.title,
+                    systemImage: AssetName.System.recurring
+                ) {
+                    coordinator.navigate(to: SettingsRoutes.recurring())
+                }
+
+                SettingsRow(
                     title: L10n.Preferences.shortcuts,
                     systemImage: AssetName.System.shortcuts
                 ) {

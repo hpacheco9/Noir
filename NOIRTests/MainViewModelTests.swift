@@ -16,14 +16,16 @@ struct MainViewModelTests {
 
     private func makeViewModel(_ loader: @escaping MainViewModel.Loader) throws -> MainViewModel {
         let container = try ModelContainer(
-            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
+            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         return MainViewModel(model: container, loader: loader)
     }
 
     private static func snapshot(_ period: SpendingPeriod, total: Decimal, hasAnyExpenses: Bool = true) -> OverviewSnapshot {
-        OverviewSnapshot(period: period, points: [], total: total, latest: [], hasAnyExpenses: hasAnyExpenses)
+        OverviewSnapshot(
+            period: period, points: [], total: total, latest: [], hasAnyExpenses: hasAnyExpenses, monthTotal: 0
+        )
     }
 
     private func loaded(_ viewModel: MainViewModel) -> OverviewSnapshot? {

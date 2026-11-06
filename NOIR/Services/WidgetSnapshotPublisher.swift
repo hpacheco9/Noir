@@ -19,6 +19,7 @@ enum WidgetSnapshotPublisher {
             let snapshot = MonthTotalSnapshot(
                 month: month,
                 total: total,
+                budget: UserDefaults.standard.double(forKey: OnboardingStorage.monthlyBudgetKey),
                 currencyCode: UserDefaults.standard.string(forKey: CurrencyPreference.storageKey) ?? CurrencyPreference.defaultCode,
                 days: days
             )

@@ -31,12 +31,24 @@ final class MonthTotalSnapshotTests {
     private var month: DateInterval { calendar.dateInterval(of: .month, for: calendar.date(from: DateComponents(year: 2026, month: 10, day: 15))!)! }
 
     private var snapshot: MonthTotalSnapshot {
-        MonthTotalSnapshot(month: month, total: total, currencyCode: "EUR")
+        MonthTotalSnapshot(month: month, total: total, budget: 500, currencyCode: "EUR")
     }
 
     @Test func roundTripsThroughDefaults() {
         snapshot.save(to: defaults)
         #expect(MonthTotalSnapshot.load(from: defaults) == snapshot)
+    }
+
+    // Published by a build that had no budget: the widget must keep showing the total.
+    @Test func aSnapshotWithoutABudgetStillLoads() throws {
+        var json = try #require(try JSONSerialization.jsonObject(with: JSONEncoder().encode(snapshot)) as? [String: Any])
+        try #require(json.removeValue(forKey: "budget") != nil)
+        defaults.set(try JSONSerialization.data(withJSONObject: json), forKey: MonthTotalSnapshot.storageKey)
+
+        let loaded = try #require(MonthTotalSnapshot.load(from: defaults))
+        #expect(loaded.budget == nil)
+        #expect(loaded.total == total)
+        #expect(loaded.currencyCode == "EUR")
     }
 
     /// 00:30 on 1 October in Lisbon is still 30 September in the Azores: a calendar-based check there showed 0.
@@ -78,13 +90,5 @@ final class MonthTotalSnapshotTests {
         snapshot.days = MonthTotalSnapshot.cumulativeDays([(day(2), 4), (day(9), 6)], in: month, calendar: calendar)
         #expect(snapshot.visibleDays(asOf: day(5), calendar: calendar).count == 9)
         #expect(snapshot.visibleDays(asOf: month.end, calendar: calendar).isEmpty)
-    }
-
-    @Test func aSnapshotPublishedWithABudgetStillLoads() throws {
-        let encoded = try JSONEncoder().encode(snapshot)
-        try #require(encoded.first == UInt8(ascii: "{"))
-        defaults.set(Data(#"{"budget":500,"#.utf8) + encoded.dropFirst(), forKey: MonthTotalSnapshot.storageKey)
-
-        #expect(MonthTotalSnapshot.load(from: defaults) == snapshot)
     }
 }

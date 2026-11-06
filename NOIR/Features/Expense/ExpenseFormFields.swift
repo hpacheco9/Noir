@@ -10,6 +10,8 @@ struct ExpenseFormFields: View {
     @Binding var form: ExpenseForm
     let categories: [CategoryInfo]
     let cards: [String]
+    var dateTitle: LocalizedStringResource = L10n.AddExpenseView.date
+    var repeatIncludesNever: Bool?
 
     @State private var isNewCard = false
 
@@ -40,21 +42,33 @@ struct ExpenseFormFields: View {
         Section(String(localized: L10n.AddExpenseView.detailsSection)) {
             DatePicker(selection: $form.date, displayedComponents: .date) {
                 Label {
-                    Text(L10n.AddExpenseView.date)
+                    Text(dateTitle)
                 } icon: {
                     fieldIcon(AssetName.System.calendar)
                 }
             }
 
+            if let repeatIncludesNever {
+                Picker(selection: $form.repeats) {
+                    if repeatIncludesNever {
+                        Text(L10n.Recurring.never).tag(RecurrenceFrequency?.none)
+                    }
+                    ForEach(RecurrenceFrequency.allCases) { frequency in
+                        Text(frequency.title).tag(RecurrenceFrequency?.some(frequency))
+                    }
+                } label: {
+                    Label {
+                        Text(L10n.Recurring.repeatTitle)
+                    } icon: {
+                        fieldIcon(AssetName.System.recurring)
+                    }
+                }
+                .pickerStyle(.menu)
+            }
+
             Picker(selection: $form.category) {
                 ForEach(categories) { category in
-                    Label {
-                        Text(category.title)
-                    } icon: {
-                        Image(systemName: category.icon)
-                            .foregroundStyle(category.color)
-                    }
-                    .tag(category.key)
+                    Text(category.title).tag(category.key)
                 }
             } label: {
                 Label {

@@ -13,7 +13,7 @@ import SwiftData
 struct SavedCardsTests {
     private func makeContainer() throws -> ModelContainer {
         try ModelContainer(
-            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
+            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
     }
@@ -139,7 +139,7 @@ extension CategoryBreakdownRepositoryTests {
     struct CardSaveTests {
         @Test func saveStoresAndUpdatesTheCard() async throws {
             let container = try ModelContainer(
-                for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
+                for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self,
                 configurations: ModelConfiguration(isStoredInMemoryOnly: true)
             )
             let suite = "NOIRTests.cards.\(UUID().uuidString)"

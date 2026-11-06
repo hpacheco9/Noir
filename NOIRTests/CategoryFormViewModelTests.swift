@@ -12,7 +12,7 @@ import SwiftData
 struct CategoryFormViewModelTests {
     private func makeContainer() throws -> ModelContainer {
         try ModelContainer(
-            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
+            for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
     }

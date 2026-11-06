@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 @main
 struct NOIRApp: App {
@@ -19,6 +20,7 @@ struct NOIRApp: App {
             Expense.self,
             CustomCategory.self,
             BuiltInCategoryOverride.self,
+            RecurringExpense.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -37,6 +39,7 @@ struct NOIRApp: App {
         }
         _purchaseStore = State(initialValue: purchaseStore)
         _mainViewModel = State(initialValue: MainViewModel(model: Self.sharedModelContainer))
+        UNUserNotificationCenter.current().delegate = ForegroundNotificationPresenter.shared
         Task { await ExpenseRepositoryProvider(container: Self.sharedModelContainer).retireOtherCategoryOnce() }
     }
 

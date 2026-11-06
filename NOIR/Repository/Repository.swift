@@ -121,7 +121,7 @@ actor ExpenseRepository: ModelActor {
         return ChartResult(points: layout.points(from: memo.buckets), total: memo.total)
     }
 
-    /// The rest of the Home screen: newest rows of the period (no date filter for All Time) and the empty-state check.
+    /// The rest of the Home screen: newest rows (no date filter), the empty-state check and this month's total (the budget).
     /// Meant for a second repository instance so it runs in parallel with `overviewChart`.
     func overviewSide(
         now: Date = .now,
@@ -140,7 +140,16 @@ actor ExpenseRepository: ModelActor {
         anyDescriptor.fetchLimit = 1
         let hasAny = try !modelContext.fetchIdentifiers(anyDescriptor).isEmpty
 
-        return SideResult(latest: latest, hasAnyExpenses: hasAny)
+        return SideResult(latest: latest, hasAnyExpenses: hasAny, monthTotal: try monthTotal(now: now, calendar: calendar))
+    }
+
+    func monthTotal(now: Date = .now, calendar: Calendar = .current) throws -> Decimal {
+        guard let month = SpendingPeriod.month.dateInterval(calendar: calendar, now: now) else { return 0 }
+        var descriptor = FetchDescriptor<Expense>(predicate: Self.datePredicate(month))
+        descriptor.propertiesToFetch = [\.amount]
+        var sum = Decimal(0)
+        try modelContext.enumerate(descriptor, batchSize: 1000) { sum += Decimal($0.amount) }
+        return sum
     }
 
     func cumulativeDays(in month: DateInterval, calendar: Calendar = .current) throws -> [Double] {
@@ -224,6 +233,11 @@ actor ExpenseRepository: ModelActor {
             if CategoryInfo.key(forCustomID: custom.id) != excludingKey { titles.append(custom.name) }
         }
         return titles
+    }
+
+    // Noon, not midnight: a date stored at noon stays on the same day when the time zone changes.
+    nonisolated private static func noon(_ date: Date, _ calendar: Calendar) -> Date {
+        calendar.date(bySettingHour: 12, minute: 0, second: 0, of: date) ?? date
     }
 
     nonisolated private static func sameTitle(_ a: String, _ b: String) -> Bool {
@@ -336,6 +350,10 @@ actor ExpenseRepository: ModelActor {
         for expense in affected {
             expense.category = .food
         }
+        let recurring = try modelContext.fetch(FetchDescriptor<RecurringExpense>(predicate: #Predicate { $0.categoryRawValue == key }))
+        for template in recurring {
+            template.categoryRawValue = ExpenseCategory.food.rawValue
+        }
         modelContext.delete(category)
         try commit()
         return affected.count
@@ -364,6 +382,7 @@ actor ExpenseRepository: ModelActor {
         return count > 0 ? CategoryInfo.key(forCustomID: id) : ExpenseCategory.food.rawValue
     }
 
+    @discardableResult
     func save(
         id: PersistentIdentifier?,
         amount: Double,
@@ -372,10 +391,14 @@ actor ExpenseRepository: ModelActor {
         categoryKey: String,
         description: String,
         card: String,
-    ) throws {
+        repeating: RecurrenceFrequency? = nil,
+        now: Date = .now,
+        calendar: Calendar = .current
+    ) throws -> RecurringExpenseDTO? {
         guard Expense.isValidAmount(amount) else { throw RepositoryError.invalidAmount }
         let categoryKey = try resolvedCategoryKey(categoryKey)
         let existing = try id.map(existingExpense)
+        let categories = try (id == nil && repeating != nil) ? categoryIndex() : [:]
         // Two-phase with the overview memos: nothing may save a memo while this write is in flight.
         OverviewMemoStore.beginWrite()
 
@@ -400,6 +423,7 @@ actor ExpenseRepository: ModelActor {
                 new: SpendingEntry(date: date, amount: amount, createdAt: before.createdAt)
             )
             SavedCards.remember(card)
+            return nil
         } else {
             let expense = Expense(
                 amount: amount,
@@ -412,6 +436,20 @@ actor ExpenseRepository: ModelActor {
             expense.categoryRawValue = categoryKey
             expense.createdAt = .now
             modelContext.insert(expense)
+            let template = repeating.map { frequency in
+                let anchor = Self.noon(date, calendar)
+                return RecurringExpense(
+                    name: name,
+                    amount: amount,
+                    categoryRawValue: categoryKey,
+                    card: card,
+                    note: description,
+                    frequency: frequency,
+                    startDate: anchor,
+                    nextDueDate: frequency.firstOccurrence(after: max(date, now), anchor: anchor, calendar: calendar)
+                )
+            }
+            if let template { modelContext.insert(template) }
             do {
                 try commit()
             } catch {
@@ -420,11 +458,123 @@ actor ExpenseRepository: ModelActor {
             }
             OverviewMemoStore.finishWrite()
             SavedCards.remember(card)
+            return template.map { RecurringExpenseDTO($0, categories: categories) }
         }
     }
 
     func fetchCards() throws -> [String] {
         try SavedCards.fetch(in: modelContext)
+    }
+
+    // MARK: - Recurring
+
+    func fetchRecurring() throws -> [RecurringExpenseDTO] {
+        let categories = try categoryIndex()
+        let descriptor = FetchDescriptor<RecurringExpense>(sortBy: [SortDescriptor(\.nextDueDate), SortDescriptor(\.name)])
+        return try modelContext.fetch(descriptor).map { RecurringExpenseDTO($0, categories: categories) }
+    }
+
+    // `nextDueDate` nil keeps the stored one. A new frequency or day restarts the schedule from it; any other
+    // edit keeps the anchor, so renaming a monthly expense on the 31st doesn't settle it on the 28th.
+    @discardableResult
+    func saveRecurring(
+        id: UUID?,
+        amount: Double,
+        name: String,
+        categoryKey: String,
+        card: String,
+        note: String,
+        frequency: RecurrenceFrequency,
+        nextDueDate: Date?,
+        calendar: Calendar = .current
+    ) throws -> RecurringExpenseDTO {
+        guard Expense.isValidAmount(amount) else { throw RepositoryError.invalidAmount }
+        let categoryKey = try resolvedCategoryKey(categoryKey)
+        let categories = try categoryIndex()
+        let existing = try id.map(existingRecurring)
+        let day = Self.noon(nextDueDate ?? existing?.nextDueDate ?? .now, calendar)
+
+        let recurring: RecurringExpense
+        if let existing {
+            recurring = existing
+            if recurring.frequency != frequency || !calendar.isDate(recurring.nextDueDate, inSameDayAs: day) {
+                recurring.frequency = frequency
+                recurring.startDate = day
+                recurring.nextDueDate = day
+            }
+        } else {
+            recurring = RecurringExpense(
+                name: name, amount: amount, categoryRawValue: categoryKey,
+                frequency: frequency, startDate: day, nextDueDate: day
+            )
+            modelContext.insert(recurring)
+        }
+        recurring.name = name
+        recurring.amount = amount
+        recurring.categoryRawValue = categoryKey
+        recurring.card = card
+        recurring.note = note
+        try commit()
+        return RecurringExpenseDTO(recurring, categories: categories)
+    }
+
+    func deleteRecurring(id: UUID) throws {
+        modelContext.delete(try existingRecurring(id))
+        try commit()
+    }
+
+    @discardableResult
+    func addDueOccurrence(id: UUID, now: Date = .now, calendar: Calendar = .current) throws -> RecurringExpenseDTO {
+        let recurring = try existingRecurring(id)
+        guard RecurringExpense.isDue(recurring.nextDueDate, now: now, calendar: calendar) else { throw RepositoryError.notDue }
+        guard Expense.isValidAmount(recurring.amount) else { throw RepositoryError.invalidAmount }
+        let categoryKey = try resolvedCategoryKey(recurring.categoryRawValue)
+        let categories = try categoryIndex()
+        OverviewMemoStore.beginWrite()
+
+        let expense = Expense(
+            amount: recurring.amount,
+            name: recurring.name,
+            date: recurring.nextDueDate,
+            category: .food,
+            expenseDescription: recurring.note,
+            card: recurring.card
+        )
+        expense.categoryRawValue = categoryKey
+        expense.createdAt = .now
+        modelContext.insert(expense)
+        recurring.categoryRawValue = categoryKey
+        recurring.nextDueDate = recurring.frequency.firstOccurrence(
+            after: recurring.nextDueDate, anchor: recurring.startDate, calendar: calendar
+        )
+        do {
+            try commit()
+        } catch {
+            OverviewMemoStore.cancelWrite()
+            throw error
+        }
+        OverviewMemoStore.finishWrite()
+        SavedCards.remember(recurring.card)
+        return RecurringExpenseDTO(recurring, categories: categories)
+    }
+
+    @discardableResult
+    func skipDueOccurrence(id: UUID, now: Date = .now, calendar: Calendar = .current) throws -> RecurringExpenseDTO {
+        let recurring = try existingRecurring(id)
+        guard RecurringExpense.isDue(recurring.nextDueDate, now: now, calendar: calendar) else { throw RepositoryError.notDue }
+        let categories = try categoryIndex()
+        recurring.nextDueDate = recurring.frequency.firstOccurrence(
+            after: recurring.nextDueDate, anchor: recurring.startDate, calendar: calendar
+        )
+        try commit()
+        return RecurringExpenseDTO(recurring, categories: categories)
+    }
+
+    private func existingRecurring(_ id: UUID) throws -> RecurringExpense {
+        var descriptor = FetchDescriptor<RecurringExpense>(predicate: #Predicate { $0.id == id })
+        descriptor.fetchLimit = 1
+        guard let recurring = try modelContext.fetch(descriptor).first else { throw RepositoryError.notFound }
+        return recurring
     }
 
     func delete(id: PersistentIdentifier) throws {

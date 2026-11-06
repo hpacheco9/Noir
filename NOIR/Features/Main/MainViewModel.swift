@@ -26,15 +26,27 @@ final class MainViewModel {
     static let latestLimit = 5
 
     private(set) var period: SpendingPeriod = .week
+    private(set) var dueRecurring: [RecurringExpenseDTO] = []
+    private(set) var processingDue: Set<UUID> = []
     private var requestID = 0
+    private var dueRequestID = 0
     private var loadTask: Task<Void, Never>?
     private let loader: Loader
+    private let sideRepository: ExpenseRepositoryProvider
+    private let reviewPrompt: ReviewPromptStore
 
-    init(model: ModelContainer, loader: Loader? = nil) {
-        let repository = ExpenseRepositoryProvider(container: model)
-        let sideRepository = ExpenseRepositoryProvider(container: model)
+    init(
+        model: ModelContainer,
+        loader: Loader? = nil,
+        reviewPrompt: ReviewPromptStore = ReviewPromptStore(),
+        notifications: NotificationService = .shared
+    ) {
+        let repository = ExpenseRepositoryProvider(container: model, notifications: notifications)
+        let sideRepository = ExpenseRepositoryProvider(container: model, notifications: notifications)
         let latestLimit = Self.latestLimit
         self.repository = repository
+        self.sideRepository = sideRepository
+        self.reviewPrompt = reviewPrompt
         self.loader = loader ?? { period, now in
             async let chartLoad = repository.perform { try await $0.overviewChart(period: period, now: now) }
             async let sideLoad = sideRepository.perform {
@@ -48,7 +60,8 @@ final class MainViewModel {
                 points: chart.points,
                 total: chart.total,
                 latest: side.latest,
-                hasAnyExpenses: side.hasAnyExpenses
+                hasAnyExpenses: side.hasAnyExpenses,
+                monthTotal: side.monthTotal
             )
         }
     }
@@ -71,7 +84,9 @@ final class MainViewModel {
         loadTask?.cancel()
         let task = Task { await load() }
         loadTask = task
+        async let due: Void = loadDue()
         await task.value
+        await due
     }
 
     @MainActor
@@ -100,6 +115,49 @@ final class MainViewModel {
                 break
             }
         }
+    }
+
+    @MainActor
+    func loadDue(now: Date = .now, calendar: Calendar = .current) async {
+        dueRequestID += 1
+        let id = dueRequestID
+        do {
+            let all = try await sideRepository.perform { try await $0.fetchRecurring() }
+            guard id == dueRequestID else { return }
+            withAnimation(.snappy) {
+                dueRecurring = all.filter { RecurringExpense.isDue($0.nextDueDate, now: now, calendar: calendar) }
+            }
+        } catch {
+            print("Failed to fetch recurring expenses: \(error)")
+        }
+    }
+
+    @MainActor
+    func addDue(_ id: UUID) async throws {
+        try await advanceDue(id) {
+            try await $0.addDueOccurrence(id: id)
+            reviewPrompt.recordCreatedExpense()
+            NotificationCenter.default.post(name: .expensesDidChange, object: self)
+        }
+    }
+
+    @MainActor
+    func skipDue(_ id: UUID) async throws {
+        try await advanceDue(id) { try await $0.skipDueOccurrence(id: id) }
+    }
+
+    // The row stays disabled until the reload has replaced it.
+    @MainActor
+    private func advanceDue(_ id: UUID, _ action: (ExpenseRepositoryProvider) async throws -> Void) async throws {
+        guard processingDue.insert(id).inserted else { return }
+        defer { processingDue.remove(id) }
+        do {
+            try await action(sideRepository)
+        } catch {
+            await loadDue()
+            throw error
+        }
+        await loadDue()
     }
 
     @MainActor

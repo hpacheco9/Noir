@@ -11,6 +11,7 @@ nonisolated enum AssetName {
     enum System {
         static let add = "plus"
         static let applePay = "wave.3.forward.circle.fill"
+        static let budget = "wallet.bifold.fill"
         static let calendar = "calendar"
         static let card = "creditcard"
         static let checkmark = "checkmark"
@@ -29,6 +30,7 @@ nonisolated enum AssetName {
         static let picker = "chevron.up.chevron.down"
         static let privacy = "hand.raised.fill"
         static let pro = "sparkles"
+        static let recurring = "repeat"
         static let reset = "arrow.counterclockwise"
         static let restore = "arrow.clockwise"
         static let rest = "ellipsis.circle"

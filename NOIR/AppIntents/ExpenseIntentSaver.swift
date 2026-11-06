@@ -45,6 +45,7 @@ enum ExpenseIntentSaver {
         async let access: Void = PurchaseStore.shared.refreshAccess()
         await WidgetSnapshotPublisher.publish()
         try? await NotificationService.shared.notifyExpenseAdded(name: name, amount: amount)
+        await ExpenseRepositoryProvider(container: NOIRApp.sharedModelContainer).checkBudget()
         await access
     }
 }

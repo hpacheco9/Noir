@@ -24,6 +24,8 @@ final class OnboardingViewModelTests {
         }
         func authorizationStatus() async -> UNAuthorizationStatus { .notDetermined }
         func add(_ request: UNNotificationRequest) async throws {}
+        func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {}
+        func removeDeliveredNotifications(withIdentifiers identifiers: [String]) {}
     }
 
     private let suiteName = "OnboardingViewModelTests.\(UUID().uuidString)"
@@ -48,6 +50,7 @@ final class OnboardingViewModelTests {
         viewModel.advance()
         viewModel.advance()
         viewModel.advance()
+        viewModel.advance()
         return viewModel
     }
 
@@ -59,7 +62,7 @@ final class OnboardingViewModelTests {
             viewModel.advance()
             visited.append(viewModel.step)
         }
-        #expect(visited == [.welcome, .name, .currency, .notifications, .paywall])
+        #expect(visited == [.welcome, .name, .currency, .budget, .notifications, .paywall])
     }
 
     @Test(arguments: ["", " ", " \n\t "])
@@ -98,16 +101,85 @@ final class OnboardingViewModelTests {
         #expect(defaults.string(forKey: CurrencyPreference.storageKey) == nil)
 
         viewModel.advance()
-        #expect(viewModel.step == .notifications)
+        #expect(viewModel.step == .budget)
         #expect(defaults.string(forKey: CurrencyPreference.storageKey) == other)
     }
 
-    @Test func persistStoresTrimmedName() {
+    @Test func theBudgetStepOffersTheDefaultAndNeverBlocks() {
+        let viewModel = makeViewModel()
+        viewModel.name = "Maria"
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.advance()
+        #expect(viewModel.step == .budget)
+        #expect(viewModel.budget == OnboardingStorage.defaultMonthlyBudget * Double(CurrencyPreference.budgetScale(for: viewModel.currencyCode)))
+        #expect(viewModel.canAdvance)
+        #expect(viewModel.primaryActionTitle.key == L10n.Onboarding.setBudget.key)
+
+        viewModel.setBudget(0)
+        #expect(viewModel.canAdvance)
+        viewModel.advance()
+        #expect(viewModel.step == .notifications)
+    }
+
+    @Test(arguments: [("EUR", 1000.0), ("USD", 1000), ("SEK", 10_000), ("NOK", 10_000), ("DKK", 10_000), ("JPY", 100_000)])
+    func theDefaultBudgetFollowsTheChosenCurrency(code: String, expected: Double) {
+        let viewModel = makeViewModel()
+        viewModel.name = "Maria"
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.currencyCode = code
+        viewModel.advance()
+
+        #expect(viewModel.step == .budget)
+        #expect(viewModel.budget == expected)
+    }
+
+    @Test func theChosenBudgetIsStoredOnlyWhenPersisting() {
+        let viewModel = makeViewModel()
+        viewModel.name = "Maria"
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.setBudget(1500)
+        viewModel.advance()
+        #expect(viewModel.step == .notifications)
+        #expect(defaults.object(forKey: OnboardingStorage.monthlyBudgetKey) == nil)
+
+        viewModel.persist()
+        #expect(defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) == 1500)
+    }
+
+    // The ruler reports a scroll position while its step slides out; that must not reach the saved budget.
+    @Test func theRulerCanOnlyChangeTheBudgetWhileItsStepIsShowing() {
+        let viewModel = makeViewModel()
+        viewModel.name = "Maria"
+        viewModel.setBudget(2222)
+        #expect(viewModel.budget == OnboardingStorage.defaultMonthlyBudget)
+
+        viewModel.advance()
+        viewModel.advance()
+        viewModel.advance()
+        #expect(viewModel.step == .budget)
+        viewModel.setBudget(105)
+        #expect(viewModel.budget == 105)
+
+        viewModel.advance()
+        #expect(viewModel.step == .notifications)
+        viewModel.setBudget(120)
+        #expect(viewModel.budget == 105)
+
+        viewModel.persist()
+        #expect(defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) == 105)
+    }
+
+    @Test func persistStoresTrimmedNameAndTheDefaultBudget() {
         let viewModel = makeViewModel()
         viewModel.name = "  Maria  "
         viewModel.persist()
 
         #expect(defaults.string(forKey: ProfileStorage.nameKey) == "Maria")
+        #expect(defaults.double(forKey: OnboardingStorage.monthlyBudgetKey) == OnboardingStorage.defaultMonthlyBudget)
     }
 
     @Test(arguments: [true, false])

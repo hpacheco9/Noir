@@ -9,7 +9,7 @@ import SwiftData
 @testable import NOIR
 
 extension CategoryBreakdownRepositoryTests {
-    // `overviewSide`: the latest rows and the empty-state check.
+    // `overviewSide`: this month's total (the budget), the latest rows and the empty-state check.
     // In-memory store, rows inserted straight into a `ModelContext`. Nested in the serialized
     // `CategoryBreakdownRepositoryTests` for the memo-generation check.
     @Suite
@@ -30,7 +30,7 @@ extension CategoryBreakdownRepositoryTests {
 
         private func makeContainer() throws -> ModelContainer {
             try ModelContainer(
-                for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self,
+                for: Expense.self, CustomCategory.self, BuiltInCategoryOverride.self, RecurringExpense.self,
                 configurations: ModelConfiguration(isStoredInMemoryOnly: true)
             )
         }
@@ -48,6 +48,23 @@ extension CategoryBreakdownRepositoryTests {
             try context.save()
         }
 
+        // MARK: This month
+
+        @Test func monthTotalIsTheCurrentMonthOnly() async throws {
+            let container = try makeContainer()
+            try insert([
+                (10, date(2026, 10, 1, 0)),
+                (5, date(2026, 10, 31, 23)),
+                (100, date(2026, 9, 30, 23)),
+                (1000, date(2026, 11, 1, 0)),
+                (10_000, date(2025, 10, 15)),
+            ], into: container)
+
+            #expect(try await side(container).monthTotal == 15)
+        }
+
+        // MARK: The rest of the side load
+
         @Test func latestRowsAreNewestFirstAndLimited() async throws {
             let container = try makeContainer()
             try insert([
@@ -63,6 +80,7 @@ extension CategoryBreakdownRepositoryTests {
             let result = try await side(try makeContainer())
             #expect(result.latest.isEmpty)
             #expect(!result.hasAnyExpenses)
+            #expect(result.monthTotal == 0)
         }
 
         // Home keeps one repository for its whole life, so a re-read must see edits made through another context.
@@ -75,6 +93,7 @@ extension CategoryBreakdownRepositoryTests {
 
             let repository = ExpenseRepository(modelContainer: container)
             let first = try await repository.overviewSide(now: now, calendar: calendar)
+            #expect(first.monthTotal == 10)
             #expect(first.latest.first?.amount == 10)
 
             let editor = ModelContext(container)
@@ -84,6 +103,7 @@ extension CategoryBreakdownRepositoryTests {
             try editor.save()
 
             let second = try await repository.overviewSide(now: now, calendar: calendar)
+            #expect(second.monthTotal == 25)
             #expect(second.latest.first?.amount == 25)
         }
 
