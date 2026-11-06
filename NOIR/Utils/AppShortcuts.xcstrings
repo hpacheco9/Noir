@@ -139,6 +139,7 @@
       }
     },
     "Record Apple Pay expense in ${applicationName}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "da" : {
           "stringUnit" : {

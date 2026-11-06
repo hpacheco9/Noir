@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FD7B00082F00000100A7F416 /* NOIRWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FD7B00012F00000100A7F416 /* NOIRWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FD7C00022F00000100A7F416 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = FD7C00032F00000100A7F416 /* RevenueCat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD7C00022F00000100A7F416 /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +156,7 @@
 			);
 			name = NOIR;
 			packageProductDependencies = (
+				FD7C00032F00000100A7F416 /* RevenueCat */,
 			);
 			productName = NOIR;
 			productReference = FD0CB2D7305EF7FF00A7F416 /* NOIR.app */;
@@ -244,6 +247,9 @@
 			);
 			mainGroup = FD3135FF3014122C00874944;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FD7C00012F00000100A7F416 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FD3135FF3014122C00874944;
 			projectDirPath = "";
@@ -655,6 +661,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FD7C00012F00000100A7F416 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.102.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FD7C00032F00000100A7F416 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD7C00012F00000100A7F416 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FD3136003014122C00874944 /* Project object */;
 }

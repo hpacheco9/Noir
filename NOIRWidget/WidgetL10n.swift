@@ -10,6 +10,11 @@ enum L10n {
     static let description: LocalizedStringResource = "widget.month_total.description"
     static let title: LocalizedStringResource = "widget.month_total.title"
 
+    enum Locked {
+        static let title: LocalizedStringResource = "widget.locked.title"
+        static let detail: LocalizedStringResource = "widget.locked.detail"
+    }
+
     enum AddExpenseControl {
         static let displayName: LocalizedStringResource = "widget.add_expense.display_name"
         static let description: LocalizedStringResource = "widget.add_expense.description"

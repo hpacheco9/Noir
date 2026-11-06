@@ -17,7 +17,7 @@ final class OnboardingViewModel {
             case .notifications:
                 L10n.Onboarding.enableNotifications
             case .paywall:
-                L10n.Paywall.continueFree
+                L10n.Onboarding.continue
             }
         }
     }
@@ -81,7 +81,7 @@ final class OnboardingViewModel {
 
     func advance() {
         guard canAdvance, !isLastStep else { return }
-        // Saved as soon as it's chosen: the notification demo and the paywall price read the stored currency.
+        // Saved as soon as it's chosen: the notification demo reads the stored currency.
         if step == .currency {
             defaults.set(currencyCode, forKey: CurrencyPreference.storageKey)
         }

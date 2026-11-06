@@ -6,22 +6,23 @@
 import SwiftUI
 
 struct PaywallView: View {
-    var onClose: (() -> Void)?
-
-    @Environment(\.dismiss) private var dismiss
-    @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
+    @Environment(PurchaseStore.self) private var store
+    @State private var selection: PaywallPlan?
+    @State private var isBusy = false
+    @State private var alert: PaywallAlert?
     @State private var legalLink: LegalLink?
 
-    private static let mockPrice = 9.99
-
-    private var priceText: String {
-        CurrencyPreference.string(for: Self.mockPrice, code: currencyCode)
+    private var plan: PaywallPlan? {
+        let available = store.availablePlans
+        if let selection, available.contains(selection) { return selection }
+        return PaywallPlan.initialSelection(hasTrial: store.trialLength != nil, available: available)
     }
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 32) {
+            VStack(spacing: 28) {
                 header
+                plans
 
                 VStack(alignment: .leading, spacing: 24) {
                     ForEach(PaywallFeature.allCases) { feature in
@@ -36,18 +37,10 @@ struct PaywallView: View {
         .scrollEdgeEffectStyle(.soft, for: .bottom)
         .safeAreaInset(edge: .bottom) { purchaseBar }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button(role: .close, action: close)
-            }
-        }
         .sheet(item: $legalLink) { link in
             SafariRouteContent(url: link.url)
         }
-    }
-
-    private func close() {
-        if let onClose { onClose() } else { dismiss() }
+        .paywallAlert($alert)
     }
 
     private var header: some View {
@@ -64,7 +57,7 @@ struct PaywallView: View {
                     .font(.largeTitle.bold())
                     .accessibilityAddTraits(.isHeader)
 
-                Text(L10n.NoirPro.description)
+                Text(L10n.Paywall.subtitle)
                     .font(.title3.weight(.medium))
                     .foregroundStyle(.secondary)
             }
@@ -73,56 +66,124 @@ struct PaywallView: View {
         .frame(maxWidth: .infinity)
     }
 
+    @ViewBuilder
+    private var plans: some View {
+        if store.productsFailed {
+            VStack(spacing: 12) {
+                Text(L10n.Paywall.productsFailed)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+
+                Button(String(localized: L10n.Dashboard.retry)) {
+                    run { await store.refresh() }
+                }
+                .buttonStyle(.bordered)
+                .disabled(isBusy)
+            }
+            .frame(maxWidth: .infinity, minHeight: 120)
+        } else if store.availablePlans.isEmpty {
+            ProgressView()
+                .frame(maxWidth: .infinity, minHeight: 120)
+        } else {
+            VStack(spacing: 10) {
+                ForEach(store.availablePlans) { option in
+                    PaywallPlanRow(
+                        plan: option,
+                        price: store.price(for: option),
+                        trialLength: store.trialLength,
+                        isSelected: option == plan
+                    ) {
+                        Haptics.play(.tap)
+                        selection = option
+                    }
+                    .disabled(isBusy)
+                }
+            }
+        }
+    }
+
     private var purchaseBar: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 8) {
             Button {
-                // Mock: StoreKit isn't wired yet.
+                guard let plan else { return }
                 Haptics.play(.tap)
+                run(restoring: false) { await store.purchase(plan) }
             } label: {
-                Text(L10n.Paywall.unlock(price: priceText))
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(Color(uiColor: .systemBackground))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 10)
+                Group {
+                    if isBusy {
+                        ProgressView()
+                    } else if let plan {
+                        Text(plan.callToAction(hasTrial: store.trialLength != nil))
+                            .font(.body.weight(.semibold))
+                    } else {
+                        Text(L10n.Paywall.CallToAction.subscribe)
+                            .font(.body.weight(.semibold))
+                    }
+                }
+                .foregroundStyle(Color(uiColor: .systemBackground))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
             }
             .tint(.primary)
             .buttonStyle(.glassProminent)
+            .disabled(plan == nil || isBusy)
 
-            if onClose != nil {
-                Button(action: close) {
-                    Text(L10n.Paywall.continueFree)
-                        .font(.callout.weight(.semibold))
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                        .contentShape(.rect)
-                }
-                .buttonStyle(.plain)
+            if plan == .monthly, let trialLength = store.trialLength, let price = store.price(for: .monthly) {
+                let caption = PaywallPlan.trialCaption(trialLength: trialLength, price: price.total)
+                Text(caption.text)
+                    .font(.footnote.weight(.medium))
+                    .accessibilityLabel(Text(caption.spoken))
             }
 
-            Button {
-                // Mock: StoreKit isn't wired yet.
-            } label: {
-                Text(L10n.Paywall.restore)
-                    .font(.callout.weight(.medium))
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, minHeight: 44)
-                    .contentShape(.rect)
-            }
-            .buttonStyle(.plain)
+            Text((plan ?? .yearly).disclosure)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
-            HStack(spacing: 6) {
-                legalButton(.termsOfService)
-
-                Text(verbatim: "·")
-
-                legalButton(.privacyPolicy)
-            }
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .multilineTextAlignment(.center)
+            footerLinks
         }
         .padding(.horizontal, 26)
         .padding(.top, 8)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
+
+    private var footerLinks: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 6) {
+                restoreButton
+                separator
+                legalButton(.termsOfUse)
+                separator
+                legalButton(.privacyPolicy)
+            }
+
+            VStack(spacing: 0) {
+                restoreButton
+                legalButton(.termsOfUse)
+                legalButton(.privacyPolicy)
+            }
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .multilineTextAlignment(.center)
+    }
+
+    private var separator: some View {
+        Text(verbatim: "·").accessibilityHidden(true)
+    }
+
+    private var restoreButton: some View {
+        Button {
+            run(restoring: true) { await store.restore() }
+        } label: {
+            Text(L10n.Paywall.restore)
+                .frame(minHeight: 32)
+                .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .disabled(isBusy)
     }
 
     private func legalButton(_ link: LegalLink) -> some View {
@@ -135,60 +196,131 @@ struct PaywallView: View {
         }
         .buttonStyle(.plain)
     }
+
+    private func run(restoring: Bool, _ work: @escaping () async -> PurchaseOutcome) {
+        guard !isBusy else { return }
+        isBusy = true
+        Task {
+            let outcome = await work()
+            isBusy = false
+            alert = PaywallAlert.report(outcome, restoring: restoring)
+        }
+    }
+
+    private func run(_ work: @escaping () async -> Void) {
+        guard !isBusy else { return }
+        isBusy = true
+        Task {
+            await work()
+            isBusy = false
+        }
+    }
+}
+
+private struct PaywallPlanRow: View {
+    let plan: PaywallPlan
+    let price: PurchaseStore.Price?
+    let trialLength: String?
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: 16, style: .continuous)
+
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Image(systemName: isSelected ? AssetName.System.selected : AssetName.System.unselected)
+                    .font(.title3)
+                    .foregroundStyle(isSelected ? .primary : .secondary)
+                    .accessibilityHidden(true)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(plan.title)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+
+                    if let price {
+                        let billed = plan.priceLine(price.total)
+                        Text(billed.text)
+                            .font(.headline)
+                            .accessibilityLabel(Text(billed.spoken))
+
+                        if let secondary = plan.secondaryLine(price: price, trialLength: trialLength) {
+                            Text(secondary.text)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .accessibilityLabel(Text(secondary.spoken))
+                        }
+                    }
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.quaternary, in: shape)
+            .overlay { shape.strokeBorder(isSelected ? Color.primary : .clear, lineWidth: 2) }
+            .contentShape(shape)
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
 }
 
 private enum LegalLink: Identifiable {
-    case termsOfService, privacyPolicy
+    case termsOfUse, privacyPolicy
 
     var id: Self { self }
 
     var title: LocalizedStringResource {
         switch self {
-        case .termsOfService: L10n.Legal.termsOfService
+        case .termsOfUse: L10n.Legal.termsOfUse
         case .privacyPolicy: L10n.Legal.privacyPolicy
         }
     }
 
     var url: URL {
         switch self {
-        case .termsOfService: AppLinks.termsOfService
+        case .termsOfUse: AppLinks.termsOfUse
         case .privacyPolicy: AppLinks.privacyPolicy
         }
     }
 }
 
 private enum PaywallFeature: CaseIterable, Identifiable {
-    case sync, categories, widgets, insights, export
+    case insights, widgets, shortcuts, categories, privacy
 
     var id: Self { self }
 
     var symbol: String {
         switch self {
-        case .sync: AssetName.System.iCloud
-        case .categories: AssetName.System.tag
-        case .widgets: AssetName.System.widgets
         case .insights: AssetName.System.dashboard
-        case .export: AssetName.System.export
+        case .widgets: AssetName.System.widgets
+        case .shortcuts: AssetName.System.applePay
+        case .categories: AssetName.System.tag
+        case .privacy: AssetName.System.privacy
         }
     }
 
     var title: LocalizedStringResource {
         switch self {
-        case .sync: L10n.Paywall.Feature.syncTitle
-        case .categories: L10n.Paywall.Feature.categoriesTitle
-        case .widgets: L10n.Paywall.Feature.widgetsTitle
         case .insights: L10n.Paywall.Feature.insightsTitle
-        case .export: L10n.Paywall.Feature.exportTitle
+        case .widgets: L10n.Paywall.Feature.widgetsTitle
+        case .shortcuts: L10n.Paywall.Feature.shortcutsTitle
+        case .categories: L10n.Paywall.Feature.categoriesTitle
+        case .privacy: L10n.Paywall.Feature.privacyTitle
         }
     }
 
     var detail: LocalizedStringResource {
         switch self {
-        case .sync: L10n.Paywall.Feature.syncDescription
-        case .categories: L10n.Paywall.Feature.categoriesDescription
-        case .widgets: L10n.Paywall.Feature.widgetsDescription
         case .insights: L10n.Paywall.Feature.insightsDescription
-        case .export: L10n.Paywall.Feature.exportDescription
+        case .widgets: L10n.Paywall.Feature.widgetsDescription
+        case .shortcuts: L10n.Paywall.Feature.shortcutsDescription
+        case .categories: L10n.Paywall.Feature.categoriesDescription
+        case .privacy: L10n.Paywall.Feature.privacyDescription
         }
     }
 }
@@ -222,15 +354,7 @@ private struct PaywallFeatureRow: View {
     }
 }
 
-#Preview("Sheet") {
-    CoordinatorView {
-        PaywallView()
-    }
-    .environmentObject(Coordinator())
-}
-
-#Preview("Onboarding") {
-    NavigationStack {
-        PaywallView(onClose: {})
-    }
+#Preview {
+    PaywallView()
+        .environment(PurchaseStore(defaults: nil))
 }

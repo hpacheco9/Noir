@@ -94,31 +94,83 @@ enum L10n {
 
 
 
-    enum NoirPro {
-        static let title: LocalizedStringResource = "noir_pro.title"
-        static let description: LocalizedStringResource = "noir_pro.description"
-        static let upgrade: LocalizedStringResource = "noir_pro.upgrade"
+    enum Subscription {
+        static let title: LocalizedStringResource = "subscription.title"
+        static let manage: LocalizedStringResource = "subscription.manage"
+        static let lifetime: LocalizedStringResource = "subscription.lifetime"
     }
 
     enum Paywall {
         static let title: LocalizedStringResource = "paywall.title"
-        static func unlock(price: String) -> LocalizedStringResource {
-            "paywall.unlock \(price)"
-        }
+        static let subtitle: LocalizedStringResource = "paywall.subtitle"
         static let restore: LocalizedStringResource = "paywall.restore"
-        static let continueFree: LocalizedStringResource = "paywall.continue_free"
+        static let productsFailed: LocalizedStringResource = "paywall.products_failed"
+
+        enum Plan {
+            static let monthly: LocalizedStringResource = "paywall.plan.monthly"
+            static let yearly: LocalizedStringResource = "paywall.plan.yearly"
+            static let lifetime: LocalizedStringResource = "paywall.plan.lifetime"
+            static func trialFree(_ trial: String) -> LocalizedStringResource {
+                "paywall.plan.trial_free \(trial)"
+            }
+            static func monthlyTrial(trial: String, price: String) -> LocalizedStringResource {
+                "paywall.plan.monthly_trial \(trial) \(price)"
+            }
+            static func monthlyTrialSpoken(trial: String, price: String) -> LocalizedStringResource {
+                "paywall.plan.monthly_trial_spoken \(trial) \(price)"
+            }
+            static func monthlyPrice(_ price: String) -> LocalizedStringResource {
+                "paywall.plan.monthly_price \(price)"
+            }
+            static func monthlyPriceSpoken(_ price: String) -> LocalizedStringResource {
+                "paywall.plan.monthly_price_spoken \(price)"
+            }
+            static func yearlyPrice(_ price: String) -> LocalizedStringResource {
+                "paywall.plan.yearly_price \(price)"
+            }
+            static func yearlyPriceSpoken(_ price: String) -> LocalizedStringResource {
+                "paywall.plan.yearly_price_spoken \(price)"
+            }
+            static func lifetimePrice(_ price: String) -> LocalizedStringResource {
+                "paywall.plan.lifetime_price \(price)"
+            }
+        }
+
+        enum CallToAction {
+            static let startTrial: LocalizedStringResource = "paywall.cta.start_trial"
+            static let subscribe: LocalizedStringResource = "paywall.cta.subscribe"
+            static let buyLifetime: LocalizedStringResource = "paywall.cta.buy_lifetime"
+        }
+
+        enum Disclosure {
+            static let subscription: LocalizedStringResource = "paywall.disclosure.subscription"
+            static let lifetime: LocalizedStringResource = "paywall.disclosure.lifetime"
+        }
+
+        enum Alert {
+            static let pendingTitle: LocalizedStringResource = "paywall.alert.pending.title"
+            static let pendingMessage: LocalizedStringResource = "paywall.alert.pending.message"
+            static let failedTitle: LocalizedStringResource = "paywall.alert.failed.title"
+            static let failedMessage: LocalizedStringResource = "paywall.alert.failed.message"
+            static let restoreFailedTitle: LocalizedStringResource = "paywall.alert.restore_failed.title"
+            static let restoreFailedMessage: LocalizedStringResource = "paywall.alert.restore_failed.message"
+            static let restoredTitle: LocalizedStringResource = "paywall.alert.restored.title"
+            static let restoredMessage: LocalizedStringResource = "paywall.alert.restored.message"
+            static let nothingToRestoreTitle: LocalizedStringResource = "paywall.alert.nothing_to_restore.title"
+            static let nothingToRestoreMessage: LocalizedStringResource = "paywall.alert.nothing_to_restore.message"
+        }
 
         enum Feature {
-            static let syncTitle: LocalizedStringResource = "paywall.feature.sync.title"
-            static let syncDescription: LocalizedStringResource = "paywall.feature.sync.description"
-            static let categoriesTitle: LocalizedStringResource = "paywall.feature.categories.title"
-            static let categoriesDescription: LocalizedStringResource = "paywall.feature.categories.description"
-            static let widgetsTitle: LocalizedStringResource = "paywall.feature.widgets.title"
-            static let widgetsDescription: LocalizedStringResource = "paywall.feature.widgets.description"
             static let insightsTitle: LocalizedStringResource = "paywall.feature.insights.title"
             static let insightsDescription: LocalizedStringResource = "paywall.feature.insights.description"
-            static let exportTitle: LocalizedStringResource = "paywall.feature.export.title"
-            static let exportDescription: LocalizedStringResource = "paywall.feature.export.description"
+            static let widgetsTitle: LocalizedStringResource = "paywall.feature.widgets.title"
+            static let widgetsDescription: LocalizedStringResource = "paywall.feature.widgets.description"
+            static let shortcutsTitle: LocalizedStringResource = "paywall.feature.shortcuts.title"
+            static let shortcutsDescription: LocalizedStringResource = "paywall.feature.shortcuts.description"
+            static let categoriesTitle: LocalizedStringResource = "paywall.feature.categories.title"
+            static let categoriesDescription: LocalizedStringResource = "paywall.feature.categories.description"
+            static let privacyTitle: LocalizedStringResource = "paywall.feature.privacy.title"
+            static let privacyDescription: LocalizedStringResource = "paywall.feature.privacy.description"
         }
     }
 
@@ -189,6 +241,7 @@ enum L10n {
         static let title: LocalizedStringResource = "legal.title"
         static let privacyPolicy: LocalizedStringResource = "legal.privacy_policy"
         static let termsOfService: LocalizedStringResource = "legal.terms_of_service"
+        static let termsOfUse: LocalizedStringResource = "legal.terms_of_use"
     }
 
     enum AddExpenseView {
@@ -283,6 +336,7 @@ enum L10n {
         static let emptyName: LocalizedStringResource = "app_intent.empty_name"
         static let expenseSaved: LocalizedStringResource = "app_intent.expense_saved"
         static let untitled: LocalizedStringResource = "app_intent.untitled"
+        static let subscriptionRequired = LocalizedStringResource("app_intent.subscription_required", table: "AppIntents")
         static let summaryHeader: LocalizedStringResource = "app_intent.summary.header"
         /// "Save 12,50 € for Lunch?"
         static func confirmSpoken(amount: String, name: String) -> LocalizedStringResource {

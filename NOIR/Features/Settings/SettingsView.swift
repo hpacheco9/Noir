@@ -5,11 +5,16 @@
 
 import SwiftUI
 import SwiftData
+import StoreKit
 
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @AppStorage(CurrencyPreference.storageKey) private var currencyCode = CurrencyPreference.defaultCode
     @AppStorage(ProfileStorage.nameKey) private var name = ""
+    @Environment(PurchaseStore.self) private var purchaseStore
+    @State private var isManagingSubscription = false
+    @State private var isRestoring = false
+    @State private var restoreAlert: PaywallAlert?
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
@@ -23,35 +28,33 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section {
-                Button {
-                    coordinator.present(SettingsRoutes.paywall(), mode: .large)
-                } label: {
-                    HStack(spacing: 12) {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(L10n.NoirPro.title)
-                                .font(.title2)
-                                .fontWeight(.bold)
-
-                            Text(L10n.NoirPro.description)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-
-                        Spacer()
-
-                        Text(L10n.NoirPro.upgrade)
-                            .foregroundStyle(Color(uiColor: .systemBackground))
-                            .fontWeight(.semibold)
-                            .fontDesign(.rounded)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 7)
-                            .background(.primary, in: .capsule)
+            Section(String(localized: L10n.Subscription.title)) {
+                if purchaseStore.isLifetime {
+                    Label {
+                        Text(L10n.Subscription.lifetime)
+                    } icon: {
+                        Image(systemName: AssetName.System.pro)
+                            .foregroundStyle(.secondary)
                     }
-                    .padding(.vertical, 8)
-                    .contentShape(.rect)
                 }
-                .tint(.primary)
+
+                if purchaseStore.isSubscriber {
+                    SettingsRow(
+                        title: L10n.Subscription.manage,
+                        systemImage: AssetName.System.pro
+                    ) {
+                        isManagingSubscription = true
+                    }
+                }
+
+                SettingsRow(
+                    title: L10n.Paywall.restore,
+                    systemImage: AssetName.System.restore,
+                    accessory: nil,
+                    isLoading: isRestoring
+                ) {
+                    restorePurchases()
+                }
             }
 
             Section(String(localized: L10n.Profile.title)) {
@@ -146,6 +149,8 @@ struct SettingsView: View {
             reviewPromptDeveloperSection
 #endif
         }
+        .manageSubscriptionsSheet(isPresented: $isManagingSubscription)
+        .paywallAlert($restoreAlert)
         .navigationTitle(Text(L10n.SettingsView.title))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -154,6 +159,16 @@ struct SettingsView: View {
                     coordinator.dismiss()
                 })
             }
+        }
+    }
+
+    private func restorePurchases() {
+        guard !isRestoring else { return }
+        isRestoring = true
+        Task {
+            let outcome = await purchaseStore.restore()
+            isRestoring = false
+            restoreAlert = PaywallAlert.report(outcome, restoring: true)
         }
     }
 }
@@ -202,4 +217,5 @@ private extension SettingsView {
         SettingsView()
     }
     .environmentObject(Coordinator())
+    .environment(PurchaseStore(defaults: nil))
 }

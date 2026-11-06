@@ -702,6 +702,65 @@
         }
       }
     },
+    "app_intent.subscription_required" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonner på NOIR Pro for at tilføje udgifter."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonniere NOIR Pro, um Ausgaben hinzuzufügen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe to NOIR Pro to add expenses."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suscríbete a NOIR Pro para añadir gastos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilaa NOIR Pro lisätäksesi kuluja."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonne-toi à NOIR Pro pour ajouter des dépenses."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonner på NOIR Pro for å legge til utgifter."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assine o NOIR Pro para adicionar gastos."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscreva o NOIR Pro para adicionar despesas."
+          }
+        }
+      }
+    },
     "app_intent.summary.change_card" : {
       "extractionState" : "manual",
       "localizations" : {

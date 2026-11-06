@@ -22,6 +22,53 @@ struct MonthTotalWidgetView: View {
 
     @ViewBuilder
     private var content: some View {
+        if entry.hasAccess {
+            totals
+        } else {
+            locked
+        }
+    }
+
+    @ViewBuilder
+    private var locked: some View {
+        switch family {
+        case .accessoryCircular:
+            ZStack {
+                AccessoryWidgetBackground()
+                Image(systemName: AssetName.System.locked)
+                    .font(.title3.weight(.semibold))
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(L10n.Locked.title))
+        case .accessoryRectangular:
+            HStack(spacing: 8) {
+                Image(systemName: AssetName.System.locked)
+                    .widgetAccentable()
+                Text(L10n.Locked.title)
+                    .font(.caption.weight(.semibold))
+            }
+            .accessibilityElement(children: .combine)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        default:
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: AssetName.System.locked)
+                    .font(.title2.weight(.semibold))
+                Text(L10n.Locked.title)
+                    .font(.headline)
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(2)
+                Text(L10n.Locked.detail)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(2)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        }
+    }
+
+    @ViewBuilder
+    private var totals: some View {
         switch family {
         case .accessoryCircular:
             circular
