@@ -25,13 +25,22 @@ struct ProAccessTests {
 
     @Test func accessIsGrantedOnlyByACachedTrue() {
         withIsolatedDefaults { defaults in
-            #expect(!ProAccess.isGranted(in: defaults))
+            #expect(!ProAccess.isGranted(in: defaults, paywallEnabled: true))
             ProAccess.cache(false, in: defaults)
-            #expect(!ProAccess.isGranted(in: defaults))
+            #expect(!ProAccess.isGranted(in: defaults, paywallEnabled: true))
             ProAccess.cache(true, in: defaults)
-            #expect(ProAccess.isGranted(in: defaults))
+            #expect(ProAccess.isGranted(in: defaults, paywallEnabled: true))
         }
-        #expect(!ProAccess.isGranted(in: nil))
+        #expect(!ProAccess.isGranted(in: nil, paywallEnabled: true))
+    }
+
+    @Test func withThePaywallOffAccessIsAlwaysGranted() {
+        withIsolatedDefaults { defaults in
+            #expect(ProAccess.isGranted(in: defaults, paywallEnabled: false))
+            ProAccess.cache(false, in: defaults)
+            #expect(ProAccess.isGranted(in: defaults, paywallEnabled: false))
+        }
+        #expect(ProAccess.isGranted(in: nil, paywallEnabled: false))
     }
 
     @Test func cachingReportsWhetherTheValueChanged() {

@@ -28,14 +28,14 @@ struct IntentAccessTests {
 
     @Test func intentsRunWithCachedAccess() throws {
         try withIsolatedDefaults(cached: true) { defaults in
-            try ExpenseIntentSaver.requireAccess(defaults: defaults)
+            try ExpenseIntentSaver.requireAccess(defaults: defaults, paywallEnabled: true)
         }
     }
 
     @Test func intentsStopWithoutCachedAccess() {
         withIsolatedDefaults(cached: false) { defaults in
             #expect(throws: AddExpenseIntentError.subscriptionRequired) {
-                try ExpenseIntentSaver.requireAccess(defaults: defaults)
+                try ExpenseIntentSaver.requireAccess(defaults: defaults, paywallEnabled: true)
             }
         }
     }
@@ -43,11 +43,11 @@ struct IntentAccessTests {
     @Test func intentsStopWhenNothingWasCachedYet() {
         withIsolatedDefaults { defaults in
             #expect(throws: AddExpenseIntentError.subscriptionRequired) {
-                try ExpenseIntentSaver.requireAccess(defaults: defaults)
+                try ExpenseIntentSaver.requireAccess(defaults: defaults, paywallEnabled: true)
             }
         }
         #expect(throws: AddExpenseIntentError.subscriptionRequired) {
-            try ExpenseIntentSaver.requireAccess(defaults: nil)
+            try ExpenseIntentSaver.requireAccess(defaults: nil, paywallEnabled: true)
         }
     }
 
@@ -60,9 +60,14 @@ struct IntentAccessTests {
     }
 
     @Test func theDefaultCheckReadsTheOverriddenSuite() async throws {
-        try await withIntentAccess(true) { try ExpenseIntentSaver.requireAccess() }
+        try await withIntentAccess(true) { try ExpenseIntentSaver.requireAccess(paywallEnabled: true) }
         await withIntentAccess(false) {
-            #expect(throws: AddExpenseIntentError.subscriptionRequired) { try ExpenseIntentSaver.requireAccess() }
+            #expect(throws: AddExpenseIntentError.subscriptionRequired) { try ExpenseIntentSaver.requireAccess(paywallEnabled: true) }
         }
+    }
+
+    @Test func withThePaywallOffIntentsRunWithoutCachedAccess() async throws {
+        try await withIntentAccess(false) { try ExpenseIntentSaver.requireAccess(paywallEnabled: false) }
+        try ExpenseIntentSaver.requireAccess(defaults: nil, paywallEnabled: false)
     }
 }

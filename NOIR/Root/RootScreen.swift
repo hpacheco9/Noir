@@ -23,9 +23,11 @@ nonisolated enum RootScreen: Equatable, Sendable {
         isAccessKnown: Bool,
         hasAccess: Bool,
         accessTimedOut: Bool,
-        isAppLatched: Bool
+        isAppLatched: Bool,
+        isPaywallEnabled: Bool = ProAccess.isPaywallEnabled
     ) -> RootScreen {
         guard hasCompletedOnboarding else { return .onboarding }
+        guard isPaywallEnabled else { return .app }
         if hasAccess || isAppLatched { return .app }
         return isAccessKnown || accessTimedOut ? .paywall : .loading
     }

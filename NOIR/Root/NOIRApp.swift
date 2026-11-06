@@ -33,7 +33,7 @@ struct NOIRApp: App {
 
     init() {
         let purchaseStore = PurchaseStore.shared
-        if !RevenueCatConfig.isRunningTests {
+        if ProAccess.isPaywallEnabled, !RevenueCatConfig.isRunningTests {
             RevenueCatConfig.configure()
             purchaseStore.start()
         }

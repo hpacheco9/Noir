@@ -12,9 +12,10 @@ enum ExpenseIntentSaver {
     @TaskLocal static var accessSuiteName: String?
 
     static func requireAccess(
-        defaults: UserDefaults? = accessSuiteName.flatMap(UserDefaults.init(suiteName:)) ?? MonthTotalSnapshot.sharedDefaults
+        defaults: UserDefaults? = accessSuiteName.flatMap(UserDefaults.init(suiteName:)) ?? MonthTotalSnapshot.sharedDefaults,
+        paywallEnabled: Bool = ProAccess.isPaywallEnabled
     ) throws {
-        guard ProAccess.isGranted(in: defaults) else { throw AddExpenseIntentError.subscriptionRequired }
+        guard ProAccess.isGranted(in: defaults, paywallEnabled: paywallEnabled) else { throw AddExpenseIntentError.subscriptionRequired }
     }
 
     static func save(

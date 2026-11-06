@@ -32,7 +32,7 @@ struct MainOnboarding: View {
                     case .notifications:
                         NotificationsView()
                     case .paywall:
-                        if !purchaseStore.hasAccess { PaywallView() }
+                        if ProAccess.isPaywallEnabled, !purchaseStore.hasAccess { PaywallView() }
                 }
 
                 Spacer(minLength: 0)
@@ -48,7 +48,7 @@ struct MainOnboarding: View {
         }
         .task { await viewModel.refreshNotificationPermission() }
         // A purchase or a restore arrives as access (a reinstall needs Restore, there is no account to sign in to).
-        .onChange(of: purchaseStore.hasAccess && viewModel.step == .paywall, initial: true) { _, unlocked in
+        .onChange(of: (purchaseStore.hasAccess || !ProAccess.isPaywallEnabled) && viewModel.step == .paywall, initial: true) { _, unlocked in
             if unlocked { finish() }
         }
         .onChange(of: scenePhase) { _, phase in

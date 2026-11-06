@@ -13,15 +13,23 @@ struct RootScreenTests {
         known: Bool = true,
         access: Bool = false,
         timedOut: Bool = false,
-        latched: Bool = false
+        latched: Bool = false,
+        paywall: Bool = true
     ) -> RootScreen {
         RootScreen.resolve(
             hasCompletedOnboarding: onboarded,
             isAccessKnown: known,
             hasAccess: access,
             accessTimedOut: timedOut,
-            isAppLatched: latched
+            isAppLatched: latched,
+            isPaywallEnabled: paywall
         )
+    }
+
+    @Test func withThePaywallOffOnboardingLeadsStraightToTheApp() {
+        #expect(resolve(known: true, access: false, paywall: false) == .app)
+        #expect(resolve(known: false, timedOut: false, paywall: false) == .app)
+        #expect(resolve(onboarded: false, paywall: false) == .onboarding)
     }
 
     @Test func onboardingComesFirst() {

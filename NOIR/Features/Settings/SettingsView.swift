@@ -32,32 +32,34 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section(String(localized: L10n.Subscription.title)) {
-                if purchaseStore.isLifetime {
-                    Label {
-                        Text(L10n.Subscription.lifetime)
-                    } icon: {
-                        Image(systemName: AssetName.System.pro)
-                            .foregroundStyle(.secondary)
+            if ProAccess.isPaywallEnabled {
+                Section(String(localized: L10n.Subscription.title)) {
+                    if purchaseStore.isLifetime {
+                        Label {
+                            Text(L10n.Subscription.lifetime)
+                        } icon: {
+                            Image(systemName: AssetName.System.pro)
+                                .foregroundStyle(.secondary)
+                        }
                     }
-                }
 
-                if purchaseStore.isSubscriber {
+                    if purchaseStore.isSubscriber {
+                        SettingsRow(
+                            title: L10n.Subscription.manage,
+                            systemImage: AssetName.System.pro
+                        ) {
+                            isManagingSubscription = true
+                        }
+                    }
+
                     SettingsRow(
-                        title: L10n.Subscription.manage,
-                        systemImage: AssetName.System.pro
+                        title: L10n.Paywall.restore,
+                        systemImage: AssetName.System.restore,
+                        accessory: nil,
+                        isLoading: isRestoring
                     ) {
-                        isManagingSubscription = true
+                        restorePurchases()
                     }
-                }
-
-                SettingsRow(
-                    title: L10n.Paywall.restore,
-                    systemImage: AssetName.System.restore,
-                    accessory: nil,
-                    isLoading: isRestoring
-                ) {
-                    restorePurchases()
                 }
             }
 
