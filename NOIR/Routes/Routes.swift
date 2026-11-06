@@ -172,4 +172,18 @@ extension SettingsRoutes {
 
         return SafariViewRoute(routeId: "settings-safari-\(url.absoluteString)", url: url)
     }
+
+    static func importReview(parsed: ExpenseCSVReader.Parsed, currencyCode: String) -> any RouteRepresentable {
+        struct ImportReviewViewRoute: RouteRepresentable {
+            let routeId: String = "settings-import-review"
+            let parsed: ExpenseCSVReader.Parsed
+            let currencyCode: String
+
+            func routeView() -> any View {
+                ImportReviewView(parsed: parsed, currencyCode: currencyCode)
+            }
+        }
+
+        return ImportReviewViewRoute(parsed: parsed, currencyCode: currencyCode)
+    }
 }

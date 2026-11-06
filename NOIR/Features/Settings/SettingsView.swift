@@ -6,6 +6,7 @@
 import SwiftUI
 import SwiftData
 import StoreKit
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @EnvironmentObject private var coordinator: Coordinator
@@ -15,6 +16,9 @@ struct SettingsView: View {
     @State private var isManagingSubscription = false
     @State private var isRestoring = false
     @State private var restoreAlert: PaywallAlert?
+    @State private var isImporterPresented = false
+    @State private var isReadingImport = false
+    @State private var importErrorMessage: String?
 #if DEBUG
     @AppStorage(OnboardingStorage.hasCompletedKey) private var hasCompletedOnboarding = false
     /// The review store isn't observable, so its state is copied here on appear and after each developer action.
@@ -121,6 +125,31 @@ struct SettingsView: View {
                 }
             }
 
+            Section(String(localized: L10n.Export.title)) {
+                ShareLink(
+                    item: ExpenseCSVExport(
+                        container: NOIRApp.sharedModelContainer,
+                        headers: .localized,
+                        currencyCode: currencyCode
+                    ),
+                    preview: SharePreview(String(localized: L10n.Export.csv))
+                ) {
+                    SettingsRowLabel(title: L10n.Export.csv, systemImage: AssetName.System.export)
+                }
+                .tint(.primary)
+
+                Button {
+                    isImporterPresented = true
+                } label: {
+                    HStack {
+                        SettingsRowLabel(title: L10n.Import.csv, systemImage: AssetName.System.importFile)
+                        if isReadingImport { ProgressView() }
+                    }
+                }
+                .tint(.primary)
+                .disabled(isReadingImport)
+            }
+
             Section(String(localized: L10n.Legal.title)) {
                 SettingsRow(
                     title: L10n.Legal.privacyPolicy,
@@ -158,6 +187,18 @@ struct SettingsView: View {
         }
         .manageSubscriptionsSheet(isPresented: $isManagingSubscription)
         .paywallAlert($restoreAlert)
+        .fileImporter(isPresented: $isImporterPresented, allowedContentTypes: [.commaSeparatedText, .tabSeparatedText]) { result in
+            guard case .success(let url) = result else { return }
+            Task { await review(url) }
+        }
+        .alert(Text(L10n.Import.errorTitle), isPresented: .init(
+            get: { importErrorMessage != nil },
+            set: { if !$0 { importErrorMessage = nil } }
+        )) {
+            Button(String(localized: L10n.Shared.ok), role: .cancel) { importErrorMessage = nil }
+        } message: {
+            Text(importErrorMessage ?? String(localized: L10n.Shared.unexpectedError))
+        }
         .navigationTitle(Text(L10n.SettingsView.title))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -176,6 +217,22 @@ struct SettingsView: View {
             let outcome = await purchaseStore.restore()
             isRestoring = false
             restoreAlert = PaywallAlert.report(outcome, restoring: true)
+        }
+    }
+}
+
+private extension SettingsView {
+    func review(_ url: URL) async {
+        guard !isReadingImport else { return }
+        isReadingImport = true
+        defer { isReadingImport = false }
+        do {
+            let parsed = try await ExpenseCSVReader.read(contentsOf: url, currencyCode: currencyCode)
+            coordinator.present(SettingsRoutes.importReview(parsed: parsed, currencyCode: currencyCode), mode: .large)
+        } catch ExpenseCSVReader.ReadError.missingColumns {
+            importErrorMessage = String(localized: L10n.Import.errorColumns)
+        } catch {
+            importErrorMessage = String(localized: L10n.Import.errorUnreadable)
         }
     }
 }
