@@ -38,7 +38,9 @@ struct ExpenseAmountTests {
         intent.amount = amount
         // Empty name: a regression past the amount guard stops at `emptyName` instead of writing to the real store.
         intent.name = ""
-        await #expect(throws: AddExpenseIntentError.invalidAmount) { _ = try await intent.perform() }
+        await withIntentAccess {
+            await #expect(throws: AddExpenseIntentError.invalidAmount) { _ = try await intent.perform() }
+        }
     }
 }
 

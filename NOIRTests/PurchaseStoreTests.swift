@@ -124,7 +124,7 @@ struct PurchaseStoreTests {
     private func package(_ plan: PaywallPlan, price: String, perMonth: String? = nil, trial: StoreProductDiscount? = nil) -> Package {
         var product = TestStoreProduct(
             localizedTitle: "NOIR Pro",
-            price: 1,
+            price: Decimal(string: price.filter { $0.isNumber || $0 == "," }.replacingOccurrences(of: ",", with: ".")) ?? 1,
             currencyCode: "EUR",
             localizedPriceString: price,
             productIdentifier: plan.productID,
@@ -172,7 +172,8 @@ struct PurchaseStoreTests {
             package(.yearly, price: "19,99 €", perMonth: "1,67 €"),
             package(.lifetime, price: "49,99 €", perMonth: "4,16 €"),
         ], trialEligible: false)
-        #expect(store.price(for: .yearly)?.perMonth == "1,67 €")
+        // RevenueCat derives it from the price and rounds down (19,99 / 12 = 1,6658), with pt_PT's no-break space.
+        #expect(store.price(for: .yearly)?.perMonth == "1,66\u{00A0}€")
         #expect(store.price(for: .monthly)?.perMonth == nil)
         #expect(store.price(for: .lifetime)?.perMonth == nil)
     }

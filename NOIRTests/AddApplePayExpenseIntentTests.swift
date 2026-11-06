@@ -57,7 +57,9 @@ struct AddApplePayExpenseIntentTests {
     @MainActor func unusableAmountStopsTheIntent(text: String) async {
         let intent = AddApplePayExpenseIntent()
         intent.amount = text
-        await #expect(throws: AddExpenseIntentError.invalidAmount) { _ = try await intent.perform() }
+        await withIntentAccess {
+            await #expect(throws: AddExpenseIntentError.invalidAmount) { _ = try await intent.perform() }
+        }
     }
 
     @Test(arguments: [nil, "", "  \n"] as [String?])

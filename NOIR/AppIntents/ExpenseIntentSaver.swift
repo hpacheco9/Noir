@@ -9,7 +9,11 @@ import SwiftData
 enum ExpenseIntentSaver {
     // Intents read the cache the app keeps in step with RevenueCat: they may run offline, or before the app has
     // answered. The system asks for required parameters before perform(), so the earliest check is the summary prompt.
-    static func requireAccess(defaults: UserDefaults? = MonthTotalSnapshot.sharedDefaults) throws {
+    @TaskLocal static var accessSuiteName: String?
+
+    static func requireAccess(
+        defaults: UserDefaults? = accessSuiteName.flatMap(UserDefaults.init(suiteName:)) ?? MonthTotalSnapshot.sharedDefaults
+    ) throws {
         guard ProAccess.isGranted(in: defaults) else { throw AddExpenseIntentError.subscriptionRequired }
     }
 
